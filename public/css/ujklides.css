@@ -1,0 +1,128 @@
+html, body {
+    background-color: #eee;
+    color: #000;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+    height: 100vh;
+    padding: 10px;
+    margin: -5px;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+    line-height: 1.1;
+    color: inherit;
+}
+
+.full-height {
+    height: 100vh;
+}
+
+.flex-center {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.position-ref {
+    position: relative;
+}
+
+.top-right {
+    position: absolute;
+    right: 10px;
+    top: 18px;
+}
+
+.content {
+    text-align: center;
+}
+
+.title {
+    font-family: 'Courgette', cursive;
+    font-size: 84px;
+}
+
+.links > a {
+    color: #006;
+    padding: 0 25px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .1rem;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.m-b-md {
+    margin-bottom: 30px;
+}
+
+.glyphiconbig {
+    font-size: 50px
+    }
+
+
+.tile {
+    position: relative;
+    float: left;
+    text-align: center;
+    color: #22A;
+    width:300px;
+    max-height: 150px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .tiletitle {
+        width: 100%;
+        background: rgba(200, 200, 200, 0.75);
+        font-weight: bold;
+        font-size: 16px;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        max-height: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 10px;
+  }
+
+ .boxtitle {
+    width: 100%;
+    color: blue;
+    background: rgba(200, 200, 200, 0.75);
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    max-height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 10px;
+    clear: both;
+}
+
+  .footer {
+  width: 100%;
+  background-color: #ccc;
+  padding: 10px 0;
+  text-align: right;
+}
+
+
+.box_row{
+    width: 100%;
+    padding: 10px;
+}
+.box_title{
+    width: 30%;
+    font-weight: bold;
+    float: left;
+}
+.box_value{
+    float: left;
+}
+
+.labelX{
+    font-size: 18px;   
+}

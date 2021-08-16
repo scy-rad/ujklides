@@ -1,0 +1,98 @@
+.main-section{
+	border:2px solid #138496;
+  background-color: #fff;
+  margin: 0px;
+  margin-bottom: 20px;
+  padding: 15px;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+.profile-header{
+	background-color: #17a2b8;
+  height:250px;
+  padding: 10px;
+}
+.profile-footer{
+  background-color: #17a2b8;
+  height:130px;
+  padding: 10px;
+}
+.user-detail{
+  margin:-200px 0px 30px 0px;
+  min-height:55%;
+  
+}
+.user-detail img{
+	max-height:80%;
+  max-width:80%;
+  border-radius: 50%!important;
+  border: 10px solid white;
+}
+.user-detail h2{
+	margin:15px 0px 5px 0px;
+}
+.user-social-detail{
+	padding:15px 0px;
+	background-color: #17a2b8;
+}
+.user-social-detail a i{
+	color:#fff;
+	font-size:23px;
+	padding: 0px 5px;
+}
+
+.user-button{
+	width:120px;
+	background-color: #17a2b8;
+}
+
+
+
+
+
+.userbox {
+    position: relative;
+    float: left;
+    margin-bottom: 10px;
+    
+}
+.userphoto {
+    position: relative;
+    float: left;
+    text-align: center;
+    color: #22A;
+    width:200px;
+    max-height: 300px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  .usertitle {
+        width: 100%;
+        background: rgba(200, 200, 200, 0.75);
+        font-weight: bold;
+        font-size: 16px;
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        max-height: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 10px;
+  }
+
+  .userunder {
+    width: 100%;
+    background: black;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    position: absolute;
+    bottom: -10px;
+    left: 0px;
+    max-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 2px;
+}
+

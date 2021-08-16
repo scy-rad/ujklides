@@ -1,0 +1,11 @@
+
+.eq_mainphoto {
+    float: right;
+    width: 100%;
+    overflow: hidden;
+    clear: left;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+

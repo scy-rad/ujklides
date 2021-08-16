@@ -1,0 +1,130 @@
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0; }
+
+.clearfix {
+  display: inline-block; }
+
+.rc_day_target {
+  overflow: auto; }
+  .rc_day_target .pre_day {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.1); }
+  .rc_day_target .post_day {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.1); }
+  .rc_day_target .rc_event {
+    position: absolute; }
+
+.rc_event {
+  width: 99%;
+  max-width: 118px;
+  height: 66px;
+  border: 1px solid #888;
+  font-family: metrophobic,arial; }
+  .rc_event .rc_event_head {
+    width: 100%;
+    font-size: 80%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.1); }
+  .rc_event .rc_event_body {
+    font-size: 80%;
+    text-align: center; }
+  .rc_event .rc_event_prepad {
+    background: rgba(0, 0, 0, 0.3);
+    width: 100%; }
+  .rc_event .rc_event_postpad {
+    background: rgba(0, 0, 0, 0.3);
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0; }
+
+.rc_week {
+  font-family: metrophobic,arial;
+  width: 645px;
+  margin: 8px auto; }
+  .rc_week .rc_event {
+    position: absolute; }
+
+.rc_headerweek {
+  width: 645px;
+  background: #dfc; }
+  .rc_headerweek .rc_name {
+    float: left;
+    padding-left: 8px; }
+  .rc_headerweek .rc_location {
+    float: right;
+    padding-right: 8px; }
+
+.rc_headerdayview {
+  width: 100%;
+  background: #dfc;
+  text-align: center; }
+
+.rc_hdr_item,
+.rc_day_row_item {
+  width: 135px;
+  float: left;
+  border-right: 1px solid #444;
+  position: relative; }
+
+.rc_hdr_item {
+  text-align: center; }
+
+.col_5dayweek {
+  float: left;
+  width: 118px;
+  border: 1px solid #ccc;
+  border-left: none;
+  overflow: hidden;
+  position: relative; }
+
+.col_7dayweek {
+  float: left;
+  width: 84px;
+  border: 1px solid #ccc;
+  border-left: none;
+  overflow: hidden;
+  position: relative; }
+
+.rc_gutter {
+  float: left;
+  width: 48px;
+  border: 1px solid #ccc; }
+
+.rc_hour_slot {
+  height: 71px;
+  border-bottom: 1px solid #ccc; }
+
+.rc_quarters_slot {
+  height: 17px;
+  width: 100%;
+  border-bottom: 1px dotted #ccc; }
+
+.rc_quarters_slot:nth-child(even) {
+  border-bottom: 1px solid #ccc; }
+
+.rc_thirds_slot {
+  height: 23px;
+  width: 100%;
+  border-bottom: 1px dotted #ccc; }
+
+.rc_thirds_slot:nth-child(3n-4) {
+  border-bottom: 1px solid #ccc; }
+
+.rc_halves_slot {
+  height: 35px;
+  width: 100%;
+  border-bottom: 1px dotted #ccc; }
+
+.rc_quarters_slot:nth-child(even) {
+  border-bottom: 1px solid #ccc; }
