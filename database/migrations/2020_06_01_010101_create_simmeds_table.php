@@ -26,6 +26,7 @@ class CreateSimmedsTable extends Migration
             $table->unsignedInteger('room_id');
             $table->unsignedInteger('simmed_leader_id')->nullable();
             $table->unsignedInteger('simmed_technician_id')->nullable();
+            $table->smallInteger('simmed_technician_character_id')->nullable();
             $table->smallInteger('simmed_status')->default(1);
 			$table->smallInteger('simmed_status2')->default(1);
             $table->timestamps();
@@ -43,6 +44,11 @@ class CreateSimmedsTable extends Migration
         // 2 - potwierdzone
 		// 3 - zrealizowane
         // 4 - odwołane
+
+        // technician_character_id
+        // 1 - przygotowanie
+        // 2 - dyżur
+        // 3 - obecność
 
 		Schema::create('student_subjects', function (Blueprint $table) {
             $table->increments('id');

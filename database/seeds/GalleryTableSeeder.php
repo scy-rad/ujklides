@@ -1,5 +1,5 @@
 <?php
-//php71-cli artisan db:seed --class=GalleryTableSeeder
+//php artisan db:seed --class=GalleryTableSeeder
 use Illuminate\Database\Seeder;
 
 use App\Gallery;
@@ -18,8 +18,8 @@ class GalleryTableSeeder extends Seeder
     {
 
         function make_group_gallery($aF_group, $aF_name, $aF_description, $aF_folder)
-        {       
-        $Group_id = App\ItemGroup::where('item_group_name',$aF_group)->first()->id;     
+        {
+        $Group_id = App\ItemGroup::where('item_group_name',$aF_group)->first()->id;
 
         $zmEQ = new Gallery();
         $zmEQ->gallery_name=$aF_name;
@@ -29,19 +29,19 @@ class GalleryTableSeeder extends Seeder
         //$zmEQ->item_galleries_sort->default(1);
         //$zmEQ->item_galleries_status->default(1);
         $zmEQ->save();
-        
+
         $zmER = new GalleryForGroup();
         $zmER->gallery_id   = $zmEQ->id;
         $zmER->item_group_id = $Group_id;
         $zmER->save();
-        
+
         return $zmEQ->id;
         }
 
 
         function make_item_gallery($aF_item, $aF_name, $aF_description, $aF_folder)
-        {       
-        $Item_id = App\Item::where('item_inventory_number',$aF_item)->first()->id;     
+        {
+        $Item_id = App\Item::where('item_inventory_number',$aF_item)->first()->id;
 
         $zmEQ = new Gallery();
         $zmEQ->gallery_name=$aF_name;
@@ -51,12 +51,12 @@ class GalleryTableSeeder extends Seeder
         //$zmEQ->item_galleries_sort->default(1);
         //$zmEQ->item_galleries_status->default(1);
         $zmEQ->save();
-        
+
         $zmER = new GalleryForItem();
         $zmER->gallery_id   = $zmEQ->id;
         $zmER->item_id = $Item_id;
         $zmER->save();
-        
+
         return $zmEQ->id;
         }
 
@@ -68,19 +68,19 @@ class GalleryTableSeeder extends Seeder
         $zmEQ->gallery_description=$aF_description;
         $zmEQ->gallery_folder=$aF_folder;
         $zmEQ->save();
-        
+
         $zmER = new GalleryForRoom();
         $zmER->gallery_id   = $zmEQ->id;
         $zmER->room_id = $Room_id;
         $zmER->save();
-        
+
         return $zmEQ->id;
         }
 
 
         function put_photos($aF_gallery, $aF_photos_name, $aF_photos_title, $aF_photos_description)
             {
-            
+
             $xF_name_array=explode(';',$aF_photos_name);
             $xF_title_array=explode(';',$aF_photos_title);
             $xF_descr_array=explode(';',$aF_photos_description);
@@ -165,7 +165,7 @@ class GalleryTableSeeder extends Seeder
             make_item_gallery("Lekarski 033", "Stanowisko do znieczulenia Primus Drager Primus", "Stanowisko do znieczulenia Primus Drager Primus", "galerie/primus");
             make_item_gallery("xx-803", "Noga niewydolności tętniczej Vata 0555", "Noga niewydolności tętniczej Vata 0555", "galerie/annie_0555");
 
-            
+
 put_photos(1, "stanowisko_0007608-1.jpg;stanowisko_0007608-2.jpg;stanowisko_0007608-3.jpg", "Promiennik podczerwieni; zabudowa meblowa stanowiska;umywalka", "Promiennik podczerwieni; zabudowa meblowa stanowiska;umywalka");
 put_photos(2, "podnosnik_elektryczny_0103717_01.jpg;podnosnik_elektryczny_0103717_02.jpg", "podnośnik elektryczny - mechanizm;podnośnik elektryczny - płachta", "podnośnik elektryczny - mechanizm;podnośnik elektryczny - płachta");
 put_photos(3, "simman3gp_a.jpg;simman3gp_b.jpg;simman3gp_c.jpg;simman3gp_d.jpg;simman3gp_e.jpg", "Simman 3G;oko;głowa z wypustkami potnymi;stale założony ciśnieniomierz;stale założony wenflon", "widok ogólny;przybliżenie oka;Wypustki potne umożłiwiają symulację pocenia się;stale założony ciśnieniomierz;stale założony wenflon");
@@ -373,6 +373,6 @@ put_photos(50, "annie_0555_804_a.jpg;annie_0555_804_b.jpg;annie_0555_804_c.jpg;a
             put_photos($ret_gal,"c2.11a.jpg","sala przygotowania pacjenta","sala przygotowania pacjenta");
             put_photos($ret_gal,"c2.11b.jpg","sala przygotowania pacjenta","sala przygotowania pacjenta");
             put_photos($ret_gal,"c2.11c.jpg","sala przygotowania pacjenta","sala przygotowania pacjenta");
-            
+
     }
 }

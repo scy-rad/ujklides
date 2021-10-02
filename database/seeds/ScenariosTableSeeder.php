@@ -1,5 +1,5 @@
 <?php
-//php71-cli artisan db:seed --class=ScenariosTableSeeder
+//php artisan db:seed --class=ScenariosTableSeeder
 use Illuminate\Database\Seeder;
 use App\Scenario;
 use App\User;
@@ -66,7 +66,7 @@ class ScenariosTableSeeder extends Seeder
 			foreach ($aF_simcode as $aF_code)
 				{
 				$scenario_id=Scenario::where('scenario_code',$aF_code)->first()->id;
-				
+
 				$zmEQ = new ScenarioForSimmed();
 				$zmEQ->scenario_id=$scenario_id;
 				$zmEQ->simmed_id=$simmed_id;

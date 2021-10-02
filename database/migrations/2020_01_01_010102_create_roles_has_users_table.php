@@ -25,6 +25,7 @@ class CreateRolesHasUsersTable extends Migration
             $table->increments('id');
             $table->string('center_name');
             $table->string('center_short',50);
+            $table->string('center_direct',50);
             $table->timestamps();
         });
 
