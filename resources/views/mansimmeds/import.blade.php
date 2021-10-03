@@ -1,5 +1,5 @@
 <?php
-if (!Auth::user()->hasRole('Operator Symulacji')) 
+if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania widoku ManSimMeds import','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 ?>
 
@@ -109,13 +109,14 @@ function rowEK($new_simmed)
     <input class="btn btn-primary btn-lg" type="submit" value="sprawdź wiersze z UXP">
 </form>
 
-
+@if (DB::table('simmed_temp_posts')->max('id') > 0)
 <form action="{{ route('mansimmeds.import') }}" method="post">
     {{ csrf_field() }}
     <input type="hidden" name="step" value="check_data">
     <input type="hidden" name="import_data_id" value="{{DB::table('simmed_temp_posts')->max('id')}}">
     <input class="btn btn-primary btn-lg" type="submit" value="ponownie wczytaj dane z {{App\SimmedTempPost::find(DB::table('simmed_temp_posts')->max('id'))->created_at}}">
 </form>
+@endif
 @break
 
 
@@ -155,12 +156,12 @@ do: {{$info['to']}}<br>
         </ul>
     @endif
 
-    
+
     {{-- Jeżeli nie znaleziono w importowanych danych zakresu dat, to wyświetl tą informację: --}}
     @if ( $info['missing_date']==1 )
             <h2>nie wykryto zakresu dat!!</h2>
             <p>coś nie właściwego znaleziono w importowanych danych</p>
-            
+
             <h2>{{$info['from']}}</h2>
             <h2>{{$info['to']}}</h2>
 
@@ -193,7 +194,7 @@ do: {{$info['to']}}<br>
             @foreach ($no_subject_list as $new_row)
                 <li>{{$new_row['name']}} <input type="hidden" name="missing_subjects-{{$new_row['row']}}" id="missing_subjects-{{$new_row['row']}}" value="{{$new_row['action']}}"> (<span id="sp_missing_subjects-{{$new_row['row']}}" onclick="onclickHandler('missing_subjects-{{$new_row['row']}}')">{{$new_row['action']}}</span>)</li>
                 <?php $cos.=$coma.$new_row['row'].'|'.$new_row['name']; $coma=','; ?>
-            @endforeach 
+            @endforeach
             </ul>
             <input type="hidden" name="missing_subjects" value="{{$cos}}">
         @endif
@@ -209,7 +210,7 @@ do: {{$info['to']}}<br>
             </ul>
             <input type="hidden" name="missing_groups" value="{{$cos}}">
         @endif
-        
+
         {{-- info o nie znalezionych podgrupach --}}
         @if (($info['missing_subgroups']>0) && (isset($no_subgroup_list)))
             <?php $cos="";$coma="";?>
@@ -220,13 +221,13 @@ do: {{$info['to']}}<br>
                     @foreach ($value as $new_row)
                         <li>{{$new_row['name']}} <input type="hidden" name="missing_subgroups-{{$new_row['row']}}" id="missing_subgroups-{{$new_row['row']}}" value="{{$new_row['action']}}"> (<span id="sp_missing_subgroups-{{$new_row['row']}}" onclick="onclickHandler('missing_subgroups-{{$new_row['row']}}')">{{$new_row['action']}}</span>)</li>
                         <?php $cos.=$coma.$new_row['row'].'|'.$new_row['group_id'].'|'.$new_row['name']; $coma=','; ?>
-                    @endforeach    
+                    @endforeach
                     </ul>
             @endforeach
             </ul>
             <input type="hidden" name="missing_subgroups" value="{{$cos}}">
         @endif
-        
+
         <input type="hidden" name="step" value="complement_data">
         <input class="btn btn-primary btn-lg" type="submit" value="uzupełnij braki">
         </form>
@@ -243,15 +244,15 @@ do: {{$info['to']}}<br>
         document.getElementById(id_name).value = tekst;
         //document.getElementById(id_name).setAttribute('value','pomiń');
         document.getElementById('sp_'+id_name).innerHTML = tekst;
-        
+
 
         //alert('Akapit został kliknięty! div: '+id_name);
-        
+
         }
         </script>
-        
-    
-        
+
+
+
 
     {{-- a jeżeli wszystkie pola są określone, to: --}}
     @endif
@@ -302,8 +303,8 @@ do: {{$info['to']}}<br>
         </form>
 
     @endif
-    
-    
+
+
 @break
 
 
@@ -316,12 +317,12 @@ do: {{$info['to']}}<br>
 <tbody class="row_drag">
     <?php rowEK_head('stan'); ?>
 @foreach ($noexist_list as $new_row)
-    <?php 
-    rowEK($new_row); 
+    <?php
+    rowEK($new_row);
     ?>
 @endforeach
 @foreach ($old_list as $old_row)
-    <?php    
+    <?php
     rowEK($old_row); ?>
 @endforeach
 </tbody>
@@ -346,7 +347,7 @@ do: {{$info['to']}}<br>
 
 <form action="{{ route('mansimmeds.index') }}" method="get">
     {{ csrf_field() }}
-    
+
     <input type="hidden" name="step" value="check_data">
     <input class="btn btn-primary btn-lg" type="submit" value="powrót...">
 </form>
@@ -358,4 +359,4 @@ do: {{$info['to']}}<br>
 
 
 
-@endsection        
+@endsection

@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\DB;
 
 class ManSimmedController extends Controller
 {
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -28,9 +28,9 @@ class ManSimmedController extends Controller
      */
     public function index() //  metoda GET bez parametrów
     {
-    if (!Auth::user()->hasRole('Operator Symulacji')) 
+    if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji index kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
-        
+
 
         //$data['rooms']=room::all();
        // $data['tab2']=['jeden'=>1, 'dwa'=>2, 'trzy'=>3];
@@ -42,9 +42,9 @@ class ManSimmedController extends Controller
 
     public function subjects() //  metoda GET bez parametrów
     {
-        if (!Auth::user()->hasRole('Operator Symulacji')) 
+        if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji index kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
-        
+
 
         $data['subjects']=StudentSubject::all();
         $data['tab2']=['jeden'=>1, 'dwa'=>2, 'trzy'=>3];
@@ -56,9 +56,9 @@ class ManSimmedController extends Controller
 
     public function groups() //  metoda GET bez parametrów
     {
-        if (!Auth::user()->hasRole('Operator Symulacji')) 
+        if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji index kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
-        
+
 
         $data['groups']=StudentGroup::all();
         $data['tab2']=['jeden'=>1, 'dwa'=>2, 'trzy'=>3];
@@ -76,19 +76,19 @@ class ManSimmedController extends Controller
 
     public function import(Request $request)
     {
-        if (!Auth::user()->hasRole('Operator Symulacji')) 
+        if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji import kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
-    
+
         $data=null;
         $data['step']=$request->step;
-        
+
         $data['import_data_id']=$request->import_data_id;
         if ($request->import_data_id >0)
             $data['import_data']=SimmedTempPost::find($request->import_data_id)->post_data;
         elseif ($request->step == 'check_data')
             {
                 echo 'wyczyść tablicę tymczasową<br>i dodaj całe dane do tablicy tymczasowej';
-                
+
                 $request->import_data=str_replace("\r\n\r\n"|"\r\n \r\n","\r\nx\r\n",$request->import_data);
 
                 $zmEQ = new SimmedTempPost();
@@ -101,7 +101,7 @@ class ManSimmedController extends Controller
             }
 
 
-    switch ($request->step){
+        switch ($request->step){
         case 'add_data':
             //pierwszy krok dodawania danych nie wymaga pobrania żadnych danych
             // tu wyświetla się tylko formatka do wklejenia danych do zaimportowania
@@ -113,7 +113,7 @@ class ManSimmedController extends Controller
             //ten krok może być pominięty i zaimportją się dane bez wypełnionych brakujących pól
 
             //dump($request->request);
- 
+
             if ($request->missing_leaders!=null)
                 {      //jeżeli są jacyć nieznalezieni instruktorzy
                 $tab_to_do=[];
@@ -132,7 +132,7 @@ class ManSimmedController extends Controller
                 foreach ($leadersi as $leaders_array)
                     {   //przerabiamy wpisy o instruktorach na tablicę | tytuł | imię | nazwisko |
                     $one_leaderX = explode(":", $leaders_array);    //stwórz tabelę, gzie ID wiersza będzie osobno i nazwa będzie osobno
-                    
+
                     $tab_to_do[$one_leaderX[0]]['fullname']=$one_leaderX[1];
                     $tab_to_do[$one_leaderX[0]]['firstname']='';
                     $tab_to_do[$one_leaderX[0]]['lastname']='';
@@ -152,10 +152,10 @@ class ManSimmedController extends Controller
                         $tab_to_do[$one_leaderX[0]]['title']=$pozostalo_do_analizy;
                         }
                     }   //przerabiamy wpisy o instruktorach na tablicę | tytuł | imię | nazwisko |
-                        
+
 
                     foreach ($tab_to_do as $row_to_do)
-                    {   //analizujemy całą tablicę | tytuł | imię | nazwisko | akcja | i wykonujemy na tych danych akcję                    
+                    {   //analizujemy całą tablicę | tytuł | imię | nazwisko | akcja | i wykonujemy na tych danych akcję
                     if ($row_to_do['action']=='dodaj')
                         {
                         $leader = new User;
@@ -189,11 +189,11 @@ class ManSimmedController extends Controller
                     }
 
                 $subjecty = explode(",", $request->missing_subjects);
-                
+
                 foreach ($subjecty as $one_subject)
                     {
                     $subtab = explode("|", $one_subject);
-                    
+
                     if ($tab_to_do[$subtab[0]]['action'] == 'dodaj' )
                         {
                         $subject=new StudentSubject();
@@ -209,7 +209,7 @@ class ManSimmedController extends Controller
                 $tab_to_do=[];
                 foreach ($request->request as $key=>$value)  // tworzymy tabelę nie znalezionych grup i ustawiamy akcję na dodaj lub pomiń
                                                             //może kiedyś będę mógł wybrać, co się dzieje ze znalezionymi brakami - czy mają być dodane, czy wpisane jako puste.
-                    {                    
+                    {
                     if (substr($key,0,15)=="missing_groups-")
                         {
                         $tab_to_do[substr($key,15,14)]['action'] = $value;
@@ -217,11 +217,11 @@ class ManSimmedController extends Controller
                         }
                     }
                 $groupsy = explode(",", $request->missing_groups);
-                
+
                 foreach ($groupsy as $one_group)
                     {
                     $grptab = explode("|", $one_group);
-                    
+
                     if ($tab_to_do[$grptab[0]]['action'] == 'dodaj' )
                         {
                         $wydzial=0;
@@ -245,7 +245,7 @@ class ManSimmedController extends Controller
                 $tab_to_do=[];
                 foreach ($request->request as $key=>$value)  // tworzymy tabelę nie znalezionych podgrup i ustawiamy akcję na dodaj lub pomiń
                                                             //może kiedyś będę mógł wybrać, co się dzieje ze znalezionymi brakami - czy mają być dodane, czy wpisane jako puste.
-                    {   
+                    {
                     if (substr($key,0,18)=="missing_subgroups-")
                         {
                         $tab_to_do[substr($key,18,17)]['action'] = $value;
@@ -276,18 +276,17 @@ class ManSimmedController extends Controller
 
         case 'check_exist':
             //krok czwarty - dodanie danych do tabeli tymczasowej
-            
-        
+
             $rows = explode("\n", str_replace("\r", "", $data['import_data']));
             $data['info']['wrong_count']=0;
             $data['info']['room_id']=0;
             $data['info']['room_id_tab']=[];
             $data['info']['missing_room_name']='';
-            
-            
+
+
             $data['info']['missing_date']=1;
             $data['info']['missing_room']=0;
-            
+
             $data['info']['missing_leaders']=0;
             $data['info']['missing_subjects']=0;
             $data['info']['missing_groups']=0;
@@ -299,24 +298,26 @@ class ManSimmedController extends Controller
 
             $pokoj_znaleziony=false;
 
-            foreach ($rows as $import_row)
+                                            ////////////////////////////////////////
+            foreach ($rows as $import_row)  // początek analizy pliku z uczelniXP //
                 {
 
                 $row_number++;
                 $data_write=null;
-                
+
                 $data_write['status']='wrong';
 
-                
+
                 $data_rows=explode("\t",$import_row);
-                
+
                 if (count($data_rows)==8)   //import z uczelni XP powinien zawierać 8 kolumn
                     {
                     if ($data_rows[0]=='Daty zajęć')    //jeżeli pierwsza komórka zawiera ten tekst - to znaczy że jest to wiersz nagłówkowy
                         {
                         $data_write['status']='head';
                         }
-                    elseif ($pokoj_znaleziony) {                              //a jeżeli nie - to aanalizujemy wszystkie pola
+                    elseif ($pokoj_znaleziony)          //a jeżeli nie - to aanalizujemy wszystkie pola
+                        {
                         $data_write['status']='ok';
                         $data_write['row_number']=$row_number;
                         $data_write['import_row']=$import_row;
@@ -325,13 +326,13 @@ class ManSimmedController extends Controller
                             $data_write['simmed_alternative_title']=substr($data_rows[0],5,200).' ';
                         $data_write['simmed_time_begin']=$data_rows[2];
                         $data_write['simmed_time_end']=$data_rows[3];
-                        
+
                         $data_write['simmed_leader_id']=User::find_user($data_rows[4]);
-                        
+
                         if ($data_write['simmed_leader_id']==0)
                             $data_write['simmed_alternative_title'].=$data_rows[4].' ';
                         $data_write['simmed_leader']=$data_rows[4];
-                        
+
                         $data_write['student_subject_id']=StudentSubject::find_subject($data_rows[6]);
                         $data_write['student_subject']=$data_rows[6];
                         if ($data_write['student_subject_id']==0)
@@ -342,11 +343,10 @@ class ManSimmedController extends Controller
                         if ($data_write['student_group_id']==0)
                             $data_write['simmed_alternative_title'].=$data_rows[7].' ';
 
-
                         $data_write['student_subgroup_id']=StudentSubgroup::find_subgroup($data_write['student_group_id'],$data_rows[5]);
                         $data_write['student_subgroup']=$data_rows[5];
 
-                        if ($data_write['simmed_leader_id']==0) 
+                        if ($data_write['simmed_leader_id']==0)
                             if ($data_write['simmed_leader']!="")
                                 {
                                 $data['no_leader_list'][$data_rows[4]]['row']=$row_number;
@@ -358,10 +358,6 @@ class ManSimmedController extends Controller
                                 $data_write['simmed_leader']='';
                                 $data['info']['missing_leaders']++;
                                 }
-
-
-
-
 
                         if (($data_write['student_subject_id']==0) && ($data_write['student_subject']!=''))
                             {
@@ -392,15 +388,15 @@ class ManSimmedController extends Controller
                                 }
                             $data['info']['missing_subgroups']++;
                             }
-                        
+
                         $data['simmeds'][]=$data_write;
-                        }
-                    }
+                        }   //elseif ($pokoj_znaleziony) 
+                    }   //if (count($data_rows)==8)
                 elseif (substr($import_row,0,8)=='Zajęcia')
                     {
                         $sub_data=explode(" ",$import_row);
                         $data['info']['room_id']=Room::find_xp_room($sub_data[3]);
-                        
+
                         //$data['info']['from']=$sub_data[8];
                         //$data['info']['to']=$sub_data[10];
 
@@ -420,7 +416,7 @@ class ManSimmedController extends Controller
 
                             $now = new \DateTime();
                             $d = $now::createFromFormat('d-m-Y', $sub_data[8]);
-                            if (!($d && $d->format('d-m-Y'))) 
+                            if (!($d && $d->format('d-m-Y')))
                                 $data['info']['missing_date']=1;    // to dorzuciłem do domyślnych
                                 elseif ( $d->format('d-m-Y') != $sub_data[8])
                                     $data['info']['missing_date']++;
@@ -431,7 +427,7 @@ class ManSimmedController extends Controller
                                     }
 
                             $d = $now::createFromFormat('d-m-Y', $sub_data[10]);
-                            if (!($d && $d->format('d-m-Y'))) 
+                            if (!($d && $d->format('d-m-Y')))
                                 $data['info']['missing_date']=1;
                                 elseif ( $d->format('d-m-Y') != $sub_data[10])
                                     $data['info']['missing_date']++;
@@ -445,10 +441,11 @@ class ManSimmedController extends Controller
                     $data['info']['wrong_count']++;
                     $data['wrong'][]=$import_row;
                     }
-                }
+                }   // koniec analizy pliku z uczelniXP //
+                    //////////////////////////////////////
 
 
-                
+
             //dd($data,$data['info']['room_id']);
             if ($data['info']['room_id']==0)
                 {
@@ -462,7 +459,7 @@ class ManSimmedController extends Controller
                 }
 
             break;
-    }
+        }
 
     if ($request->step=="check_exist")
         {
@@ -474,7 +471,7 @@ class ManSimmedController extends Controller
         $i=1;
         $data['noexist_list']=[];
         $data['old_list']=[];
-        
+
         if ($data['simmeds'] != NULL)
         foreach ($data['simmeds'] as $import_one_data)
             {
@@ -543,24 +540,24 @@ class ManSimmedController extends Controller
                 //$old_tab['id']=0;
                 //dump('ManSimmedControler 508 old tab');
                 //dump($old_tab['room_name']);
-            
+
                 $data['old_list'][]=$old_tab;
                 }
             }
 
 //            dd('STOP TU');
-            
+
         SimmedTempRoom::add_simmed_tmp_room($data);
 
         SimmedTemp::add_simmed_tmp($data['noexist_list']);
         SimmedTemp::add_simmed_tmp($data['old_list']);
 
-        
+
 
         //dump($data['noexist_list']);
         //dump($data['old_list']);
         //dd('end');
-        
+
         $data['step']='import_tmp';
         }
 
@@ -578,11 +575,11 @@ class ManSimmedController extends Controller
 
     public function impanalyze(Request $request)
     {
-        if (!Auth::user()->hasRole('Operator Symulacji')) 
+        if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji impanalyze kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
         echo 'Sprawdzam, czy są jakies wpisy do usunięcia<br>';
-        
+
         $alltmps=SimmedTemp::where('simmed_id','>',0)->where('tmp_status','=',0)->get();
         if ($alltmps->count()>0)    //jeżeli znalazłeś wpisy do usunięcia i nie mają jeszcze określonego statusu
             {
@@ -618,14 +615,14 @@ class ManSimmedController extends Controller
                 $alltmps=SimmedTemp::where('simmed_id','>',0)->where('tmp_status','=',0)->get();
                 foreach ($alltmps as $onetemp)
                         $onetemp->check_similar('room,date,time');//ta sama sala i czas
-                
-                
+
+
                 //SimmedTemp::check_simmed_tmp_remove(); 
                 // Jednak chyba nie chcę, aby pozostałe wpisy były automatycznie zaznaczone jako do usunięcia
                 // Lepiej będzie zdecydowac o tym ręcznie.
-                
-                
-                
+
+
+
                 echo 'Analiza wpisów do usunięcia<br>';
                 $data['step']='to_delete_analyze';
                 $data['step']='review_analyze';
@@ -649,7 +646,7 @@ class ManSimmedController extends Controller
 
 
 
-                
+
                 //to ustaw status pozostałych na zaimportuj
                 echo 'ustawianie statusu nowych wpisów do zaimportowania';
                 //SimmedTemp::check_simmed_tmp_add();
@@ -691,17 +688,17 @@ class ManSimmedController extends Controller
             ->orderBy('simmed_time_begin')
             ->get()
             ;
-        
+
         $data['step']='review_analyze';
-        
-        
+
+
         return view('mansimmeds.impanalyze')->with($data);
     }
 
 
     public function markimport(Request $request)
     {
-        if (!Auth::user()->hasRole('Operator Symulacji')) 
+        if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji impanalyze kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
 
@@ -723,31 +720,31 @@ class ManSimmedController extends Controller
             ->orderBy('simmed_time_begin')
             ->get()
             ;
-        
+
         $data['step']='review_analyze';
-        
-        
+
+
         return view('mansimmeds.impanalyze')->with($data);
     }
 
 
     public function clearimport(Request $request)
     {
-        if (!Auth::user()->hasRole('Operator Symulacji')) 
+        if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji clearimport kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-               
-        echo 'czyszcvzę...';
-        
-        
+
+        echo 'czyszczę...';
+
+
         SimmedTemp::truncate();
 
-        
-        
+
+
         if (SimmedTemp::all()->count()==0)
             SimmedTempRoom::where('import_status',0)->delete();
 
-            
+
 
     $data['step']='review_analyze';
     $data['import_data']=SimmedTemp::all();
@@ -759,12 +756,13 @@ class ManSimmedController extends Controller
 
     public function doimport(Request $request)
     {
-        if (!Auth::user()->hasRole('Operator Symulacji')) 
+        //import danych już po przejrzeniu i ustaleniu, które z nich mają zostać dodane/nadpisane/usunięte??/itp
+        if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji doimport kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-               
+
         echo 'importuję...';
-        
+
         foreach (SimmedTemp::where('tmp_status',1)->get() as $doImport)
             {
             //dd('1',$doImport);
@@ -779,7 +777,7 @@ class ManSimmedController extends Controller
             $zmEQ->simmed_leader_id=$doImport->simmed_leader_id;
             $zmEQ->simmed_alternative_title=$doImport->simmed_alternative_title;
 			$return=$zmEQ->save();
-            
+
             if ($return==1)
                 SimmedTemp::find($doImport->id)->delete();
             }
@@ -799,12 +797,12 @@ class ManSimmedController extends Controller
             $zmEQ->simmed_leader_id=$doImport->simmed_leader_id;
             $zmEQ->simmed_alternative_title=$doImport->simmed_alternative_title;
 			$return=$zmEQ->save();
-            
+
             if ($return==1)
                 //SimmedTemp::find('simmed_merge',$doImport->simmed_merge)->delete();
                 SimmedTemp::where('simmed_merge',$doImport->simmed_merge)->delete();
             }
-        
+
         foreach (SimmedTemp::where('tmp_status',9)->get() as $doImport)
             {
             $zmEQ = Simmed::where('id',$doImport->simmed_merge)->first();
@@ -819,7 +817,7 @@ class ManSimmedController extends Controller
             $zmEQ->simmed_alternative_title=$doImport->simmed_alternative_title;
             $zmEQ->simmed_status=1;
 			$return=$zmEQ->save();
-            
+
             if ($return==1)
                 //SimmedTemp::find('simmed_merge',$doImport->simmed_merge)->delete();
                 SimmedTemp::where('simmed_merge',$doImport->simmed_merge)->delete();
@@ -831,17 +829,17 @@ class ManSimmedController extends Controller
             $zmEQ->simmed_status=4; //zmiana statutu na 4 (czyli usunięty)
             $return=$zmEQ->save();
             //$return=$zmEQ->delete();
-            
+
             if ($return==1)
                 $doImport->delete();
             }
-            
+
             if (SimmedTemp::all()->count()==0)
                 SimmedTempRoom::where('import_status',0)->update(['import_status'=>'1']);
 
             $data['step']='review_analyze';
             $data['import_data']=SimmedTemp::all();
-    
+
         return view('mansimmeds.impanalyze')->with($data);
     }
 

@@ -38,7 +38,7 @@ class CreateSimmedsTable extends Migration
         // 2 - szkolenie
         // 3 - prace serwisowe
         // 4 - wyłączenie z użytkowania
-        
+
         // status
         // 1 - rezerwacja
         // 2 - potwierdzone
@@ -56,7 +56,7 @@ class CreateSimmedsTable extends Migration
             $table->smallInteger('student_subject_status')->default(1);
             $table->timestamps();
         });
-		
+
 		Schema::create('student_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('student_group_name');
@@ -91,13 +91,13 @@ class CreateSimmedsTable extends Migration
                 ->references('id')
                 ->on('student_subjects');
         });
-		
+
 		Schema::table('simmeds', function (Blueprint $table) {
             $table->foreign('student_group_id')
                 ->references('id')
                 ->on('student_groups');
         });
-		
+
         Schema::table('simmeds', function (Blueprint $table) {
             $table->foreign('room_id')
                 ->references('id')
@@ -145,7 +145,7 @@ class CreateSimmedsTable extends Migration
 
             $table->timestamps();
         });
-        
+
         Schema::table('simmed_temp_rooms', function (Blueprint $table) {
             $table->foreign('room_id')
                 ->references('id')
@@ -166,7 +166,14 @@ class CreateSimmedsTable extends Migration
                 ->on('users');
         });
 
-        
+
+        Schema::create('simmed_temp_posts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->mediumtext('post_data');
+            $table->timestamps();
+        });
+
+
     }
 
     /**
@@ -183,6 +190,7 @@ class CreateSimmedsTable extends Migration
         Schema::dropIfExists('simmed_temps');
         Schema::dropIfExists('simmed_temp_rooms');
         Schema::dropIfExists('simmed_arc_technicians');
-        
+        Schema::dropIfExists('simmed_temp_posts');
+
     }
 }

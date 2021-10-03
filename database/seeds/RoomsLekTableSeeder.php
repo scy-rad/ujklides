@@ -139,7 +139,7 @@ class RoomsLekTableSeeder extends Seeder
             Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
         $ir=Add2_Room($Center_id, 2, 'C 2.10', '', 'c210/c2.10a.jpg', 'Kontrolka 2.10', 'Kontrolka sali C 2.09',1);
             Add2_Storage($ir, $storage_magazynowy, 'sala', 'sala', 'sala', 1, 0);
-        $ir=Add2_Room($Center_id, 1, 'C 2.11', '', 'c211/c2.11a.jpg', 'Sala przedoperacyjna', 'Sala przygotowania pacjenta do operacji',1);
+        $ir=Add2_Room($Center_id, 1, 'C 2.11', 'CM_C2.11', 'c211/c2.11a.jpg', 'Sala przedoperacyjna', 'Sala przygotowania pacjenta do operacji',1);
             Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
 
 

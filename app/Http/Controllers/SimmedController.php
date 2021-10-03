@@ -43,7 +43,7 @@ class SimmedController extends Controller
                     $d = $now::createFromFormat($format, $date);
                     return $d && $d->format($format) == $date;
                 }
-    
+
         $sch_date=$request['date'];
         $sch_csm=$request['csm'];
 
@@ -55,7 +55,7 @@ class SimmedController extends Controller
         $sch_date_to=date('Y-m-d',strtotime("$sch_date +6 day"));
         $sch_date_next=date('Y-m-d',strtotime("$sch_date +7 day"));
         $sch_date_prev=date('Y-m-d',strtotime("$sch_date -7 day"));
-    
+
             //$rows_plane=Simmed::simmeds_for_plane($sch_date); -  ta funkcja będzie do wywalenia, bo zmieniłem skrypt datatable
             $rows_plane=Simmed::select('*','simmeds.id as sim_id')->where('simmed_date','>=',$sch_date)->where('simmed_date','<=',$sch_date_to)
                 ->where('simmed_status','<',4);
@@ -65,7 +65,7 @@ class SimmedController extends Controller
             if ($sch_csm>0)
                 //dump($request);
                 $rows_plane=$rows_plane->join('student_groups', 'simmeds.student_group_id', '=', 'student_groups.id')->where('center_id','=',$sch_csm);
-            
+
 
                 $rows_plane=$rows_plane->orderBy('simmed_date')
                 ->orderBy('simmed_time_begin')
@@ -99,7 +99,7 @@ class SimmedController extends Controller
             $what_no=$request->what_no;
             $start_date=$request->start_date;
             }
-        
+
 
         $end_date=date( "Y-m-d", strtotime( "$start_date +7 day" ) );
         $rows_timetable=Simmed::simmeds_for_timetable($what_name,$what_no,$start_date,$end_date);
@@ -107,7 +107,7 @@ class SimmedController extends Controller
     }
 
 
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -129,7 +129,7 @@ class SimmedController extends Controller
     public function store(Request $request)
     {
         echo '<h1>funkcja STORE Simmed Controller</h1>';
-     
+
      $this->validate($request, [
         'date_begin' => 'required',
         //'date_end' => 'required',
@@ -147,14 +147,14 @@ class SimmedController extends Controller
 
 
     public function ajaxgetplane(Request $request) {
-        
+
         function validateDate($date, $format = 'Y-m-d H:i:s')
                 {
                     $now = new \DateTime();
                     $d = $now::createFromFormat($format, $date);
                     return $d && $d->format($format) == $date;
                 }
-    
+
         if (!(validateDate($request['sch_date'], 'Y-m-d')))
             $sch_date=date('Y-m-d');
         else
@@ -163,8 +163,8 @@ class SimmedController extends Controller
         $do_poniedzialku=date('N',strtotime($sch_date))-1;
         $sch_date=date('Y-m-d',strtotime("$sch_date - $do_poniedzialku day"));
         $sch_date_to=date('Y-m-d',strtotime("$sch_date +7 day"));
-    
-        //$rows_plane=Simmed::simmeds_for_plane($sch_date);    
+
+        //$rows_plane=Simmed::simmeds_for_plane($sch_date);
         $rows_plane=[];
 
         $output = array(
@@ -177,9 +177,9 @@ class SimmedController extends Controller
         //return json_encode(array('result'=>false, 'tescik' =>'przykladowy_tekst', 'statusx'=> $status));
         echo json_encode($output);
      }
-     
+
      public function ajaxsavetechnician(Request $request) {
-         if ($request->technician_id==0)         
+         if ($request->technician_id==0)
         $status = DB::table('simmeds')
         ->where('id', $request->id)
         ->update(['simmed_technician_id' => NULL]);
@@ -195,7 +195,7 @@ class SimmedController extends Controller
         $role->save();
 
 
-        
+
         //return json_encode(array('statusCode'=>$request->id, 'status'=> $status));
         //return Json(new { result = true });
         return json_encode(array('result'=>false, 'tescik' =>'przykladowy_tekst', 'statusx'=> $status));
@@ -236,7 +236,7 @@ class SimmedController extends Controller
     public function update(Request $request, Simmed $simmed)
     {
         echo '<h1>funkcja UPDATE Simmed Controller</h1>';
-    }            
+    }
 
 
     /**
