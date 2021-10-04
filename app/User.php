@@ -100,6 +100,18 @@ class User extends Authenticatable
                 $user_part[1]=$user_part[4];
                 $user_part[2]=$user_part[5];
                 }
+            elseif (count($user_part)==7)//i tak dalej...
+                {
+                $user_part[0].=' '.$user_part[1].' '.$user_part[2].' '.$user_part[3].' '.$user_part[4];
+                $user_part[1]=$user_part[5];
+                $user_part[2]=$user_part[6];
+                }
+            elseif (count($user_part)==8)//i tak dalej...
+                {
+                $user_part[0].=' '.$user_part[1].' '.$user_part[2].' '.$user_part[3].' '.$user_part[4].' '.$user_part[5];
+                $user_part[1]=$user_part[6];
+                $user_part[2]=$user_part[7];
+                }
             elseif (count($user_part)==2)//a jeżeli 2 - to w miejsce tytułu wpisz pustą wartość
                 {
                 $user_part[2]=$user_part[1];
@@ -109,7 +121,6 @@ class User extends Authenticatable
         //dump('User model: '.$user_fullname,$user_part);
         if (count($user_part)>2)//jeśli nazwa składa się conajmniej z dwóch członów - to szukaj tej osoby w bazie danych
             {
-
             if (UserTitle::where('user_title_short',$user_part[0])->first()!==NULL)
                 {
                 $user = User::where('user_title_id',UserTitle::where('user_title_short',$user_part[0])->first()->id)

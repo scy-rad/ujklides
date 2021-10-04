@@ -131,14 +131,16 @@ class ManSimmedController extends Controller
                 $leadersi = explode(",", $request->missing_leaders);//stwórz tabelę, gdzie pola są poprzedzielane przecinkami (i będą to wiersze id|nazwa)
                 foreach ($leadersi as $leaders_array)
                     {   //przerabiamy wpisy o instruktorach na tablicę | tytuł | imię | nazwisko |
+                    
                     $one_leaderX = explode(":", $leaders_array);    //stwórz tabelę, gzie ID wiersza będzie osobno i nazwa będzie osobno
 
-                    $tab_to_do[$one_leaderX[0]]['fullname']=$one_leaderX[1];
+                    $tab_to_do[$one_leaderX[0]]['fullname']=trim($one_leaderX[1]);
                     $tab_to_do[$one_leaderX[0]]['firstname']='';
                     $tab_to_do[$one_leaderX[0]]['lastname']='';
                     $tab_to_do[$one_leaderX[0]]['title']='';
 
-                    $pozostalo_do_analizy=$one_leaderX[1];
+                    $pozostalo_do_analizy=trim($one_leaderX[1]);
+
                     if (strpos($pozostalo_do_analizy, ' ', 0)>0)
                         {
                         $tab_to_do[$one_leaderX[0]]['firstname']    =   substr($pozostalo_do_analizy,strRpos($pozostalo_do_analizy, ' ', 0)+1,100);
@@ -158,17 +160,21 @@ class ManSimmedController extends Controller
                     {   //analizujemy całą tablicę | tytuł | imię | nazwisko | akcja | i wykonujemy na tych danych akcję
                     if ($row_to_do['action']=='dodaj')
                         {
-                        $leader = new User;
-                        $leader->user_title_id=UserTitle::where('user_title_short',$row_to_do['title'])->first()->id;
-                        $leader->firstname = $row_to_do['firstname'];
-                        $leader->lastname = $row_to_do['lastname'];
-                        $leader->name = hrtime()[1];
-                        $leader->email = hrtime()[1].'@ujk.edu.pl';
-                        $leader->password = bcrypt('pass'.hrtime()[1]);
-                        $leader->user_status = 1;
-                        $leader->simmed_notify = 0;
-                        $leader->save();
-                        $leader->add_roles(Roles::find_by_name('Instruktor'),1);
+                        if (UserTitle::where('user_title_short',$row_to_do['title'])->count() > 0)
+                            {
+                            $leader = new User;
+                            $leader->user_title_id=UserTitle::where('user_title_short',$row_to_do['title'])->first()->id;
+                            $leader->firstname = $row_to_do['firstname'];
+                            $leader->lastname = $row_to_do['lastname'];
+                            $leader->name = hrtime()[1];
+                            $leader->email = hrtime()[1].'@ujk.edu.pl';
+                            $leader->password = bcrypt('pass'.hrtime()[1]);
+                            $leader->user_status = 1;
+                            $leader->simmed_notify = 0;
+
+                            $leader->save();
+                            $leader->add_roles(Roles::find_by_name('Instruktor'),1);
+                            }
                         }
                     }   //koniec analizy tablicy i wykonywania akcji
 
