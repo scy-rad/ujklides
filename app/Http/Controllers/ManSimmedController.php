@@ -131,7 +131,7 @@ class ManSimmedController extends Controller
                 $leadersi = explode(",", $request->missing_leaders);//stwórz tabelę, gdzie pola są poprzedzielane przecinkami (i będą to wiersze id|nazwa)
                 foreach ($leadersi as $leaders_array)
                     {   //przerabiamy wpisy o instruktorach na tablicę | tytuł | imię | nazwisko |
-                    
+
                     $one_leaderX = explode(":", $leaders_array);    //stwórz tabelę, gzie ID wiersza będzie osobno i nazwa będzie osobno
 
                     $tab_to_do[$one_leaderX[0]]['fullname']=trim($one_leaderX[1]);
