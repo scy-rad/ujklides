@@ -103,7 +103,7 @@ dane do usunięcia lub zastąpienia
 sprawdź przed importem:
     <table width="100%">
         <?php rowEK_head(""); ?>
-    @foreach ($import_data as $row_data) 
+    @foreach ($import_data as $row_data)
         <?php rowEK($row_data); ?>
     @endforeach
     </table>
@@ -114,7 +114,7 @@ sprawdź przed importem:
         <input class="btn btn-primary btn-lg" type="submit" value="zmień status pozostałym">
     </form>
 
-    
+
     <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" name="step" value="edit_import">
@@ -135,7 +135,6 @@ sprawdź przed importem:
         <input class="btn btn-primary btn-lg" type="submit" value="usuń import">
 </form>
 
-    
 
 @break
 
@@ -161,4 +160,4 @@ Wpisy nie zaznaczone będą "wisieć" w imporcie i nie zostaną zaimplementowane
 </ol>
 
 
-@endsection        
+@endsection
