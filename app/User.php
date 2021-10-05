@@ -75,13 +75,13 @@ class User extends Authenticatable
                     'text' => $rowuser->full_name()
                 ];
             }
-        return json_encode($data);    
+        return json_encode($data);
     }
-    
+
     public static function find_user($user_fullname) {
         //funkcja wukorzystywana przez kontroler ManSimmed
         $user_part=explode(" ",$user_fullname);
-        
+
             if (count($user_part)==4)   //jeżeli nazwa składa się z 4 części - to dwie pierwsze powinny być tytułem naukowym
                 {
                 $user_part[0].=' '.$user_part[1];
@@ -135,8 +135,8 @@ class User extends Authenticatable
             }
         return 0; //jeśli nazwa składa się tylko z jednego członu - zwróć 0
         }
-        
-        
+
+
     public function add_roles($role_id, $center_id) {
         $rhu = New RolesHasUsers();
         $rhu->roles_has_users_users_id = $this->id;
@@ -144,7 +144,7 @@ class User extends Authenticatable
         $rhu->roles_has_users_center_id = $center_id;
         return $rhu->save();
     }
-    
+
     public function add_phone($phone_number, $phone_type, $phone_for) {
         $rhu = New UserPhone();
         $rhu->user_id = $this->id;

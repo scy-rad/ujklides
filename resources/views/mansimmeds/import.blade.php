@@ -104,6 +104,10 @@ function rowEK($new_simmed)
 <form action="{{ route('mansimmeds.import') }}" method="post">
     {{ csrf_field() }}
     <textarea class="form-control" name="import_data" rows="3"></textarea>
+    <select name="import_type">
+        <option value="xp">Uczelnia XP</option>
+        <option value="xls">Excel</option>
+    </select>
     <input type="hidden" name="step" value="check_data">
     <input type="hidden" name="import_data_id" value="0">
     <input class="btn btn-primary btn-lg" type="submit" value="sprawdź wiersze z UXP">
