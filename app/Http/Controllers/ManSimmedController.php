@@ -328,6 +328,7 @@ class ManSimmedController extends Controller
                         $data_write['row_number']=$row_number;
                         $data_write['import_row']=$import_row;
                         $data_write['room_id']=$data['info']['room_id'];
+                        $data_write['room_xp_code']=$data['info']['room_xp_code'];
                         $data_write['simmed_date']=date('Y-').substr($data_rows[0],3,2).'-'.substr($data_rows[0],0,2);
                             $data_write['simmed_alternative_title']=substr($data_rows[0],5,200).' ';
                         $data_write['simmed_time_begin']=$data_rows[2];
@@ -401,7 +402,8 @@ class ManSimmedController extends Controller
                 elseif (substr($import_row,0,8)=='Zajęcia') //chyba że jest to nagłówek tabeli sali
                     {
                         $sub_data=explode(" ",$import_row);
-                        $data['info']['room_id']=Room::find_xp_room($sub_data[3]);
+                        $data['info']['room_xp_code']=trim($sub_data[3]);
+                        $data['info']['room_id']=Room::find_xp_room($data['info']['room_xp_code']);
 
                         //$data['info']['from']=$sub_data[8];
                         //$data['info']['to']=$sub_data[10];
@@ -502,14 +504,11 @@ class ManSimmedController extends Controller
                         $data_write['student_subgroup']=substr($data_write['student_subgroup'],-2);
                         $data_write['student_subgroup_id']=StudentSubgroup::find_subgroup($data_write['student_group_id'],$data_write['student_subgroup']);
 
-                        $data_write['room']=trim($data_rows[9]);
-                        $data_write['room_id']=Room::find_xp_room($data_write['room']);
+                        $data_write['room_number']=trim($data_rows[9]);
+                        $data_write['room_id']=Room::find_xls_room($data_write['room_number']);
+
                         if ($data_write['student_group_id']==0)
-                            $data_write['simmed_alternative_title'].=$data_write['room'].' ';
-
-                        dump($data_write);
-                        dd($data_rows);
-
+                            $data_write['simmed_alternative_title'].=$data_write['room_number'].' ';
 
                         if ($data_write['simmed_leader_id']==0)
                             if ($data_write['simmed_leader']!="")
@@ -566,7 +565,8 @@ class ManSimmedController extends Controller
                 }   // koniec analizy pliku z eXcela Ilony //
                     //////////////////////////////////////
 
-
+dump($data);
+dd($data_rows);
 
             //dd($data,$data['info']['room_id']);
             if ($data['info']['room_id']==0)

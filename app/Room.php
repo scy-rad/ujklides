@@ -37,7 +37,14 @@ class Room extends Model
             return $room->first()->id;
         return 0;
         }
-    
+
+    public static function find_xls_room($room_xls_number) {
+        $room = Room::where('room_number',$room_xls_number);
+        if ($room->first()!==NULL)
+            return $room->first()->id;
+        return 0;
+        }
+
 
 
     public static function json_room_education() {
