@@ -213,9 +213,29 @@ Route::get('mansimmeds/groups', [
     'as' => 'mansimmeds.groups'
 ]);
 
-Route::post('mansimmeds/import', [
-    'uses' => 'ManSimmedController@import',
-    'as' => 'mansimmeds.import'
+Route::post('mansimmeds/import_file', [
+    'uses' => 'ManSimmedController@import_file',
+    'as' => 'mansimmeds.import_file'
+]);
+
+Route::post('mansimmeds/import_check', [
+    'uses' => 'ManSimmedController@import_check',
+    'as' => 'mansimmeds.import_check'
+]);
+
+Route::post('mansimmeds/import_reread', [
+    'uses' => 'ManSimmedController@import_reread',
+    'as' => 'mansimmeds.import_reread'
+]);
+
+Route::post('mansimmeds/import_complement', [
+    'uses' => 'ManSimmedController@import_complement',
+    'as' => 'mansimmeds.import_complement'
+]);
+
+Route::post('mansimmeds/import_append', [
+    'uses' => 'ManSimmedController@import_append',
+    'as' => 'mansimmeds.import_append'
 ]);
 
 Route::post('mansimmeds/impanalyze', [

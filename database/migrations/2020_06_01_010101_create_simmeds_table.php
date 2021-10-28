@@ -117,6 +117,7 @@ class CreateSimmedsTable extends Migration
 
         Schema::create('simmed_temps', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('import_number');
             $table->text('import_row');
             $table->unsignedInteger('simmed_id');
             $table->date('simmed_date');
@@ -124,11 +125,20 @@ class CreateSimmedsTable extends Migration
 			$table->time('simmed_time_end');
             $table->smallInteger('simmed_type_id')->default(1);
             $table->string('simmed_alternative_title')->default('');
-			$table->unsignedInteger('student_subject_id')->nullable();
+
+            $table->unsignedInteger('student_subject_id')->nullable();
             $table->unsignedInteger('student_group_id')->nullable();
             $table->unsignedInteger('student_subgroup_id')->nullable();
             $table->unsignedInteger('room_id');
             $table->unsignedInteger('simmed_leader_id')->nullable();
+
+            $table->string('student_subject_txt')->default('');
+            $table->string('student_group_txt')->default('');
+            $table->string('student_subgroup_txt')->default('');
+            $table->string('room_xp_txt')->default('');
+            $table->string('room_xls_txt')->default('');
+            $table->string('simmed_leader_txt')->default('');
+
             $table->unsignedInteger('simmed_merge')->default(0);
             $table->smallInteger('tmp_status')->default(1);
             $table->timestamps();

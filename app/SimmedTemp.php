@@ -15,6 +15,7 @@ class SimmedTemp extends Model
         1   -   dodaj wiersz do bazy
         2   -   aktualizuj wpis
         3   -   usuń wiersz z bazy
+        4   -   pomiń wpis
     */
 
     public static function status_name(Int $int)
@@ -29,6 +30,8 @@ class SimmedTemp extends Model
                 return 'aktual.';
             case (3):
                 return 'usuń';
+            case (4):
+                return 'pomiń';
             case (9):
                 return 'przywróć';
             }

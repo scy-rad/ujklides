@@ -1,6 +1,8 @@
 <?php
 if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania widoku ManSimMeds import','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+dump('szablon import');
 ?>
 
 

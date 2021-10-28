@@ -121,7 +121,7 @@ sprawdź przed importem:
                 <input class="btn btn-primary btn-lg" type="submit" value="analizuj dane">
     </form>
 
-    <form action="{{ route('mansimmeds.import') }}" method="get">
+    <form action="{{ route('mansimmeds.import_append') }}" method="post">
         {{ csrf_field() }}
         <input class="btn btn-primary btn-lg" type="submit" value="przenieś dane do bazy symulacji">
     </form>

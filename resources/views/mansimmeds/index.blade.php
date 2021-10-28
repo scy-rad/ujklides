@@ -13,10 +13,10 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
 
 <div class="row">
         <div class="col-sm-2">
-        <form action="{{ route('mansimmeds.import') }}" method="post">
+        <form action="{{ route('mansimmeds.import_file') }}" method="post">
                 {{ csrf_field() }}
                 <input type="hidden" name="step" value="add_data">
-                <input class="btn btn-primary btn-lg" type="submit" value="import z UXP">
+                <input class="btn btn-primary btn-lg" type="submit" value="import z pliku">
         </form>
         </div>
 
