@@ -130,7 +130,7 @@ class ManSimmedController extends Controller
             if ($request->import_type == "xp")
                                             ////////////////////////////////////////
             foreach ($rows as $import_row)  // początek analizy pliku z uczelniXP //
-                {
+            {
 
                 $row_number++;
                 $data_write=null;
@@ -140,13 +140,13 @@ class ManSimmedController extends Controller
                 $data_rows=explode("\t",$import_row);
 
                 if (count($data_rows)==8)   //import z uczelni XP powinien zawierać 8 kolumn
-                    {
+                {
                     if ($data_rows[0]=='Daty zajęć')    //jeżeli pierwsza komórka zawiera ten tekst - to znaczy że jest to wiersz nagłówkowy
-                        {
+                    {
                         $data_write['status']='head';
-                        }
+                    }
                     else          //a jeżeli nie - to analizujemy wszystkie pola
-                        {
+                    {
                         $data_write['status']='ok';
                         $data_write['row_number']=$row_number;
                         $data_write['import_row']=$import_row;
@@ -191,48 +191,47 @@ class ManSimmedController extends Controller
 
                         $return=$new_tmp->save();
 
-                        }
-                    }   //if (count($data_rows)==8)
-                elseif (substr($import_row,0,8)=='Zajęcia') //chyba że jest to nagłówek tabeli sali
-                    {
-                        $sub_data=explode(" ",$import_row);
-                        $current_room_xp_code=trim($sub_data[3]);
-                        $current_room_id=Room::find_xp_room($current_room_xp_code);
-
-                            $now = new \DateTime();
-                            $d = $now::createFromFormat('d-m-Y', $sub_data[8]);
-                            if (!($d && $d->format('d-m-Y')))
-                                $data['info']['missing_date']=1;    // to dorzuciłem do domyślnych
-                                elseif ( $d->format('d-m-Y') != $sub_data[8])
-                                    $data['info']['missing_date']++;
-                                else
-                                    {
-                                    $data['info']['from']=$d->format('Y-m-d');
-                                    $data['info']['missing_date']=0;
-                                    }
-
-                            $d = $now::createFromFormat('d-m-Y', $sub_data[10]);
-                            if (!($d && $d->format('d-m-Y')))
-                                $data['info']['missing_date']=1;
-                                elseif ( $d->format('d-m-Y') != $sub_data[10])
-                                    $data['info']['missing_date']++;
-                                else
-                                    $data['info']['to']=$d->format('Y-m-d');
-
                     }
+                }   //if (count($data_rows)==8)
+                elseif (substr($import_row,0,8)=='Zajęcia') //chyba że jest to nagłówek tabeli sali
+                {
+                    $sub_data=explode(" ",$import_row);
+                    $current_room_xp_code=trim($sub_data[3]);
+                    $current_room_id=Room::find_xp_room($current_room_xp_code);
+
+                        $now = new \DateTime();
+                        $d = $now::createFromFormat('d-m-Y', $sub_data[8]);
+                        if (!($d && $d->format('d-m-Y')))
+                            $data['info']['missing_date']=1;    // to dorzuciłem do domyślnych
+                            elseif ( $d->format('d-m-Y') != $sub_data[8])
+                                $data['info']['missing_date']++;
+                            else
+                                {
+                                $data['info']['from']=$d->format('Y-m-d');
+                                $data['info']['missing_date']=0;
+                                }
+
+                        $d = $now::createFromFormat('d-m-Y', $sub_data[10]);
+                        if (!($d && $d->format('d-m-Y')))
+                            $data['info']['missing_date']=1;
+                            elseif ( $d->format('d-m-Y') != $sub_data[10])
+                                $data['info']['missing_date']++;
+                            else
+                                $data['info']['to']=$d->format('Y-m-d');
+                }
                 elseif (strlen($import_row)>1)
-                    {
+                {
                     $data['info']['wrong_count']++;
                     $data['wrong'][]=$import_row;
-                    }
+                }
 
-                }   // koniec analizy pliku z uczelniXP //
+            }   // koniec analizy pliku z uczelniXP //
                     //////////////////////////////////////
 
             if ($request->import_type == "xls")
                                             ////////////////////////////////////////
             foreach ($rows as $import_row)  // początek analizy pliku z  eXcela Ilony //
-                {
+            {
 
                     dd('import z xlsa nie poprawiony wciąż');
                 $row_number++;
@@ -241,15 +240,14 @@ class ManSimmedController extends Controller
                 $data_write['status']='wrong';
 
                 $data_rows=explode("\t",$import_row);
-                if (count($data_rows)>9)   //import z uczelni XP powinien zawierać 8 kolumn
-                    {
+                if (count($data_rows)>9)    //import z pliku XLS powinien zawierać więcej niż 9 kolumn
+                {                           // początek analizy wiersza
                     if ($data_rows[0]=='Data')    //jeżeli pierwsza komórka zawiera ten tekst - to znaczy że jest to wiersz nagłówkowy
-                        {
+                    {
                         $data_write['status']='head';
-                        }
+                    }
                     else          //a jeżeli nie - to analizujemy wszystkie pola
-                        {
-
+                    {
                         $data_write['status']='ok';
                         $data_write['row_number']=$row_number;
                         $data_write['import_row']=$import_row;
@@ -260,88 +258,48 @@ class ManSimmedController extends Controller
                         $data_write['simmed_time_begin']=substr($data_rows[2],0,5);
                         $data_write['simmed_time_end']=substr($data_rows[2],6,5);
 
+                        $data_write['simmed_leader_txt']=trim($data_rows[4]);
+                        $data_write['simmed_leader_id']=User::find_user($data_write['simmed_leader_txt']);
+                        
+                        $data_write['student_subject_txt']=trim($data_rows[7]);
+                        $data_write['student_subject_id']=StudentSubject::find_subject($data_write['student_subject_txt']);
+                        
+                        $data_write['student_group_txt']=trim($data_rows[8]);
+                        $data_write['student_group_id']=StudentGroup::find_group($data_write['student_group_txt']);
+                        
+                        $data_write['student_subgroup_txt']=substr(trim(str_replace(',','',$data_rows[5])),-2);
+                        $data_write['student_subgroup_id']=StudentSubgroup::find_subgroup($data_write['student_group_id'],$data_write['student_subgroup_txt']);
 
-                        $data_write['simmed_leader_id']=User::find_user(trim($data_rows[4]));
-
-                        if ($data_write['simmed_leader_id']==0)
-                            $data_write['simmed_alternative_title'].=$data_rows[4].' ';
-                        $data_write['simmed_leader']=trim($data_rows[4]);
-
-                        $data_write['student_subject']=trim($data_rows[7]);
-                        $data_write['student_subject_id']=StudentSubject::find_subject($data_write['student_subject']);
-                        if ($data_write['student_subject_id']==0)
-                            $data_write['simmed_alternative_title'].=$data_write['student_subject'].' ';
-
-                        $data_write['student_group']=trim($data_rows[8]);
-                        $data_write['student_group_id']=StudentGroup::find_group($data_rows[5]);
-                        if ($data_write['student_group_id']==0)
-                            $data_write['simmed_alternative_title'].=$data_rows[7].' ';
-
-                        $data_write['student_subgroup']=trim(str_replace(',','',$data_rows[5]));
-                        $data_write['student_subgroup']=substr($data_write['student_subgroup'],-2);
-                        $data_write['student_subgroup_id']=StudentSubgroup::find_subgroup($data_write['student_group_id'],$data_write['student_subgroup']);
-
-                        $data_write['room_number']=trim($data_rows[9]);
-                        $data_write['room_id']=Room::find_xls_room($data_write['room_number']);
-
-                        if ($data_write['student_group_id']==0)
-                            $data_write['simmed_alternative_title'].=$data_write['room_number'].' ';
-
-                        if ($data_write['simmed_leader_id']==0)
-                            if ($data_write['simmed_leader']!="")
-                                {
-                                $data['no_leader_list'][$data_rows[4]]['row']=$row_number;
-                                $data['no_leader_list'][$data_rows[4]]['name']=$data_write['simmed_leader'];
-                                if (($data['no_leader_list'][$data_rows[4]]['name']=='') || !(strpos($data['no_leader_list'][$data_rows[4]]['name'],' ')))
-                                    $data['no_leader_list'][$data_rows[4]]['action']='pomiń';
-                                else
-                                    $data['no_leader_list'][$data_rows[4]]['action']='pomiń';//'dodaj';
-                                $data_write['simmed_leader']='';
-                                $data['info']['missing_leaders']++;
-                                }
-
-                        if (($data_write['student_subject_id']==0) && ($data_write['student_subject']!=''))
-                            {
-                            $data['no_subject_list'][$data_write['student_subject']]['row']=$row_number;
-                            $data['no_subject_list'][$data_write['student_subject']]['name']=$data_write['student_subject'];
-                            if (substr($data_write['student_subject'],1,6)=='ezerwa')       //jeśli tematem zajęć jest rezerwacja, to nie dodawaj jej do tematów zajęć
-                                $data['no_subject_list'][$data_write['student_subject']]['action']='pomiń';
-                            else
-                                $data['no_subject_list'][$data_write['student_subject']]['action']='pomiń';//'dodaj';
-                            $data['info']['missing_subjects']++;
-                            }
-
-                        if (($data_write['student_group_id']==0) && ($data_write['student_group']!=''))
-                            {
-                            $data['no_group_list'][$data_write['student_group']]['row']=$row_number;
-                            $data['no_group_list'][$data_write['student_group']]['name']=$data_write['student_group'];
-                            $data['no_group_list'][$data_write['student_group']]['action']='pomiń';//'dodaj';
-                            $data['info']['missing_groups']++;
-                            }
-                        if ( ($data_write['student_subgroup_id']==0) && ($data_write['student_subgroup']!='') )
-                            {
-                            if ($data_write['student_group_id']>0)
-                                {
-                                $data['no_subgroup_list'][$data_write['student_group_id']][$data_write['student_subgroup']]['row']=$row_number;
-                                $data['no_subgroup_list'][$data_write['student_group_id']][$data_write['student_subgroup']]['group_id']=$data_write['student_group_id'];
-                                $data['no_subgroup_list'][$data_write['student_group_id']][$data_write['student_subgroup']]['name']=$data_write['student_subgroup'];
-                                $data['no_subgroup_list'][$data_write['student_group_id']][$data_write['student_subgroup']]['action']='pomiń';//'dodaj';
-                                }
-                            $data['info']['missing_subgroups']++;
-                            }
+                        $data_write['room_xls_txt']=trim($data_rows[9]);
+                        $data_write['room_id']=Room::find_xls_room($data_write['room_xls_txt']);
 
                         $data['simmeds'][]=$data_write;
-                        }   //elseif ($pokoj_znaleziony)
-                    }   //if (count($data_rows)==8)
-                // elseif (strlen($import_row)>1)
-                //     {
-                //     //dump('ManSimmedControler błędny wiersz:'.$import_row);
-                //     $data['info']['wrong_count']++;
-                //     $data['wrong'][]=$import_row;
-                //     }
-                }   // koniec analizy pliku z eXcela Ilony //
-                    //////////////////////////////////////
 
+                        $new_tmp = new SimmedTemp();
+                        $new_tmp['import_number']              = $max_import_number;
+                        $new_tmp['import_row']                 = $data_write['import_row'];
+                        $new_tmp['simmed_id']                  = 1;
+                        $new_tmp['room_id']                    = $data_write['room_id'];
+                        $new_tmp['room_xls_txt']               = $data_write['room_xls_txt'];
+                        $new_tmp['simmed_date']                = $data_write['simmed_date'];
+                        $new_tmp['simmed_alternative_title']   = $data_write['simmed_alternative_title'];
+                        $new_tmp['simmed_time_begin']          = $data_write['simmed_time_begin'];
+                        $new_tmp['simmed_time_end']            = $data_write['simmed_time_end'];
+                        $new_tmp['simmed_leader_txt']          = $data_write['simmed_leader_txt'];
+                        $new_tmp['simmed_leader_id']           = $data_write['simmed_leader_id'];
+                        $new_tmp['student_subject_txt']        = $data_write['student_subject_txt'];
+                        $new_tmp['student_subject_id']         = $data_write['student_subject_id'];
+                        $new_tmp['student_group_txt']          = $data_write['student_group_txt'];
+                        $new_tmp['student_group_id']           = $data_write['student_group_id'];
+                        $new_tmp['student_subgroup_txt']       = $data_write['student_subgroup_txt'];
+                        $new_tmp['student_subgroup_id']        = $data_write['student_subgroup_id'];
+
+                        $return=$new_tmp->save();
+
+                    }
+                }   // koniec analizy wiersza
+            } // koniec analizy pliku z eXcela Ilony //
+              /////////////////////////////////////////
 
         //$request->info_wrong_count=$data['info'];
 
