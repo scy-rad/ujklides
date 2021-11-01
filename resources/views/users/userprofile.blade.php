@@ -2,8 +2,12 @@
 
 
 <?php
-//$isAdmin=( Auth::user()->hasRole('Administrator') ); // - może edytować role, maila, telefony, opis i zmieniać zdjęcie 
+//$isAdmin=( Auth::user()->hasRole('Administrator') ); // - może edytować role, maila, telefony, opis i zmieniać zdjęcie
 $isAdmin=( Auth::user()->hasRole('Operator Kadr') || Auth::user()->hasRole('Administrator'));
+if (Auth::user()->id == $user->id)
+    $isOwn = True;
+else
+    $isOwn = False;
 
 ?>
 
@@ -92,7 +96,7 @@ $isAdmin=( Auth::user()->hasRole('Operator Kadr') || Auth::user()->hasRole('Admi
                         </div-->
                     </div>
                 </div>
-                @if ($isAdmin)
+                @if ($isAdmin || $isOwn)
                 <div class="rowEK justify-content-center">
                     <form action="/userprofile" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
@@ -102,28 +106,26 @@ $isAdmin=( Auth::user()->hasRole('Operator Kadr') || Auth::user()->hasRole('Admi
                             <button type="submit" class="form-control btn btn-primary">Prześlij</button>
                             <small id="fileHelp" class="form-text text-muted">Przekaż plik o właściwych proporcjach (pionowy, 800x600). Nie może być większy niż 2MB.</small>
                         </div>
-                        
+
                     </form>
                 </div>
                 @endif
             </div>
             <div class="col-sm-9">
-
                 <h4> {{$user->title->user_title_short}}</h4>
                 <h2> {{$user->firstname}} {{$user->lastname}}</h2>
                 @if ($isAdmin)
                         <div style="float:right">
-                        <button class="btn btn-primary btn-sm" onClick="openPersonalModal()">Edytuj dane</button>
+                            <button class="btn btn-primary btn-sm" onClick="openPersonalModal()">Edytuj dane</button>
                         </div>
                         <hr>
-                    @endif
-                
+                @endif
                 <ul>
                     @foreach ($user->roles as $row)
                     <li>{{$row->roles_name}}<br>
                         <i>{{$row->roles_description}}</i>
                         @if ($isAdmin)
-                          @if (!($row->roles_name=='Administrator' && Auth::user()->hasRole('Administrator')))  
+                          @if (!($row->roles_name=='Administrator' && Auth::user()->hasRole('Administrator')))
                             <div style="float:right">
                             <form action="{{ route('user.remove_role') }}" method="post" enctype="multipart/form-data">
                                 {{ csrf_field() }}
@@ -135,109 +137,108 @@ $isAdmin=( Auth::user()->hasRole('Operator Kadr') || Auth::user()->hasRole('Admi
                             <hr>
                           @endif
                         @endif
-                    </li> 
+                    </li>
                     @endforeach
-                    </ul>
+                </ul>
                 <hr>
                 <span class="glyphicon glyphicon-envelope"></span> <a href="mailto:{{$user->email}}">{{$user->email}}</a>
-                    @if ($isAdmin)
+                    @if ($isAdmin || $isOwn)
                         <div style="float:right">
                         <button class="btn btn-primary btn-sm" onClick="openMailModal()">Edytuj e-mail</button>
                         </div>
                         <hr>
                     @endif
-                
                 <br>
                 @foreach ($user->phones as $row)
-                
-                <abbr title="{{$row->type->user_phone_type_name}}">
-                <span class="glyphicon {{$row->type->user_phone_type_glyphicon}}"></span> 
-                </abbr>
-                {{$row->phone_number}}<br>
-                    @if ($isAdmin)
+                    @if (
+                            (Auth::user()->hasRole('Administrator'))
+                        || ((Auth::user()->hasRole('Koordynator')) && ($row->phone_for_coordinators==1))
+                        || ((Auth::user()->hasRole('Instruktor')) && ($row->phone_for_trainers==1))
+                        || ((Auth::user()->hasRole('Technik')) && ($row->phone_for_technicians==1))
+                        || ($row->phone_for_guests==1)
+                        )
+                        <abbr title="{{$row->type->user_phone_type_name}}">
+                        <span class="glyphicon {{$row->type->user_phone_type_glyphicon}}"></span>
+                        </abbr>
+                        {{$row->phone_number}}<br>
+                    @endif
+                    @if ($isAdmin || $isOwn)
                         <div style="float:right">
                         <button class="btn btn-primary btn-sm" onClick="openPhoneModal('{{$row->id}}','{{$row->type->id}}','{{$row->phone_number}}','{{$row->phone_for_coordinators}}','{{$row->phone_for_technicians}}','{{$row->phone_for_trainers}}','{{$row->phone_for_guests}}','{{$row->phone_for_anonymouse}}')">Edytuj numer</button>
                         </div>
                         <hr>
                     @endif
                 @endforeach
-<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-otrzymywanie powiadomień mailowych o zajęciach
-<div style="float:right" onClick="change_notify()">
-<input value="1" class="simmed_notify" type="checkbox" <?php if ($user->simmed_notify==1) echo "checked"; ?> data-toggle="toggle" data-on="wysyłaj" data-off="nie wysyłaj">
-</div>
 
-            
-
-
-                <hr>
+                @if ($isAdmin || $isOwn)
+                    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+                    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+                    otrzymywanie powiadomień mailowych o zajęciach
+                    <div style="float:right" onClick="change_notify()">
+                        <input value="1" class="simmed_notify" type="checkbox" <?php if ($user->simmed_notify==1) echo "checked"; ?> data-toggle="toggle" data-on="wysyłaj" data-off="nie wysyłaj">
+                    </div>
+                    <hr>
+                @endif
                 {!!$user->about!!}
-                @if ($isAdmin)
-                        <div style="float:right">
-                        <button class="btn btn-primary btn-sm" onClick="openAboutModal()">Edytuj opis</button>
-                        </div>
-                        <hr>
-                    @endif
+                @if ($isAdmin || $isOwn)
+                    <div style="float:right">
+                    <button class="btn btn-primary btn-sm" onClick="openAboutModal()">Edytuj opis</button>
+                    </div>
+                    <hr>
+                @endif
                 <hr>
-                
+
             </div>
         </div>
-        @if ($isAdmin)
+        @if ($isAdmin || $isOwn)
         <div class="row alert alert-danger">
-                <h2>Panel administracyjny</h2>
-                <h5> id: <strong>{{$user->id}}</strong></h5> 
-                <h5> login: <strong>{{$user->name}}</strong></h5> 
-                <hr>
-                
-                    <div class="form-group">
-                        <div class="col-sm-8">
-                        &nbsp;
-                        </div>
-                        <button class="col-sm-4 btn btn-primary" onClick="openPhoneModal('0','0','','1','1','1','0','0')">Dodaj numer telefonu</button>
-                    </div>
-                    
-                    
-
-                    <form action="{{ route('user.change_status') }}" method="post" enctype="multipart/form-data">
+            <h2>Panel administracyjny</h2>
+            <h5> id: <strong>{{$user->id}}</strong></h5>
+            <h5> login: <strong>{{$user->name}}</strong></h5>
+            <hr>
+            <div class="form-group">
+                <div class="col-sm-8">
+                &nbsp;
+                </div>
+                <button class="col-sm-4 btn btn-primary" onClick="openPhoneModal('0','0','','1','1','1','0','0')">Dodaj numer telefonu</button>
+            </div>
+            @if ($isAdmin)
+                <form action="{{ route('user.change_status') }}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                        <div class="form-group">
-                            <label for="sel1">status:</label><br>
-                            <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="sel1">status:</label><br>
+                        <div class="col-sm-8">
                             <select class="form-control" name="user_status">
                                 <option value="0" <?php if ($user->user_status==0) echo ' selected="selected"'; ?>> nieaktywny </option>
                                 <option value="1" <?php if ($user->user_status==1) echo ' selected="selected"'; ?>> aktywny </option>
-                            </select> 
-                            </div>
-                            <input type="hidden" name="user_id" value="{{$user->id}}">
-                            <button type="submit" class="col-sm-4 btn btn-primary">Zmień status</button>
+                            </select>
                         </div>
-                    </form>
+                        <input type="hidden" name="user_id" value="{{$user->id}}">
+                        <button type="submit" class="col-sm-4 btn btn-primary">Zmień status</button>
+                    </div>
+                </form>
                 <hr>
-                
-                    <form action="{{ route('user.add_role') }}" method="post" enctype="multipart/form-data">
+
+                <form action="{{ route('user.add_role') }}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
-                        <div class="form-group">
-                            <label for="sel1">lista ról:</label><br>
-                            
-                            <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="sel1">lista ról:</label><br>
+                        <div class="col-sm-8">
                             <select class="form-control" name="roles_id">
                             @foreach (App\Roles::get() as $row)
                                 @if (!($user->hasRole($row->roles_name)))
-                                    @if (!($row->roles_name=='Administrator' && Auth::user()->hasRole('Administrator')))  
+                                    @if (!($row->roles_name=='Administrator' && Auth::user()->hasRole('Administrator')))
                                         <option value="{{$row->id}}"> {{$row->roles_name}} </option>
                                     @endif
                                 @endif
                             @endforeach
-                            </select> 
-                            </div>
-                        
-
-                            <input type="hidden" name="user_id" value="{{$user->id}}">
-                            <button type="submit" class="col-sm-4 btn btn-primary">Dodaj rolę</button>
+                            </select>
                         </div>
-                    </form>
-                    
+                        <input type="hidden" name="user_id" value="{{$user->id}}">
+                        <button type="submit" class="col-sm-4 btn btn-primary">Dodaj rolę</button>
+                    </div>
+                </form>
+            @endif
         </div>
 
     <!-- The Modal -->
@@ -255,7 +256,7 @@ otrzymywanie powiadomień mailowych o zajęciach
                             @foreach (App\UserPhoneType::get() as $row)
                                 <option value="{{$row->id}}"> {{$row->user_phone_type_name}} </option>
                             @endforeach
-                            </select> 
+                            </select>
                             </div>
                             <div class="col-sm-3">
                                 <label for="phone_number">numer telefonu:</label><br>
@@ -289,12 +290,12 @@ otrzymywanie powiadomień mailowych o zajęciach
             <form action="{{ route('user.change_email') }}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                     <div class="form-group">
-                        
+
                         <div class="col-sm-8">
                         <input class="form-control" type="text" id="email" name="email" value="{{$user->email}}">
                         </div>
 
-                        <input type="hidden" name="id" value="{{$user->id}}">
+                        <input type="hidden" name="user_id" value="{{$user->id}}">
                         <button type="submit" class="col-sm-4 btn btn-primary">Zapisz</button>
                     </div>
                 </form>
@@ -302,7 +303,7 @@ otrzymywanie powiadomień mailowych o zajęciach
 
         </div>
     </div>
-    
+
 
     <!-- The TEXT editor Modal -->
     <div id="aboutModal" class="modal">
@@ -315,7 +316,7 @@ otrzymywanie powiadomień mailowych o zajęciach
                 <div class="form-group">
                     <label>opis</label>
                     <textarea class="form-control tinymce-editor {{ $errors->has('about') ? 'error' : '' }}" name="about" id="about"
-                        rows="4"> 
+                        rows="4">
                         {!! $user->about !!}
                     </textarea>
                     @if ($errors->has('about'))
@@ -333,28 +334,27 @@ otrzymywanie powiadomień mailowych o zajęciach
         </div>
     </div>
 
-    
 
     <!-- The Modal -->
     <div id="personalModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
             <div class="row">
-            <span class="close">&times;</span>
+                <span class="close">&times;</span>
             </div>
             <div class="row">
-            <form action="{{ route('user.update_personal') }}" enctype="multipart/form-data">
-                <input type="hidden" name="_method" value="PUT">
-                {{ csrf_field() }}
+                <form action="{{ route('user.update_personal') }}" enctype="multipart/form-data">
+                    <input type="hidden" name="_method" value="PUT">
+                    {{ csrf_field() }}
                     <div class="form-group">
-                        
+
                         <div class="col-sm-2">
                             <label for="user_title_id">tytuł:</label><br>
                             <select class="form-control" id="user_title_id" name="user_title_id">
                             @foreach (App\UserTitle::get() as $row)
                                 <option value="{{$row->id}}" <?php if ($row->id == $user->user_title_id) echo 'selected="selected"'; ?>> {{$row->user_title_short}} </option>
                             @endforeach
-                            </select> 
+                            </select>
                         </div>
                         <div class="col-sm-3">
                             <label for="name">login:</label><br>
@@ -368,18 +368,18 @@ otrzymywanie powiadomień mailowych o zajęciach
                             <label for="lastname">nazwisko:</label><br>
                             <input type="text" class="form-control" id="lastname" name="lastname" value="{{$user->lastname}}">
                         </div>
-                    
-                            <label for="lastname">:</label><br>
-                            <button type="submit" class="col-sm-1 btn btn-primary">Zapisz</button>
 
-                            <input type="hidden" name="user_id" value="{{$user->id}}">
+                        <label for="lastname">:</label><br>
+                        <button type="submit" class="col-sm-1 btn btn-primary">Zapisz</button>
+                        <input type="hidden" name="user_id" value="{{$user->id}}">
                     </div>
-            </form>
-        </div>
+                </form>
+            </div>
         </div>
     </div>
+    <!-- end of The Modal -->
     <script>
-    
+
     var change_notify = function() {
         var modal = document.getElementById("simmed_notify");
         checkedValue = $('.simmed_notify:checked').val();
@@ -428,14 +428,14 @@ otrzymywanie powiadomień mailowych o zajęciach
                 if (opt.value == type) {
                     sel.selectedIndex = j;
                 break;
-                } 
+                }
             }
         };
-    
+
     var openMailModal = function() {
         modal2.style.display = "block";
         };
-    
+
     var openAboutModal = function() {
         modal3.style.display = "block";
         };
@@ -445,9 +445,9 @@ otrzymywanie powiadomień mailowych o zajęciach
         };
 
 
-    var modal = document.getElementById("phoneModal");  
+    var modal = document.getElementById("phoneModal");
     // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];    
+    var span = document.getElementsByClassName("close")[0];
     // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
       modal.style.display = "none";
@@ -459,7 +459,7 @@ otrzymywanie powiadomień mailowych o zajęciach
       }
     }
 
-    var modal2 = document.getElementById("mailModal");  
+    var modal2 = document.getElementById("mailModal");
     // Get the <span> element that closes the modal
     var span2 = document.getElementsByClassName("close")[1];
     // When the user clicks on <span> (x), close the modal
@@ -473,7 +473,7 @@ otrzymywanie powiadomień mailowych o zajęciach
       }
     }
 
-    var modal3 = document.getElementById("aboutModal");  
+    var modal3 = document.getElementById("aboutModal");
     // Get the <span> element that closes the modal
     var span3 = document.getElementsByClassName("close")[2];
     // When the user clicks on <span> (x), close the modal
@@ -487,7 +487,7 @@ otrzymywanie powiadomień mailowych o zajęciach
       }
     }
 
-    var modal4 = document.getElementById("personalModal");  
+    var modal4 = document.getElementById("personalModal");
     // Get the <span> element that closes the modal
     var span4 = document.getElementsByClassName("close")[3];
     // When the user clicks on <span> (x), close the modal
@@ -509,7 +509,7 @@ otrzymywanie powiadomień mailowych o zajęciach
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>  
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script type="text/javascript">
   tinymce.init({
   selector: 'textarea.tinymce-editor',

@@ -157,7 +157,7 @@ class User extends Authenticatable
         $rhu->phone_for_anonymouse = $phone_for[4];
         return $rhu->save();
     }
-    
+
     public function update_mail($email) {
         $this->email=$email;
         return $this->save();
@@ -167,7 +167,7 @@ class User extends Authenticatable
         $this->user_title_id=$title_id;
         return $this->save();
     }
-    
+
     public function update_status($user_status) {
         $this->user_status=$user_status;
         return $this->save();

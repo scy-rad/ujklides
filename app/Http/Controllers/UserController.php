@@ -23,7 +23,6 @@ class UserController extends Controller
     public function index()
     {
         //
- 
     }
 
     /**
@@ -96,12 +95,12 @@ class UserController extends Controller
 
     public function users(String $type)
     {
-        
+
     if ($type=='everybody')
-        {        
+        {
             $users = User::orderBy('lastname', 'ASC');
             if (!(Auth::user()->hasRole('Administrator')))
-                $users = $users->where('user_status','=',1);            
+                $users = $users->where('user_status','=',1);
             $users = $users->paginate(6);
         }
     else
@@ -122,26 +121,24 @@ class UserController extends Controller
 
     public function profile()
     {
-        $user = Auth::user();    
+        $user = Auth::user();
         return view('users/userprofile',compact('user',$user));
     }
-    
+
     public function userprofile(Int $id_user)
     {
-    //if (!Auth::user()->hasRole('Operator Kadr')) 
+    //if (!Auth::user()->hasRole('Operator Kadr'))
     //    return view('error',['head'=>'błąd wywołania funkcji create kontrolera userprofile','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
-    
         $user = User::where('id',$id_user)->first();
         return view('users/userprofile',compact('user',$user));
-         
-        //return view('users/userprofile',$user);
+
     }
 
     public function add_role(Request $request)
     {
-    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator')) 
+    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator'))
         return view('error',['head'=>'błąd wywołania funkcji add_role kontrolera userprofile','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
-    
+
         $user = User::where('id',$request->user_id)->first();
         $user->add_roles($request->roles_id, 1);
 
@@ -151,9 +148,9 @@ class UserController extends Controller
 
     public function remove_role(Request $request)
     {
-    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator'))  
+    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator'))
         return view('error',['head'=>'błąd wywołania funkcji remove_role kontrolera userprofile','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
-        
+
         $user = User::where('id',$request->user_id)->first();
         if ($user->remove_roles($request->roles_id, 1))
             return back()->with('success','Usuwanie roli powiodło się.');
@@ -163,10 +160,10 @@ class UserController extends Controller
 
     public function change_email(Request $request)
     {
-    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator'))  
+    if (!(Auth::user()->hasRole('Operator Kadr') || Auth::user()->hasRole('Administrator') || (User::find($request->user_id)->id==Auth::user()->id) ))
         return view('error',['head'=>'błąd wywołania funkcji change_email kontrolera userprofile','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
 
-            $user = User::where('id',$request->id)->first();
+            $user = User::where('id',$request->user_id)->first();
             if ($user->update_mail($request->email))
                 return back()->with('success','Edycja maila powiodła się.');
             else
@@ -175,7 +172,7 @@ class UserController extends Controller
 
     public function change_phone(Request $request)
     {
-    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator'))  
+    if (!(Auth::user()->hasRole('Operator Kadr') || Auth::user()->hasRole('Administrator') || (User::find($request->user_id)->id==Auth::user()->id) ))
         return view('error',['head'=>'błąd wywołania funkcji change_phone kontrolera userprofile','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
 
         function onof($what){
@@ -209,10 +206,10 @@ class UserController extends Controller
             else
                 return back()->withErrors($comment.' numeru telefonu zakończone niepowodzeniem...');
     }
-    
+
     public function change_status(Request $request)
     {
-    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator'))  
+    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator'))
         return view('error',['head'=>'błąd wywołania funkcji change_status kontrolera userprofile','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
 
             $user = User::where('id',$request->user_id)->first();
@@ -224,11 +221,11 @@ class UserController extends Controller
 
     public function change_about(Request $request)
     {
-    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator'))  
+    if (!(Auth::user()->hasRole('Operator Kadr') || Auth::user()->hasRole('Administrator') || (User::find($request->user_id)->id==Auth::user()->id) ))
         return view('error',['head'=>'błąd wywołania funkcji change_about kontrolera userprofile','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
 
             $user = User::where('id',$request->user_id)->first();
-            
+
             if ($user->update_about($request->about))
                 return back()->with('success','Zmiana informacji powiodła się.');
             else
@@ -249,7 +246,7 @@ class UserController extends Controller
 
     public function update_avatar(Request $request)
     {
-    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator')) 
+    if (!(Auth::user()->hasRole('Operator Kadr') || Auth::user()->hasRole('Administrator') || (User::find($request->user_id)->id==Auth::user()->id) ))
         return view('error',['head'=>'błąd wywołania funkcji update_avatar kontrolera userprofile','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
 
         $user = Auth::user();
@@ -272,8 +269,5 @@ class UserController extends Controller
         return json_encode(array('statusCode'=>$request->user_id, 'SQLcode'=> $status));
 
     }
-    
-
-
 
 }
