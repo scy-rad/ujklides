@@ -1,4 +1,5 @@
 <?php
+//php artisan db:seed --class=DocsTableSeeder
 
 use Illuminate\Database\Seeder;
 
@@ -16,8 +17,8 @@ class DocsTableSeeder extends Seeder
     public function run()
     {
 
-        $x_simman = ItemGroup::where('item_group_name','manekin Laerdal Simman 3G')->first();
-        
+        $x_simman = ItemGroup::where('item_group_name','SimMan 3G')->first();
+
         $zmEQ = new Doc();
         $zmEQ->doc_title = 'Opis producenta';
         $zmEQ->doc_subtitle = 'Opis funkcji realizowanych przez symulator SimMan 3G (ze strony producenta)';
@@ -236,7 +237,7 @@ class DocsTableSeeder extends Seeder
 
 
         $zmEQ = new Doc();
-       $zmEQ->doc_title = 'Parametry konfigurowalne';
+        $zmEQ->doc_title = 'Parametry konfigurowalne';
         $zmEQ->doc_subtitle = 'Wykaz konfigurowalnych parametrów manekina SimMan 3G';
         $zmEQ->doc_description = '<p style="font-weight: 400;"><strong>TWARZ</strong></p>
         <p style="font-weight: 400;">Oczy:</p>
@@ -703,6 +704,6 @@ class DocsTableSeeder extends Seeder
         $zmEQ->doc_status = 1;
         $zmEQ->save();
         $zmEQ->item_group()->attach($x_simman->id);
-     
+
     }
 }
