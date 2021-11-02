@@ -66,11 +66,24 @@ class RoomsLekTableSeeder extends Seeder
             Add2_Storage($ir, $storage_cwiczeniowy, 'WR01', 'Wózek Wielofunkcyjny 01', 'Wózek Wielofunkcyjny Reanimacyjny', 6, 1);
             Add2_Storage($ir, $storage_magazynowy, 'kontrolka', 'pomieszczenie kontrolne', 'pomieszczenie kontrolne - sala', 1, 2);
             Add2_Storage($ir, $storage_magazynowy, 'szafa K01', 'szafa w pomieszczeniu kontrolnym', 'szafa dół', 6, 3);
+            $sort_count=1;
+            for ($i='A'; $i<='F'; $i++)
+                Add2_Storage($ir, $storage_magazynowy, 'szafa '.$i, 'szafa '.$i, 'szafa magazynowa '.$i, 5, $sort_count++);
+            for ($i='A'; $i<='H'; $i++)
+                Add2_Storage($ir, $storage_cwiczeniowy, 'szafka '.$i, 'szafka '.$i, 'szafka '.$i, 5, $sort_count++);
 
         $ir=Add2_Room($Center_id, 1, 'D 0.09', 'CM_D_0/9', 'd009/d0.09.jpg', 'OIT pediatryczny', 'Sala Intensywnej Terapii dziecięca',1);
             Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
+            $sort_count=1;
+            Add2_Storage($ir, $storage_cwiczeniowy, 'blat', 'blat', 'blat', 1, $sort_count++);
+            for ($i='A'; $i<='H'; $i++)
+                Add2_Storage($ir, $storage_cwiczeniowy, 'szafka '.$i, 'szafka '.$i, 'szafka '.$i, 5, $sort_count++);
         $ir=Add2_Room($Center_id, 1, 'D 0.10', 'CM_D_0/10', 'd010/d0.10.jpg', 'SOR', 'Szpitalny Oddział Ratunkowy',1);
             Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
+            $sort_count=1;
+            Add2_Storage($ir, $storage_cwiczeniowy, 'blat', 'blat', 'blat', 1, $sort_count++);
+            for ($i='A'; $i<='H'; $i++)
+                Add2_Storage($ir, $storage_cwiczeniowy, 'szafka '.$i, 'szafka '.$i, 'szafka '.$i, 5, $sort_count++);
         $ir=Add2_Room($Center_id, 2, 'D 0.11b', '', 'd011/d0.11b1.jpg', 'Kontrolka D0.09', 'Kontrolka sali D 0.09',1);
             Add2_Storage($ir, $storage_magazynowy, 'sala', 'sala', 'sala', 1, 0);
         $ir=Add2_Room($Center_id, 2, 'D 0.11c', '', 'd011/d0.11c1.jpg', 'Kontrolka D0.10', 'Kontrolka sali D 0.10',1);
@@ -131,7 +144,9 @@ class RoomsLekTableSeeder extends Seeder
         $ir=Add2_Room($Center_id, 1, 'B 3.38', 'CM_B3.38', 'b338/b3.38.jpg', 'Sala umiejętności chirurgicznych', 'Sala umiejętności chirurgicznych',0);
             Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
 
-        $ir=Add2_Room($Center_id, 1, 'C 2.07', 'CM_C2.07', 'c207/c2.07a.jpg', 'Sala 2.07', 'Sala Intensywnej terapii',1);
+        $ir=Add2_Room($Center_id, 1, 'C 2.02', '', 'c202/c2.02a.jpg', 'Sala 2.02', 'Sala Debriefingu',1);
+            Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
+        $ir=Add2_Room($Center_id, 1, 'C 2.07', 'CM_C2.07', 'c207/c2.07a.jpg', 'Sala 2.07', 'Sala Intensywnej Terapii',1);
             Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
         $ir=Add2_Room($Center_id, 2, 'C 2.08', '', 'c208/c2.08a.jpg', 'Kontrolka 2.07', 'Kontrolka sali C 2.07',1);
             Add2_Storage($ir, $storage_magazynowy, 'sala', 'sala', 'sala', 1, 0);
@@ -142,7 +157,8 @@ class RoomsLekTableSeeder extends Seeder
         $ir=Add2_Room($Center_id, 1, 'C 2.11', 'CM_C2.11', 'c211/c2.11a.jpg', 'Sala przedoperacyjna', 'Sala przygotowania pacjenta do operacji',1);
             Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
 
-
+        $ir=Add2_Room($Center_id, 1, 'C 0.11', 'CM_C0.11', 'c011/c0.11a.jpg', 'Sala 0.11', 'Sala Karetki',1);
+            Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
 
         $ir=Add2_Room($Center_id, 3, 'D 0.11d', '', 'd011/d0.11d1.jpg', 'Magazyn sal D0', 'Magazyn sal D0 - 09 i 10',1);
             Add2_Storage($ir, $storage_magazynowy, 'sala', 'sala', 'sala', 1, 0);
@@ -168,7 +184,7 @@ class RoomsLekTableSeeder extends Seeder
         $ir=Add2_Room($Center_id, 3, 'B 3.26', '', 'b326/b3.26.jpg', 'Magazyn Głowny', 'Magazyn B 3.26',1);
             Add2_Storage($ir, $storage_magazynowy, 'sala', 'sala', 'sala', 1, 0);
             $sort_count=1;
-            for ($i='A'; $i<='J'; $i++)
+            for ($i='A'; $i<='O'; $i++)
                 Add2_Storage($ir, $storage_magazynowy, 'regał '.$i, 'regał '.$i, 'regał magazynowy '.$i, 5, $sort_count++);
 
         $ir=Add2_Room($Center_id, 3, 'B 1.23', '', 'b123/b1.23.jpg', 'Pokój techników 1', 'Pokój techników 1',1);
