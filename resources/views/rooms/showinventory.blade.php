@@ -52,7 +52,7 @@
 
     ?>
 
-    
+
 
     @foreach ($room->storages as $storage)
     <div class="boxtitle">
@@ -101,9 +101,9 @@
     {{$cur_type_id=''}}
 
     <ol>
-        @foreach ($storage->items as $item)        
-            @if ($item->storage()->room_storage_shelf_count==1)                
-                @if ($item->group()->type->item_type_master_id!=$cur_type_id)
+        @foreach ($storage->items as $item)
+            @if ($item->storage()->room_storage_shelf_count==1)
+                @if ($item->group()->type()->item_type_master_id!=$cur_type_id)
                     <div class="clearfix" style="margin-bottom: 10px; border-bottom: 1px dashed">
                     </div>
                     <?php $cur_type_id=$item->item_type_master_id; ?>
@@ -111,15 +111,15 @@
             @endif
 
             <div class="clearfix">
-    
+
                 <div style="float:right;">
-                    <img src="/storage/img/items/{{ $item->item_photo }}" class="tile">                   
+                    <img src="/storage/img/{{ $item->item_photo }}" class="tile">
                 </div>
-                <?php 
+                <?php
                 //@if ($item->active_inventory()->count()>0) ?>
                 @if ((!(is_null($item->active_inventory()))) && (Auth::user()->hasRole('magazynier')))
-                
-                <?php $item->id_inv=$item->active_inventory()->id; 
+
+                <?php $item->id_inv=$item->active_inventory()->id;
                       $item->id_item=$item->id;
                 ?>
                     <form action="">
@@ -131,7 +131,7 @@
                         <span id="txt_des_{{$item->id_inv}}"> {{$item->active_inventory()->inventory_item_description}}</span>
                                 <!--input type="checkbox" nochecked data-toggle="toggle" data-on="sprawdzony" data-off="nie sprawdzony" data-onstyle="success" data-offstyle="danger"-->
                     </div>
-                            
+
                     <div id="form_hid_{{$item->id_inv}}" style="display:none;"  style="float:right;">
                         <div style="float:right;">
                             <div class="cc-selector">
@@ -143,7 +143,7 @@
                                     <label class="drinkcard-cc" for="check_ok_{{$item->id_inv}}"><span class="{{show_gl_ico(1)}}"></span></label>
                                 <input id="check_of_{{$item->id_inv}}" type="radio" name="grradio_{{$item->id_inv}}" value="0"  <?php if ($item->active_inventory()->inventory_item_status==0) echo 'checked="checked"';?> />
                                     <label class="drinkcard-cc" for="check_of_{{$item->id_inv}}"><span class="{{show_gl_ico(0)}}"></span></label>
-                                    
+
                                 <input type="text" class="form-control" id="check_descript_{{$item->id_inv}}" name="check_descript_{{$item->id_inv}}" value="{{$item->active_inventory()->inventory_item_description}}"/>
                             </div>
                         </div>
@@ -153,17 +153,17 @@
                             </button>
                         </div>
                     </div>
-                    </form>          
+                    </form>
                 @endif
-            
-            
+
+
             <div style="float:left;">
-            
+
                 <li><a href="{{route('items.show', $item->id)}}"><h3>{{$item->group()->item_group_name}} <!-- {{$item->item_group_producent}} {{$item->item_group_model}} --></h3>
                     [inv: {{$item->item_inventory_number}}] <br>
                     [s/n: {{$item->item_serial_number}}] <br>
-                    </a> 
-                @if ($item->storage()->room_storage_shelf_count>1) 
+                    </a>
+                @if ($item->storage()->room_storage_shelf_count>1)
                     poziom {{$item->item_storage_shelf}} z {{ $item->storage()->room_storage_shelf_count }}
                 @endif
                 </li>
@@ -177,8 +177,6 @@
 
 
 
-    
-
 @endsection
 
 
@@ -191,20 +189,20 @@
 <script>
 
 
-function ChangeInventoryItem(MyInv) { 
+function ChangeInventoryItem(MyInv) {
     // sprawdzam, którą opcję wybrałem w polack o id MyInv
 
     var radios = document.getElementsByName('grradio_'+MyInv);
 
     for (var i = 0, length = radios.length; i < length; i++) {
         if (radios[i].checked) {
-            // jeśli aktywne, przypisz jego wartość do zmiennej b_type 
+            // jeśli aktywne, przypisz jego wartość do zmiennej b_type
             var b_type = (radios[i].value);
             // tylko jedno pole radio może być aktywne, więc nie sprawdzaj dalej :)
             break;
         }
     }
- 
+
     //event.preventDefault();
 
 //let email = $("input[name=email]").val();
@@ -230,8 +228,8 @@ $.ajax({
   },
  });
 
-    /* */    
-    } 
+    /* */
+    }
 
 function myFun_more(MyIdX) {
     // odkrywa lub ukrywa kliknięty element
@@ -253,8 +251,8 @@ function myFun_save(MyIdX) {
     // Funkcja zapisująca zmiany
     //pobierz element obrazujący klikniętą opcję
     var x = document.getElementById("form_sym_"+MyIdX);
-        
-        //w zależności od klikniętej opcji - przypisz styl do elementu obrazującego 
+
+        //w zależności od klikniętej opcji - przypisz styl do elementu obrazującego
         switch (document.querySelector('input[name="grradio_'+MyIdX+'"]:checked').value){
             case '0':
                 x.className = "text-primary glyphicon glyphicon-question-sign gi-4x";
@@ -279,7 +277,7 @@ function myFun_save(MyIdX) {
         myFun_more(MyIdX);
         // wywołaj funkcję z ajaxem
         ChangeInventoryItem(MyIdX);
-        
+
         //https://codingdriver.com/ajax-post-request-laravel-example.html
     }
 </script>

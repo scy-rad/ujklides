@@ -1,10 +1,11 @@
 <?php
-//php71-cli artisan make:controller RoomStoragesController --resource --model=RoomStorages
-//php71-cli artisan db:seed --class=SimmedsTableSeeder
+//php artisan make:controller RoomStoragesController --resource --model=RoomStorages
+//php artisan db:seed --class=SimmedsTableSeeder
 use Illuminate\Database\Seeder;
 
 use App\StudentSubject;
 use App\StudentGroup;
+use App\StudentSubgroup;
 use App\Simmed;
 use App\Room;
 use App\User;
@@ -23,6 +24,7 @@ class SimmedsTableSeeder extends Seeder
 		DB::statement('SET FOREIGN_KEY_CHECKS=0');
 		DB::table('simmeds')->truncate();
 		DB::table('student_subjects')->truncate();
+		DB::table('student_subgroups')->truncate();
 		DB::table('student_groups')->truncate();
 
 		function add_student_group($aF_student_group_name)
@@ -33,10 +35,22 @@ class SimmedsTableSeeder extends Seeder
 		return $zmEQ->id;
 		}
 
-		function add_student_subject($aF_student_subject_name)
+		function add_groupsub($aF_id_group,$aF_prefix,$aF_count)
+		{
+		for($i = 1; $i <= $aF_count; $i++)
+			{
+			$zmEQ = new StudentSubgroup();
+			$zmEQ->student_group_id=$aF_id_group;
+            $zmEQ->subgroup_name=$aF_prefix." ".str_pad($i, 2, 0, STR_PAD_LEFT);
+			$zmEQ->save();
+			}
+		}
+
+		function add_student_subject($aF_student_subject_name,$aF_student_subject_name_en)
 		{
         $zmEQ = new StudentSubject();
         $zmEQ->student_subject_name = $aF_student_subject_name;
+		$zmEQ->student_subject_name_en = $aF_student_subject_name_en;
         $zmEQ->save();
 		return $zmEQ->id;
 		}
@@ -100,26 +114,54 @@ class SimmedsTableSeeder extends Seeder
 			}
 
 
-add_student_subject("_przedmiot nieokreślony");
-add_student_subject("Szkolenie trenerów");
-add_student_subject("egzaminy OSCE");
-add_student_subject("Interna i pielęgniarstwo internistyczne");
-add_student_subject("Opieka ginekologiczna");
-add_student_subject("Opieka neonatologiczna");
-add_student_subject("Opieka paliatywna");
-add_student_subject("Pielęgniarstwo chirurgiczne");
-add_student_subject("Pielęgniarstwo geriatryczne");
-add_student_subject("Pielęgniarstwo internistyczne");
-add_student_subject("Pielęgniarstwo neurologiczne");
-add_student_subject("Pielęgniarstwo pediatryczne");
-add_student_subject("Pielęgniarstwo położniczo - ginekologiczne");
-add_student_subject("Pielęgniarstwo psychiatryczne");
-add_student_subject("Pielęgniarstwo w anestezjologii i stanach zagrożenia życia");
-add_student_subject("Pielęgniarstwo w zagrożeniu życia");
-add_student_subject("Pielęgnowanie niepełnosprawnych");
-add_student_subject("Podstawowa opieka zdrowotna");
-add_student_subject("Podstawy opieki położniczej");
-add_student_subject("Techniki położnicze i prowadzenie porodu");
+add_student_subject("_przedmiot nieokreślony","");
+add_student_subject("Szkolenie trenerów","");
+add_student_subject("egzaminy OSCE","");
+add_student_subject("Interna i pielęgniarstwo internistyczne","");
+add_student_subject("Opieka ginekologiczna","");
+add_student_subject("Opieka neonatologiczna","");
+add_student_subject("Opieka paliatywna","");
+add_student_subject("Pielęgniarstwo chirurgiczne","");
+add_student_subject("Pielęgniarstwo geriatryczne","");
+add_student_subject("Pielęgniarstwo internistyczne","");
+add_student_subject("Pielęgniarstwo neurologiczne","");
+add_student_subject("Pielęgniarstwo pediatryczne","");
+add_student_subject("Pielęgniarstwo położniczo - ginekologiczne","");
+add_student_subject("Pielęgniarstwo psychiatryczne","");
+add_student_subject("Pielęgniarstwo w anestezjologii i stanach zagrożenia życia","");
+add_student_subject("Pielęgniarstwo w zagrożeniu życia","");
+add_student_subject("Pielęgnowanie niepełnosprawnych","");
+add_student_subject("Podstawowa opieka zdrowotna","");
+add_student_subject("Podstawy opieki położniczej","");
+add_student_subject("Techniki położnicze i prowadzenie porodu","");
+
+add_student_subject("Anestezjologia i intensywna terapia","Anesthesiology and Intensive Care");
+add_student_subject("Anestezjologia i stany zagrożenia życia","");
+add_student_subject("Chirurgia","Surgery");
+add_student_subject("Chirurgia dziecięca","");
+add_student_subject("Chirurgia i pielęgniarstwo chirurgiczne","");
+add_student_subject("Choroby przenoszone drogą krwi","");
+add_student_subject("Choroby wewnętrzne","Internal Medicine");
+add_student_subject("Choroby wewnętrzne z elementami onkologii","");
+add_student_subject("Choroby wewnętrzne-Propedeutyka Interny z elementami Kardiologii","Internal Medicine-propaedeutics in internal medicine with elements of cardiology");
+add_student_subject("Ginekologia i położnictwo","");
+add_student_subject("Intensywna terapia","");
+add_student_subject("Medycyna katastrof","");
+add_student_subject("Medycyna ratunkowa","");
+add_student_subject("Medycyna Ratunkowa i Medycyna Katastrof","");
+add_student_subject("Medyczne czynności ratunkowe","");
+add_student_subject("Neurologia","Neurology");
+add_student_subject("Opieka położnicza","");
+add_student_subject("Pediatria","Pediatrics");
+add_student_subject("Pielęgniarstwo opieki długoterminowej","");
+add_student_subject("Pierwsza pomoc","");
+add_student_subject("Podstawowe zabiegi medyczne","");
+add_student_subject("Podstawy ratownictwa medycznego","");
+add_student_subject("Procedury ratunkowe przedszpitalne","");
+add_student_subject("Procedury ratunkowe wewnątrzszpitalne","");
+add_student_subject("Propedeutyka medycyny","");
+add_student_subject("Rehabilitacja w położnictwie, neonatologii i ginekologii","");
+
 
 add_student_group("_grupa nieokreślona");
 add_student_group("OSCE");
@@ -183,6 +225,30 @@ add_student_group("5 Po/Ist./S/18/19 - sym 05");
 add_student_group("5 Po/Ist./S/18/19 - sym 06");
 add_student_group("5 Po/Ist./S/18/19 - sym 07");
 add_student_group("5 Po/Ist./S/18/19 - sym 08");
+
+
+
+$id_group=add_student_group("LEK/Eng-Div-6/16/17");	add_groupsub($id_group,"ćwpk",2);	
+$id_group=add_student_group("LEK/Eng-Div-6/17/18");	add_groupsub($id_group,"ćw",1);	
+$id_group=add_student_group("LEK/Eng-Div-6/18/19");	add_groupsub($id_group,"ćwpk",3);	
+$id_group=add_student_group("LEK/Eng-Div-6/19/20");	add_groupsub($id_group,"ćwpk",6);	
+$id_group=add_student_group("LEK/S/16/17");	add_groupsub($id_group,"ćwpk",20);	
+$id_group=add_student_group("LEK/S/17/18");	add_groupsub($id_group,"ćwpk",20);	
+$id_group=add_student_group("LEK/S/18/19");	add_groupsub($id_group,"ćwpk",20);	
+$id_group=add_student_group("LEK/S/19/20");	add_groupsub($id_group,"ćwpk",20);	add_groupsub($id_group,"sym",12);
+$id_group=add_student_group("P/Ist./S/19/20");	add_groupsub($id_group,"ćwp",12);	add_groupsub($id_group,"sym",12);
+$id_group=add_student_group("P/Ist./S/2020/2021");	add_groupsub($id_group,"ćwp",12);	add_groupsub($id_group,"sym",12);
+$id_group=add_student_group("Po/Is./S/19/20");	add_groupsub($id_group,"ćwp",12);	add_groupsub($id_group,"sym",12);
+$id_group=add_student_group("Po/Ist./S/2020/2021");	add_groupsub($id_group,"ćwp",6);	add_groupsub($id_group,"sym",11);
+$id_group=add_student_group("POŁ/II st./S/2021/2");	add_groupsub($id_group,"zp",3);	
+$id_group=add_student_group("RM/I stopień/niesta");	add_groupsub($id_group,"ćwp",2);	add_groupsub($id_group,"ćw",1);
+$id_group=add_student_group("RM/I stopień/st/201");	add_groupsub($id_group,"ćwp",4);	add_groupsub($id_group,"ćw",2);
+$id_group=add_student_group("RM/Ist/S/2020/2021");	add_groupsub($id_group,"ćwp",5);	add_groupsub($id_group,"ćw",2);
+$id_group=add_student_group("RM/Ist/S/2021/2022/s");	add_groupsub($id_group,"ćwp",5);	
+
+
+
+
 
 
 insert_sims("2020-11-02","08:00","11:00","Opieka ginekologiczna","5 Po/Ist./S/18/19 - sym 01","B 1.05","kwojcik","alewandowska",3,1);

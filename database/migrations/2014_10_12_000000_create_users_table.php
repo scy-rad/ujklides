@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->string('about')->default('');
+            $table->string('description')->default('');
             $table->string('user_fotka')->default('_user.jpg');
             $table->tinyInteger('user_status')->default(0);
             $table->string('email')->unique();

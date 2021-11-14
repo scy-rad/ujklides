@@ -78,54 +78,35 @@ class User extends Authenticatable
         return json_encode($data);
     }
 
-    public static function find_user($user_fullname) {
+    public static function find_user($fullname) {
         //funkcja wukorzystywana przez kontroler ManSimmed
-        $user_part=explode(" ",$user_fullname);
 
-            if (count($user_part)==4)   //jeżeli nazwa składa się z 4 części - to dwie pierwsze powinny być tytułem naukowym
-                {
-                $user_part[0].=' '.$user_part[1];
-                $user_part[1]=$user_part[2];
-                $user_part[2]=$user_part[3];
-                }
-            elseif (count($user_part)==5) //i tak dalej...
-                {
-                $user_part[0].=' '.$user_part[1].' '.$user_part[2];
-                $user_part[1]=$user_part[3];
-                $user_part[2]=$user_part[4];
-                }
-            elseif (count($user_part)==6)//i tak dalej...
-                {
-                $user_part[0].=' '.$user_part[1].' '.$user_part[2].' '.$user_part[3];
-                $user_part[1]=$user_part[4];
-                $user_part[2]=$user_part[5];
-                }
-            elseif (count($user_part)==7)//i tak dalej...
-                {
-                $user_part[0].=' '.$user_part[1].' '.$user_part[2].' '.$user_part[3].' '.$user_part[4];
-                $user_part[1]=$user_part[5];
-                $user_part[2]=$user_part[6];
-                }
-            elseif (count($user_part)==8)//i tak dalej...
-                {
-                $user_part[0].=' '.$user_part[1].' '.$user_part[2].' '.$user_part[3].' '.$user_part[4].' '.$user_part[5];
-                $user_part[1]=$user_part[6];
-                $user_part[2]=$user_part[7];
-                }
-            elseif (count($user_part)==2)//a jeżeli 2 - to w miejsce tytułu wpisz pustą wartość
-                {
-                $user_part[2]=$user_part[1];
-                $user_part[1]=$user_part[0];
-                $user_part[0]='';
-                }
-        //dump('User model: '.$user_fullname,$user_part);
-        if (count($user_part)>2)//jeśli nazwa składa się conajmniej z dwóch członów - to szukaj tej osoby w bazie danych
+        $firstname='';
+        $lastname='';
+        $title='';
+
+        $pozostalo_do_analizy=$fullname;
+
+        if (strpos($pozostalo_do_analizy, ' ', 0)>0)
+        {
+            $firstname              =   substr($pozostalo_do_analizy,strRpos($pozostalo_do_analizy, ' ', 0)+1,100);
+            $pozostalo_do_analizy   =   substr($pozostalo_do_analizy,0,strRpos($pozostalo_do_analizy, ' ', 0));
+            $lastname               =   $pozostalo_do_analizy;
+        }
+        if (strpos($pozostalo_do_analizy, ' ', 0)>0)
+        {
+            $lastname               =   substr($pozostalo_do_analizy,strRpos($pozostalo_do_analizy, ' ', 0)+1,100);
+            $pozostalo_do_analizy   =   substr($pozostalo_do_analizy,0,strRpos($pozostalo_do_analizy, ' ', 0));
+            $title                  =   $pozostalo_do_analizy;
+        }
+
+        if (($lastname)!='')//jeśli nazwa składa się conajmniej z dwóch członów - to szukaj tej osoby w bazie danych
             {
-            if (UserTitle::where('user_title_short',$user_part[0])->first()!==NULL)
+            if (UserTitle::where('user_title_short',$title)->first()!==NULL)
                 {
-                $user = User::where('user_title_id',UserTitle::where('user_title_short',$user_part[0])->first()->id)
-                        ->where('lastname',$user_part[1])
-                        ->where('firstname',$user_part[2]);
+                $user = User::where('user_title_id',UserTitle::where('user_title_short',$title)->first()->id)
+                        ->where('lastname',$lastname)
+                        ->where('firstname',$firstname);
                 if ($user->first()!==NULL)
                     {
                     return $user->first()->id;

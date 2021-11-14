@@ -70,14 +70,17 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ route('rooms.index') }}">Sale</a></li>
                                     <br>
-                                    <li><a href="{{ route('itemtypes.index',0) }}">Środki</a></li>
+                                    <li><a href="{{ route('itemtypes.index',0) }}">Sprzęt</a></li>
                                     <br>
 
-                                    @foreach (App\ItemType::MenuTypes() as $MenuType)
+
+                                    <?php /* @foreach (App\ItemType::MenuTypes() as $MenuType)
                                         <li><a href="{{ route('items.index',['item_group' => $MenuType->item_type_code]) }}">{{$MenuType->item_type_name}}</a></li>
                                     @endforeach
                                         <li><a href="/items/wszystko">wszystko</a></li>
-                                    @if (Auth::user()->CenterRole('Operator Zasobów','CSM-Piel'))
+                                    */ ?>
+                                    <?php /* @if (Auth::user()->CenterRole('Operator Zasobów','CSM-Lek')) */ ?>
+                                    @if (Auth::user()->hasRole('Operator Zasobów'))
                                         <br>
                                         <li style="background-color: #FF0;"><a href="/ManItem">zarządzanie</a></li>
                                     @endif
@@ -89,14 +92,17 @@
                                 <a data-toggle="dropdown" href="#" class="dropdown-toggle">Symulacje <b class="caret"></b></a>   
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ route('simmeds.index',['route' => 'now']) }}">Bieżące</a></li>
+                                    @if ( (Auth::user()->hasRole('Technik')) || (Auth::user()->hasRole('koordynator')) )
                                     <li><a href="{{ route('simmeds.index',['route' => 'all']) }}">Wszystkie</a></li>
                                     <li><a href="{{ route('simmeds.scheduler',date('Y-m-d')) }}">Dziś</a></li>
                                     <li><a href="{{ route('simmeds.timetable') }}">Terminarz</a></li>
+                                    @endif
                                     <br>
                                     <li><a href="{{ route('scenarios.index') }}">Scenariusze</a></li>
 
 
-                                    @if (Auth::user()->CenterRole('Operator Symulacji','CSM-Piel'))
+                                    <?php /* @if (Auth::user()->CenterRole('Operator Symulacji','CSM-Piel')) */ ?>
+                                    @if (Auth::user()->hasRole('Operator Symulacji'))
                                     <br>
                                     <li><a href="{{ route('simmeds.plane') }}">Planowanie</a></li>
                                     <li style="background-color: #FF0;"><a href="{{ route('mansimmeds.index') }}">zarządzanie</a></li>

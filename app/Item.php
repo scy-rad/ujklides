@@ -26,8 +26,9 @@ class Item extends Model
             return $this->item_photo;
         if ($this->group()->item_group_photo!='')
             return $this->group()->item_group_photo;
-        if ($this->group()->type()->item_type_photo!='')
-            return $this->group()->type()->item_type_photo;
+        //if ($this->group()->type()->item_type_photo!='')
+        //    return $this->group()->type()->item_type_photo;
+        return $this->group()->type()->photo_OK();
         
             return "_no_photo.png";
     }

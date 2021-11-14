@@ -12,7 +12,11 @@ class ItemGroup extends Model
         return $this->belongsToMany(Doc::class, 'doc_for_groups', 'item_group_id', 'doc_id')->withTimestamps();//->get();
     }
     public function type() {
-        return $this->hasOne(ItemType::class,'id','item_type_id');//->get()->first();
+        return $this->hasOne(ItemType::class,'id','item_type_id')->get()->first();
+        //return $this->hasOne(ItemType::class,'id','item_type_id');//->get()->first(); -<tak było wcześniej...
+    }
+    public function type_no_get() {
+        return $this->hasOne(ItemType::class,'id','item_type_id');//->get()->first(); -<tak było wcześniej...
     }
     public function items() {
         return $this->hasMany(Item::class,'item_group_id');//->get();

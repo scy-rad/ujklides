@@ -259,6 +259,12 @@ Route::post('mansimmeds/impclear', [
     'as' => 'mansimmeds.impclear'
 ]);
 
+Route::post('mansimmeds/clear_import_tmp', [
+    'uses' => 'ManSimmedController@clear_import_tmp',
+    'as' => 'mansimmeds.clear_import_tmp'
+]);
+
+
 
 
 /////////////////////////////////////////////////////////

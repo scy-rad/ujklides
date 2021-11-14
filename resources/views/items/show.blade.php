@@ -10,14 +10,14 @@
 <!--h1> { { $action }} item { { $subid }}</h1-->
 <div class="row">
     <div class="col-sm-12">
-        {!!$item->group()->type->typepatch()!!}
+        {!!$item->group()->type_no_get->typepatch()!!}
     </div>
 </div>
 <div class="row">
     <div class="col-sm-4">
         <a href="{{route('items.show', $item->id)}}">
         <div class="tile">
-            <img src="/storage/img/items/{{ $item->photo_OK() }}" class="tile">
+            <img src="{{asset('/storage/'.$item->photo_OK()) }}" class="tile">
             <!--div class="tiletitle">
                 {!! $item->group()->item_group_name !!}
                 {!! $item->group()->item_group_producent !!}

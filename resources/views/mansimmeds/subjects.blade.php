@@ -1,9 +1,9 @@
 <?php
-if (!Auth::user()->hasRole('Operator Symulacji')) 
+if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania widoku ManSimMeds index','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 ?>
 
-        @extends('layouts.app')
+@extends('layouts.app')
 
 @section('title', " Zarządzaj symulacjami: tematy")
 
@@ -38,4 +38,4 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
     @endforeach
 </table>
 
-@endsection        
+@endsection

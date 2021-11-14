@@ -6,6 +6,7 @@ use App\Gallery;
 use App\GalleryPhoto;
 use App\GalleryForItem;
 use App\GalleryForRoom;
+use App\GalleryForGroup;
 
 class GalleryTableSeeder extends Seeder
 {
@@ -605,11 +606,11 @@ class GalleryTableSeeder extends Seeder
             put_photos($ret_gal,"d0.10c.jpg","sala intensywnej terapii pediatryczna","sala intensywnej terapii pediatryczna");
             put_photos($ret_gal,"d0.10d.jpg","sala intensywnej terapii pediatryczna","sala intensywnej terapii pediatryczna");
             put_photos($ret_gal,"d0.10e.jpg","sala intensywnej terapii pediatryczna","sala intensywnej terapii pediatryczna");
-            $ret_gal=make_room_gallery("D 0.11 b","pomieszczenie kontrolne sali D 0.10","","");
+            $ret_gal=make_room_gallery("D 0.11b","pomieszczenie kontrolne sali D 0.10","","");
             put_photos($ret_gal,"d0.11ba.jpg","pomieszczenie kontrolne sali D 0.10","pomieszczenie kontrolne sali D 0.10");
-            $ret_gal=make_room_gallery("D 0.11 c","pomieszczenie kontrolne sali D 0.09","","");
+            $ret_gal=make_room_gallery("D 0.11c","pomieszczenie kontrolne sali D 0.09","","");
             put_photos($ret_gal,"d0.11ca.jpg","pomieszczenie kontrolne sali D 0.09","pomieszczenie kontrolne sali D 0.09");
-            $ret_gal=make_room_gallery("D 0.11 d","magazynek D","","");
+            $ret_gal=make_room_gallery("D 0.11d","magazynek D","","");
             put_photos($ret_gal,"d0.11da.jpg","magazynek D","magazynek D");
             put_photos($ret_gal,"d0.11db.jpg","magazynek D","magazynek D");
             

@@ -20,7 +20,7 @@ class CreateRoomsTable extends Migration
             $table->string('room_photo')->default('_room.jpg');
             $table->string('room_number');
             $table->string('room_name');
-            $table->string('room_description');
+            $table->text('room_description');
             $table->string('room_xp_code');
             $table->smallInteger('room_status')->default(1);
             $table->timestamps();

@@ -31,13 +31,7 @@ class ManSimmedController extends Controller
     if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji index kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-
-        //$data['rooms']=room::all();
-       // $data['tab2']=['jeden'=>1, 'dwa'=>2, 'trzy'=>3];
-       // $data['tab3']='It for room ';
-        //$data['tab3']='It for room '.$request->forroom;
-
-        return view('mansimmeds.index');//->with($data);
+        return view('mansimmeds.index');
     }
 
     public function subjects() //  metoda GET bez parametrów
@@ -45,13 +39,7 @@ class ManSimmedController extends Controller
         if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji index kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-
-        $data['subjects']=StudentSubject::all();
-        $data['tab2']=['jeden'=>1, 'dwa'=>2, 'trzy'=>3];
-        $data['tab3']='It for room ';
-        //$data['tab3']='It for room '.$request->forroom;
-
-        return view('mansimmeds.subjects')->with($data);
+        return view('mansimmeds.subjects')->with(['subjects' => StudentSubject::all()]);
     }
 
     public function groups() //  metoda GET bez parametrów
@@ -59,13 +47,7 @@ class ManSimmedController extends Controller
         if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji index kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-
-        $data['groups']=StudentGroup::all();
-        $data['tab2']=['jeden'=>1, 'dwa'=>2, 'trzy'=>3];
-        $data['tab3']='It for room ';
-        //$data['tab3']='It for room '.$request->forroom;
-
-        return view('mansimmeds.groups')->with($data);
+        return view('mansimmeds.groups')->with(['groups' => StudentGroup::all()]);
     }
 
 
@@ -81,18 +63,7 @@ class ManSimmedController extends Controller
         if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji import kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-        $data=null;
-        $data['step']=$request->step;
-
-        // $data['import_data_id']=$request->import_data_id;
-        // if ($request->import_data_id >0)
-        //     $data['import_data']=SimmedTempPost::find($request->import_data_id)->post_data;
-
-
-        $data['max_import_number']=SimmedTemp::max('import_number');
-
-        return view('mansimmeds.import_file')->with($data);
-
+        return view('mansimmeds.import_file')->with( ['max_import_number' => SimmedTemp::max('import_number')] );
     }   //end of public function import_file
 
 
@@ -108,22 +79,28 @@ class ManSimmedController extends Controller
         if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji import kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-        dump('import_check');
+        function magic_date($word_date)
+        {
+            if (date('m')<8)
+                if (substr($word_date,3,2)>9)
+                    return date('Y-',strtotime("-1 year", time())).substr($word_date,3,2).'-'.substr($word_date,0,2);
+                else
+                    return date('Y-').substr($word_date,3,2).'-'.substr($word_date,0,2);
+            else
+                if (substr($word_date,3,2)>9)
+                    return date('Y-').substr($word_date,3,2).'-'.substr($word_date,0,2);
+                else
+                    return date('Y-',strtotime("+1 year", time())).substr($word_date,3,2).'-'.substr($word_date,0,2);
+        }
 
-        //dd($request);
         $data=null;
 
         $request->import_data=str_replace("\r\n\r\n"|"\r\n \r\n","\r\nx\r\n",$request->import_data);
 
-        //$zmEQ = new SimmedTempPost();
-        //$zmEQ->post_data=$request->import_data;
-        //$return=$zmEQ->save();
         $max_import_number=SimmedTemp::max('import_number')+1;
-
 
             $rows = explode("\n", str_replace("\r", "", $request->import_data));
             $data['info']['wrong_count']=0;
-            $data['simmeds']=NULL;
 
             $row_number=0;
 
@@ -131,7 +108,6 @@ class ManSimmedController extends Controller
                                             ////////////////////////////////////////
             foreach ($rows as $import_row)  // początek analizy pliku z uczelniXP //
             {
-
                 $row_number++;
                 $data_write=null;
 
@@ -147,50 +123,21 @@ class ManSimmedController extends Controller
                     }
                     else          //a jeżeli nie - to analizujemy wszystkie pola
                     {
-                        $data_write['status']='ok';
-                        $data_write['row_number']=$row_number;
-                        $data_write['import_row']=$import_row;
-                        $data_write['room_id']=$current_room_id;
-                        $data_write['room_xp_txt']=$current_room_xp_code;
-                        $data_write['simmed_date']=date('Y-').substr($data_rows[0],3,2).'-'.substr($data_rows[0],0,2);
-                            $data_write['simmed_alternative_title']=substr($data_rows[0],5,200).' ';
-                        $data_write['simmed_time_begin']=$data_rows[2];
-                        $data_write['simmed_time_end']=$data_rows[3];
-
-                        $data_write['simmed_leader_txt']=$data_rows[4];
-                        $data_write['simmed_leader_id']=User::find_user($data_write['simmed_leader_txt'])*0;
-
-                        $data_write['student_subject_txt']=$data_rows[5];
-                        $data_write['student_subject_id']=StudentSubject::find_subject($data_write['student_subject_txt']);
-
-                        $data_write['student_group_txt']=$data_rows[6];
-                        $data_write['student_group_id']=StudentGroup::find_group($data_write['student_group_txt']);
-
-                        $data_write['student_subgroup_txt']=$data_rows[7];
-                        $data_write['student_subgroup_id']=StudentSubgroup::find_subgroup($data_write['student_group_id'],$data_write['student_subgroup_txt']);
-
-                        $data['simmeds'][]=$data_write;
                         $new_tmp = new SimmedTemp();
                         $new_tmp['import_number']              = $max_import_number;
-                        $new_tmp['import_row']                 = $data_write['import_row'];
-                        $new_tmp['simmed_id']                  = 1;
-                        $new_tmp['room_id']                    = $data_write['room_id'];
-                        $new_tmp['room_xp_txt']                = $data_write['room_xp_txt'];
-                        $new_tmp['simmed_date']                = $data_write['simmed_date'];
-                        $new_tmp['simmed_alternative_title']   = $data_write['simmed_alternative_title'];
-                        $new_tmp['simmed_time_begin']          = $data_write['simmed_time_begin'];
-                        $new_tmp['simmed_time_end']            = $data_write['simmed_time_end'];
-                        $new_tmp['simmed_leader_txt']          = $data_write['simmed_leader_txt'];
-                        $new_tmp['simmed_leader_id']           = $data_write['simmed_leader_id'];
-                        $new_tmp['student_subject_txt']        = $data_write['student_subject_txt'];
-                        $new_tmp['student_subject_id']         = $data_write['student_subject_id'];
-                        $new_tmp['student_group_txt']          = $data_write['student_group_txt'];
-                        $new_tmp['student_group_id']           = $data_write['student_group_id'];
-                        $new_tmp['student_subgroup_txt']       = $data_write['student_subgroup_txt'];
-                        $new_tmp['student_subgroup_id']        = $data_write['student_subgroup_id'];
+                        $new_tmp['import_row']                 = $import_row;
+                        $new_tmp['simmed_id']                  = $max_import_number;
+                        $new_tmp['room_id']                    = $current_room_id;
+                        $new_tmp['room_xp_txt']                = $current_room_xp_code;
+                        $new_tmp['simmed_date']                = magic_date($data_rows[0]);
+                        $new_tmp['simmed_time_begin']          = $data_rows[2];
+                        $new_tmp['simmed_time_end']            = $data_rows[3];
+                        $new_tmp['simmed_leader_txt']          = trim($data_rows[4]);
+                        $new_tmp['student_subject_txt']        = trim($data_rows[6]);
+                        $new_tmp['student_group_txt']          = trim(substr(str_replace("/N","/S",$data_rows[7]),2,20));
+                        $new_tmp['student_subgroup_txt']       = trim($data_rows[5]);
 
                         $return=$new_tmp->save();
-
                     }
                 }   //if (count($data_rows)==8)
                 elseif (substr($import_row,0,8)=='Zajęcia') //chyba że jest to nagłówek tabeli sali
@@ -225,8 +172,8 @@ class ManSimmedController extends Controller
                     $data['wrong'][]=$import_row;
                 }
 
-            }   // koniec analizy pliku z uczelniXP //
-                    //////////////////////////////////////
+            }
+            // koniec analizy pliku z uczelniXP //
 
             if ($request->import_type == "xls")
                                             ////////////////////////////////////////
@@ -248,65 +195,60 @@ class ManSimmedController extends Controller
                     }
                     else          //a jeżeli nie - to analizujemy wszystkie pola
                     {
-                        $data_write['status']='ok';
-                        $data_write['row_number']=$row_number;
-                        $data_write['import_row']=$import_row;
-                        dd('sprawdź salę przy xls  ManSimmedController');
-                        //$data_write['room_id']=$data['info']['room_id'];
-                        $data_write['simmed_date']=substr($data_rows[0],6,4).'-'.substr($data_rows[0],3,2).'-'.substr($data_rows[0],0,2);
-                            $data_write['simmed_alternative_title']=$data_write['simmed_date'].' ';
-                        $data_write['simmed_time_begin']=substr($data_rows[2],0,5);
-                        $data_write['simmed_time_end']=substr($data_rows[2],6,5);
-
-                        $data_write['simmed_leader_txt']=trim($data_rows[4]);
-                        $data_write['simmed_leader_id']=User::find_user($data_write['simmed_leader_txt']);
-                        
-                        $data_write['student_subject_txt']=trim($data_rows[7]);
-                        $data_write['student_subject_id']=StudentSubject::find_subject($data_write['student_subject_txt']);
-                        
-                        $data_write['student_group_txt']=trim($data_rows[8]);
-                        $data_write['student_group_id']=StudentGroup::find_group($data_write['student_group_txt']);
-                        
-                        $data_write['student_subgroup_txt']=substr(trim(str_replace(',','',$data_rows[5])),-2);
-                        $data_write['student_subgroup_id']=StudentSubgroup::find_subgroup($data_write['student_group_id'],$data_write['student_subgroup_txt']);
-
-                        $data_write['room_xls_txt']=trim($data_rows[9]);
-                        $data_write['room_id']=Room::find_xls_room($data_write['room_xls_txt']);
-
-                        $data['simmeds'][]=$data_write;
-
                         $new_tmp = new SimmedTemp();
                         $new_tmp['import_number']              = $max_import_number;
-                        $new_tmp['import_row']                 = $data_write['import_row'];
-                        $new_tmp['simmed_id']                  = 1;
-                        $new_tmp['room_id']                    = $data_write['room_id'];
-                        $new_tmp['room_xls_txt']               = $data_write['room_xls_txt'];
-                        $new_tmp['simmed_date']                = $data_write['simmed_date'];
-                        $new_tmp['simmed_alternative_title']   = $data_write['simmed_alternative_title'];
-                        $new_tmp['simmed_time_begin']          = $data_write['simmed_time_begin'];
-                        $new_tmp['simmed_time_end']            = $data_write['simmed_time_end'];
-                        $new_tmp['simmed_leader_txt']          = $data_write['simmed_leader_txt'];
-                        $new_tmp['simmed_leader_id']           = $data_write['simmed_leader_id'];
-                        $new_tmp['student_subject_txt']        = $data_write['student_subject_txt'];
-                        $new_tmp['student_subject_id']         = $data_write['student_subject_id'];
-                        $new_tmp['student_group_txt']          = $data_write['student_group_txt'];
-                        $new_tmp['student_group_id']           = $data_write['student_group_id'];
-                        $new_tmp['student_subgroup_txt']       = $data_write['student_subgroup_txt'];
-                        $new_tmp['student_subgroup_id']        = $data_write['student_subgroup_id'];
+                        $new_tmp['import_row']                 = $import_row;
+                        $new_tmp['simmed_id']                  = $max_import_number;
+                        $new_tmp['room_id']                    = Room::find_xls_room(trim($data_rows[9]));
+                        $new_tmp['room_xls_txt']               = trim($data_rows[9]);
+                        $new_tmp['simmed_date']                = substr($data_rows[0],6,4).'-'.substr($data_rows[0],3,2).'-'.substr($data_rows[0],0,2);
+                        $new_tmp['simmed_time_begin']          = substr($data_rows[2],0,5);
+                        $new_tmp['simmed_time_end']            = substr($data_rows[2],6,5);
+                        $new_tmp['simmed_leader_txt']          = trim($data_rows[4]);
+                        $new_tmp['student_subject_txt']        = trim($data_rows[7]);
+                        $new_tmp['student_group_txt']          = trim(substr(str_replace("//N//","//S//",trim($data_rows[8])),2,20));
+                        $new_tmp['student_subgroup_txt']       = substr(trim(str_replace(',','',$data_rows[5])),-2);
 
                         $return=$new_tmp->save();
-
                     }
                 }   // koniec analizy wiersza
-            } // koniec analizy pliku z eXcela Ilony //
-              /////////////////////////////////////////
+            }
+            // koniec analizy pliku z eXcela Ilony //
+            /////////////////////////////////////////
 
         //$request->info_wrong_count=$data['info'];
 
-        $data['miss']=app('App\Http\Controllers\ManSimmedController')->check_tmp_data();
-        $data['step']=$request->step;
+        $duplicates = DB::table('simmed_temps')
+        ->select('simmed_date','simmed_time_begin','simmed_time_end','room_xp_txt','simmed_leader_txt','student_subject_txt','student_group_txt','student_subgroup_txt', DB::raw('COUNT(*) as `count`'))
+       ->groupBy('simmed_date','simmed_time_begin','simmed_time_end','room_xp_txt','simmed_leader_txt','student_subject_txt','student_group_txt','student_subgroup_txt')
+       //->havingRaw('COUNT(*) > 1')
+       ->having('count', '>', 1)
+       ->orderBy('simmed_date','simmed_time_begin','simmed_time_end','room_xp_txt','simmed_leader_txt','student_subject_txt','student_group_txt','student_subgroup_txt')
+       ->get();
 
-        return view('mansimmeds.import_check')->with($data);
+       foreach ($duplicates as $duplicate)
+            {
+            $zwrot=SimmedTemp::where('simmed_date',$duplicate->simmed_date)
+            ->where('simmed_time_begin',$duplicate->simmed_time_begin)
+            ->where('simmed_time_end',$duplicate->simmed_time_end)
+            ->where('room_xp_txt',$duplicate->room_xp_txt)
+            ->where('simmed_leader_txt',$duplicate->simmed_leader_txt)
+            ->where('student_subject_txt',$duplicate->student_subject_txt)
+            ->where('student_group_txt',$duplicate->student_group_txt)
+            ->where('student_subgroup_txt',$duplicate->student_subgroup_txt)
+            ->get()
+            ->first()
+            ->delete();
+            }
+
+        //$data['miss']=app('App\Http\Controllers\ManSimmedController')->check_tmp_data();
+        $data['step']=$request->step;
+        //$data['simmeds']=SimmedTemp::all()->toArray();
+
+        $data['max_import_number']=SimmedTemp::max('import_number');
+
+        //return view('mansimmeds.import_check')->with($data);
+        return view('mansimmeds.import_file')->with($data);
     }   //end of public function import_check
 
 
@@ -320,12 +262,39 @@ class ManSimmedController extends Controller
     public function import_reread(Request $request)
     {
 
-        $data['simmeds']=SimmedTemp::all()->toArray();
+        //$data['simmeds']=SimmedTemp::all()->toArray();
         $data['miss']=app('App\Http\Controllers\ManSimmedController')->check_tmp_data();
+        $data['simmeds']=SimmedTemp::whereNull('simmed_leader_id')
+            ->orWhereNull('student_subject_id')
+            ->orWhereNull('student_group_id')
+            ->get();
+            //->toArray();
         $data['step']=$request->step;
 
         return view('mansimmeds.import_check')->with($data);
     }   //end of public function import_REREAD
+
+
+    /*###########################################*\
+    ##                                           ##
+    ##       C L E A R   I M P O R T   F I L E   ##
+    ##                                           ##
+    \*###########################################*/
+
+
+    public function clear_import_tmp()
+    {
+        if (!Auth::user()->hasRole('Operator Symulacji'))
+        return view('error',['head'=>'błąd wywołania funkcji import kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+        SimmedTemp::truncate();
+
+        $data['step']="clear_tmp";
+        $data['max_import_number']=SimmedTemp::max('import_number');
+        return view('mansimmeds.import_file')->with($data);
+
+    }   //end of public function clear_import_tmp
+
 
 
     /*###########################################*\
@@ -343,7 +312,9 @@ class ManSimmedController extends Controller
         //
         //      LEADERS
         //
-        $no_leaders=SimmedTemp::select('simmed_leader_txt')->where('simmed_leader_id',0)->where('simmed_leader_txt','<>','')->distinct()->get();
+        //$no_leaders=SimmedTemp::select('simmed_leader_txt')->where('simmed_leader_id',0)->where('simmed_leader_txt','<>','')->distinct()->get();
+        $no_leaders=SimmedTemp::select('simmed_leader_txt')->whereNull('simmed_leader_id')->where('simmed_leader_txt','<>','')->distinct()->get();
+
         $data['missing_leaders']=0;
         //INFO: przeanalizuj wszystkie wiersze bez zidentyfikowanych instruktorów
         if (count($no_leaders)>0)
@@ -372,7 +343,7 @@ class ManSimmedController extends Controller
                 {
                 // Jeśli tak - to wpisz jego ID do wszystkich wystąpień w bazie z tymczasowym importem.
                 SimmedTemp::where('simmed_leader_txt',$no_leader->simmed_leader_txt)
-                    ->where('simmed_leader_id',0)
+                    ->whereNull('simmed_leader_id')
                     ->update(['simmed_leader_id' => $simmed_leader_id]);
                 }
             } // end of foreach ($no_leaders as $no_leader)
@@ -380,12 +351,12 @@ class ManSimmedController extends Controller
         //
         //      SUBJECTS
         //
-        $no_subjects=SimmedTemp::select('student_subject_txt')->where('student_subject_id',0)->where('student_subject_txt','<>','')->distinct()->get();
+        $no_subjects=SimmedTemp::select('student_subject_txt')->whereNull('student_subject_id')->where('student_subject_txt','<>','')->distinct()->get();
         $data['missing_subjects']=0;
         if (count($no_subjects)>0)
         foreach ($no_subjects as $no_subject)
             {
-            $student_subject_id=StudentSubject::where('student_subject_name',$no_subject->student_subject_txt)->first();
+            $student_subject_id=StudentSubject::where('student_subject_name',$no_subject->student_subject_txt)->orWhere('student_subject_name_en',$no_subject->student_subject_txt)->first();
             if ($student_subject_id===NULL)
                 {
                 $licz=SimmedTemp::where('student_subject_txt',$no_subject->student_subject_txt)->first()->id;
@@ -400,8 +371,8 @@ class ManSimmedController extends Controller
                 }
             else
                 {
-                SimmedTemp::where('student_subject_name',$no_subject->student_subject_txt)
-                    ->where('student_subject_id',0)
+                SimmedTemp::where('student_subject_txt',$no_subject->student_subject_txt)
+                    ->whereNull('student_subject_id')
                     ->update(['student_subject_id' => $student_subject_id->id]);
                 }
             } // end of $no_subjects as $no_subject
@@ -409,7 +380,7 @@ class ManSimmedController extends Controller
         //
         //      GROUPS
         //
-        $no_groups=SimmedTemp::select('student_group_txt')->where('student_group_id',0)->where('student_group_txt','<>','')->distinct()->get();
+        $no_groups=SimmedTemp::select('student_group_txt')->whereNull('student_group_id')->where('student_group_txt','<>','')->distinct()->get();
         $data['missing_groups']=0;
         if (count($no_groups)>0)
         foreach ($no_groups as $no_group)
@@ -425,8 +396,8 @@ class ManSimmedController extends Controller
                 }
             else
                 {
-                SimmedTemp::where('student_group_name',$no_group->student_group_txt)
-                    ->where('student_group_id',0)
+                SimmedTemp::where('student_group_txt',$no_group->student_group_txt)
+                    ->whereNull('student_group_id')
                     ->update(['student_group_id' => $student_group_id->id]);
                 }
             } // end of $no_groups as $no_group
@@ -434,7 +405,7 @@ class ManSimmedController extends Controller
         //
         //      SUBGROUPS
         //
-		$no_subgroups=SimmedTemp::select('student_subgroup_txt','student_group_id')->where('student_subgroup_id',0)->where('student_subgroup_txt','<>','')->where('student_group_id','>',0)->distinct()->get();
+		$no_subgroups=SimmedTemp::select('student_subgroup_txt','student_group_id')->whereNull('student_subgroup_id')->where('student_subgroup_txt','<>','')->where('student_group_id','>',0)->distinct()->get();
         $data['missing_subgroups']=0;
         if (count($no_subgroups)>0)
         foreach ($no_subgroups as $no_subgroup)
@@ -450,9 +421,9 @@ class ManSimmedController extends Controller
                 }
             else
                 {
-                SimmedTemp::where('student_subgroup_name',$no_subgroup->student_subgroup_txt)->where('student_group_id',$no_subgroup->student_group_id)
-                    ->where('student_group_id',0)
-                    ->update(['student_group_id' => $student_group_id->id]);
+                SimmedTemp::where('student_subgroup_txt',$no_subgroup->student_subgroup_txt)->where('student_group_id',$no_subgroup->student_group_id)
+                    ->whereNull('student_subgroup_id')
+                    ->update(['student_subgroup_id' => $student_subgroup_id->id]);
                 }
             } // end of $no_subgroups as $no_subgroup
 
@@ -474,116 +445,117 @@ class ManSimmedController extends Controller
         if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji import kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-        dump('import_complement');
-
-                foreach ($request->request as $key=>$value)  // tworzymy tabelę liderów, która zawiera wybraną wcześniej akcję (na razie dodaj i pomiń, ale może changr też będzie)
-                                                            //może kiedyś będę mógł wybrać, co się dzieje ze znalezionymi brakami - czy mają być dodane, czy wpisane jako puste.
+        foreach ($request->request as $key=>$value)  // tworzymy tabelę liderów, która zawiera wybraną wcześniej akcję (na razie dodaj i pomiń, ale może changr też będzie)
+                                                    //może kiedyś będę mógł wybrać, co się dzieje ze znalezionymi brakami - czy mają być dodane, czy wpisane jako puste.
+        {
+            if ($value=='dodaj')
+            {
+                if (substr($key,0,16)=="missing_leaders-")      //key zawiera tekst "missing_leaders-" po którym jest ID wiersza, w którym jest dany leader
                 {
-                    if ($value=='dodaj')
+                    $fullname=trim(SimmedTemp::find(substr($key,16,5))->simmed_leader_txt);
+
+                    $firstname='';
+                    $lastname='';
+                    $title='';
+
+                    $pozostalo_do_analizy=$fullname;
+
+                    if (strpos($pozostalo_do_analizy, ' ', 0)>0)
                     {
-                        if (substr($key,0,16)=="missing_leaders-")      //key zawiera tekst "missing_leaders-" po którym jest ID wiersza, w którym jest dany leader
-                        {
-                            $fullname=trim(SimmedTemp::find(substr($key,16,16))->first()->simmed_leader_txt);
-                            $firstname='';
-                            $lastname='';
-                            $title='';
+                        $firstname              =   substr($pozostalo_do_analizy,strRpos($pozostalo_do_analizy, ' ', 0)+1,100);
+                        $pozostalo_do_analizy   =   substr($pozostalo_do_analizy,0,strRpos($pozostalo_do_analizy, ' ', 0));
+                        $lastname               =   $pozostalo_do_analizy;
+                    }
+                    if (strpos($pozostalo_do_analizy, ' ', 0)>0)
+                    {
+                        $lastname               =   substr($pozostalo_do_analizy,strRpos($pozostalo_do_analizy, ' ', 0)+1,100);
+                        $pozostalo_do_analizy   =   substr($pozostalo_do_analizy,0,strRpos($pozostalo_do_analizy, ' ', 0));
+                        $title                  =   $pozostalo_do_analizy;
+                    }
 
-                            dump('TAB TO DO',$fullname);
+                    if (UserTitle::where('user_title_short',$title)->count() > 0)
+                    {
+                        $leader = new User;
+                        $leader->user_title_id=UserTitle::where('user_title_short',$title)->first()->id;
+                        $leader->firstname = $firstname;
+                        $leader->lastname = $lastname;
+                        $leader->name = hrtime()[1];
+                        $leader->email = hrtime()[1].'@ujk.edu.pl';
+                        $leader->password = bcrypt('pass'.hrtime()[1]);
+                        $leader->user_status = 1;
+                        $leader->simmed_notify = 0;
 
-                            $pozostalo_do_analizy=$fullname;
+                        $leader->save();
+                        $leader->add_roles(Roles::find_by_name('Instruktor'),1);
 
-                            if (strpos($pozostalo_do_analizy, ' ', 0)>0)
-                            {
-                                $firstname              =   substr($pozostalo_do_analizy,strRpos($pozostalo_do_analizy, ' ', 0)+1,100);
-                                $pozostalo_do_analizy   =   substr($pozostalo_do_analizy,0,strRpos($pozostalo_do_analizy, ' ', 0));
-                                $lastname               =   $pozostalo_do_analizy;
-                            }
-                            if (strpos($pozostalo_do_analizy, ' ', 0)>0)
-                            {
-                                $lastname               =   substr($pozostalo_do_analizy,strRpos($pozostalo_do_analizy, ' ', 0)+1,100);
-                                $pozostalo_do_analizy   =   substr($pozostalo_do_analizy,0,strRpos($pozostalo_do_analizy, ' ', 0));
-                                $title                  =   $pozostalo_do_analizy;
-                            }
-
-                            if (UserTitle::where('user_title_short',$title)->count() > 0)
-                            {
-                                $leader = new User;
-                                $leader->user_title_id=UserTitle::where('user_title_short',$title)->first()->id;
-                                $leader->firstname = $firstname;
-                                $leader->lastname = $lastname;
-                                $leader->name = hrtime()[1];
-                                $leader->email = hrtime()[1].'@ujk.edu.pl';
-                                $leader->password = bcrypt('pass'.hrtime()[1]);
-                                $leader->user_status = 1;
-                                $leader->simmed_notify = 0;
-
-                                $leader->save();
-                                $leader->add_roles(Roles::find_by_name('Instruktor'),1);
-
-                                SimmedTemp::where('simmed_leader_txt',$fullname)
-                                    ->where('simmed_leader_id',0)
-                                    ->update(['simmed_leader_id' => $leader->id]);
-                            }
-                        }
-                        if (substr($key,0,17)=="missing_subjects-")
-                        {
-                            $subject_name=trim(SimmedTemp::find(substr($key,17,16))->first()->student_subject_txt);
-                            $subject=new StudentSubject();
-                            $subject->student_subject_name=$subject_name;
-                            $subject->student_subject_status=1;
-                            $subject->save();
-
-                            SimmedTemp::where('student_subject_txt',$subject_name)
-                                ->where('student_subject_id',0)
-                                ->update(['student_subject_id' => $subject->id]);
-                        }
-                        if (substr($key,0,15)=="missing_groups-")
-                        {
-                            $group_name=trim(SimmedTemp::find(substr($key,15,14))->first()->student_group_txt);
-                            $wydzial=0;
-                        if (strpos($group_name, 'P/', 0)>0) $wydzial=1;//pielęgniarstwo
-                        if (strpos($group_name, 'Po/', 0)>0) $wydzial=1;//położnictwo
-                        if (strpos($group_name, 'LEK/', 0)>0) $wydzial=2;//lekarski
-                        if (strpos($group_name, 'RM/', 0)>0) $wydzial=3;//ratownictwo
-                        if ($wydzial>0)
-                            {
-                                $group=new StudentGroup();
-                                $group->student_group_name=$group_name;
-                                $group->center_id=$wydzial;
-                                $group->student_group_status=1;
-                                $group->save();
-
-                                SimmedTemp::where('student_group_txt',$group_name)
-                                    ->where('student_group_id',0)
-                                    ->update(['student_group_id' => $group->id]);
-                            }
-                        }
-                        if (substr($key,0,18)=="missing_subgroups-")
-                        {
-                            $subgroup_name=trim(SimmedTemp::find(substr($key,18,17))->first()->student_subgroup_txt);
-                            $group_id=SimmedTemp::find(substr($key,18,17))->first()->student_subgroup_id;
-                            $subgroup=new StudentSubgroup();
-                            $subgroup->student_group_id=$group_id;
-                            $subgroup->subgroup_name=$subgroup_name;
-                            $subgroup->subgroup_status=1;
-                            $subgroup->save();
-
-                                SimmedTemp::where('student_subgroup_txt',$subgroup_name)
-                                    ->where('student_group_id',$group_id)
-                                    ->where('student_subgroup_id',0)
-                                    ->update(['student_subgroup_id' => $subgroup->id]);
-                        }
+                        SimmedTemp::where('simmed_leader_txt',$fullname)
+                            ->where('simmed_leader_id',0)
+                            ->update(['simmed_leader_id' => $leader->id]);
                     }
                 }
+                if (substr($key,0,17)=="missing_subjects-")
+                {
+                    $subject_name=trim(SimmedTemp::find(substr($key,17,5))->student_subject_txt);
+                    $subject=new StudentSubject();
+                    $subject->student_subject_name=$subject_name;
+                    $subject->student_subject_status=1;
+                    $subject->save();
 
-            $data['step']='check_data';
-            
-            $data['step']=$request->step;        
-            $data['simmeds']=SimmedTemp::all()->toArray();
-            $data['miss']=app('App\Http\Controllers\ManSimmedController')->check_tmp_data();
+                    SimmedTemp::where('student_subject_txt',$subject_name)
+                        ->where('student_subject_id',0)
+                        ->update(['student_subject_id' => $subject->id]);
+                }
+                if (substr($key,0,15)=="missing_groups-")
+                {
+                    $group_name=trim(SimmedTemp::find(substr($key,17,5))->student_group_txt);
+                    $wydzial=0;
+                if (strpos($group_name, 'P/', 0)>0) $wydzial=1;//pielęgniarstwo
+                if (strpos($group_name, 'Po/', 0)>0) $wydzial=1;//położnictwo
+                if (strpos($group_name, 'LEK/', 0)>0) $wydzial=2;//lekarski
+                if (strpos($group_name, 'RM/', 0)>0) $wydzial=3;//ratownictwo
+                if ($wydzial>0)
+                    {
+                        $group=new StudentGroup();
+                        $group->student_group_name=$group_name;
+                        $group->center_id=$wydzial;
+                        $group->student_group_status=1;
+                        $group->save();
 
-            dump('wywołanie mansimmeds.import_check');
-            return view('mansimmeds.import_check')->with($data);
+                        SimmedTemp::where('student_group_txt',$group_name)
+                            ->where('student_group_id',0)
+                            ->update(['student_group_id' => $group->id]);
+                    }
+                }
+                if (substr($key,0,18)=="missing_subgroups-")
+                {
+                    $subgroup_name=trim(SimmedTemp::find(substr($key,18,5))->student_subgroup_txt);
+                    $group_id=SimmedTemp::find(substr($key,18,5))->student_subgroup_id;
+                    $subgroup=new StudentSubgroup();
+                    $subgroup->student_group_id=$group_id;
+                    $subgroup->subgroup_name=$subgroup_name;
+                    $subgroup->subgroup_status=1;
+                    $subgroup->save();
+
+                        SimmedTemp::where('student_subgroup_txt',$subgroup_name)
+                            ->where('student_group_id',$group_id)
+                            ->where('student_subgroup_id',0)
+                            ->update(['student_subgroup_id' => $subgroup->id]);
+                }
+            }
+        }
+
+        $data['step']='check_data';
+
+        $data['step']=$request->step;
+
+        $data['miss']=app('App\Http\Controllers\ManSimmedController')->check_tmp_data();
+
+        $data['simmeds']=SimmedTemp::whereNull('simmed_leader_id')
+        ->orWhereNull('student_subject_id')
+        ->orWhereNull('student_group_id')
+        ->get();
+
+        return view('mansimmeds.import_check')->with($data);
         //return view('mansimmeds.import')->with($data);
     }   //end of public function import_complement
 
@@ -662,11 +634,32 @@ class ManSimmedController extends Controller
     {
         if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji impanalyze kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
-
-        echo 'Sprawdzam, czy są jakies wpisy do usunięcia<br>';
+/*
+        $blankTemps=SimmedTemp::whereNull('simmed_leader_id')->get();
+        if ($blankTemps->count()>0)
+            foreach ($blankTemps as $blankTemp)
+            {
+                $blankTemp->simmed_alternative_title=trim($blankTemp->simmed_leader_txt);
+                $blankTemp->save();
+            }
+        $blankTemps=SimmedTemp::whereNull('student_subject_id')->get();
+        if ($blankTemps->count()>0)
+            foreach ($blankTemps as $blankTemp)
+            {
+                $blankTemp->simmed_alternative_title=trim($blankTemp->simmed_alternative_title.' '.$blankTemp->student_subject_txt);
+                $blankTemp->save();
+            }
+        $blankTemps=SimmedTemp::whereNull('student_group_id')->get();
+        if ($blankTemps->count()>0)
+            foreach ($blankTemps as $blankTemp)
+            {
+                $blankTemp->simmed_alternative_title=trim($blankTemp->simmed_alternative_title.' '.$blankTemp->student_group_txt);
+                $blankTemp->save();
+            }
+*/
 
         $alltmps=SimmedTemp::where('simmed_id','>',0)->where('tmp_status','=',0)->get();
-        dump($alltmps);
+
         if ($alltmps->count()>0)    //jeżeli znalazłeś wpisy do usunięcia i nie mają jeszcze określonego statusu
             {
             dump('ManSimmedControler sprawdzam, czy nowe wpisy nie są zmianami w grafiku');

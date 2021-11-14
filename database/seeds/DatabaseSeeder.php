@@ -1,10 +1,10 @@
 <?php
 
-//php71-cli artisan migrate:refresh --seed
+//php artisan migrate:refresh --seed
 //composer dump-autoload
-//php71-cli artisan db:seed --class=ParamsTableSeeder
-//php71-cli artisan make:model ScenarioFiles --all
-//php71-cli artisan make:controller GalleryController --resource
+//php artisan db:seed --class=ParamsTableSeeder
+//php artisan make:model ScenarioFiles --all
+//php artisan make:controller GalleryController --resource
 
 
 use Illuminate\Database\Seeder;

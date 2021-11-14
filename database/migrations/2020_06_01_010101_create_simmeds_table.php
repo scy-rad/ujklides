@@ -52,7 +52,8 @@ class CreateSimmedsTable extends Migration
 
 		Schema::create('student_subjects', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('student_subject_name');
+            $table->string('student_subject_name')->default('');
+            $table->string('student_subject_name_en')->default('');
             $table->smallInteger('student_subject_status')->default(1);
             $table->timestamps();
         });

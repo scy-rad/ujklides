@@ -14,7 +14,7 @@ class RoomController extends Controller
 {
     public function index()
     {
-        $rooms =  Room::all();
+        $rooms =  Room::where('room_status',1)->get();
 	    return view('rooms.index', compact('rooms'));
     }
 
