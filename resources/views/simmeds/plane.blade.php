@@ -33,7 +33,7 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         
  ?>
 
-@foreach ($to_plane as $one_row)
+<?php /* @ foreach ($to_plane as $one_row)
     {{$one_row->simmed_date}};
     {{$one_row->simmed_time_begin}};
     {{$one_row->simmed_time_end}};
@@ -44,6 +44,7 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
     {{$one_row->name_of_student_subgroup() }}<br>
 @endforeach
 <?php dd(); ?>
+*/ ?>
 
 <span id="current_row" data-value="jakieś value"></span>
 
@@ -136,20 +137,45 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
 </table>
 
 <script>
-    function ChangeSimType(id_row,id_technika)
+
+    function ChangeSimType(id_row,id_character)
     {
+
+        //let activities = [0 => 'Location Zero', 1 => 'Location One', 2 => 'Location Two'];
+        var char_array = new Array();
+        var next_array = new Array();
+            @foreach ($technician_char as $one_row)
+                char_array[{{$one_row['next_value']}}] = "{{$one_row['character_short']}}";
+                next_array[{{$one_row['next_value']}}] = "{{$one_row['id']}}";
+            @endforeach
 
         zmiana = document.getElementById('type'+id_row);
 
-        let new_val = '{!!$technician_char[1]['character_short']!!}';
-        zmiana.innerHTML=new_val;
+        zmiana.innerHTML=char_array[id_character];
+        zmiana.setAttribute("onclick","ChangeSimType("+id_row+","+next_array[id_character]+")");
 
-        zmiana.setAttribute("onclick","('somethingDiff1',"+"'somethingDiff2')");
-
-        ajaxtechnicianchar
-
+        let _token   = '{{csrf_token()}}';
+            $.ajax(
+            {
+            url: "/simmed/ajaxtechnicianchar",
+            type:"POST",
+            data:{
+                id: id_row,
+                character_id: next_array[id_character],
+                _token: _token
+                },
+            success:function(response)
+                {
+                    console.log(response);
+                    if(response)
+                    {
+                        $('.success').text(response.success);
+                        //$("#ajaxform")[0].reset();
+                        //alert(response.success);
+                    }
+                },
+            });
     }
-
 
     function onclickHandler(id_row,id_technika)
     {
