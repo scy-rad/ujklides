@@ -126,16 +126,20 @@ class ManSimmedController extends Controller
                         $new_tmp = new SimmedTemp();
                         $new_tmp['import_number']              = $max_import_number;
                         $new_tmp['import_row']                 = $import_row;
-                        $new_tmp['simmed_id']                  = $max_import_number;
+                        $new_tmp['simmed_tmp_id']              = $max_import_number;
                         $new_tmp['room_id']                    = $current_room_id;
                         $new_tmp['room_xp_txt']                = $current_room_xp_code;
                         $new_tmp['simmed_date']                = magic_date($data_rows[0]);
                         $new_tmp['simmed_time_begin']          = $data_rows[2];
                         $new_tmp['simmed_time_end']            = $data_rows[3];
                         $new_tmp['simmed_leader_txt']          = trim($data_rows[4]);
-                        $new_tmp['student_subject_txt']        = trim($data_rows[6]);
-                        $new_tmp['student_group_txt']          = trim(substr(str_replace("/N","/S",$data_rows[7]),2,20));
-                        $new_tmp['student_subgroup_txt']       = trim($data_rows[5]);
+                        $new_tmp['student_subject_txt']        = trim($data_rows[5]);
+                        $new_tmp['student_group_txt']          = trim(substr(str_replace("/N","/S",$data_rows[6]),2,60));
+                        if (strpos($new_tmp['student_group_txt'],'/Sem.',0)>0)
+                            $new_tmp['student_group_txt'] = substr($new_tmp['student_group_txt'],0,strpos($new_tmp['student_group_txt'],'/Sem.',0));
+                        if (strpos($new_tmp['student_group_txt'],'/sem.',0)>0)
+                            $new_tmp['student_group_txt'] = substr($new_tmp['student_group_txt'],0,strpos($new_tmp['student_group_txt'],'/sem.',0));
+                        $new_tmp['student_subgroup_txt']       = trim($data_rows[7]);
 
                         $return=$new_tmp->save();
                     }
@@ -198,7 +202,7 @@ class ManSimmedController extends Controller
                         $new_tmp = new SimmedTemp();
                         $new_tmp['import_number']              = $max_import_number;
                         $new_tmp['import_row']                 = $import_row;
-                        $new_tmp['simmed_id']                  = $max_import_number;
+                        $new_tmp['simmed_temp_id']             = $max_import_number;
                         $new_tmp['room_id']                    = Room::find_xls_room(trim($data_rows[9]));
                         $new_tmp['room_xls_txt']               = trim($data_rows[9]);
                         $new_tmp['simmed_date']                = substr($data_rows[0],6,4).'-'.substr($data_rows[0],3,2).'-'.substr($data_rows[0],0,2);
@@ -307,6 +311,9 @@ class ManSimmedController extends Controller
     function check_tmp_data()
     {
         $data=null;
+
+        $data['no_rooms']=SimmedTemp::select('room_xp_txt')->where('room_id',0)->distinct()->get();
+
 
         //      INFO: wybierz wiersze, gdzie nie ma określonych ID instruktorów
         //
@@ -507,12 +514,17 @@ class ManSimmedController extends Controller
                 }
                 if (substr($key,0,15)=="missing_groups-")
                 {
-                    $group_name=trim(SimmedTemp::find(substr($key,17,5))->student_group_txt);
-                    $wydzial=0;
-                if (strpos($group_name, 'P/', 0)>0) $wydzial=1;//pielęgniarstwo
+                    $group_name=trim(SimmedTemp::find(substr($key,15,5))->student_group_txt);
+                    $wydzial=1;
+                    dump('ManSimMed ADD GROUP - trzeba zmienić wybór wydzialu');
+
+                    if (strpos($group_name, 'P/', 0)>0) $wydzial=1;//pielęgniarstwo
+                if (strpos($group_name, 'PIEL/', 0)>0) $wydzial=1;//położnictwo
                 if (strpos($group_name, 'Po/', 0)>0) $wydzial=1;//położnictwo
+                if (strpos($group_name, 'POŁ', 0)>0) $wydzial=1;//położnictwo
                 if (strpos($group_name, 'LEK/', 0)>0) $wydzial=2;//lekarski
                 if (strpos($group_name, 'RM/', 0)>0) $wydzial=3;//ratownictwo
+                        
                 if ($wydzial>0)
                     {
                         $group=new StudentGroup();
@@ -529,7 +541,7 @@ class ManSimmedController extends Controller
                 if (substr($key,0,18)=="missing_subgroups-")
                 {
                     $subgroup_name=trim(SimmedTemp::find(substr($key,18,5))->student_subgroup_txt);
-                    $group_id=SimmedTemp::find(substr($key,18,5))->student_subgroup_id;
+                    $group_id=SimmedTemp::find(substr($key,18,5))->student_group_id;
                     $subgroup=new StudentSubgroup();
                     $subgroup->student_group_id=$group_id;
                     $subgroup->subgroup_name=$subgroup_name;
@@ -560,70 +572,8 @@ class ManSimmedController extends Controller
     }   //end of public function import_complement
 
 
-    /*###########################################*\
-    ##                                           ##
-    ##       I M P O R T   A P P E N D           ##
-    ##                                           ##
-    \*###########################################*/
 
-
-    public function import_append(Request $request)
-    {
-        if (!Auth::user()->hasRole('Operator Symulacji'))
-        return view('error',['head'=>'błąd wywołania funkcji import kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
-
-
-        $data=null;
-        $data['step']=$request->step;
-
-        $data_all=SimmedTemp::where('tmp_status',1)->get();
-        if (count($data_all)>0)
-            foreach ($data_all as $data_one)
-                {
-                    $new_row=new Simmed;
-                    $new_row['simmed_date']						= $data_one['simmed_date'];
-                    $new_row['simmed_time_begin']				= $data_one['simmed_time_begin'];
-                    $new_row['simmed_time_end']					= $data_one['simmed_time_end'];
-                    $new_row['simmed_type_id']					= $data_one['simmed_type_id'];
-                    $new_row['simmed_alternative_title']		= $data_one['simmed_alternative_title'];
-                    $new_row['student_subject_id']	        	= $data_one['student_subject_id'];
-                    $new_row['student_group_id']    			= $data_one['student_group_id'];
-                    $new_row['student_subgroup_id']				= $data_one['student_subgroup_id'];
-                    $new_row['room_id']     					= $data_one['room_id'];
-                    $new_row['simmed_leader_id']	    		= $data_one['simmed_leader_id'];
-                    $new_row['simmed_technician_id']    		= $data_one['simmed_technician_id'];
-                    $new_row['simmed_technician_character_id']	= $data_one['simmed_technician_character_id'];
-                    $new_row['simmed_status']					= 1;
-                    $new_row['simmed_status2']					= 1;
-                    $ret=$new_row->save();
-                    // dump($ret);
-                    // dump($new_row->id);
-                    // dump(SimmedTemp::find($new_row->id));
-                    // dump('add',$data_one);
-                    $data_one->delete();
-                }
-
-        $data_all=SimmedTemp::where('tmp_status',2)->get();
-        if (count($data_all)>0)
-            foreach ($data_all as $data_one)
-                dd('update',$data_one);
-
-        $data_all=SimmedTemp::where('tmp_status',3)->get();
-        if (count($data_all)>0)
-            foreach ($data_all as $data_one)
-                dd('remove',$data_one);
-
-        $data_all=SimmedTemp::where('tmp_status',9)->get();
-        if (count($data_all)>0)
-            foreach ($data_all as $data_one)
-                dd('back',$data_one);
-
-
-        return view('mansimmeds.import')->with($data);
-    }   //end of public function import_append
-
-
-    /*###########################################*\
+   /*###########################################*\
     ##                                           ##
     ##       I M P O R T   A N A L Y Z E         ##
     ##                                           ##
@@ -657,6 +607,111 @@ class ManSimmedController extends Controller
                 $blankTemp->save();
             }
 */
+//sprawdż, czy dane wpisy nie są duplikatami
+        $alltmps=SimmedTemp::where('simmed_id','=',0)->where('tmp_status','=',0)->get();
+        foreach ($alltmps as $onetmp)
+        {
+            $wynk=Simmed::where('simmed_date',$onetmp->simmed_date)
+                        ->where('simmed_time_begin',$onetmp->simmed_time_begin)
+                        ->where('simmed_time_end',$onetmp->simmed_time_end)
+                        ->where('student_subject_id',$onetmp->student_subject_id)
+                        ->where('student_group_id',$onetmp->student_group_id)
+                        ->where('student_subgroup_id',$onetmp->student_subgroup_id)
+                        ->where('room_id',$onetmp->room_id)
+                        ->where('simmed_leader_id',$onetmp->simmed_leader_id)
+                        ->get();
+            // if ($wynk->count()>0)
+            // {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+            //     $onetmp->
+            // }
+        } 
 
         $alltmps=SimmedTemp::where('simmed_id','>',0)->where('tmp_status','=',0)->get();
 
@@ -922,6 +977,121 @@ class ManSimmedController extends Controller
         return view('mansimmeds.impanalyze')->with($data);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*###########################################*\
+    ##                                           ##
+    ##       I M P O R T   A P P E N D           ##
+    ##                                           ##
+    \*###########################################*/
+
+
+    public function import_append(Request $request)
+    {
+        if (!Auth::user()->hasRole('Operator Symulacji'))
+        return view('error',['head'=>'błąd wywołania funkcji import kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+
+        $data=null;
+        $data['step']=$request->step;
+
+        $data_all=SimmedTemp::where('tmp_status',1)->get();
+        if (count($data_all)>0)
+            foreach ($data_all as $data_one)
+                {
+                    $new_row=new Simmed;
+                    $new_row['simmed_date']						= $data_one['simmed_date'];
+                    $new_row['simmed_time_begin']				= $data_one['simmed_time_begin'];
+                    $new_row['simmed_time_end']					= $data_one['simmed_time_end'];
+                    $new_row['simmed_type_id']					= $data_one['simmed_type_id'];
+                    $new_row['simmed_alternative_title']		= $data_one['simmed_alternative_title'];
+                    $new_row['student_subject_id']	        	= $data_one['student_subject_id'];
+                    $new_row['student_group_id']    			= $data_one['student_group_id'];
+                    $new_row['student_subgroup_id']				= $data_one['student_subgroup_id'];
+                    $new_row['room_id']     					= $data_one['room_id'];
+                    $new_row['simmed_leader_id']	    		= $data_one['simmed_leader_id'];
+                    $new_row['simmed_technician_id']    		= $data_one['simmed_technician_id'];
+                    $new_row['simmed_technician_character_id']	= $data_one['simmed_technician_character_id'];
+                    $new_row['simmed_status']					= 1;
+                    $new_row['simmed_status2']					= 1;
+                    $ret=$new_row->save();
+                    // dump($ret);
+                    // dump($new_row->id);
+                    // dump(SimmedTemp::find($new_row->id));
+                    // dump('add',$data_one);
+                    $data_one->delete();
+                }
+
+        $data_all=SimmedTemp::where('tmp_status',2)->get();
+        if (count($data_all)>0)
+            foreach ($data_all as $data_one)
+                dd('update',$data_one);
+
+        $data_all=SimmedTemp::where('tmp_status',3)->get();
+        if (count($data_all)>0)
+            foreach ($data_all as $data_one)
+                dd('remove',$data_one);
+
+        $data_all=SimmedTemp::where('tmp_status',9)->get();
+        if (count($data_all)>0)
+            foreach ($data_all as $data_one)
+                dd('back',$data_one);
+
+
+        return view('mansimmeds.import')->with($data);
+    }   //end of public function import_append
+
+
+ 
     /**
      * Show the form for creating a new resource.
      *

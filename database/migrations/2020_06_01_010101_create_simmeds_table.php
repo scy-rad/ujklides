@@ -120,7 +120,8 @@ class CreateSimmedsTable extends Migration
             $table->increments('id');
             $table->integer('import_number');
             $table->text('import_row');
-            $table->unsignedInteger('simmed_id');
+            $table->unsignedInteger('simmed_id')->default(0);
+            $table->unsignedInteger('simmed_tmp_id');
             $table->date('simmed_date');
             $table->time('simmed_time_begin');
 			$table->time('simmed_time_end');
@@ -141,7 +142,7 @@ class CreateSimmedsTable extends Migration
             $table->string('simmed_leader_txt')->default('');
 
             $table->unsignedInteger('simmed_merge')->default(0);
-            $table->smallInteger('tmp_status')->default(1);
+            $table->smallInteger('tmp_status')->default(0);
             $table->timestamps();
         });
 

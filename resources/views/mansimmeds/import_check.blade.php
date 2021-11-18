@@ -101,6 +101,13 @@ function rowEK($new_simmed)
     @endif
 @endif
 
+    @if ($miss['no_rooms']->count()>0)
+        <ul><strong>Sale nie znalezione w systemie:</strong>
+            @foreach ($miss['no_rooms'] as $new_row)
+                <li>{{$new_row->room_xp_txt}}</li>
+            @endforeach
+        </ul>
+    @endif
 
     @if ( ($miss['missing_leaders']>0) || ($miss['missing_subjects']>0) || ($miss['missing_groups']>0) || ($miss['missing_subgroups']>0))
 

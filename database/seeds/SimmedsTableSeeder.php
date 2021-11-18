@@ -245,7 +245,13 @@ $id_group=add_student_group("RM/I stopień/niesta");	add_groupsub($id_group,"ćw
 $id_group=add_student_group("RM/I stopień/st/201");	add_groupsub($id_group,"ćwp",4);	add_groupsub($id_group,"ćw",2);
 $id_group=add_student_group("RM/Ist/S/2020/2021");	add_groupsub($id_group,"ćwp",5);	add_groupsub($id_group,"ćw",2);
 $id_group=add_student_group("RM/Ist/S/2021/2022/s");	add_groupsub($id_group,"ćwp",5);	
-
+$id_group=add_student_group("PIEL/Ist./S/2021/2022");	add_groupsub($id_group,"ćwp",16);	
+$id_group=add_student_group("POŁ/Ist./S/2021/2022");	add_groupsub($id_group,"ćwp",12);	
+$id_group=add_student_group("Po/IIst./S/2020/2021");		
+$id_group=add_student_group("RM/I stopień/st/2019/20");	add_groupsub($id_group,"ćwp",4);	add_groupsub($id_group,"ćw",2);
+$id_group=add_student_group("RM/I stopień/niestacjonarne/2019/20");	add_groupsub($id_group,"ćwp",2);	add_groupsub($id_group,"ćw",1);
+$id_group=add_student_group("RM/Ist/S/2021/2022");	add_groupsub($id_group,"ćwp",5);	
+$id_group=add_student_group("P/IIst./S/2020/2021");		
 
 
 
