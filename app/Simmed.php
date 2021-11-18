@@ -70,6 +70,11 @@ class Simmed extends Model
         return $this->hasOne(Room::class,'id','room_id')->get()->first();
     }
 
+    function technician_character()
+    {
+        return $this->hasOne(TechnicianCharacter::class,'id','simmed_technician_character_id')->get()->first();
+    }
+
     public function scenarios() {
        // return $this->hasMany(Scenario::class);//->get();
         return $this->belongsToMany(Scenario::class, 'scenario_for_simmeds', 'simmed_id', 'scenario_id')->withTimestamps();

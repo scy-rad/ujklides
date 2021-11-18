@@ -3,6 +3,7 @@
 //php artisan db:seed --class=SimmedsTableSeeder
 use Illuminate\Database\Seeder;
 
+use App\TechnicianCharacter;
 use App\StudentSubject;
 use App\StudentGroup;
 use App\StudentSubgroup;
@@ -113,6 +114,23 @@ class SimmedsTableSeeder extends Seeder
 			$zmEQ->save();
 			}
 
+
+$zmEQ = new TechnicianCharacter();
+$zmEQ->character_name='zajęcia bez obsługi';
+$zmEQ->character_short='free';
+$zmEQ->save();
+$zmEQ = new TechnicianCharacter();
+$zmEQ->character_name='przygotowanie';
+$zmEQ->character_short='prep';
+$zmEQ->save();
+$zmEQ = new TechnicianCharacter();
+$zmEQ->character_name='obecność';
+$zmEQ->character_short='stay';
+$zmEQ->save();
+$zmEQ = new TechnicianCharacter();
+$zmEQ->character_name='do ustalenia';
+$zmEQ->character_short='look';
+$zmEQ->save();
 
 add_student_subject("_przedmiot nieokreślony","");
 add_student_subject("Szkolenie trenerów","");

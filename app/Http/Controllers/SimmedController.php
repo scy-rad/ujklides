@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Simmed;
 use App\User;
 use App\SimmedArcTechnician;
+use App\TechnicianCharacter;
 use Illuminate\Support\Facades\DB;  //dla ajaxa
 use Illuminate\Support\Facades\Auth;
 
@@ -44,27 +45,28 @@ class SimmedController extends Controller
                     return $d && $d->format($format) == $date;
                 }
 
-        $sch_date=$request['date'];
-        $sch_csm=$request['csm'];
+        $ret_sch_date=$request['date'];
+        $ret['sch_csm']=$request['csm'];
 
-        if (!(validateDate($sch_date, 'Y-m-d')))
-            $sch_date=date('Y-m-d');
+        if (!(validateDate($ret_sch_date, 'Y-m-d')))
+            $ret_sch_date=date('Y-m-d');
 
-        $do_poniedzialku=date('N',strtotime($sch_date))-1;
-        $sch_date=date('Y-m-d',strtotime("$sch_date - $do_poniedzialku day"));
-        $sch_date_to=date('Y-m-d',strtotime("$sch_date +6 day"));
-        $sch_date_next=date('Y-m-d',strtotime("$sch_date +7 day"));
-        $sch_date_prev=date('Y-m-d',strtotime("$sch_date -7 day"));
+        $do_poniedzialku=date('N',strtotime($ret_sch_date))-1;
+        $ret_sch_date=date('Y-m-d',strtotime("$ret_sch_date - $do_poniedzialku day"));
+        dump('tu trzeba zmienić na +6 dni zamiast +1 - zmienione na czas testów tylko');
+        $ret['sch_date_to']=date('Y-m-d',strtotime("$ret_sch_date +1 day"));
+        $ret['sch_date_next']=date('Y-m-d',strtotime("$ret_sch_date +7 day"));
+        $ret['sch_date_prev']=date('Y-m-d',strtotime("$ret_sch_date -7 day"));
 
-            //$rows_plane=Simmed::simmeds_for_plane($sch_date); -  ta funkcja będzie do wywalenia, bo zmieniłem skrypt datatable
-            $rows_plane=Simmed::select('*','simmeds.id as sim_id')->where('simmed_date','>=',$sch_date)->where('simmed_date','<=',$sch_date_to)
+            //$rows_plane=Simmed::simmeds_for_plane($ret_sch_date); -  ta funkcja będzie do wywalenia, bo zmieniłem skrypt datatable
+            $rows_plane=Simmed::select('*','simmeds.id as sim_id')->where('simmed_date','>=',$ret_sch_date)->where('simmed_date','<=',$ret['sch_date_to'])
                 ->where('simmed_status','<',4);
-            if ($sch_csm<0)
+            if ($ret['sch_csm']<0)
                 //dump($request);
                 $rows_plane=$rows_plane->whereNull('student_group_id');
-            if ($sch_csm>0)
+            if ($ret['sch_csm']>0)
                 //dump($request);
-                $rows_plane=$rows_plane->join('student_groups', 'simmeds.student_group_id', '=', 'student_groups.id')->where('center_id','=',$sch_csm);
+                $rows_plane=$rows_plane->join('student_groups', 'simmeds.student_group_id', '=', 'student_groups.id')->where('center_id','=',$ret['sch_csm']);
 
 
                 $rows_plane=$rows_plane->orderBy('simmed_date')
@@ -72,10 +74,34 @@ class SimmedController extends Controller
                 ->orderBy('room_id')
                 ->get();
 
-        $technician_list=User::role_users('technicians', 1, 1)->get();
-        $center_list=\App\Center::all();
+        $ret['technician_list']=User::role_users('technicians', 1, 1)->get();
+        $ret['center_list']=\App\Center::all();
+        $technician_char=TechnicianCharacter::all();
+        $prev_id=0;
+        foreach ($technician_char as $technician_one)
+            {
+            if ($prev_id==0)
+                {
+                $prev_id=$technician_one->id;
+                $change_tech=$technician_one;
+                }
+            else
+                {
+                $change_tech->next_value=$technician_one->id;
+                $change_tech=$technician_one;
+                }
+            }
+            $change_tech->next_value=$prev_id;
+        
+        $ret_technician_char=$technician_char->toArray();
+        foreach ($ret_technician_char as $row)
+            $ret['technician_char'][$row['id']]=$row;   //zmiana, żeby id wiersza było id tabeli
 
-    return view('simmeds.plane', compact('rows_plane'),['sch_csm' => $sch_csm, 'sch_date' => $sch_date, 'sch_date_next' => $sch_date_next, 'sch_date_prev' => $sch_date_prev, 'technician_list' => $technician_list, 'center_list' => $center_list]);
+        $ret['sch_date']=$ret_sch_date;
+
+        $ret['to_plane'] =  Simmed::where('simmed_status','<>',4)->where('simmed_date','>=',date('Y-m-d'))->where('simmed_date','<=','2021-12-31')->orderBy('simmed_date')->orderBy('simmed_time_begin')->get();
+
+    return view('simmeds.plane', compact('rows_plane'),$ret);
     }
 
     public function scheduler( string $sch_date)
@@ -194,13 +220,20 @@ class SimmedController extends Controller
         $role->user_id = Auth::user()->id;
         $role->save();
 
-
-
         //return json_encode(array('statusCode'=>$request->id, 'status'=> $status));
         //return Json(new { result = true });
         return json_encode(array('result'=>false, 'tescik' =>'przykladowy_tekst', 'statusx'=> $status));
      }
 
+
+    public function ajaxtechnicianchar(Request $request) 
+    {
+        $status = DB::table('simmeds')
+       ->where('id', $request->id)
+       ->update(['simmed_technician_character_id' => $request->character_id]);
+       return json_encode(array('result'=>false, 'tescik' =>'przykladowy_tekst', 'statusx'=> $status));
+    }
+ 
     /**
      * Display the specified resource.
      *

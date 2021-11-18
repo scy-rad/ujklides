@@ -26,7 +26,7 @@ class CreateSimmedsTable extends Migration
             $table->unsignedInteger('room_id');
             $table->unsignedInteger('simmed_leader_id')->nullable();
             $table->unsignedInteger('simmed_technician_id')->nullable();
-            $table->smallInteger('simmed_technician_character_id')->nullable();
+            $table->unsignedInteger('simmed_technician_character_id')->nullable();
             $table->smallInteger('simmed_status')->default(1);
 			$table->smallInteger('simmed_status2')->default(1);
             $table->timestamps();
@@ -186,6 +186,21 @@ class CreateSimmedsTable extends Migration
         });
 
 
+
+        Schema::create('technician_characters', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('character_name')->default('');
+            $table->string('character_short')->default('');
+            $table->string('character_ico')->default('');
+            $table->timestamps();
+        });
+        Schema::table('simmeds', function (Blueprint $table) {
+            $table->foreign('simmed_technician_character_id')
+                ->references('id')
+                ->on('technician_characters');
+        });
+
+
     }
 
     /**
@@ -203,6 +218,7 @@ class CreateSimmedsTable extends Migration
         Schema::dropIfExists('simmed_temp_rooms');
         Schema::dropIfExists('simmed_arc_technicians');
         Schema::dropIfExists('simmed_temp_posts');
+        Schema::dropIfExists('technician_characters');
 
     }
 }
