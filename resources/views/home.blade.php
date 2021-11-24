@@ -14,7 +14,36 @@
                         </div>
                     @endif
 
-                    Jesteś zalogowany!
+
+<?php 
+$curr_date='';
+$dni_tygodnia = array( 'Niedziela', 'Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek', 'Sobota' );
+?>
+<ol>Plan zajęć użytkownika: {{Auth::user()->firstname}} {{Auth::user()->lastname}}:
+@foreach ($main_simulations as $simmed)
+        @if ($curr_date != $simmed->simmed_date)
+        </ol>
+            <?php $curr_date = $simmed->simmed_date; ?>
+        <ol>{{$simmed->simmed_date}} ({{$dni_tygodnia[ date('w',strtotime($simmed->simmed_date)) ] }})
+        @endif
+        <li><a href="{{route('simmeds.show', $simmed)}}">
+            {{ substr($simmed->simmed_time_begin,0,5) }} - {{ substr($simmed->simmed_time_end,0,5) }}: 
+            </a>
+            <strong >{{ $simmed->room()->room_number }}</strong>: 
+            <span class="bg-success">{{ $simmed->name_of_leader() }} </span>
+            {{ $simmed->name_of_student_subject() }}
+            <span class="bg-primary">[{{$simmed->technician_character()->character_name}}]</span>
+            <hr>
+        </li>
+@endforeach
+</ol>
+
+
+
+
+
+
+
                 </div>
             </div>
         </div>

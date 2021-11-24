@@ -108,6 +108,7 @@ class SimmedsTableSeeder extends Seeder
 			$zmEQ->student_subject_id=$aF_student_subject_id;
 			$zmEQ->student_group_id=$aF_student_group_id;
 			$zmEQ->room_id=$aF_simmed_room_id;
+			$zmEQ->simmed_technician_character_id=1;
 			$zmEQ->simmed_leader_id=$aF_simmed_leader_id;
 			$zmEQ->simmed_technician_id=$aF_simmed_technician_id;
 			$zmEQ->simmed_technician_character_id=$aF_simmed_technician_character_id;
@@ -115,6 +116,11 @@ class SimmedsTableSeeder extends Seeder
 			}
 
 
+$zmEQ = new TechnicianCharacter();
+$zmEQ->id=1;
+$zmEQ->character_name='do ustalenia';
+$zmEQ->character_short='look';
+$zmEQ->save();
 $zmEQ = new TechnicianCharacter();
 $zmEQ->character_name='zajęcia bez obsługi';
 $zmEQ->character_short='free';
@@ -131,10 +137,7 @@ $zmEQ = new TechnicianCharacter();
 $zmEQ->character_name='obecność';
 $zmEQ->character_short='stay';
 $zmEQ->save();
-$zmEQ = new TechnicianCharacter();
-$zmEQ->character_name='do ustalenia';
-$zmEQ->character_short='look';
-$zmEQ->save();
+
 
 add_student_subject("_przedmiot nieokreślony","");
 add_student_subject("Szkolenie trenerów","");
@@ -183,6 +186,9 @@ add_student_subject("Procedury ratunkowe przedszpitalne","");
 add_student_subject("Procedury ratunkowe wewnątrzszpitalne","");
 add_student_subject("Propedeutyka medycyny","");
 add_student_subject("Rehabilitacja w położnictwie, neonatologii i ginekologii","");
+add_student_subject("Podstawy pielęgniarstwa","");
+add_student_subject("Ortopedia i traumatologia narządu ruchu","");
+add_student_subject("Psychiatria i pielęgniarstwo psychiatryczne","");
 
 
 add_student_group("_grupa nieokreślona");
@@ -255,7 +261,7 @@ $id_group=add_student_group("LEK/Eng-Div-6/17/18");	add_groupsub($id_group,"ćw"
 $id_group=add_student_group("LEK/Eng-Div-6/18/19");	add_groupsub($id_group,"ćwpk",3);	
 $id_group=add_student_group("LEK/Eng-Div-6/19/20");	add_groupsub($id_group,"ćwpk",6);	
 $id_group=add_student_group("LEK/S/16/17");	add_groupsub($id_group,"ćwpk",20);	
-$id_group=add_student_group("LEK/S/17/18");	add_groupsub($id_group,"ćwpk",20);	
+$id_group=add_student_group("LEK/S/17/18");	add_groupsub($id_group,"ćwpk",20);	add_groupsub($id_group,"ćw",4);
 $id_group=add_student_group("LEK/S/18/19");	add_groupsub($id_group,"ćwpk",20);	
 $id_group=add_student_group("LEK/S/19/20");	add_groupsub($id_group,"ćwpk",20);	add_groupsub($id_group,"sym",12);
 $id_group=add_student_group("P/Ist./S/19/20");	add_groupsub($id_group,"ćwp",12);	add_groupsub($id_group,"sym",12);
@@ -267,12 +273,12 @@ $id_group=add_student_group("RM/I stopień/niesta");	add_groupsub($id_group,"ćw
 $id_group=add_student_group("RM/I stopień/st/201");	add_groupsub($id_group,"ćwp",4);	add_groupsub($id_group,"ćw",2);
 $id_group=add_student_group("RM/Ist/S/2020/2021");	add_groupsub($id_group,"ćwp",5);	add_groupsub($id_group,"ćw",2);
 $id_group=add_student_group("RM/Ist/S/2021/2022/s");	add_groupsub($id_group,"ćwp",5);	
-$id_group=add_student_group("PIEL/Ist./S/2021/2022");	add_groupsub($id_group,"ćwp",16);	
+$id_group=add_student_group("PIEL/Ist./S/2021/2022");	add_groupsub($id_group,"ćwp",16);	add_groupsub($id_group,"ćw",2);
 $id_group=add_student_group("POŁ/Ist./S/2021/2022");	add_groupsub($id_group,"ćwp",12);	
 $id_group=add_student_group("Po/IIst./S/2020/2021");		
 $id_group=add_student_group("RM/I stopień/st/2019/20");	add_groupsub($id_group,"ćwp",4);	add_groupsub($id_group,"ćw",2);
 $id_group=add_student_group("RM/I stopień/niestacjonarne/2019/20");	add_groupsub($id_group,"ćwp",2);	add_groupsub($id_group,"ćw",1);
-$id_group=add_student_group("RM/Ist/S/2021/2022");	add_groupsub($id_group,"ćwp",5);	
+$id_group=add_student_group("RM/Ist/S/2021/2022");	add_groupsub($id_group,"ćwp",5);	add_groupsub($id_group,"ćw",2);
 $id_group=add_student_group("P/IIst./S/2020/2021");		
 
 

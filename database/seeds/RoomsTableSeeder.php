@@ -120,13 +120,15 @@ class RoomsTableSeeder extends Seeder
             Add_Storage($ir, $storage_magazynowy, 'szafa 04', 'Szafa 4-M', 'Szafa magazynowa 4-M', 5, $sort_count++);
             Add_Storage($ir, $storage_magazynowy, 'szafa 05', 'Szafa 5-M', 'Szafa magazynowa 5-M', 1, $sort_count++);
 
-        $ir=Add_Room($Center_id, 1, 'A 1.12', 'CM_B1.12_OSCE', 'a112/a1.12a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
-        $ir=Add_Room($Center_id, 1, 'A 1.13', 'CM_B1.13_OSCE', 'a113/a1.13a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
-        $ir=Add_Room($Center_id, 1, 'A 1.14', 'CM_B1.14_OSCE', 'a114/a1.14a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
-        $ir=Add_Room($Center_id, 1, 'A 1.15', 'CM_B1.15_OSCE', 'a115/a1.15a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
-        $ir=Add_Room($Center_id, 1, 'A 1.16', 'CM_B1.16_OSCE', 'a116/a1.16a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
-        $ir=Add_Room($Center_id, 1, 'A 1.17', 'CM_B1.17_OSCE', 'a117/a1.17a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
-        $ir=Add_Room($Center_id, 1, 'A 1.18', 'CM_B1.18_OSCE', 'a118/a1.18a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
+        $ir=Add_Room($Center_id, 1, 'B 1.12', 'CM_B1.12_OSCE', 'b112/b1.12a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
+        $ir=Add_Room($Center_id, 1, 'B 1.13', 'CM_B1.13_OSCE', 'b113/b1.13a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
+        $ir=Add_Room($Center_id, 1, 'B 1.14', 'CM_B1.14_OSCE', 'b114/b1.14a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
+        $ir=Add_Room($Center_id, 1, 'B 1.15', 'CM_B1.15_OSCE', 'b115/b1.15a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
+        $ir=Add_Room($Center_id, 1, 'B 1.16', 'CM_B1.16_OSCE', 'b116/b1.16a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
+        $ir=Add_Room($Center_id, 1, 'B 1.17', 'CM_B1.17_OSCE', 'b117/b1.17a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
+        $ir=Add_Room($Center_id, 1, 'B 1.18', 'CM_B1.18_OSCE', 'b118/b1.18a.jpg', 'Sala OSCE', 'Sala OSCE',$room_noactive);
+
+        $ir=Add_Room($Center_id, 1, 'B 1.25', 'CM_B1.25', 'b125/b1.25a.jpg', 'Sala B 1.25', 'Sala B 1.25',$room_noactive);
 
 
         $ir=Add_Room($Center_id, 11, 'B 1.01', 'CM_B1.01', 'b101/b1.01a.jpg', 'Wysoka Wierność Pielęgniarstwo', 'Sala Wysokiej Wierności Opieki Pielęgniarskiej',$room_noactive);

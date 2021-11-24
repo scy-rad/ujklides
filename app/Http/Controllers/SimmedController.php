@@ -53,8 +53,8 @@ class SimmedController extends Controller
 
         $do_poniedzialku=date('N',strtotime($ret_sch_date))-1;
         $ret_sch_date=date('Y-m-d',strtotime("$ret_sch_date - $do_poniedzialku day"));
-        dump('tu trzeba zmienić na +6 dni zamiast +1 - zmienione na czas testów tylko');
-        $ret['sch_date_to']=date('Y-m-d',strtotime("$ret_sch_date +1 day"));
+        //dump('tu trzeba zmienić na +6 dni zamiast +1 - zmienione na czas testów tylko');
+        $ret['sch_date_to']=date('Y-m-d',strtotime("$ret_sch_date +6 day"));
         $ret['sch_date_next']=date('Y-m-d',strtotime("$ret_sch_date +7 day"));
         $ret['sch_date_prev']=date('Y-m-d',strtotime("$ret_sch_date -7 day"));
 
@@ -99,7 +99,8 @@ class SimmedController extends Controller
 
         $ret['sch_date']=$ret_sch_date;
 
-        $ret['to_plane'] =  Simmed::where('simmed_status','<>',4)->where('simmed_date','>=',date('Y-m-d'))->where('simmed_date','<=','2021-12-31')->orderBy('simmed_date')->orderBy('simmed_time_begin')->get();
+        $ret['to_plane'] =  Simmed::where('simmed_status','<>',4)->where('simmed_date','>=',date('Y-m-d'))->orderBy('simmed_date')->orderBy('simmed_time_begin')->get();
+        //->where('simmed_date','<=','2021-12-31')
 
     return view('simmeds.plane', compact('rows_plane'),$ret);
     }

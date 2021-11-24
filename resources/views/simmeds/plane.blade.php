@@ -28,23 +28,10 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
     $dni_tygodnia = array( 'Ni', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So' );
     $curr_date='';  // do kolorowania wierszy
     $curr_class=''; // do kolorowania wierszy
-    
-
-        
+            
  ?>
 
-<?php /* @ foreach ($to_plane as $one_row)
-    {{$one_row->simmed_date}};
-    {{$one_row->simmed_time_begin}};
-    {{$one_row->simmed_time_end}};
-    {{$one_row->room()->room_number }};
-    {{$one_row->name_of_leader()}};
-    {{$one_row->name_of_student_subject() }};
-    {{$one_row->name_of_student_group() }};
-    {{$one_row->name_of_student_subgroup() }}<br>
-@endforeach
-<?php dd(); ?>
-*/ ?>
+
 
 <span id="current_row" data-value="jakieś value"></span>
 

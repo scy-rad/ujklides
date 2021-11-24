@@ -43,7 +43,7 @@ class User extends Authenticatable
     }
 
     public function full_name() {
-        return $this->belongsTo(UserTitle::class, 'user_title_id')->first()->user_title_short.' '.$this->firstname.' '.$this->lastname;
+        return $this->belongsTo(UserTitle::class, 'user_title_id')->first()->user_title_short.' '.$this->lastname.' '.$this->firstname;
     }
 
     public static function role_users($role_code, $user_status, $center_id) {

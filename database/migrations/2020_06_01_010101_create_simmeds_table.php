@@ -133,6 +133,8 @@ class CreateSimmedsTable extends Migration
             $table->unsignedInteger('student_subgroup_id')->nullable();
             $table->unsignedInteger('room_id');
             $table->unsignedInteger('simmed_leader_id')->nullable();
+            $table->unsignedInteger('simmed_technician_id')->nullable();
+            $table->unsignedInteger('simmed_technician_character_id')->nullable();
 
             $table->string('student_subject_txt')->default('');
             $table->string('student_group_txt')->default('');

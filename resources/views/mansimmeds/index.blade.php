@@ -41,6 +41,12 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
                 </form>
         </div>
 
+        <div class="col-sm-2">
+                <form action="{{ route('mansimmeds.csv') }}" method="get">
+                        <input class="btn btn-primary btn-lg" type="submit" value="pobierz csv">
+                </form>
+        </div>
+
 </div>
 
 

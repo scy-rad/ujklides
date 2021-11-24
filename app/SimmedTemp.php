@@ -37,39 +37,37 @@ class SimmedTemp extends Model
             }
         }
 
-    public static function add_simmed_tmp(array $simmed_table_BIG)
+    public static function add_row($simmed_row)
     {
-        //if (count($simmed_table_BIG)>0)
-        foreach ($simmed_table_BIG as $simmed_table)
-        {
         $table=new SimmedTemp;
-            $table->import_row          =   $simmed_table['import_row'];
-            $table->simmed_id           =   $simmed_table['id'];
-            $table->simmed_date         =   $simmed_table['simmed_date'];
-            $table->simmed_time_begin   =   $simmed_table['simmed_time_begin'];
-			$table->simmed_time_end     =   $simmed_table['simmed_time_end'];
-            $table->room_id             =   $simmed_table['room_id'];
-            if ($simmed_table['student_subject_id']>0)
-			    $table->student_subject_id  =   $simmed_table['student_subject_id'];
-            if ($simmed_table['student_group_id']>0)
-                $table->student_group_id    =   $simmed_table['student_group_id'];
-            if ($simmed_table['student_subgroup_id']>0)
-                $table->student_subgroup_id =   $simmed_table['student_subgroup_id'];
-            if ($simmed_table['simmed_leader_id']>0)
-                $table->simmed_leader_id    =   $simmed_table['simmed_leader_id'];
-            $table->simmed_alternative_title=   $simmed_table['simmed_alternative_title'];
-            $table->tmp_status          =   0;//$simmed_table['tmp_status'];
-            $ret=$table->save();
-        }
-    }
-    public static function check_simmed_tmp_add()
-    {
-        SimmedTemp::where('tmp_status', '=', '0')->where('simmed_id', '=', '0')->update(['tmp_status' => 1]);
-    }
+        $table->import_number                   = SimmedTemp::max('import_number');
+        //$table->import_row
+        $table->simmed_id                       = $simmed_row->id;
+        //$table->simmed_tmp_id
+        $table->simmed_date                     = $simmed_row->simmed_date;
+        $table->simmed_time_begin               = $simmed_row->simmed_time_begin;
+        $table->simmed_time_end                 = $simmed_row->simmed_time_end;
+        $table->simmed_type_id                  = $simmed_row->simmed_type_id;
+        $table->simmed_alternative_title        = $simmed_row->simmed_alternative_title;
 
-    public static function check_simmed_tmp_remove()
-    {
-        SimmedTemp::where('tmp_status', '=', '0')->where('simmed_id', '>', '0')->update(['tmp_status' => 3]);
+        $table->student_subject_id              = $simmed_row->student_subject_id;
+        $table->student_group_id                = $simmed_row->student_group_id;
+        $table->student_subgroup_id             = $simmed_row->student_subgroup_id;
+        $table->room_id                         = $simmed_row->room_id;
+        $table->simmed_leader_id                = $simmed_row->simmed_leader_id;
+        $table->simmed_technician_id            = $simmed_row->simmed_technician_id;
+        $table->simmed_technician_character_id  = $simmed_row->simmed_technician_character_id;
+
+        // $table->student_subject_txt
+        // $table->student_group_txt
+        // $table->student_subgroup_txt
+        // $table->room_xp_txt
+        // $table->room_xls_txt
+        // $table->simmed_leader_txt
+
+        // $table->simmed_merge
+        $table->tmp_status                      = $simmed_row->tmp_status;
+        return $table->save();
     }
 
 
@@ -101,13 +99,12 @@ class SimmedTemp extends Model
     
     function check_similar($with)
     {       
-        
-        $check=SimmedTemp::select('*')
-        ->where("simmed_id" , 0)
-        ->where("simmed_merge" , 0)
-        ->where("tmp_status" , 0)
+        //$IDSy=SimmedTemp::select('simmed_id')->where('simmed_id','>',0)->get();
+        $check=Simmed::select('*')
+        ->whereNotIn("id" , DB::table('simmed_temps')->pluck('simmed_id'))
+        //->where("simmed_merge" , 0)
+        //->where("tmp_status" , 0)
         ;
-
         if (strpos($with,'date')>0)
             $check=$check->where("simmed_date" , $this->simmed_date);
         
@@ -115,7 +112,6 @@ class SimmedTemp extends Model
             $check=$check->where("simmed_time_begin" , $this->simmed_time_begin)
                          ->where("simmed_time_end" , $this->simmed_time_end);
 
-
         if (strpos($with,'leader')>0)
             $check=$check->where("simmed_leader_id" , $this->simmed_leader_id);
         
@@ -128,57 +124,26 @@ class SimmedTemp extends Model
         
         if (strpos($with,'room')>0)
             $check=$check->where("room_id" , $this->room_id);
-            
 
+        if (strpos($with,'deleted')>0)
+            $check=$check->where("simmed_status" , 4);
+        else
+            $check=$check->where("simmed_status" , '<', 4);
+                    
             $check=$check->get();
-
+                
         if ($check->count()>0)
             {
-            $check->first()->simmed_merge=$this->id;
-            $check->first()->tmp_status=2;
-            $check->first()->save();
-
             $this->simmed_merge=$this->id;
-            $this->tmp_status=2;
+            $this->simmed_id=$check->first()->id;
+            if (strpos($with,'deleted')>0)
+                $this->tmp_status=9;    //reactivate inactive
+            else
+                $this->tmp_status=2;    //modify exist
             $this->save();
 
-            dump('znaleziono podobny wpis: '.$with.'...');
+            dump('SimmedTemp check_similar: znaleziono podobny wpis: '.$with.'...');
             }
     } 
-
-
-    function check_deleted($with)
-    {               
-        $check=Simmed::select('*')
-        ->where("simmed_status" , 4);
-
-        if (strpos($with,'leader')>0)
-            $check=$check->where("simmed_leader_id" , $this->simmed_leader_id);
-        
-        if (strpos($with,'subject')>0)
-            $check=$check->where("student_subject_id" , $this->student_subject_id);
-
-        if (strpos($with,'group')>0)
-            $check=$check->where("student_group_id" , $this->student_group_id)
-                         ->where("student_subgroup_id" , $this->student_subgroup_id);
-        
-        if (strpos($with,'room')>0)
-            $check=$check->where("room_id" , $this->room_id);
-            
-
-            $check=$check->get();
-
-        if ($check->count()>0)
-            {
-
-            $this->simmed_merge = $check->first()->id;
-            $this->tmp_status=9;
-            $this->save();
-
-            dump('model SimmedTemp znaleziono usunięty wpis: '.$with.'...');
-            } 
-    } 
-
-
 
 }

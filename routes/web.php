@@ -264,6 +264,10 @@ Route::post('mansimmeds/clear_import_tmp', [
     'as' => 'mansimmeds.clear_import_tmp'
 ]);
 
+Route::get('mansimmeds/csv', [
+    'uses' => 'ManSimmedController@generate_csv',
+    'as' => 'mansimmeds.csv'
+]);
 
 
 

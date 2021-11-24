@@ -86,24 +86,15 @@ function rowEK($new_simmed)
 @section('title', " Analiza importu")
 
 @section('content')
-<h1>Import zajęć z systemu uczelnia XP</h1>
-<div class="text-right bg-danger">{{$step}}</div>
+<h1>Import zajęć z pliku tekstowego</h1>
 
 
 
 
-@switch ($step)
-
-@case ('to_delete_analyze')
-dane do usunięcia lub zastąpienia
-{{dump($import_data)}}
-@break
-
-@case ('review_analyze')
 sprawdź przed importem:
     <table width="100%">
         <?php rowEK_head(""); ?>
-    @foreach ($import_data as $row_data)
+    @foreach ($data_return as $row_data)
         <?php rowEK($row_data); ?>
     @endforeach
     </table>
@@ -134,15 +125,6 @@ sprawdź przed importem:
         <input type="hidden" name="step" value="import_clear">
         <input class="btn btn-primary btn-lg" type="submit" value="usuń import">
 </form>
-
-
-@break
-
-@case ('do_import')
-dane zostały zaimportowane!
-@break
-
-@endswitch
 
 
 <ol>
