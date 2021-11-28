@@ -25,22 +25,29 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Auth::user()->id=1;
-        // dump('przywróć ID użytkownika do rzeczywistego w HomeController');
+        if (Auth::user()->name=='admindudek')
+            {
+            dump(Auth::user()->name);
+            Auth::user()->id=1;
+            dump('przywróć ID użytkownika do rzeczywistego w HomeController');
+            }
+
+        //date('N',strtotime('2021-11-21'));
 
         if (date('N',strtotime(date('Y-m-d')))>4)
-            $add_date=15-date('N',strtotime('2021-11-21'));
+            $add_date=8-date('N',strtotime(date('Y-m-d')));
         else
             $add_date=1;
-
+            $add_date=2;
         $main_simulations=$simmeds =  Simmed::where('simmed_technician_id',Auth::user()->id)
         ->where('simmed_status','<>',4)
-        ->where('simmed_date','>=',"date('Y-m-d')")
-        ->where('simmed_date','<',date( 'Y-m-d', strtotime("+ 7 days") ) )
+        ->whereBetween('simmed_date', [date('Y-m-d'), date( 'Y-m-d', strtotime("+ 7 days") )])
         ->orderBy('simmed_date')->orderBy('simmed_time_begin')->get();
 
-        dump(date( 'Y-m-d', strtotime("+7 days") ));
-        
-        return view('home',compact('main_simulations'),['sch_date' => '$sch_date']);
+        $next_simulations=$simmeds =  Simmed::where('simmed_status','<>',4)
+        ->whereBetween('simmed_date', [date('Y-m-d'), date( 'Y-m-d', strtotime("+ $add_date days") )])
+        ->orderBy('simmed_date')->orderBy('simmed_time_begin')->get();
+
+        return view('home',compact('main_simulations'),compact('next_simulations'),['sch_date' => '$sch_date']);
     }
 }

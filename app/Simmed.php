@@ -46,6 +46,13 @@ class Simmed extends Model
     else
         return '- - -';
     }
+    function login_of_technician()
+    {
+    if ($this->simmed_technician_id>0)
+        return $this->hasOne(User::class,'id','simmed_technician_id')->get()->first()->name;
+    else
+        return '- - -';
+    }
     
     function name_of_student_group()
     {

@@ -99,11 +99,8 @@ class SimmedTemp extends Model
     
     function check_similar($with)
     {       
-        //$IDSy=SimmedTemp::select('simmed_id')->where('simmed_id','>',0)->get();
         $check=Simmed::select('*')
         ->whereNotIn("id" , DB::table('simmed_temps')->pluck('simmed_id'))
-        //->where("simmed_merge" , 0)
-        //->where("tmp_status" , 0)
         ;
         if (strpos($with,'date')>0)
             $check=$check->where("simmed_date" , $this->simmed_date);
@@ -141,9 +138,31 @@ class SimmedTemp extends Model
             else
                 $this->tmp_status=2;    //modify exist
             $this->save();
-
-            dump('SimmedTemp check_similar: znaleziono podobny wpis: '.$with.'...');
             }
-    } 
+    }
+    
+    function check_similar_date_time_leader_subject_group()
+    {       
+
+        $check=Simmed::select('*')
+        ->whereNotIn("id" , DB::table('simmed_temps')->pluck('simmed_id'))
+        ->where("simmed_date" , $this->simmed_date)
+        ->where("simmed_time_begin" , $this->simmed_time_begin)
+        ->where("simmed_time_end" , $this->simmed_time_end)
+        ->where("simmed_leader_id" , $this->simmed_leader_id)
+        ->where("student_subject_id" , $this->student_subject_id)
+        ->where("student_group_id" , $this->student_group_id)
+        ->where("student_subgroup_id" , $this->student_subgroup_id)
+        ->get();
+                
+        if ($check->count()>0)
+            {
+            $this->simmed_merge=$this->id;
+            $this->simmed_id=$check->first()->id;
+            $this->tmp_status=2;    //modify exist
+            $this->save();
+            //dump('SimmedTemp check_similar: znaleziono podobny wpis: '.$with.'...');
+            }
+    }
 
 }
