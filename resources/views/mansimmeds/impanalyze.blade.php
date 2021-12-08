@@ -59,8 +59,8 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
                     $rowek2.='<td></td><td>'.$prev->room()->room_number."</td>";
                 if ($new_simmed->leader_id == $prev->simmed_leader_id)
                     $rowek2.='<td></td><td></td>';
-                elseif ($prev->simmed_leader_id > 0)
-                    $rowek2.='<td>'.$prev->simmed_leader_id.'</td><td>'.$prev->leader()->full_name()."</td>";
+                // elseif ($prev->simmed_leader_id > 0)
+                //     $rowek2.='<td>'.$prev->simmed_leader_id.'</td><td>'.$prev->leader()->full_name()."</td>";
                 else 
                     $rowek2.='<td></td><td>- - -</td>';
                 if ($new_simmed->student_subject_id == $prev->student_subject_id)
@@ -122,7 +122,7 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
             <td>{{$new_simmed->character_short}}</td>
             <td>{{$new_simmed->simmed_alternative_title}}</td>
             <td>{{$new_simmed->simmed_id}}</td>
-            <td>{{App\SimmedTemp::status_name($new_simmed->tmp_status)}}</td>
+            <td><div id="status{{$new_simmed->id }}" onclick="ChangeSimStatus({{$new_simmed->id }},{{$new_simmed->tmp_status }});"> {{ App\SimmedTemp::status_name($new_simmed->tmp_status) }} </div></td>
             <td>{{$new_simmed->simmed_merge}}</td>
         </tr>
         <?php
@@ -136,11 +136,23 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
 
 @section('content')
 <h1>Import zajęć z pliku tekstowego</h1>
-
+    <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
+        {{ csrf_field() }}
+        @if (isset($currrent_status_list))
+        @foreach ($currrent_status_list as $current_status)
+        <input type="checkbox" name="code{{$current_status->tmp_status}}" value ="{{$current_status->tmp_status}}"{{$current_status->check}}>
+        
+        status: <strong>{{App\SimmedTemp::status_name($current_status->tmp_status)}}</strong>
+        ({{$current_status->total}} wierszy)<br>
+        @endforeach
+        @endif
+        <input class="btn btn-primary btn-lg" type="submit" value="pokaż wybrane wpisy :)">
+        <input type="hidden" name="step_code" value="100">
+    </form>
 
 
 @if ($step_code==101)
-sprawdź przed importem:
+    sprawdź przed importem:
     <table width="100%">
         <?php rowEK_head(""); ?>
     @foreach ($data_return as $row_data)
@@ -174,37 +186,97 @@ sprawdź przed importem:
         <input type="hidden" name="step" value="import_movetodatabase"-->
         <input type="hidden" name="step" value="import_clear">
         <input class="btn btn-primary btn-lg" type="submit" value="usuń import">
-</form>
+    </form>
 
 
-<ol>
-<li>sprawdż, czy są jakieś wpisy do usunięcia</li>
-<li>jeżeli nie ma, to importuj</li>
-<li>w przeciwnym wypadku:
-<ul>dla każdego wpisu do usunięcia:
-    <li>sprawdż, czy w nowych wpisach niepowiązanych jest taki sam, tylko z inną salą lub instruktorem. Jeśli jest - to "powiąż je" ze sobą.</li>
-    <li>sprawdż, czy w nowych wpisach niepowiązanych jest taki, który ma wspólnego instruktora, przedmiot, grupę i podgrupę. Jeśli jest - to "powiąż je" ze sobą. Jeśli nie - idź dalej</li>
-    <li>sprawdż, czy w nowych wpisach niepowiązanych jest taki, który ma wspólny przedmiot, grupę i podgrupę. Jeśli jest - to "powiąż je" ze sobą. Jeśli nie - idź dalej</li>
-</ul>
-<li>wyświetl wszystkie wpisy z uwidoczenieniem proponowanych powiązań.<br>
-Użytkownik powinien zaznaczyć, które woisy chce dodać, które zmodyfikować, a które usunąć.<br>
-Wpisy nie zaznaczone będą "wisieć" w imporcie i nie zostaną zaimplementowane do rzeczywistej bazy do czasu ponownego uruchomienia analizy i wybrania działania.</li>
-</ol>
+    <ol>
+    <li>sprawdż, czy są jakieś wpisy do usunięcia</li>
+    <li>jeżeli nie ma, to importuj</li>
+    <li>w przeciwnym wypadku:
+    <ul>dla każdego wpisu do usunięcia:
+        <li>sprawdż, czy w nowych wpisach niepowiązanych jest taki sam, tylko z inną salą lub instruktorem. Jeśli jest - to "powiąż je" ze sobą.</li>
+        <li>sprawdż, czy w nowych wpisach niepowiązanych jest taki, który ma wspólnego instruktora, przedmiot, grupę i podgrupę. Jeśli jest - to "powiąż je" ze sobą. Jeśli nie - idź dalej</li>
+        <li>sprawdż, czy w nowych wpisach niepowiązanych jest taki, który ma wspólny przedmiot, grupę i podgrupę. Jeśli jest - to "powiąż je" ze sobą. Jeśli nie - idź dalej</li>
+    </ul>
+    <li>wyświetl wszystkie wpisy z uwidoczenieniem proponowanych powiązań.<br>
+    Użytkownik powinien zaznaczyć, które woisy chce dodać, które zmodyfikować, a które usunąć.<br>
+    Wpisy nie zaznaczone będą "wisieć" w imporcie i nie zostaną zaimplementowane do rzeczywistej bazy do czasu ponownego uruchomienia analizy i wybrania działania.</li>
+    </ol>
+
+
 @else
-    @if ($step_code<13)
+    @if ($step_code<80)
 
         <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
                 {{ csrf_field() }}
-                <input class="btn btn-primary btn-lg" type="submit" value="krok {{$step_code}}">
+                <input class="btn btn-primary btn-lg" type="submit" value="zacznij od kroku {{$step_code}}">
                 <input type="hidden" name="step_code" value="{{$step_code}}">
         </form>
-    @endif
         <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
                 {{ csrf_field() }}
-                <input class="btn btn-primary btn-lg" type="submit" value="pokaż dzieło :)">
+                <input class="btn btn-primary btn-lg" type="submit" value="pokaż dane po pierwszej analizie :)">
                 <input type="hidden" name="step_code" value="100">
         </form>
-        <?php dd(); ?>
-        
+    @endif
+              
 @endif
+
+
+
+<script>
+    function ChangeSimStatus(id_row,id_status)
+    {
+        //alert('look: '+id_row+' status: '+id_status);
+        var char_array = new Array();
+        var next_array = new Array();
+
+            char_array[12] = "aktual.";
+            next_array[12] = "2";
+            char_array[2] = "jako nowe";
+            next_array[2] = "12";
+
+            char_array[3] = "nie usuwaj";
+            next_array[3] = "13";
+            char_array[13] = "usuń";
+            next_array[13] = "3";
+
+            char_array[0] = "dodaj";
+            next_array[0] = "1";
+            char_array[11] = "dodaj";
+            next_array[11] = "1";
+            char_array[1] = "nie dodawaj";
+            next_array[1] = "11";
+
+
+        zmiana = document.getElementById('status'+id_row);
+
+        zmiana.innerHTML=char_array[id_status];
+        zmiana.setAttribute("onclick","ChangeSimStatus("+id_row+","+next_array[id_status]+")");
+
+        let _token   = '{{csrf_token()}}';
+            $.ajax(
+            {
+            url: "/mansimmeds/ajaxchangestatus",
+            type:"POST",
+            data:{
+                id: id_row,
+                status_id: next_array[id_status],
+                _token: _token
+                },
+            success:function(response)
+                {
+                    console.log(response);
+                    console.log(response.statusx);
+                    if(response)
+                    {
+                        $('.success').text(response.result);
+                        //$("#ajaxform")[0].reset();
+                        //alert(response.success);
+                    }
+                },
+            });
+    }
+</script>
+
+
 @endsection

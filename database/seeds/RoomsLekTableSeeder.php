@@ -94,6 +94,9 @@ class RoomsLekTableSeeder extends Seeder
             $ir=Add2_Room($Center_id, 21, 'B 0.30', 'CM_B0.30_CSM_ALS', 'b030/b0.30a.jpg', 'Sala ALS RatMed 30', 'Sala ALS (Advanced  Life Support) 30',$room_noactive);
                 Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
 
+            $ir=Add2_Room($Center_id, 21, 'B 0.31', 'CM_B0.31_CIM', 'b031/b0.31a.jpg', 'Sala CIM 31', 'Sala CIM 31',$room_noactive);
+                Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
+    
             $ir=Add2_Room($Center_id, 3, 'B 1.23', '', 'b123/b1.23a.jpg', 'Pokój techników 1', 'Pokój techników 1',$room_noactive);
                 Add2_Storage($ir, $storage_magazynowy, 'sala', 'sala', 'sala', 1, 0);
 
@@ -140,6 +143,9 @@ class RoomsLekTableSeeder extends Seeder
             $ir=Add2_Room($Center_id, 3, 'B 3.31', '', 'b331/b3.31a.jpg', 'Pokój techników 2', 'Pokój techników 2',$room_noactive);
                 Add2_Storage($ir, $storage_magazynowy, 'sala', 'sala', 'sala', 1, 0);
             $ir=Add2_Room($Center_id, 1, 'B 3.32', 'CM_B3.32', 'b332/b3.32a.jpg', 'Sala 3.32', 'Sala 3.32',$room_active);
+                Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
+
+            $ir=Add2_Room($Center_id, 1, 'B 3.33', 'CM_B3.33', 'b333/b3.33a.jpg', 'Sala 3.33', 'Sala 3.33',$room_active);
                 Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
 
             $ir=Add2_Room($Center_id, 1, 'B 3.34', 'CM_B3.34', 'b334/b3.34a.jpg', 'Sala 3.34', 'Sala 3.34',$room_active);

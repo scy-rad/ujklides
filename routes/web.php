@@ -498,7 +498,8 @@ Route::post('simmed/ajaxsaveplane', [
 
 Route::post('simmed/ajaxsavetechnician', 'SimmedController@ajaxsavetechnician');
 Route::post('simmed/ajaxtechnicianchar', 'SimmedController@ajaxtechnicianchar');
-
+//Route::post('mansimmeds/ajaxchangestatus', 'SimmedController@ajaxtechnicianchar');
+Route::post('mansimmeds/ajaxchangestatus', 'ManSimmedController@ajaxchangestatus');
 
 
 

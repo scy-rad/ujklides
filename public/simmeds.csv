@@ -1,119 +1,540 @@
 data;dz.tyg.;godz.;sala;instr;przedmiot;grupa;podgr.;technik;char.;uwagi
-2021-11-26;Friday;14:00-19:00;"A 1.01";"dr Wencel-Wawrzeńczyk Agnieszka";;;;;prep;,
-2021-11-27;Saturday;08:00-23:59;"A 1.01";"dr Wencel-Wawrzeńczyk Agnieszka";;;;;prep;,
-2021-11-28;Sunday;00:00-19:30;"A 1.01";"dr Wencel-Wawrzeńczyk Agnieszka";;;;;prep;,
-2021-11-29;Monday;08:00-13:15;"A 1.01";"mgr Falkiewicz Maciej";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 12";;look;
-2021-11-30;Tuesday;08:00-14:00;"A 1.01";"mgr Łon Paulina";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 12";;look;
-2021-12-02;Thursday;14:15-20:15;"A 1.01";"mgr Falkiewicz Maciej";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 08";;look;
-2021-12-03;Friday;14:15-17:15;"A 1.01";"mgr Łon Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 08";;look;
-2021-11-29;Monday;08:00-13:15;"A 1.02";"dr Gola Wojciech";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 11";;look;
-2021-11-29;Monday;14:30-20:30;"A 1.02";"mgr Łon Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 06";;look;
-2021-11-30;Tuesday;08:00-14:00;"A 1.02";"dr Gola Wojciech";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 11";;look;
-2021-12-01;Wednesday;16:00-19:45;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";Po/Is./S/19/20;"ćwp 04";;look;
-2021-12-02;Thursday;15:30-19:15;"A 1.05";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 09";;look;
-2021-11-29;Monday;07:30-13:30;"A 1.02";"mgr Podolska Paulina";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 02";dpedzik;prep;
-2021-11-29;Monday;13:45-19:45;"A 1.05";"mgr Podolska Paulina";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 06";;look;
-2021-12-01;Wednesday;11:00-14:45;"A 1.05";"mgr Podolska Paulina";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 10";;look;
-2021-12-03;Friday;11:00-14:45;"A 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Ginekologia i położnictwo";"RM/I stopień/st/2019/20";"ćwp 02";;look;
-2021-11-29;Monday;07:30-13:30;"A 1.06";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 01";;free;
-2021-11-29;Monday;13:45-19:45;"A 1.06";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 05";;look;
-2021-12-01;Wednesday;07:30-12:45;"A 1.06";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 09";;look;
-2021-11-26;Friday;09:00-10:00;"A 1.07";"mgr Szmalec Daria";;;;;free;,
-2021-12-01;Wednesday;07:30-13:30;"A 1.07";"mgr Durlik Marlena";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 04";;look;
-2021-11-29;Monday;13:45-19:45;"A 1.07";"mgr Durlik Marlena";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 08";;look;
-2021-12-01;Wednesday;07:30-13:30;"A 1.07";"mgr Durlik Marlena";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 12";;look;
-2021-11-29;Monday;07:30-13:30;"A 1.09";"dr Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 03";;free;
-2021-11-29;Monday;13:45-19:45;"A 1.09";"dr Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 07";;look;
-2021-12-01;Wednesday;07:00-13:30;"A 1.09";"dr Krawczyńska Jadwiga";"Medyczne czynności ratunkowe";POŁ/Ist./S/2021/2022;"ćwp 11";;look;
-2021-11-26;Friday;13:00-18:15;"B 0.25";"mgr Barańska Edyta";"Podstawy opieki położniczej";RM/Ist/S/2020/2021;"ćwp 03";;free;
-2021-11-28;Sunday;11:30-16:45;"B 0.25";"mgr Barańska Edyta";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 01";;look;
-2021-12-01;Wednesday;15:00-20:15;"B 0.25";"dr Cieślik Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 05";;look;
-2021-12-03;Friday;13:00-18:15;"B 0.25";"mgr Barańska Edyta";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 03";;look;
+2021-11-18;Thursday;07:00-14:30;"C 2.07";"dr Turek Łukasz";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 05";wojtek;stay;
+2021-11-18;Thursday;07:00-14:30;"D 0.09";"lek. med. Cecha Patrycja";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 01";bartek;stay;
+2021-11-18;Thursday;07:00-14:30;"D 0.10";"lek. med. Krzciuk Piotr";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 02";marcin;stay;
+2021-11-18;Thursday;07:30-12:45;"A 1.05";"dr Kaczmarczyk Małgorzata";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 02";;free;
+2021-11-18;Thursday;07:30-12:45;"A 1.06";"dr Kamusińska Elżbieta";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 03";;free;
+2021-11-18;Thursday;07:30-12:45;"A 1.07";"dr Zdziebło Kazimiera";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 04";;free;
+2021-11-18;Thursday;07:30-12:45;"A 1.09";"mgr Kaleta Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 01";;free;
+2021-11-18;Thursday;07:30-13:30;"B 3.37";"lekarz Korzeluch Tomasz";Chirurgia;LEK/S/16/17;"ćwpk 10";;stay;
+2021-11-18;Thursday;08:00-11:00;"B 1.05";"mgr Wójcik Katarzyna";"Pielęgniarstwo położniczo - ginekologiczne";P/Ist./S/2020/2021;"sym 08";;stay;
+2021-11-18;Thursday;08:00-11:00;"B 1.15";"dr Lelonek Barbara";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 01";;stay;
+2021-11-18;Thursday;08:00-12:30;"B 1.01";"dr Pierzak Monika";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 03";paulina;stay;
+2021-11-18;Thursday;08:30-11:30;"B 3.29";;;;;;free;", ,"
+2021-11-18;Thursday;08:45-11:00;"B 1.25";;;;;;free;"dr Kopik Aldona, Pedagogika,"
+2021-11-18;Thursday;11:00-14:00;"B 1.15";"dr Lelonek Barbara";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 02";;stay;
+2021-11-18;Thursday;11:00-15:30;"B 1.05";"mgr Wójcik Katarzyna";"Opieka położnicza";Po/Is./S/19/20;"sym 05";;stay;
+2021-11-18;Thursday;11:15-13:30;"B 1.25";;;RM/Ist/S/2021/2022;"ćw 02";;free;"dr Kopik Aldona, Dydaktyka medyczna,"
+2021-11-18;Thursday;12:30-17:00;"B 1.01";"dr Pierzak Monika";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 04";paulina;stay;
+2021-11-18;Thursday;13:00-18:15;"A 1.05";"dr Kaczmarczyk Małgorzata";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 06";;free;
+2021-11-18;Thursday;13:00-18:15;"A 1.06";"dr Kamusińska Elżbieta";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 07";;free;
+2021-11-18;Thursday;13:00-18:15;"A 1.07";"dr Zdziebło Kazimiera";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 08";;free;
+2021-11-18;Thursday;13:00-18:15;"A 1.09";"mgr Kaleta Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 05";;free;
+2021-11-18;Thursday;13:00-20:30;"D 0.09";"lekarz Kuchareczko Artur";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 04";darek;stay;
+2021-11-18;Thursday;13:00-20:30;"D 0.10";"lekarz Trybek Tomasz";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 03";;free;"obstawiane przez Darka"
+2021-11-18;Thursday;13:30-15:45;"B 1.25";;;RM/Ist/S/2021/2022;"ćw 01";;free;"dr Kopik Aldona, Dydaktyka medyczna,"
+2021-11-18;Thursday;13:45-16:45;"B 3.37";"lekarz Korzeluch Tomasz";Chirurgia;LEK/S/16/17;"ćwpk 17";;stay;
+2021-11-18;Thursday;14:00-17:00;"B 1.15";"dr Lelonek Barbara";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 03";;stay;
+2021-11-18;Thursday;15:45-18:45;"B 1.25";;;RM/Ist/S/2021/2022;;;free;"dr Kopik Aldona, Dydaktyka medyczna,"
+2021-11-18;Thursday;16:00-19:45;"B 3.29";;;;;;free;"dr Przychodni Agnieszka, ,"
+2021-11-18;Thursday;16:45-19:45;"C 2.07";"lekarz Korzeluch Tomasz";Chirurgia;LEK/S/16/17;"ćwpk 17";;stay;
+2021-11-18;Thursday;17:00-20:00;"B 3.37";"lek. med. Krzciuk Piotr";;;;;free;,
+2021-11-19;Friday;07:00-09:00;"A 1.06";"mgr Podolska Paulina";;;;;free;,
+2021-11-19;Friday;07:00-14:30;"C 2.07";"dr Domagała Szymon";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 06";;stay;
+2021-11-19;Friday;07:00-14:30;"D 0.09";"lek. med. Krzciuk Piotr";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 09";darek;stay;Marcin
+2021-11-19;Friday;07:00-14:30;"D 0.10";"lek. med. Chromik Anna";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 10";marcin;stay;
+2021-11-19;Friday;07:00-15:00;"A 1.01";"mgr Kaleta Agnieszka";;;;;prep;,
+2021-11-19;Friday;07:00-20:00;"B 1.13";;;;;;free;", ,"
+2021-11-19;Friday;07:00-20:00;"B 1.15";;;;;;free;", ,"
+2021-11-19;Friday;07:00-20:00;"B 1.16";;;;;;free;", ,"
+2021-11-19;Friday;07:00-20:00;"B 1.17";;;;;;free;", ,"
+2021-11-19;Friday;07:00-20:00;"B 1.18";;;;;;free;", ,"
+2021-11-19;Friday;07:30-13:30;"B 3.37";"lekarz Korzeluch Tomasz";Chirurgia;LEK/S/16/17;"ćwpk 03";bartek;stay;Sebastian
+2021-11-19;Friday;08:00-09:00;"A 1.07";"mgr Bedla Katarzyna";;;;;free;,
+2021-11-19;Friday;08:00-10:15;"B 1.25";;;;;;free;"mgr Jarosińska Anna, ,"
+2021-11-19;Friday;08:00-11:45;"B 0.28";"mgr Łon Paulina";"Intensywna terapia";RM/Ist/S/2020/2021;"ćw 01";;free;
+2021-11-19;Friday;09:00-12:45;"B 0.26";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 03";;free;
+2021-11-19;Friday;11:00-13:45;"B 1.25";;;;;;free;"dr Błońska-Sikora Ewelina, ,"
+2021-11-19;Friday;12:00-15:00;"B 0.30";"mgr Kwiecień Krzysztof";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 02";;free;
+2021-11-19;Friday;13:00-16:45;"B 0.26";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 02";;free;
+2021-11-19;Friday;13:00-18:15;"B 0.25";"mgr Barańska Edyta";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 03";;free;
+2021-11-19;Friday;13:00-20:30;"D 0.09";"lek. med. Saletra Marta";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 08";wojtek;stay;
+2021-11-19;Friday;13:00-20:30;"D 0.10";"lek. med. Zgubieński Kajetan";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 07";paulina;stay;
+2021-11-19;Friday;13:45-16:45;"B 1.25";;;;;;free;"dr Rębak Dorota, ,"
+2021-11-19;Friday;14:00-17:45;"B 0.28";"mgr Żółcińska Dorota";;;;;free;"Choroby przenoszone drogą krwi,"
+2021-11-19;Friday;14:00-17:45;"B 3.32";"lek. med. Szczukocki Maciej";Pediatria;LEK/Eng-Div-6/19/20;"ćwpk 04";darek;phon;
+2021-11-19;Friday;14:30-16:45;"B 3.29";;;;;;free;"dr Tokarska Anna, ,"
+2021-11-19;Friday;14:45-20:45;"B 1.01";"mgr Zaworska-Winiarska Agnieszka";"Pielęgniarstwo pediatryczne";P/Ist./S/19/20;"sym 11";;stay;
+2021-11-19;Friday;15:00-18:45;"B 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Ginekologia i położnictwo";"RM/I stopień/st/2019/20";"ćwp 01";;free;
+2021-11-19;Friday;15:30-19:15;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";Po/Is./S/19/20;"ćwp 03";;prep;
+2021-11-19;Friday;17:00-19:15;"B 1.25";;;;;;free;", ,"
+2021-11-20;Saturday;08:00-11:45;"B 0.30";"mgr Roszewska Agata";Pediatria;"RM/I stopień/niestacjonarne/2019/20";"ćw 01";;free;
+2021-11-21;Sunday;08:00-13:15;"B 0.28";"dr Cieślik Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 01";;free;
+2021-11-21;Sunday;08:00-17:00;"A 1.01";"dr Wencel-Wawrzeńczyk Agnieszka";;;;;free;,
+2021-11-21;Sunday;10:30-14:15;"B 1.25";;;;;;free;", ,"
+2021-11-21;Sunday;11:30-16:45;"B 0.25";"mgr Barańska Edyta";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 01";;free;
+2021-11-21;Sunday;14:30-18:15;"B 1.25";;;;;;free;", ,"
+2021-11-22;Monday;07:30-11:15;"B 3.29";"lek. med. Chmielowiec Kacper";"Choroby wewnętrzne-Propedeutyka Interny z elementami Kardiologii";LEK/S/19/20;"ćwpk 09";darek;phon;
+2021-11-22;Monday;07:30-11:15;"B 3.29";"lek. med. Saletra Michał";"Choroby wewnętrzne-Propedeutyka Interny z elementami Kardiologii";LEK/S/19/20;"ćwpk 11";;free;"obstawiane przez Darka"
+2021-11-22;Monday;07:30-11:15;"B 3.32";"lek. med. Chmielewski Grzegorz";Pediatria;LEK/S/19/20;"ćwpk 01";darek;phon;
+2021-11-22;Monday;07:30-11:15;"B 3.32";"lek. med. Łukawska Martyna";Pediatria;LEK/S/19/20;"ćwpk 02";;free;"obstawiane przez Darka"
+2021-11-22;Monday;07:30-12:00;"C 2.07";"lek. med. Polańska-Matwiejew Dominika";"Anestezjologia i intensywna terapia";LEK/Eng-Div-6/18/19;"ćwpk 01";wojtek;stay;
+2021-11-22;Monday;07:30-13:30;"A 1.05";"mgr Podolska Paulina";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 01";;free;
+2021-11-22;Monday;07:30-13:30;"A 1.06";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 04";;free;
+2021-11-22;Monday;07:30-13:30;"A 1.07";"mgr Durlik Marlena";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 03";;free;
+2021-11-22;Monday;07:30-13:30;"A 1.09";"dr Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 02";;free;
+2021-11-22;Monday;08:00-11:00;"B 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Pielęgniarstwo położniczo - ginekologiczne";P/Ist./S/2020/2021;"sym 10";marcin;stay;
+2021-11-22;Monday;08:00-11:00;"B 1.15";"dr Lelonek Barbara";"Psychiatria i pielęgniarstwo psychiatryczne";Po/Is./S/19/20;"sym 02";;stay;
+2021-11-22;Monday;08:00-11:45;"A 1.01";"mgr Włodarczyk Jakub";"Podstawy ratownictwa medycznego";Po/Is./S/19/20;"ćwp 05";bartek;prep;
+2021-11-22;Monday;09:00-12:45;"B 1.25";;;;;;free;", ,"
+2021-11-22;Monday;10:30-14:15;"B 0.28";"mgr Makowski Kamil";"Medycyna ratunkowa";"RM/I stopień/st/2019/20";"ćw 01";;free;
+2021-11-22;Monday;10:30-14:15;"B 0.30";"mgr Putowski Mateusz";"Medycyna ratunkowa";"RM/I stopień/st/2019/20";"ćw 02";;free;
+2021-11-22;Monday;11:00-14:00;"B 1.15";"dr Lelonek Barbara";"Psychiatria i pielęgniarstwo psychiatryczne";Po/Is./S/19/20;"sym 03";;stay;
+2021-11-22;Monday;11:00-18:30;"A 1.02";"mgr Łon Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 05";bartek;prep;
+2021-11-22;Monday;11:15-15:00;"B 3.29";"lek. med. Chmielowiec Kacper";"Choroby wewnętrzne-Propedeutyka Interny z elementami Kardiologii";LEK/S/19/20;"ćwpk 10";wojtek;phon;
+2021-11-22;Monday;11:15-15:00;"B 3.29";"lek. med. Saletra Michał";"Choroby wewnętrzne-Propedeutyka Interny z elementami Kardiologii";LEK/S/19/20;"ćwpk 12";;free;"obstawiane przez Wojtka"
+2021-11-22;Monday;11:15-15:00;"B 3.32";"lek. med. Chmielewski Grzegorz";Pediatria;LEK/S/19/20;"ćwpk 03";wojtek;phon;
+2021-11-22;Monday;11:15-15:00;"B 3.32";"lek. med. Łukawska Martyna";Pediatria;LEK/S/19/20;"ćwpk 04";;free;"obstawiane przez Wojtka"
+2021-11-22;Monday;13:00-16:45;"B 1.25";;;;;;free;", ,"
+2021-11-22;Monday;13:45-19:45;"A 1.05";"mgr Podolska Paulina";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 05";;free;
+2021-11-22;Monday;13:45-19:45;"A 1.06";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 08";;free;
+2021-11-22;Monday;13:45-19:45;"A 1.07";"mgr Durlik Marlena";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 07";;free;
+2021-11-22;Monday;13:45-19:45;"A 1.09";"dr Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 06";;free;
+2021-11-22;Monday;14:15-17:15;"B 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Pielęgniarstwo położniczo - ginekologiczne";P/Ist./S/19/20;"sym 11";marcin;stay;
+2021-11-22;Monday;15:00-18:00;"B 1.01";"mgr Jachymczyk Ewa";"Pielęgniarstwo neurologiczne";P/Ist./S/19/20;"sym 06";marek;stay;
+2021-11-23;Tuesday;08:00-14:00;"B 0.26";"mgr Snoch Krzysztof";"Medyczne czynności ratunkowe";"RM/I stopień/st/2019/20";"ćwp 03";;free;
+2021-11-23;Tuesday;08:00-14:00;"B 1.01";"mgr Sikorska Julia";"Pielęgniarstwo pediatryczne";P/Ist./S/19/20;"sym 05";marek;stay;
+2021-11-23;Tuesday;08:45-11:45;"B 0.30";"mgr Kwiecień Krzysztof";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 01";;free;
+2021-11-23;Tuesday;12:15-16:45;"C 2.07";"lek. med. Polańska-Matwiejew Dominika";"Anestezjologia i intensywna terapia";LEK/Eng-Div-6/18/19;"ćwpk 02";wojtek;stay;
+2021-11-23;Tuesday;13:00-15:45;"B 1.25";;;PIEL/Ist./S/2021/2022;"ćw 02";;free;"dr Kopik Aldona, Pedagogika,"
+2021-11-23;Tuesday;15:00-18:00;"B 1.01";"mgr Jachymczyk Ewa";"Pielęgniarstwo neurologiczne";P/Ist./S/19/20;"sym 04";marek;stay;
+2021-11-23;Tuesday;15:00-18:00;"B 1.15";"mgr Dunkowska Anna";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 08";;stay;
+2021-11-23;Tuesday;15:00-18:45;"B 0.28";"dr hab. prof. UJK Brola Waldemar";Neurologia;RM/Ist/S/2020/2021;"ćw 01";;free;
+2021-11-23;Tuesday;15:00-19:00;"D 0.09";"lek. med. Krzciuk Piotr";;;;;free;,
+2021-11-23;Tuesday;16:00-18:15;"B 3.29";;;;;;free;", ,"
+2021-11-23;Tuesday;16:00-18:15;"B 3.32";;;;;;free;"dr Rębak Dorota, ,"
+2021-11-24;Wednesday;07:30-12:00;"D 0.09";"lek. med. Piotrowska Ilona";"Chirurgia dziecięca";LEK/S/17/18;"ćwpk 17";paulina;stay;
+2021-11-24;Wednesday;07:30-12:00;"D 0.10";"lekarz Władyszewski Łukasz";"Chirurgia dziecięca";LEK/S/17/18;"ćwpk 18";darek;stay;
+2021-11-24;Wednesday;07:30-13:30;"A 1.05";"mgr Podolska Paulina";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 09";;free;
+2021-11-24;Wednesday;07:30-13:30;"A 1.06";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 12";;free;
+2021-11-24;Wednesday;07:30-13:30;"A 1.07";"mgr Durlik Marlena";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 11";;free;
+2021-11-24;Wednesday;07:30-13:30;"A 1.09";"dr Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 10";;free;
+2021-11-24;Wednesday;08:00-11:45;"B 0.28";"dr Dudzikowska Magdalena";"Choroby wewnętrzne z elementami onkologii";RM/Ist/S/2020/2021;"ćw 01";;free;
+2021-11-24;Wednesday;08:00-12:30;"B 1.01";"dr Głowala Sylwia";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 07";marek;stay;
+2021-11-24;Wednesday;08:00-12:30;"B 1.05";"mgr Wójcik Katarzyna";"Opieka ginekologiczna";Po/Ist./S/2020/2021;"sym 03";;stay;
+2021-11-24;Wednesday;08:00-14:00;"B 0.26";"mgr Snoch Krzysztof";"Medyczne czynności ratunkowe";"RM/I stopień/st/2019/20";"ćwp 03";;free;
+2021-11-24;Wednesday;09:45-13:30;"B 0.30";"dr Słopiecka Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 03";;free;
+2021-11-24;Wednesday;12:00-13:30;"D 0.09";"lek. med. Piotrowska Ilona";"Chirurgia dziecięca";LEK/S/17/18;"ćwpk 19";paulina;stay;
+2021-11-24;Wednesday;12:00-15:45;"B 0.28";"dr Dudzikowska Magdalena";"Choroby wewnętrzne z elementami onkologii";RM/Ist/S/2020/2021;"ćw 02";;free;
+2021-11-24;Wednesday;12:00-16:30;"D 0.10";"lekarz Władyszewski Łukasz";"Chirurgia dziecięca";LEK/S/17/18;"ćwpk 20";darek;stay;
+2021-11-24;Wednesday;12:30-17:00;"B 1.01";"dr Głowala Sylwia";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 05";marek;stay;
+2021-11-24;Wednesday;13:30-15:00;"D 0.09";"dr Wolak Przemysław";"Chirurgia dziecięca";LEK/S/17/18;"ćwpk 19";paulina;stay;
+2021-11-24;Wednesday;14:00-18:30;"A 1.06";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 04";;free;
+2021-11-24;Wednesday;14:00-18:30;"A 1.07";"dr Wencel-Wawrzeńczyk Agnieszka";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 06";;free;
+2021-11-24;Wednesday;14:00-19:30;"B 1.05";"mgr Wiąk Krystyna";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 05";;stay;
+2021-11-24;Wednesday;15:00-16:30;"D 0.09";"lek. med. Piotrowska Ilona";"Chirurgia dziecięca";LEK/S/17/18;"ćwpk 19";paulina;stay;
+2021-11-24;Wednesday;15:00-18:00;"B 1.15";"mgr Dunkowska Anna";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 09";wojtek;stay;
+2021-11-25;Thursday;07:00-14:30;"D 0.09";"lek. med. Zgubieński Kajetan";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 05";wojtek;stay;
+2021-11-25;Thursday;07:00-14:30;"D 0.10";"lek. med. Chromik Anna";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 04";paulina;stay;
+2021-11-25;Thursday;08:00-11:00;"B 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Pielęgniarstwo położniczo - ginekologiczne";P/Ist./S/2020/2021;"sym 11";;stay;
+2021-11-25;Thursday;08:00-11:00;"B 1.15";"dr Lelonek Barbara";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 06";;stay;
+2021-11-25;Thursday;08:30-10:45;"B 1.25";;;PIEL/Ist./S/2021/2022;"ćw 02";;free;"dr Kopik Aldona, Pedagogika,"
+2021-11-25;Thursday;08:30-11:30;"B 3.32";;;;;;free;", ,"
+2021-11-25;Thursday;10:45-13:00;"B 1.25";;;PIEL/Ist./S/2021/2022;"ćw 02";;free;"dr Kopik Aldona, Pedagogika,"
+2021-11-25;Thursday;11:00-14:00;"B 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Pielęgniarstwo położniczo - ginekologiczne";P/Ist./S/2020/2021;"sym 12";;stay;
+2021-11-25;Thursday;11:00-14:00;"B 1.15";"dr Lelonek Barbara";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 04";;stay;
+2021-11-25;Thursday;12:30-17:00;"B 0.28";"mgr Łon Paulina";"Intensywna terapia";RM/Ist/S/2020/2021;"ćw 02";;free;
+2021-11-25;Thursday;13:00-20:30;"C 2.07";"lek. med. Krzciuk Piotr";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 03";darek;stay;
+2021-11-25;Thursday;13:00-20:30;"D 0.09";"lekarz Kuchareczko Artur";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 02";marcin;stay;Darek
+2021-11-25;Thursday;13:00-20:30;"D 0.10";"lekarz Trybek Tomasz";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 01";marcin;stay;Darek
+2021-11-25;Thursday;13:30-15:45;"B 1.25";"dr Skowronek Paweł";"Ortopedia i traumatologia";LEK/S/17/18;"ćw 04";;free;
+2021-11-25;Thursday;13:30-19:30;"B 0.26";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 01";;free;
+2021-11-25;Thursday;14:00-17:00;"B 1.15";"dr Lelonek Barbara";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 05";;stay;
+2021-11-25;Thursday;15:30-19:15;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 11";paulina;prep;
+2021-11-26;Friday;07:00-14:30;"C 2.07";"lek. med. Dziugieł Robert";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 10";darek;stay;
+2021-11-26;Friday;07:00-14:30;"D 0.09";"lek. med. Chromik Anna";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 09";marcin;stay;
+2021-11-26;Friday;07:00-14:30;"D 0.10";"lek. med. Zgubieński Kajetan";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 06";;stay;
 2021-11-26;Friday;08:00-13:15;"B 0.26";"mgr Snoch Krzysztof";"Procedury ratunkowe wewnątrzszpitalne";"RM/I stopień/niestacjonarne/2019/20";"ćwp 01";;free;
-2021-11-29;Monday;10:30-14:15;"B 0.26";"mgr Łon Paulina";"Intensywna terapia";RM/Ist/S/2020/2021;"ćw 01";;free;
-2021-11-30;Tuesday;08:00-14:00;"B 0.26";"mgr Snoch Krzysztof";"Medyczne czynności ratunkowe";"RM/I stopień/st/2019/20";"ćwp 03";;look;
-2021-12-01;Wednesday;08:00-14:00;"B 0.26";"mgr Snoch Krzysztof";"Medyczne czynności ratunkowe";"RM/I stopień/st/2019/20";"ćwp 03";;look;
-2021-11-26;Friday;15:00-17:15;"B 0.28";"dr Salwa Agata";;;;;free;KOS/Ist./S/21/22
-2021-11-26;Friday;17:15-21:00;"B 0.28";"dr hab. prof. UJK Brola Waldemar";Neurologia;RM/Ist/S/2020/2021;"ćw 01";;free;
-2021-11-28;Sunday;08:00-14:45;"B 0.28";"dr Cieślik Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 01";;free;
-2021-11-29;Monday;10:30-14:15;"B 0.28";"mgr Makowski Kamil";"Medycyna ratunkowa";"RM/I stopień/st/2019/20";"ćw 01";;free;
-2021-11-30;Tuesday;15:00-18:45;"B 0.28";"dr hab. prof. UJK Brola Waldemar";Neurologia;RM/Ist/S/2020/2021;"ćw 02";;look;
-2021-12-01;Wednesday;08:00-14:45;"B 0.28";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 02";;look;
-2021-12-01;Wednesday;09:45-15:00;"B 0.28";"dr Cieślik Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 04";;look;
-2021-12-01;Wednesday;15:00-20:15;"B 0.28";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 04";;look;
-2021-12-03;Friday;08:00-14:00;"B 0.28";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 03";;look;
-2021-12-03;Friday;16:30-18:00;"B 0.28";"dr Salwa Agata";;;;;look;KOS/Ist./S/21/22
+2021-11-26;Friday;09:00-10:00;"A 1.07";"mgr Szmalec Daria";;;;;free;,
+2021-11-26;Friday;09:00-11:15;"B 0.31";;;Po/IIst./S/2020/2021;;;free;"Wdrażanie wyników badań w praktyce,"
+2021-11-26;Friday;11:00-14:45;"B 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Ginekologia i położnictwo";"RM/I stopień/st/2019/20";"ćwp 04";;stay;
 2021-11-26;Friday;11:00-19:15;"B 0.30";"mgr Kwiecień Krzysztof";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 01";;free;
-2021-11-28;Sunday;08:00-16:15;"B 0.30";"dr Słopiecka Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 02";;free;
-2021-11-29;Monday;10:30-14:15;"B 0.30";"mgr Putowski Mateusz";"Medycyna ratunkowa";"RM/I stopień/st/2019/20";"ćw 02";;free;
-2021-12-01;Wednesday;09:45-15:00;"B 0.30";"dr Słopiecka Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 01";;look;
-2021-12-01;Wednesday;15:00-20:15;"B 0.30";"dr Słopiecka Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 02";;look;
-2021-12-03;Friday;08:00-11:45;"B 0.30";"mgr Wydrych Bartosz";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 03";;look;
-2021-12-03;Friday;14:00-20:00;"B 0.30";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";Po/Is./S/19/20;"sym 02";;look;
-2021-11-26;Friday;14:45-17:45;"B 1.01";"dr Nowak Ewelina";"Anestezjologia i stany zagrożenia życia";Po/Is./S/19/20;"sym 02";;look;
-2021-11-26;Friday;17:45-20:45;"B 1.01";"dr Nowak Ewelina";"Anestezjologia i stany zagrożenia życia";Po/Is./S/19/20;"sym 03";;stay;
-2021-11-29;Monday;08:00-12:30;"B 1.01";"dr Głowala Sylwia";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 08";alewandowska;stay;
-2021-11-29;Monday;15:00-18:00;"B 1.01";"mgr Jachymczyk Ewa";"Pielęgniarstwo neurologiczne";P/Ist./S/19/20;"sym 03";;look;
-2021-11-30;Tuesday;12:45-17:15;"B 1.01";"mgr Dudek Małgorzata";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 10";;look;
-2021-12-01;Wednesday;08:00-12:30;"B 1.01";"mgr Dudek Małgorzata";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 11";;look;
-2021-12-01;Wednesday;15:00-19:45;"B 1.01";"mgr Kaleta Agnieszka";"Pielęgniarstwo internistyczne";P/Ist./S/2020/2021;"sym 09";;look;
-2021-12-02;Thursday;08:00-11:00;"B 1.01";"dr Głowala Sylwia";"Pielęgniarstwo neurologiczne";P/Ist./S/19/20;"sym 10";;look;
-2021-12-02;Thursday;15:00-19:45;"B 1.01";"dr Zając Przemysław";"Pielęgniarstwo internistyczne";P/Ist./S/2020/2021;"sym 11";;look;
-2021-12-03;Friday;08:00-12:30;"B 1.01";"mgr Dudek Małgorzata";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 09";;look;
-2021-12-03;Friday;15:00-19:45;"B 1.01";"dr Zając Przemysław";"Pielęgniarstwo internistyczne";P/Ist./S/2020/2021;"sym 12";;look;
-2021-11-26;Friday;11:00-14:45;"B 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Ginekologia i położnictwo";"RM/I stopień/st/2019/20";"ćwp 04";alewandowska;stay;
-2021-11-26;Friday;14:45-17:45;"B 1.05";"dr Kamińska-Gwóźdź Ewelina";"Pielęgniarstwo opieki długoterminowej";P/Ist./S/19/20;"sym 04";;look;
+2021-11-26;Friday;13:00-18:15;"B 0.25";"mgr Barańska Edyta";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 03";;free;
+2021-11-26;Friday;13:00-20:30;"C 2.07";"dr Domagała Szymon";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 08";paulina;stay;
+2021-11-26;Friday;13:00-20:30;"D 0.09";"lek. med. Marzec Mateusz";"Choroby wewnętrzne";LEK/Eng-Div-6/16/17;"ćwpk 01";wojtek;stay;
+2021-11-26;Friday;13:00-20:30;"D 0.10";"dr Turek Łukasz";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 07";;stay;
+2021-11-26;Friday;14:00-19:00;"A 1.01";"dr Wencel-Wawrzeńczyk Agnieszka";;;;;free;,
+2021-11-26;Friday;14:15-17:15;"B 0.31";;;LEK/S/19/20;"ćw 05";;free;"lek. med. Cedro Anna, Farmakologia z toksykologia,"
+2021-11-26;Friday;14:45-17:45;"B 1.01";"dr Nowak Ewelina";"Anestezjologia i stany zagrożenia życia";Po/Is./S/19/20;"sym 02";marek;stay;
+2021-11-26;Friday;14:45-17:45;"B 1.05";"dr Kamińska-Gwóźdź Ewelina";"Pielęgniarstwo opieki długoterminowej";P/Ist./S/19/20;"sym 04";;stay;
+2021-11-26;Friday;15:00-17:15;"B 0.28";"dr Salwa Agata";;;;;free;"Pierwsza pomoc,"
+2021-11-26;Friday;17:15-20:15;"B 0.31";;;LEK/S/19/20;"ćw 01";;free;"lek. med. Cedro Anna, Farmakologia z toksykologia,"
+2021-11-26;Friday;17:15-21:00;"B 0.28";"dr hab. prof. UJK Brola Waldemar";Neurologia;RM/Ist/S/2020/2021;"ćw 01";;free;
+2021-11-26;Friday;17:45-20:45;"B 1.01";"dr Nowak Ewelina";"Anestezjologia i stany zagrożenia życia";Po/Is./S/19/20;"sym 03";marek;stay;
 2021-11-26;Friday;17:45-20:45;"B 1.05";"dr Kamińska-Gwóźdź Ewelina";"Rehabilitacja w położnictwie, neonatologii i ginekologii";Po/Is./S/19/20;"sym 06";;stay;
-2021-11-28;Sunday;15:15-19:45;"B 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Ginekologia i położnictwo";"RM/I stopień/niestacjonarne/2019/20";"ćwp 01";;look;
-2021-11-29;Monday;08:00-11:00;"B 1.05";"mgr Szmalec Daria";"Pielęgniarstwo położniczo - ginekologiczne";P/Ist./S/2020/2021;"sym 04";;look;
-2021-11-29;Monday;11:15-15:45;"B 1.05";"mgr Wójcik Katarzyna";"Opieka położnicza";Po/Is./S/19/20;"sym 06";;look;
-2021-11-30;Tuesday;08:00-14:00;"B 1.05";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";Po/Ist./S/2020/2021;"sym 01";;look;
-2021-12-01;Wednesday;13:30-17:15;"B 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Ginekologia i położnictwo";"RM/I stopień/st/2019/20";"ćwp 02";;look;
-2021-12-02;Thursday;08:00-12:30;"B 1.05";"mgr Szmalec Daria";"Opieka położnicza";Po/Is./S/19/20;"sym 03";;look;
-2021-12-03;Friday;08:00-11:00;"B 1.05";"mgr Bedla Katarzyna";"Opieka neonatologiczna";Po/Ist./S/2020/2021;"sym 05";;look;
-2021-12-03;Friday;11:15-14:15;"B 1.05";"mgr Bedla Katarzyna";"Opieka neonatologiczna";Po/Ist./S/2020/2021;"sym 06";;look;
-2021-12-03;Friday;14:15-20:15;"B 1.05";"mgr Bedla Katarzyna";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"sym 06";;look;
-2021-11-29;Monday;08:00-12:30;"B 1.15";"mgr Dudek Małgorzata";"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 11";wstepien;stay;
-2021-11-29;Monday;12:45-17:15;"B 1.15";"mgr Dudek Małgorzata";"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 12";;look;
-2021-11-30;Tuesday;08:00-12:30;"B 1.15";"mgr Dudek Małgorzata";"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 03";;look;
-2021-11-30;Tuesday;15:00-18:00;"B 1.15";"mgr Dunkowska Anna";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 11";;look;
-2021-12-01;Wednesday;15:00-18:00;"B 1.15";"mgr Dunkowska Anna";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 12";;look;
-2021-12-02;Thursday;15:00-18:00;"B 1.15";"mgr Dunkowska Anna";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 10";;look;
-2021-12-03;Friday;12:45-17:15;"B 1.15";"mgr Dudek Małgorzata";"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 05";;look;
-2021-11-26;Friday;14:00-17:45;"B 3.32";"mgr Żółcińska Dorota";;;;;phon;"Choroby przenoszone drogą krwi, KOS/IIst./S/20/21"
-2021-11-26;Friday;07:00-14:30;"C 2.07";"lek. med. Dziugieł Robert";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 10";mlenard;stay;
-2021-11-26;Friday;13:00-20:30;"C 2.07";"dr Domagała Szymon";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 08";mlenard;stay;
-2021-11-29;Monday;12:00-16:30;"C 2.07";"dr n. med. Jasińska Elżbieta";Neurologia;LEK/Eng-Div-6/18/19;"ćwpk 02";;look;
-2021-11-30;Tuesday;08:00-12:30;"C 2.07";"lek. med. Szczukiewicz-Markowska Grażyna";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 06";;look;
-2021-11-30;Tuesday;12:30-17:00;"C 2.07";"lek. med. Szczukiewicz-Markowska Grażyna";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 08";;look;
-2021-12-02;Thursday;07:00-14:30;"C 2.07";"lek. med. Bączek Michał";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 12";;look;
-2021-12-02;Thursday;13:00-20:30;"C 2.07";"lek. med. Dudek Aneta";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 14";;look;
-2021-12-03;Friday;07:00-14:30;"C 2.07";"lek. med. Krzciuk Piotr";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 16";;look;
-2021-12-03;Friday;13:00-20:30;"C 2.07";"lek. med. Dziugieł Robert";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 18";;look;
-2021-11-29;Monday;08:00-12:30;"C 2.11";"dr Domagała Michał";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 09";;look;
-2021-11-29;Monday;12:30-17:00;"C 2.11";"dr Domagała Michał";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 11";;look;
-2021-11-30;Tuesday;08:30-13:00;"C 2.11";"dr Domagała Michał";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 05";;look;
-2021-11-30;Tuesday;13:00-17:30;"C 2.11";"dr Domagała Michał";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 07";;look;
-2021-12-01;Wednesday;13:45-19:45;"C 2.11";"lek. med. Milewski Piotr";Chirurgia;LEK/S/16/17;"ćwpk 09";;look;
-2021-11-26;Friday;07:00-14:30;"D 0.10";"lek. med. Zgubieński Kajetan";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 06";pakrzciuk;stay;
-2021-11-26;Friday;13:00-20:30;"D 0.10";"dr Turek Łukasz";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 07";;look;
-2021-11-29;Monday;07:00-11:30;"D 0.10";" Mikina Anna";Pediatria;LEK/S/16/17;"ćwpk 05";sdudek;phon;
-2021-11-29;Monday;11:45-16:15;"D 0.10";" Mikina Anna";Pediatria;LEK/S/16/17;"ćwpk 06";;look;
-2021-11-30;Tuesday;11:00-15:30;"D 0.10";"lek. med. Pałyga-Bysiecka Ilona";Pediatria;LEK/S/16/17;"ćwpk 05";;look;
-2021-11-30;Tuesday;15:45-20:15;"D 0.10";"lek. med. Sobol Michał";Pediatria;LEK/S/16/17;"ćwpk 06";;look;
-2021-12-02;Thursday;07:00-14:30;"D 0.10";"lek. med. Krzciuk Piotr";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 11";;look;
-2021-12-02;Thursday;13:00-20:30;"D 0.10";"dr Domagała Szymon";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 13";;look;
-2021-12-03;Friday;07:00-14:30;"D 0.10";"lek. med. Zgubieński Kajetan";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 19";;look;
-2021-12-03;Friday;13:00-20:30;"D 0.10";"lek. med. Bociek Arkadiusz";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 17";;look;
-2021-11-26;Friday;07:00-14:30;"D 0.09";"lek. med. Chromik Anna";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 09";sdudek;stay;
-2021-11-26;Friday;13:00-20:30;"D 0.09";"lek. med. Marzec Mateusz";"Choroby wewnętrzne";LEK/Eng-Div-6/16/17;"ćwpk 01";wstepien;stay;
-2021-11-29;Monday;07:00-11:30;"D 0.09";"lek. med. Pałyga-Bysiecka Ilona";Pediatria;LEK/S/16/17;"ćwpk 06";sdudek;stay;
-2021-11-29;Monday;13:45-18:15;"D 0.09";"lek. med. Sobol Michał";Pediatria;LEK/S/16/17;"ćwpk 05";;look;
-2021-11-30;Tuesday;15:45-20:15;"D 0.09";"lek. med. Maślana Justyna";Pediatria;LEK/S/16/17;"ćwpk 05";;look;
-2021-12-01;Wednesday;07:00-21:00;"D 0.09";;;;;;look;", ,"
-2021-12-02;Thursday;07:00-14:30;"D 0.09";"lek. med. Chromik Anna";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 15";;look;
-2021-12-02;Thursday;13:00-20:30;"D 0.09";"lek. med. Cecha Patrycja";"Choroby wewnętrzne";LEK/Eng-Div-6/16/17;"ćwpk 02";;look;
-2021-12-03;Friday;07:00-14:30;"D 0.09";"lek. med. Zgódka Paweł";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 20";;look;
-2021-12-03;Friday;13:00-20:30;"D 0.09";"lek. med. Marzec Mateusz";"Choroby wewnętrzne";LEK/Eng-Div-6/16/17;"ćwpk 01";;look;
+2021-11-27;Saturday;08:00-23:59;"A 1.01";"dr Wencel-Wawrzeńczyk Agnieszka";;;;;free;,
+2021-11-27;Saturday;12:30-14:45;"B 0.31";;;;;;free;"mgr Stroński Mariusz, Techniki informacyjno-komunikacyjne, DIET/Ist./S/21/22"
+2021-11-27;Saturday;15:00-17:15;"B 0.31";;;;;;free;"mgr Stroński Mariusz, Techniki informacyjno-komunikacyjne, DIET/Ist./S/21/22"
+2021-11-28;Sunday;00:00-19:30;"A 1.01";"dr Wencel-Wawrzeńczyk Agnieszka";;;;;free;,
+2021-11-28;Sunday;08:00-14:45;"B 0.28";"dr Cieślik Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 01";;free;
+2021-11-28;Sunday;08:00-16:15;"B 0.30";"dr Słopiecka Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 02";;free;
+2021-11-28;Sunday;10:30-12:45;"B 0.31";;;;;;free;"Podstawy statystyki, FIZJ/Jedn.MGR/S/2019/2020"
+2021-11-28;Sunday;11:30-16:45;"B 0.25";"mgr Barańska Edyta";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 01";;free;
+2021-11-28;Sunday;13:00-15:15;"B 0.31";;;;;;free;"Podstawy statystyki, FIZJ/Jedn.MGR/S/2019/2020"
+2021-11-28;Sunday;15:15-19:45;"B 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Ginekologia i położnictwo";"RM/I stopień/niestacjonarne/2019/20";"ćwp 01";;stay;
+2021-11-29;Monday;07:00-11:30;"D 0.09";"lek. med. Pałyga-Bysiecka Ilona";Pediatria;LEK/S/16/17;"ćwpk 06";paulina;stay;
+2021-11-29;Monday;07:00-11:30;"D 0.10";" Mikina Anna";Pediatria;LEK/S/16/17;"ćwpk 05";wojtek;stay;
+2021-11-29;Monday;07:30-13:30;"A 1.05";"mgr Podolska Paulina";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 02";;free;
+2021-11-29;Monday;07:30-13:30;"A 1.06";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 01";;free;
+2021-11-29;Monday;07:30-13:30;"A 1.07";"mgr Durlik Marlena";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 04";;free;
+2021-11-29;Monday;07:30-13:30;"A 1.09";"dr Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 03";;free;
+2021-11-29;Monday;08:00-09:30;"B 0.31";;;;;;free;"Podstawy statystyki, FIZJ/Jedn.MGR/S/2019/2020"
+2021-11-29;Monday;08:00-11:00;"B 1.05";"mgr Szmalec Daria";"Pielęgniarstwo położniczo - ginekologiczne";P/Ist./S/2020/2021;"sym 04";;stay;
+2021-11-29;Monday;08:00-12:30;"B 1.01";"dr Głowala Sylwia";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 08";marek;stay;
+2021-11-29;Monday;08:00-12:30;"B 1.15";"mgr Dudek Małgorzata";"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 11";marcin;stay;
+2021-11-29;Monday;08:00-12:30;"C 2.11";"dr Domagała Michał";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 09";darek;stay;
+2021-11-29;Monday;08:00-13:15;"A 1.01";"mgr Falkiewicz Maciej";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 12";darek;prep;
+2021-11-29;Monday;08:00-13:15;"A 1.02";"dr Gola Wojciech";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 11";;prep;
+2021-11-29;Monday;09:30-11:00;"B 0.31";;;;;;free;"Podstawy statystyki, FIZJ/Jedn.MGR/S/2019/2020"
+2021-11-29;Monday;10:30-14:15;"B 0.26";"mgr Łon Paulina";"Intensywna terapia";RM/Ist/S/2020/2021;"ćw 01";;free;
+2021-11-29;Monday;10:30-14:15;"B 0.28";"mgr Makowski Kamil";"Medycyna ratunkowa";"RM/I stopień/st/2019/20";"ćw 01";;free;
+2021-11-29;Monday;10:30-14:15;"B 0.30";"mgr Putowski Mateusz";"Medycyna ratunkowa";"RM/I stopień/st/2019/20";"ćw 02";;free;
+2021-11-29;Monday;11:00-12:30;"B 0.31";;;;;;free;"Podstawy statystyki, FIZJ/Jedn.MGR/S/2019/2020"
+2021-11-29;Monday;11:15-15:45;"B 1.05";"mgr Wójcik Katarzyna";"Opieka położnicza";Po/Is./S/19/20;"sym 06";;stay;
+2021-11-29;Monday;11:45-16:15;"D 0.10";" Mikina Anna";Pediatria;LEK/S/16/17;"ćwpk 06";paulina;stay;
+2021-11-29;Monday;12:00-16:30;"C 2.07";"dr n. med. Jasińska Elżbieta";Neurologia;LEK/Eng-Div-6/18/19;"ćwpk 02";wojtek;stay;
+2021-11-29;Monday;12:30-17:00;"C 2.11";"dr Domagała Michał";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 11";darek;stay;
+2021-11-29;Monday;12:45-15:00;"B 0.31";;;;;;free;"Statystyka, KOS/IIst./S/21/22"
+2021-11-29;Monday;12:45-17:15;"B 1.15";"mgr Dudek Małgorzata";"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 12";marcin;stay;Marek
+2021-11-29;Monday;13:45-18:15;"D 0.09";"lek. med. Sobol Michał";Pediatria;LEK/S/16/17;"ćwpk 05";paulina;stay;
+2021-11-29;Monday;13:45-19:45;"A 1.05";"mgr Podolska Paulina";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 06";;free;
+2021-11-29;Monday;13:45-19:45;"A 1.06";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 05";;free;
+2021-11-29;Monday;13:45-19:45;"A 1.07";"mgr Durlik Marlena";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 08";;free;
+2021-11-29;Monday;13:45-19:45;"A 1.09";"dr Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 07";;free;
+2021-11-29;Monday;14:30-20:30;"A 1.02";"mgr Łon Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 06";;prep;
+2021-11-29;Monday;15:00-18:45;"B 0.31";;;Po/IIst./S/2020/2021;;;free;"Terapia bólu ostrego i przewlekłego,"
+2021-11-30;Tuesday;07:30-12:00;"D 0.10";;Pediatria;LEK/S/16/17;"ćwpk 05";wojtek;stay;"lek. med. Ilona Pałyga-Bysiecka,"
+2021-11-30;Tuesday;07:30-12:45;"A 1.05";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 11";;free;"dr Małgorzata Kaczmarczyk,"
+2021-11-30;Tuesday;07:30-12:45;"A 1.06";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 12";;free;"dr Elżbieta Kamusińska,"
+2021-11-30;Tuesday;07:30-12:45;"A 1.07";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 09";;free;"dr Kazimiera Zdziebło,"
+2021-11-30;Tuesday;07:30-12:45;"A 1.09";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 10";;free;"mgr Agnieszka Kaleta,"
+2021-11-30;Tuesday;08:00-12:30;"B 1.15";"mgr Dudek Małgorzata";"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 03";marcin;stay;
+2021-11-30;Tuesday;08:00-12:30;"C 2.07";"lek. med. Szczukiewicz-Markowska Grażyna";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 06";paulina;stay;
+2021-11-30;Tuesday;08:00-14:00;"A 1.01";"mgr Falkiewicz Maciej";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 12";paulina;prep;
+2021-11-30;Tuesday;08:00-14:00;"A 1.02";"dr Gola Wojciech";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 11";marcin;prep;
+2021-11-30;Tuesday;08:00-14:00;"B 0.26";"mgr Snoch Krzysztof";"Medyczne czynności ratunkowe";"RM/I stopień/st/2019/20";"ćwp 03";;free;
+2021-11-30;Tuesday;08:00-14:00;"B 1.05";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";Po/Ist./S/2020/2021;"sym 01";;stay;
+2021-11-30;Tuesday;08:30-13:00;"C 2.11";"dr Domagała Michał";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 05";marcin;stay;
+2021-11-30;Tuesday;12:30-17:00;"C 2.07";"lek. med. Szczukiewicz-Markowska Grażyna";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 08";wojtek;stay;
+2021-11-30;Tuesday;12:45-17:15;"B 1.01";"mgr Dudek Małgorzata";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 10";marek;stay;
+2021-11-30;Tuesday;13:00-17:30;"C 2.11";"dr Domagała Michał";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 07";marcin;stay;
+2021-11-30;Tuesday;13:00-18:15;"A 1.05";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 15";;free;"dr Małgorzata Kaczmarczyk,"
+2021-11-30;Tuesday;13:00-18:15;"A 1.06";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 16";;free;"dr Elżbieta Kamusińska,"
+2021-11-30;Tuesday;13:00-18:15;"A 1.07";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 13";;free;"dr Kazimiera Zdziebło,"
+2021-11-30;Tuesday;13:00-18:15;"A 1.09";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 14";;free;"mgr Agnieszka Kaleta,"
+2021-11-30;Tuesday;14:00-15:30;"B 0.31";;;;;;free;"[Rezerwacja sali], ,"
+2021-11-30;Tuesday;15:00-18:00;"B 1.15";"mgr Dunkowska Anna";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 11";;stay;
+2021-11-30;Tuesday;15:00-18:45;"B 0.28";"dr hab. prof. UJK Brola Waldemar";Neurologia;RM/Ist/S/2020/2021;"ćw 02";;free;
+2021-11-30;Tuesday;15:45-20:15;"D 0.09";"lek. med. Maślana Justyna";Pediatria;LEK/S/16/17;"ćwpk 05";darek;stay;
+2021-11-30;Tuesday;15:45-20:15;"D 0.10";"lek. med. Sobol Michał";Pediatria;LEK/S/16/17;"ćwpk 06";;stay;
+2021-11-30;Tuesday;17:00-20:00;"B 0.31";;;;;;free;"Metodologia badań naukowych, WF/IIst./S/2021/2022"
+2021-11-30;Tuesday;18:00-21:00;"B 1.15";;"Psychiatria i pielęgniarstwo psychiatryczne";Po/Is./S/19/20;"sym 05";;stay;"mgr Anna Dunkowska,"
+2021-12-01;Wednesday;07:00-13:30;"A 1.09";;"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 11";;free;"dr Jadwiga Krawczyńska,"
+2021-12-01;Wednesday;07:00-21:00;"D 0.10";;;;;;free;", ,"
+2021-12-01;Wednesday;07:30-12:45;"A 1.06";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 09";;free;
+2021-12-01;Wednesday;07:30-13:30;"A 1.05";"mgr Podolska Paulina";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 10";;free;
+2021-12-01;Wednesday;07:30-13:30;"A 1.07";"mgr Durlik Marlena";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 12";;free;
+2021-12-01;Wednesday;08:00-10:15;"B 0.31";;;;;;free;"dr Strzelecka Agnieszka, Podstawy statystyki, DIET/Ist./S/21/22"
+2021-12-01;Wednesday;08:00-14:00;"B 0.26";"mgr Snoch Krzysztof";"Medyczne czynności ratunkowe";"RM/I stopień/st/2019/20";"ćwp 03";;free;
+2021-12-01;Wednesday;08:00-14:45;"B 0.28";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 02";;free;
+2021-12-01;Wednesday;09:45-15:00;"B 0.28";"dr Cieślik Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 04";;free;
+2021-12-01;Wednesday;09:45-15:00;"B 0.30";"dr Słopiecka Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 01";;free;
+2021-12-01;Wednesday;10:30-12:45;"B 0.31";;;;;;free;"dr Strzelecka Agnieszka, Podstawy statystyki, DIET/Ist./S/21/22"
+2021-12-01;Wednesday;12:00-15:00;"B 1.15";;;;;;free;"[Rezerwacja sali], ,"
+2021-12-01;Wednesday;13:00-15:15;"B 0.31";;;;;;free;"dr Strzelecka Agnieszka, Podstawy statystyki, DIET/Ist./S/21/22"
+2021-12-01;Wednesday;13:30-17:15;"B 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Ginekologia i położnictwo";"RM/I stopień/st/2019/20";"ćwp 02";;stay;
+2021-12-01;Wednesday;13:45-19:45;"C 2.11";"lek. med. Milewski Piotr";Chirurgia;LEK/S/16/17;"ćwpk 09";darek;stay;
+2021-12-01;Wednesday;15:00-18:00;"B 1.15";"mgr Dunkowska Anna";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 12";;stay;
+2021-12-01;Wednesday;15:00-19:45;"B 1.01";"mgr Kaleta Agnieszka";"Pielęgniarstwo internistyczne";P/Ist./S/2020/2021;"sym 09";wojtek;stay;
+2021-12-01;Wednesday;15:00-20:15;"B 0.25";"dr Cieślik Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 05";;free;
+2021-12-01;Wednesday;15:00-20:15;"B 0.28";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 04";;free;
+2021-12-01;Wednesday;15:00-20:15;"B 0.30";"dr Słopiecka Aleksandra";"Podstawowe zabiegi medyczne";RM/Ist/S/2021/2022;"ćwp 02";;free;
+2021-12-01;Wednesday;16:00-19:45;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";Po/Is./S/19/20;"ćwp 04";;free;
+2021-12-02;Thursday;07:00-14:30;"C 2.07";"lek. med. Bączek Michał";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 12";darek;stay;
+2021-12-02;Thursday;07:00-14:30;"D 0.09";"lek. med. Chromik Anna";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 15";wojtek;stay;
+2021-12-02;Thursday;07:00-14:30;"D 0.10";"lek. med. Krzciuk Piotr";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 11";paulina;stay;
+2021-12-02;Thursday;07:30-12:45;"A 1.02";;"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 07";;prep;"mgr Paulina Łon,"
+2021-12-02;Thursday;07:30-12:45;"A 1.05";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 04";;free;"dr Małgorzata Kaczmarczyk,"
+2021-12-02;Thursday;07:30-12:45;"A 1.06";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 01";;free;"dr Elżbieta Kamusińska,"
+2021-12-02;Thursday;07:30-12:45;"A 1.07";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 02";;free;"dr Kazimiera Zdziebło,"
+2021-12-02;Thursday;07:30-12:45;"A 1.09";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 03";;free;"mgr Agnieszka Kaleta,"
+2021-12-02;Thursday;08:00-10:15;"B 0.31";;;POŁ/IIst./S/2021/2022;"ćw 02";;free;"dr n. med. Macek Paweł, Statystyka medyczna,"
+2021-12-02;Thursday;08:00-11:00;"B 1.01";"dr Głowala Sylwia";"Pielęgniarstwo neurologiczne";P/Ist./S/19/20;"sym 10";marcin;stay;
+2021-12-02;Thursday;08:00-12:30;"B 1.05";"mgr Szmalec Daria";"Opieka położnicza";Po/Is./S/19/20;"sym 03";marcin;stay;
+2021-12-02;Thursday;10:30-12:45;"B 0.31";;;POŁ/IIst./S/2021/2022;"ćw 01";;free;"dr n. med. Macek Paweł, Statystyka medyczna,"
+2021-12-02;Thursday;13:00-18:15;"A 1.05";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 08";;free;"dr Małgorzata Kaczmarczyk,"
+2021-12-02;Thursday;13:00-18:15;"A 1.06";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 05";;free;"dr Elżbieta Kamusińska,"
+2021-12-02;Thursday;13:00-18:15;"A 1.07";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 06";;free;"dr Kazimiera Zdziebło,"
+2021-12-02;Thursday;13:00-18:15;"A 1.09";;"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 07";;free;"mgr Agnieszka Kaleta,"
+2021-12-02;Thursday;13:00-20:30;"C 2.07";"lek. med. Dudek Aneta";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 14";paulina;stay;
+2021-12-02;Thursday;13:00-20:30;"D 0.09";"lek. med. Cecha Patrycja";"Choroby wewnętrzne";LEK/Eng-Div-6/16/17;"ćwpk 02";wojtek;stay;
+2021-12-02;Thursday;13:00-20:30;"D 0.10";"dr Domagała Szymon";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 13";darek;stay;
+2021-12-02;Thursday;13:30-15:45;"B 0.31";;;LEK/S/17/18;"ćw 05";;free;"Lekarz Wrońska Dorota, Otolaryngologia,"
+2021-12-02;Thursday;14:15-20:15;"A 1.01";"mgr Łon Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 08";;prep;
+2021-12-02;Thursday;15:00-18:00;"B 1.15";"mgr Dunkowska Anna";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 10";marcin;stay;
+2021-12-02;Thursday;15:00-19:45;"B 1.01";"dr Zając Przemysław";"Pielęgniarstwo internistyczne";P/Ist./S/2020/2021;"sym 11";;stay;
+2021-12-02;Thursday;15:30-19:15;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 09";;prep;
+2021-12-03;Friday;07:00-14:30;"C 2.07";"lek. med. Krzciuk Piotr";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 16";paulina;stay;
+2021-12-03;Friday;07:00-14:30;"D 0.09";"lek. med. Zgódka Paweł";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 20";wojtek;stay;
+2021-12-03;Friday;07:00-14:30;"D 0.10";"lek. med. Zgubieński Kajetan";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 19";darek;stay;
+2021-12-03;Friday;08:00-11:00;"B 1.05";"mgr Bedla Katarzyna";"Opieka neonatologiczna";Po/Ist./S/2020/2021;"sym 05";;stay;
+2021-12-03;Friday;08:00-11:45;"B 0.30";"mgr Wydrych Bartosz";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 03";;free;
+2021-12-03;Friday;08:00-12:30;"B 1.01";"mgr Dudek Małgorzata";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 09";marcin;stay;
+2021-12-03;Friday;08:00-14:00;"B 0.28";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 03";;free;
+2021-12-03;Friday;11:00-14:45;"A 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Ginekologia i położnictwo";"RM/I stopień/st/2019/20";"ćwp 02";;free;
+2021-12-03;Friday;11:15-14:15;"B 1.05";"mgr Bedla Katarzyna";"Opieka neonatologiczna";Po/Ist./S/2020/2021;"sym 06";;stay;
+2021-12-03;Friday;12:45-17:15;"B 1.15";"mgr Dudek Małgorzata";"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 05";marcin;stay;
+2021-12-03;Friday;13:00-18:15;"B 0.25";"mgr Barańska Edyta";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 03";;free;
+2021-12-03;Friday;13:00-20:30;"C 2.07";"lek. med. Marzec Mateusz";"Choroby wewnętrzne";LEK/Eng-Div-6/16/17;"ćwpk 01";;stay;
+2021-12-03;Friday;13:00-20:30;"D 0.09";"lek. med. Dziugieł Robert";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 18";wojtek;stay;
+2021-12-03;Friday;13:00-20:30;"D 0.10";"lek. med. Bociek Arkadiusz";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 17";paulina;stay;
+2021-12-03;Friday;14:00-20:00;"B 0.30";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 01";;free;
+2021-12-03;Friday;14:15-17:15;"A 1.01";"mgr Łon Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 08";marcin;prep;
+2021-12-03;Friday;14:15-20:15;"B 1.05";"mgr Bedla Katarzyna";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"sym 06";;stay;
+2021-12-03;Friday;15:00-19:45;"B 1.01";"dr Zając Przemysław";"Pielęgniarstwo internistyczne";P/Ist./S/2020/2021;"sym 12";darek;stay;
+2021-12-03;Friday;16:30-18:00;"B 0.28";"dr Salwa Agata";;;;;free;"Pierwsza pomoc,"
+2021-12-04;Saturday;13:00-15:15;"B 0.30";"mgr Makowski Kamil";"Medycyna ratunkowa";RM/Ist/S/2020/2021;"ćw 01";;free;
+2021-12-05;Sunday;08:30-11:30;"B 0.31";;;RM/Ist/S/2021/2022;"ćw 01";;free;"dr Strzelecka Agnieszka, Informatyka I biostatystyka,"
+2021-12-05;Sunday;11:30-16:45;"B 0.25";"mgr Barańska Edyta";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 01";;free;
+2021-12-05;Sunday;11:30-16:45;"B 0.30";"mgr Wydrych Bartosz";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 02";;free;
+2021-12-06;Monday;07:00-11:30;"D 0.09";"lek. med. Krzciuk Piotr";Pediatria;LEK/S/16/17;"ćwpk 07";darek;stay;
+2021-12-06;Monday;07:00-11:30;"D 0.10";;Pediatria;LEK/S/16/17;"ćwpk 08";wojtek;stay;,
+2021-12-06;Monday;07:30-11:15;"B 3.29";"lek. med. Chmielowiec Kacper";"Choroby wewnętrzne-Propedeutyka Interny z elementami Kardiologii";LEK/S/19/20;"ćwpk 13";marcin;phon;
+2021-12-06;Monday;07:30-11:15;"B 3.29";"lek. med. Saletra Michał";"Choroby wewnętrzne-Propedeutyka Interny z elementami Kardiologii";LEK/S/19/20;"ćwpk 15";;free;"obstawiane przez Marcina"
+2021-12-06;Monday;07:30-11:15;"B 3.32";"lek. med. Chmielewski Grzegorz";Pediatria;LEK/S/19/20;"ćwpk 17";marcin;phon;
+2021-12-06;Monday;07:30-11:15;"B 3.32";"lek. med. Łukawska Martyna";Pediatria;LEK/S/19/20;"ćwpk 18";;free;"obstawiane przez Marcina"
+2021-12-06;Monday;07:30-13:30;"A 1.05";"mgr Podolska Paulina";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 03";;free;
+2021-12-06;Monday;07:30-13:30;"A 1.06";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 02";;free;
+2021-12-06;Monday;07:30-13:30;"A 1.07";"mgr Durlik Marlena";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 01";;free;
+2021-12-06;Monday;07:30-13:30;"A 1.09";"dr Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 04";;free;
+2021-12-06;Monday;08:00-12:30;"B 1.05";"mgr Szmalec Daria";"Opieka położnicza";Po/Is./S/19/20;"sym 02";paulina;stay;
+2021-12-06;Monday;08:00-13:15;"A 1.01";"mgr Karwat Arkadiusz";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 05";marcin;prep;
+2021-12-06;Monday;08:00-13:15;"A 1.02";"dr Gola Wojciech";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 06";marcin;prep;
+2021-12-06;Monday;08:00-14:00;"B 0.25";"mgr Putowski Mateusz";"Medyczne czynności ratunkowe";"RM/I stopień/st/2019/20";"ćwp 02";;free;
+2021-12-06;Monday;08:00-14:00;"B 1.01";"mgr Sikorska Julia";"Pielęgniarstwo pediatryczne";P/Ist./S/19/20;"sym 02";;stay;
+2021-12-06;Monday;09:30-14:00;"B 0.28";"mgr Makowski Kamil";"Medycyna ratunkowa";RM/Ist/S/2020/2021;"ćw 01";;free;
+2021-12-06;Monday;11:15-15:00;"B 3.29";"lek. med. Chmielowiec Kacper";"Choroby wewnętrzne-Propedeutyka Interny z elementami Kardiologii";LEK/S/19/20;"ćwpk 14";marcin;phon;
+2021-12-06;Monday;11:15-15:00;"B 3.29";"lek. med. Saletra Michał";"Choroby wewnętrzne-Propedeutyka Interny z elementami Kardiologii";LEK/S/19/20;"ćwpk 16";;free;"obstawiane przez Marcina"
+2021-12-06;Monday;11:15-15:00;"B 3.32";"lek. med. Chmielewski Grzegorz";Pediatria;LEK/S/19/20;"ćwpk 19";marcin;phon;
+2021-12-06;Monday;11:15-15:00;"B 3.32";"lek. med. Łukawska Martyna";Pediatria;LEK/S/19/20;"ćwpk 20";;free;"obstawiane przez Marcina"
+2021-12-06;Monday;11:45-16:15;"D 0.09";"lek. med. Krzciuk Piotr";Pediatria;LEK/S/16/17;"ćwpk 08";darek;stay;
+2021-12-06;Monday;13:15-14:45;"B 0.31";;;;;;free;"Statystyka, KOS/IIst./S/21/22"
+2021-12-06;Monday;13:45-18:15;"D 0.10";"lek. med. Sobol Michał";Pediatria;LEK/S/16/17;"ćwpk 07";paulina;stay;
+2021-12-06;Monday;13:45-19:45;"A 1.05";"mgr Podolska Paulina";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 07";;free;
+2021-12-06;Monday;13:45-19:45;"A 1.06";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 06";;free;
+2021-12-06;Monday;13:45-19:45;"A 1.07";"mgr Durlik Marlena";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 05";;free;
+2021-12-06;Monday;13:45-19:45;"A 1.09";"dr Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 08";;free;
+2021-12-06;Monday;14:45-20:45;"B 1.01";"mgr Zaworska-Winiarska Agnieszka";"Pielęgniarstwo pediatryczne";P/Ist./S/19/20;"sym 08";;stay;
+2021-12-06;Monday;15:00-17:15;"B 0.31";;;;;;free;"Podstawy statystyki, FIZJ/JM/S/2021/2022"
+2021-12-06;Monday;15:00-18:45;"A 1.01";;"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 05";marcin;prep;"mgr Paulina Łon,"
+2021-12-06;Monday;15:30-19:15;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 09";marcin;prep;
+2021-12-06;Monday;17:15-19:30;"B 0.31";;;;;;free;"Podstawy statystyki, FIZJ/JM/S/2021/2022"
+2021-12-07;Tuesday;07:00-11:30;"D 0.09";"lek. med. Demkowicz-Dobrzańska Monika";Pediatria;LEK/S/16/17;"ćwpk 08";;stay;
+2021-12-07;Tuesday;07:00-11:30;"D 0.10";"lek. med. Litwin Izabela";Pediatria;LEK/S/16/17;"ćwpk 07";darek;stay;
+2021-12-07;Tuesday;07:30-13:30;"B 1.05";"mgr Bedla Katarzyna";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"sym 05";;stay;
+2021-12-07;Tuesday;08:00-11:45;"B 0.25";;"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 06";;free;"mgr Paulina Łon,"
+2021-12-07;Tuesday;08:00-12:30;"B 1.01";"dr Zając Przemysław";"Pielęgniarstwo internistyczne";P/Ist./S/2020/2021;"sym 03";marcin;stay;
+2021-12-07;Tuesday;08:00-14:00;"A 1.01";"mgr Falkiewicz Maciej";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 05";;prep;
+2021-12-07;Tuesday;08:00-14:00;"A 1.02";"dr Gola Wojciech";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 06";;prep;
+2021-12-07;Tuesday;08:00-14:00;"B 0.26";"mgr Snoch Krzysztof";"Medyczne czynności ratunkowe";"RM/I stopień/st/2019/20";"ćwp 03";;free;
+2021-12-07;Tuesday;09:00-13:30;"B 1.15";;"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 09";paulina;stay;"mgr Małgorzata Dudek,"
+2021-12-07;Tuesday;11:45-16:15;"D 0.10";"lek. med. Litwin Izabela";Pediatria;LEK/S/16/17;"ćwpk 08";darek;stay;
+2021-12-07;Tuesday;12:00-15:45;"B 0.25";;"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 05";;free;"mgr Paulina Łon,"
+2021-12-07;Tuesday;12:30-17:00;"B 1.01";"dr Zając Przemysław";"Pielęgniarstwo internistyczne";P/Ist./S/2020/2021;"sym 04";marcin;stay;
+2021-12-07;Tuesday;13:45-18:15;"D 0.09";"lek. med. Kozubal Katarzyna";Pediatria;LEK/S/16/17;"ćwpk 07";wojtek;stay;
+2021-12-07;Tuesday;14:00-18:30;"B 1.15";;"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 06";paulina;stay;"mgr Małgorzata Dudek,"
+2021-12-07;Tuesday;15:30-19:15;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 09";;prep;
+2021-12-07;Tuesday;15:45-18:45;"B 0.31";;;;;;free;"Metodologia badań naukowych, WF/IIst./S/2021/2022"
+2021-12-08;Wednesday;07:00-11:30;"D 0.09";;Neurologia;LEK/S/18/19;"ćwpk 11";paulina;stay;"dr med. Elżbieta Jasińska n.,"
+2021-12-08;Wednesday;07:00-11:30;"D 0.10";" Wach-Klink Aleksandra";Neurologia;LEK/S/18/19;"ćwpk 09";darek;stay;
+2021-12-08;Wednesday;07:00-20:00;"B 1.13";;;;;;free;", ,"
+2021-12-08;Wednesday;07:00-20:00;"B 1.15";;;;;;free;", ,"
+2021-12-08;Wednesday;07:00-20:00;"B 1.16";;;;;;free;", ,"
+2021-12-08;Wednesday;07:00-20:00;"B 1.17";;;;;;free;", ,"
+2021-12-08;Wednesday;07:00-20:00;"B 1.18";;;;;;free;", ,"
+2021-12-08;Wednesday;07:30-13:30;"A 1.05";"mgr Podolska Paulina";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 11";;free;
+2021-12-08;Wednesday;07:30-13:30;"A 1.06";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 10";;free;
+2021-12-08;Wednesday;07:30-13:30;"A 1.07";"mgr Durlik Marlena";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 09";;free;
+2021-12-08;Wednesday;07:30-13:30;"A 1.09";"dr Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 12";;free;
+2021-12-08;Wednesday;08:00-09:30;"B 1.15";"dr Wencel-Wawrzeńczyk Agnieszka";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 02";;free;
+2021-12-08;Wednesday;08:00-09:30;"B 1.16";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 04";;free;
+2021-12-08;Wednesday;08:00-09:30;"B 1.17";"mgr Wiąk Krystyna";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 03";;free;
+2021-12-08;Wednesday;08:00-09:30;"B 1.18";;"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 03";;free;"mgr Krystyna Wiąk,"
+2021-12-08;Wednesday;08:00-10:15;"B 0.31";;;;;;free;"dr Strzelecka Agnieszka, Podstawy statystyki, DIET/Ist./S/21/22"
+2021-12-08;Wednesday;08:00-12:30;"B 1.01";"dr Zając Przemysław";"Pielęgniarstwo internistyczne";P/Ist./S/2020/2021;"sym 01";wojtek;stay;
+2021-12-08;Wednesday;08:00-13:15;"A 1.02";;"Medycyna Ratunkowa i Medycyna Katastrof";LEK/Eng-Div-6/17/18;"ćwp 01";wojtek;prep;,
+2021-12-08;Wednesday;08:00-14:30;"B 1.15";;;;;;stay;OSCE
+2021-12-08;Wednesday;09:30-11:00;"B 1.15";"dr Wencel-Wawrzeńczyk Agnieszka";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 01";;free;
+2021-12-08;Wednesday;09:30-11:00;"B 1.16";"dr Wencel-Wawrzeńczyk Agnieszka";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 04";;free;
+2021-12-08;Wednesday;09:30-11:00;"B 1.17";"mgr Wiąk Krystyna";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 02";;free;
+2021-12-08;Wednesday;09:30-11:00;"B 1.18";"mgr Wiąk Krystyna";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 04";;free;
+2021-12-08;Wednesday;10:30-12:45;"B 0.31";;;;;;free;"dr Strzelecka Agnieszka, Podstawy statystyki, DIET/Ist./S/21/22"
+2021-12-08;Wednesday;11:00-12:30;"B 1.15";"dr Wencel-Wawrzeńczyk Agnieszka";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 03";;free;
+2021-12-08;Wednesday;11:00-12:30;"B 1.16";"dr Wencel-Wawrzeńczyk Agnieszka";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 05";;free;
+2021-12-08;Wednesday;11:00-12:30;"B 1.17";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 02";;free;
+2021-12-08;Wednesday;11:00-12:30;"B 1.18";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 05";;free;
+2021-12-08;Wednesday;11:00-12:30;"B 1.13";"mgr Wiąk Krystyna";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 01";;free;
+2021-12-08;Wednesday;11:00-12:30;"B 1.14";"mgr Wiąk Krystyna";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 05";;free;
+2021-12-08;Wednesday;11:45-16:15;"D 0.09";"dr n. med. Jasińska Elżbieta";Neurologia;LEK/S/18/19;"ćwpk 10";paulina;stay;
+2021-12-08;Wednesday;11:45-16:15;"D 0.10";" Wach-Klink Aleksandra";Neurologia;LEK/S/18/19;"ćwpk 12";darek;stay;
+2021-12-08;Wednesday;12:30-14:00;"B 1.15";"dr Wencel-Wawrzeńczyk Agnieszka";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 06";;free;
+2021-12-08;Wednesday;12:30-14:00;"B 1.16";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 03";;free;
+2021-12-08;Wednesday;12:30-14:00;"B 1.17";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 06";;free;
+2021-12-08;Wednesday;12:30-14:00;"B 1.18";"mgr Wiąk Krystyna";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"ćwp 06";;free;
+2021-12-08;Wednesday;12:30-17:00;"B 1.01";"dr Zając Przemysław";"Pielęgniarstwo internistyczne";P/Ist./S/2020/2021;"sym 02";wojtek;stay;
+2021-12-09;Thursday;07:00-14:30;"C 2.07";"lek. med. Bociek Arkadiusz";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 15";wojtek;stay;
+2021-12-09;Thursday;07:00-14:30;"D 0.09";"lek. med. Bączek Michał";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 13";;stay;
+2021-12-09;Thursday;07:00-14:30;"D 0.10";"lek. med. Krzciuk Piotr";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 14";marcin;stay;
+2021-12-09;Thursday;08:00-10:15;"B 0.31";;;POŁ/IIst./S/2021/2022;"ćw 02";;free;"dr n. med. Macek Paweł, Statystyka medyczna,"
+2021-12-09;Thursday;08:00-11:00;"B 1.05";"mgr Bedla Katarzyna";"Opieka neonatologiczna";Po/Ist./S/2020/2021;"sym 03";paulina;stay;
+2021-12-09;Thursday;08:00-14:00;"B 1.01";"mgr Sikorska Julia";"Pielęgniarstwo pediatryczne";P/Ist./S/19/20;"sym 04";bartek;stay;
+2021-12-09;Thursday;09:30-10:15;"A 1.05";;;;;;free;"[Rezerwacja sali],"
+2021-12-09;Thursday;10:30-12:45;"B 0.31";;;POŁ/IIst./S/2021/2022;"ćw 01";;free;"dr n. med. Macek Paweł, Statystyka medyczna,"
+2021-12-09;Thursday;11:00-14:00;"B 1.05";"mgr Bedla Katarzyna";"Opieka neonatologiczna";Po/Ist./S/2020/2021;"sym 04";paulina;stay;
+2021-12-09;Thursday;13:00-20:30;"C 2.07";"lek. med. Dudek Aneta";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 11";paulina;stay;
+2021-12-09;Thursday;13:00-20:30;"D 0.09";"lek. med. Zagańczyk-Bączek Michalina";"Choroby wewnętrzne";LEK/Eng-Div-6/16/17;"ćwpk 02";;stay;
+2021-12-09;Thursday;13:00-20:30;"D 0.10";"lek. med. Piątek Karolina";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 12";darek;stay;
+2021-12-09;Thursday;15:00-18:00;"B 1.15";"mgr Dunkowska Anna";"Psychiatria i pielęgniarstwo psychiatryczne";Po/Is./S/19/20;"sym 06";marcin;stay;
+2021-12-09;Thursday;15:30-19:15;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 09";marcin;prep;
+2021-12-10;Friday;07:00-14:30;"C 2.07";"lek. med. Dziugieł Robert";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 16";paulina;stay;
+2021-12-10;Friday;07:00-14:30;"D 0.09";"lek. med. Cecha Patrycja";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 18";bartek;stay;
+2021-12-10;Friday;07:00-14:30;"D 0.10";"lek. med. Chromik Anna";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 17";marcin;stay;
+2021-12-10;Friday;07:45-13:00;"B 0.25";"mgr Barańska Edyta";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 01";;free;
+2021-12-10;Friday;07:45-13:00;"B 0.28";"mgr Wydrych Bartosz";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 03";;free;
+2021-12-10;Friday;08:00-11:45;"B 0.31";;;;;;free;"dr Chrobot Michał, Kodowanie informacji statystyczno-medycznej, ZP/IIst/S/2021/2022"
+2021-12-10;Friday;08:00-12:30;"B 1.15";"mgr Dudek Małgorzata";"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 10";;stay;
+2021-12-10;Friday;08:00-14:00;"B 0.30";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 02";;free;
+2021-12-10;Friday;09:00-10:00;"A 1.05";;;;;;free;"[Rezerwacja sali],"
+2021-12-10;Friday;10:00-10:45;"A 1.05";;;;;;free;"[Rezerwacja sali],"
+2021-12-10;Friday;11:00-14:00;"B 1.01";"dr Głowala Sylwia";"Pielęgniarstwo neurologiczne";P/Ist./S/19/20;"sym 11";;stay;
+2021-12-10;Friday;11:45-15:30;"B 0.26";"mgr Falkiewicz Maciej";"Ortopedia i traumatologia narządu ruchu";"RM/I stopień/st/2019/20";"ćw 01";;free;
+2021-12-10;Friday;13:00-16:00;"B 0.28";"mgr Makowski Kamil";"Medycyna ratunkowa";RM/Ist/S/2020/2021;"ćw 01";;free;
+2021-12-10;Friday;13:00-18:15;"B 0.25";"mgr Barańska Edyta";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 03";;free;
+2021-12-10;Friday;13:00-20:30;"C 2.07";"lek. med. Zagańczyk-Bączek Michalina";"Choroby wewnętrzne";LEK/Eng-Div-6/16/17;"ćwpk 02";wojtek;stay;
+2021-12-10;Friday;13:00-20:30;"D 0.09";"lekarz Kuchareczko Artur";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 20";darek;stay;
+2021-12-10;Friday;13:00-20:30;"D 0.10";"lekarz Trybek Tomasz";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 19";darek;stay;
+2021-12-10;Friday;14:00-17:00;"B 1.01";"dr Głowala Sylwia";"Pielęgniarstwo neurologiczne";P/Ist./S/19/20;"sym 12";;stay;
+2021-12-10;Friday;14:00-17:00;"B 1.05";"dr Kamińska-Gwóźdź Ewelina";"Pielęgniarstwo opieki długoterminowej";P/Ist./S/19/20;"sym 10";paulina;stay;
+2021-12-10;Friday;14:00-19:00;"A 1.01";"dr Wencel-Wawrzeńczyk Agnieszka";;;;;free;,
+2021-12-10;Friday;14:00-20:00;"B 0.30";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 03";;free;
+2021-12-10;Friday;15:30-19:15;"B 0.26";"mgr Falkiewicz Maciej";"Ortopedia i traumatologia narządu ruchu";"RM/I stopień/st/2019/20";"ćw 02";;free;
+2021-12-10;Friday;16:00-19:00;"B 1.15";"mgr Dunkowska Anna";"Psychiatria i pielęgniarstwo psychiatryczne";Po/Is./S/19/20;"sym 04";paulina;stay;
+2021-12-10;Friday;17:00-20:00;"B 0.28";"dr Salwa Agata";;;;;free;"Pierwsza pomoc,"
+2021-12-10;Friday;17:00-20:00;"B 1.01";"dr Kamińska-Gwóźdź Ewelina";"Rehabilitacja w położnictwie, neonatologii i ginekologii";Po/Is./S/19/20;"sym 05";;stay;
+2021-12-10;Friday;17:30-20:30;"B 0.31";;;;;;free;"Statystyka, WF/IIst./S/2021/2022"
+2021-12-11;Saturday;08:45-11:45;"B 0.31";;;RM/Ist/S/2021/2022;"ćw 01";;free;"dr Strzelecka Agnieszka, Informatyka I biostatystyka,"
+2021-12-11;Saturday;12:00-14:15;"B 0.31";;;;;;free;"Podstawy statystyki, FIZJ/Jedn.MGR/S/2019/2020"
+2021-12-11;Saturday;14:30-16:45;"B 0.31";;;;;;free;"Podstawy statystyki, FIZJ/Jedn.MGR/S/2019/2020"
+2021-12-12;Sunday;08:00-10:15;"B 0.31";;;;;;free;"mgr Stroński Mariusz, Techniki informacyjno-komunikacyjne, DIET/Ist./S/21/22"
+2021-12-12;Sunday;10:30-13:30;"B 0.31";;;;;;free;"mgr Stroński Mariusz, Techniki informacyjno-komunikacyjne, DIET/Ist./S/21/22"
+2021-12-12;Sunday;13:30-16:30;"B 0.31";;;;;;free;"mgr Stroński Mariusz, Techniki informacyjno-komunikacyjne, DIET/Ist./S/21/22"
+2021-12-12;Sunday;13:15-17:00;"A 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Ginekologia i położnictwo";"RM/I stopień/niestacjonarne/2019/20";"ćwp 01";;free;
+2021-12-13;Monday;07:00-11:30;"D 0.09";"lek. med. Litwin Izabela";Pediatria;LEK/S/16/17;"ćwpk 01";bartek;stay;
+2021-12-13;Monday;07:00-11:30;"D 0.10";;Pediatria;LEK/S/16/17;"ćwpk 02";;stay;,
+2021-12-13;Monday;07:30-18:00;"B 1.15";;;;;;stay;OSCE
+2021-12-13;Monday;08:00-12:30;"B 1.01";"mgr Dudek Małgorzata";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 12";marcin;stay;
+2021-12-13;Monday;08:00-13:15;"A 1.01";"mgr Falkiewicz Maciej";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 18";;prep;
+2021-12-13;Monday;08:00-13:15;"A 1.02";"mgr Karwat Arkadiusz";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 17";;prep;
+2021-12-13;Monday;08:00-14:00;"B 0.28";"mgr Makowski Kamil";"Medycyna ratunkowa";RM/Ist/S/2020/2021;"ćw 01";;free;
+2021-12-13;Monday;08:00-20:00;"B 1.13";;;;;;free;", ,"
+2021-12-13;Monday;08:00-20:00;"B 1.15";;;;;;free;", ,"
+2021-12-13;Monday;08:00-20:00;"B 1.16";;;;;;free;", ,"
+2021-12-13;Monday;08:00-20:00;"B 1.17";;;;;;free;", ,"
+2021-12-13;Monday;08:00-20:00;"B 1.18";;;;;;free;", ,"
+2021-12-13;Monday;11:45-16:15;"D 0.09";"lek. med. Litwin Izabela";Pediatria;LEK/S/16/17;"ćwpk 02";wojtek;stay;
+2021-12-13;Monday;12:30-17:00;"B 1.01";;"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 11";;stay;"mgr Małgorzata Dudek,"
+2021-12-13;Monday;13:45-18:15;"D 0.10";"lek. med. Kozubal Katarzyna";Pediatria;LEK/S/16/17;"ćwpk 01";paulina;stay;
+2021-12-13;Monday;14:15-18:45;"B 1.05";"mgr Szmalec Daria";"Opieka położnicza";Po/Is./S/19/20;"sym 01";darek;stay;
+2021-12-13;Monday;15:30-19:15;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 10";;prep;
+2021-12-14;Tuesday;07:30-13:30;"B 1.05";;"Techniki położnicze i prowadzenie porodu";Po/Ist./S/2020/2021;"sym 05";;stay;"mgr Katarzyna Bedla,"
+2021-12-14;Tuesday;07:30-18:00;"B 1.15";;;;;;stay;OSCE
+2021-12-14;Tuesday;08:00-14:00;"A 1.01";"mgr Falkiewicz Maciej";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 18";;prep;
+2021-12-14;Tuesday;08:00-14:00;"A 1.02";"mgr Karwat Arkadiusz";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 17";;prep;
+2021-12-14;Tuesday;08:00-14:00;"B 1.01";"mgr Sikorska Julia";"Pielęgniarstwo pediatryczne";P/Ist./S/19/20;"sym 06";;stay;
+2021-12-14;Tuesday;11:00-15:30;"D 0.09";"lek. med. Demkowicz-Dobrzańska Monika";Pediatria;LEK/S/16/17;"ćwpk 02";bartek;stay;
+2021-12-14;Tuesday;11:00-15:30;"D 0.10";"lek. med. Maślana Justyna";Pediatria;LEK/S/16/17;"ćwpk 01";paulina;stay;
+2021-12-14;Tuesday;14:15-20:15;"B 1.01";"mgr Saługa Agnieszka";"Pielęgniarstwo w zagrożeniu życia";P/Ist./S/19/20;"sym 11";darek;stay;
+2021-12-14;Tuesday;15:30-19:15;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 10";;prep;
+2021-12-14;Tuesday;15:45-20:15;"D 0.09";"lek. med. Kozubal Katarzyna";Pediatria;LEK/S/16/17;"ćwpk 01";bartek;stay;
+2021-12-14;Tuesday;15:45-20:15;"D 0.10";"lek. med. Gładyś-Jakubczyk Aleksandra";Pediatria;LEK/S/16/17;"ćwpk 02";wojtek;stay;
+2021-12-15;Wednesday;07:00-11:30;"D 0.09";" Wach-Klink Aleksandra";Neurologia;LEK/S/18/19;"ćwpk 06";wojtek;stay;
+2021-12-15;Wednesday;07:00-11:30;"D 0.10";"dr n. med. Jasińska Elżbieta";Neurologia;LEK/S/18/19;"ćwpk 05";marcin;stay;
+2021-12-15;Wednesday;07:30-12:30;"B 1.15";;;;;;stay;OSCE
+2021-12-15;Wednesday;08:00-11:00;"B 1.01";"dr Kamińska-Gwóźdź Ewelina";"Rehabilitacja w położnictwie, neonatologii i ginekologii";Po/Is./S/19/20;"sym 03";;stay;
+2021-12-15;Wednesday;08:00-11:45;"B 0.28";"mgr Falkiewicz Maciej";"Ortopedia i traumatologia narządu ruchu";"RM/I stopień/st/2019/20";"ćw 02";;free;
+2021-12-15;Wednesday;08:00-13:15;"A 1.01";"mgr Karwat Arkadiusz";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 19";;prep;
+2021-12-15;Wednesday;08:00-13:15;"A 1.02";"dr Gola Wojciech";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 20";;prep;
+2021-12-15;Wednesday;08:00-14:00;"B 0.30";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 04";;free;
+2021-12-15;Wednesday;08:00-20:00;"B 1.13";;;;;;free;", ,"
+2021-12-15;Wednesday;08:00-20:00;"B 1.15";;;;;;free;", ,"
+2021-12-15;Wednesday;08:00-20:00;"B 1.16";;;;;;free;", ,"
+2021-12-15;Wednesday;08:00-20:00;"B 1.17";;;;;;free;", ,"
+2021-12-15;Wednesday;08:00-20:00;"B 1.18";;;;;;free;", ,"
+2021-12-15;Wednesday;11:45-16:15;"D 0.09";" Wach-Klink Aleksandra";Neurologia;LEK/S/18/19;"ćwpk 07";wojtek;stay;
+2021-12-15;Wednesday;11:45-16:15;"D 0.10";"dr n. med. Jasińska Elżbieta";Neurologia;LEK/S/18/19;"ćwpk 08";marcin;stay;
+2021-12-15;Wednesday;14:00-16:15;"B 0.31";;;;;;free;"mgr Stroński Mariusz, Techniki informacyjno-komunikacyjne, DIET/Ist./S/21/22"
+2021-12-15;Wednesday;14:00-18:30;"B 1.05";"mgr Bedla Katarzyna";"Opieka ginekologiczna";Po/Ist./S/2020/2021;"sym 04";paulina;stay;
+2021-12-15;Wednesday;14:00-20:00;"B 0.30";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 01";;free;
+2021-12-15;Wednesday;14:15-20:15;"B 1.01";"mgr Saługa Agnieszka";"Pielęgniarstwo w zagrożeniu życia";P/Ist./S/19/20;"sym 12";darek;stay;
+2021-12-15;Wednesday;16:30-18:45;"B 0.31";;;;;;free;"mgr Stroński Mariusz, Techniki informacyjno-komunikacyjne, DIET/Ist./S/21/22"
+2021-12-16;Thursday;07:00-14:30;"C 2.07";"lek. med. Bączek Michał";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 15";marcin;stay;
+2021-12-16;Thursday;07:00-14:30;"D 0.09";"lek. med. Zgódka Paweł";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 14";bartek;stay;
+2021-12-16;Thursday;07:00-14:30;"D 0.10";"lek. med. Zgubieński Kajetan";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 13";wojtek;stay;
+2021-12-16;Thursday;07:30-13:30;"B 1.05";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"sym 03";;stay;
+2021-12-16;Thursday;08:00-10:15;"B 0.31";;;POŁ/IIst./S/2021/2022;"ćw 02";;free;"dr n. med. Macek Paweł, Statystyka medyczna,"
+2021-12-16;Thursday;07:30-18:30;"B 1.15";;;;;;stay;OSCE
+2021-12-16;Thursday;08:00-14:00;"A 1.01";"mgr Falkiewicz Maciej";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 19";;prep;
+2021-12-16;Thursday;08:00-14:00;"A 1.02";"dr Gola Wojciech";"Medycyna Ratunkowa i Medycyna Katastrof";LEK/S/17/18;"ćwpk 20";;prep;
+2021-12-16;Thursday;10:30-12:45;"B 0.31";;;POŁ/IIst./S/2021/2022;"ćw 01";;free;"dr n. med. Macek Paweł, Statystyka medyczna,"
+2021-12-16;Thursday;13:00-20:30;"C 2.07";"lek. med. Dziugieł Robert";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 12";marcin;stay;
+2021-12-16;Thursday;13:00-20:30;"D 0.09";"lek. med. Chromik Anna";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 11";paulina;stay;
+2021-12-16;Thursday;13:00-20:30;"D 0.10";"lek. med. Krzciuk Piotr";"Choroby wewnętrzne";LEK/Eng-Div-6/16/17;"ćwpk 01";;stay;dopisany
+2021-12-16;Thursday;14:15-16:30;"B 0.31";;;;;;free;"Statystyka, WF/IIst./S/2021/2022"
+2021-12-16;Thursday;14:45-17:45;"B 1.01";"dr Nowak Ewelina";"Anestezjologia i stany zagrożenia życia";Po/Is./S/19/20;"sym 01";darek;stay;
+2021-12-16;Thursday;15:30-19:15;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 10";;prep;
+2021-12-17;Friday;07:00-14:30;"D 0.09";"lekarz Trybek Tomasz";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 17";darek;stay;
+2021-12-17;Friday;07:00-14:30;"D 0.10";"lek. med. Krzciuk Piotr";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 16";;stay;
+2021-12-17;Friday;07:30-12:00;"B 0.28";"mgr Wydrych Bartosz";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 03";;free;
+2021-12-17;Friday;07:45-13:00;"B 0.25";"mgr Barańska Edyta";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 01";;free;
+2021-12-17;Friday;08:00-13:15;"A 1.05";"dr Wencel-Wawrzeńczyk Agnieszka";"Ginekologia i położnictwo";"RM/I stopień/niestacjonarne/2019/20";"ćwp 02";;free;
+2021-12-17;Friday;08:00-14:00;"B 0.30";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 04";;free;
+2021-12-17;Friday;10:00-13:45;"B 0.31";;;POŁ/IIst./S/2021/2022;;;free;"Opracowanie planu badań,"
+2021-12-17;Friday;13:00-18:15;"B 0.25";"mgr Barańska Edyta";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 03";;free;
+2021-12-17;Friday;13:00-20:30;"D 0.09";" Gawęcka-Lisowska Ewelina";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 19";bartek;stay;
+2021-12-17;Friday;13:00-20:30;"D 0.10";"lek. med. Cecha Patrycja";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 20";paulina;stay;
+2021-12-17;Friday;14:30-17:30;"B 1.05";"dr Kamińska-Gwóźdź Ewelina";"Pielęgniarstwo opieki długoterminowej";P/Ist./S/19/20;"sym 03";;stay;
+2021-12-17;Friday;14:00-20:00;"B 0.30";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 02";;free;
+2021-12-17;Friday;15:00-18:00;"B 1.01";"mgr Saługa Agnieszka";"Interna i pielęgniarstwo internistyczne";Po/Ist./S/2020/2021;"sym 04";wojtek;stay;
+2021-12-17;Friday;15:00-18:45;"B 0.28";"mgr Falkiewicz Maciej";"Ortopedia i traumatologia narządu ruchu";"RM/I stopień/st/2019/20";"ćw 01";;free;
+2021-12-17;Friday;15:00-19:30;"B 1.15";"mgr Dudek Małgorzata";"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 08";marcin;stay;
+2021-12-17;Friday;17:30-20:30;"B 1.05";"dr Kamińska-Gwóźdź Ewelina";"Rehabilitacja w położnictwie, neonatologii i ginekologii";Po/Is./S/19/20;"sym 01";;stay;
+2021-12-17;Friday;19:00-21:15;"B 0.26";"mgr Makowski Kamil";"Medycyna ratunkowa";"RM/I stopień/niestacjonarne/2019/20";"ćw 01";;free;
+2021-12-18;Saturday;07:30-15:00;"B 0.28";"mgr Wydrych Bartosz";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 03";;free;
+2021-12-18;Saturday;13:00-15:15;"B 0.31";;;;;;free;"Podstawy statystyki, DIET/Ist./S/21/22"
+2021-12-18;Saturday;15:30-17:45;"B 0.31";;;;;;free;"Podstawy statystyki, DIET/Ist./S/21/22"
+2021-12-19;Sunday;08:00-16:15;"B 0.28";"mgr Wydrych Bartosz";"Medyczne czynności ratunkowe";RM/Ist/S/2020/2021;"ćwp 03";;free;
+2021-12-20;Monday;07:30-13:30;"B 1.01";;"Pielęgniarstwo w zagrożeniu życia";P/Ist./S/19/20;"sym 08";;stay;"mgr Paulina Łon,"
+2021-12-20;Monday;08:00-14:00;"B 0.28";"mgr Makowski Kamil";"Medycyna ratunkowa";RM/Ist/S/2020/2021;"ćw 02";;free;
+2021-12-20;Monday;14:00-17:45;"A 1.02";;"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 07";;prep;"mgr Paulina Łon,"
+2021-12-20;Monday;14:15-17:15;"B 1.15";"dr Lelonek Barbara";"Psychiatria i pielęgniarstwo psychiatryczne";Po/Is./S/19/20;"sym 01";;stay;
+2021-12-20;Monday;14:45-20:45;"B 1.01";"mgr Zaworska-Winiarska Agnieszka";"Pielęgniarstwo pediatryczne";P/Ist./S/19/20;"sym 10";;stay;
+2021-12-20;Monday;15:00-17:15;"B 0.31";;;;;;free;"Podstawy statystyki, FIZJ/JM/S/2021/2022"
+2021-12-20;Monday;17:15-19:30;"B 0.31";;;;;;free;"Podstawy statystyki, FIZJ/JM/S/2021/2022"
+2021-12-21;Tuesday;08:00-11:00;"B 0.31";;;;;;free;"Metodologia badań naukowych, WF/IIst./S/2021/2022"
+2021-12-21;Tuesday;09:30-14:00;"C 2.07";"dr Domagała Michał";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 13";;stay;
+2021-12-21;Tuesday;13:00-20:30;"D 0.09";;"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 17";;stay;"lek. med. Aneta Dudek,"
+2021-12-21;Tuesday;14:15-15:45;"B 0.31";;;;;;free;"Statystyka, KOS/IIst./S/21/22"
+2021-12-21;Tuesday;14:15-18:45;"C 2.07";"dr Domagała Michał";"Anestezjologia i intensywna terapia";LEK/S/18/19;"ćwpk 15";wojtek;stay;
+2021-12-21;Tuesday;14:30-19:00;"B 1.15";;"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 01";;stay;"mgr Małgorzata Dudek,"
+2021-12-21;Tuesday;14:45-20:45;"B 1.01";"mgr Zaworska-Winiarska Agnieszka";"Pielęgniarstwo pediatryczne";P/Ist./S/19/20;"sym 09";;stay;
+2021-12-21;Tuesday;15:00-18:45;"A 1.01";;"Podstawy ratownictwa medycznego";Po/Is./S/19/20;"ćwp 02";;prep;"mgr Paulina Łon,"
+2021-12-21;Tuesday;15:30-19:15;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 10";;prep;
+2021-12-22;Wednesday;07:00-11:30;"D 0.09";"dr n. med. Szczuchniak Wiktor";Neurologia;LEK/S/18/19;"ćwpk 18";bartek;stay;
+2021-12-22;Wednesday;07:00-11:30;"D 0.10";"dr n. med. Jasińska Elżbieta";Neurologia;LEK/S/18/19;"ćwpk 17";wojtek;stay;
+2021-12-22;Wednesday;08:00-11:00;"B 1.01";"dr Kamińska-Gwóźdź Ewelina";"Pielęgniarstwo opieki długoterminowej";P/Ist./S/19/20;"sym 12";;stay;
+2021-12-22;Wednesday;08:00-15:30;"B 0.30";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 03";;free;
+2021-12-22;Wednesday;09:00-12:00;"B 0.31";;;;;;free;"Statystyka, WF/IIst./S/2021/2022"
+2021-12-22;Wednesday;11:30-16:00;"D 0.09";" Wach-Klink Aleksandra";Neurologia;LEK/S/18/19;"ćwpk 20";bartek;stay;
+2021-12-22;Wednesday;11:30-16:00;"D 0.10";"dr n. med. Jasińska Elżbieta";Neurologia;LEK/S/18/19;"ćwpk 19";marcin;stay;
 koniec
 

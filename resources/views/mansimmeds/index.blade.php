@@ -23,6 +23,7 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         <div class="col-sm-2">
         <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
                 {{ csrf_field() }}
+                <input type="hidden" name="atep_code" value="90">
                 <input class="btn btn-primary btn-lg" type="submit" value="analizuj dane z UXP">
         </form>
         </div>

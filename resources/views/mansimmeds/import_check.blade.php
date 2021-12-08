@@ -88,9 +88,9 @@ function rowEK($new_simmed)
     <hr>
     @if ($info['wrong_count']>0)
         <ul><strong>Wiersze pominięte w imporcie:</strong>
-        @foreach ($wrong as $new_wrong)
-            <li>{{$new_wrong}}</li>
-        @endforeach
+            @foreach ($wrong as $new_wrong)
+                <li>{{$new_wrong}}</li>
+            @endforeach
         </ul>
     @endif
     @if ( $info['missing_date']==1 )
@@ -155,6 +155,11 @@ function rowEK($new_simmed)
         <input class="btn btn-primary btn-lg" type="submit" value="uzupełnij braki">
         </form>
 
+        <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
+                {{ csrf_field() }}
+                <input class="btn btn-primary btn-lg" type="submit" value="analizuj dane z UXP">
+        </form>
+        
         <script>
         function onclickHandler(id_name)
         {
