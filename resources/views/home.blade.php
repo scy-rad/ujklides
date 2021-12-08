@@ -19,7 +19,7 @@
 $curr_date='';
 $dni_tygodnia = array( 'Niedziela', 'Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek', 'Sobota' );
 ?>
-<ol>Plan zajęć (tydzień) użytkownika: {{Auth::user()->firstname}} {{Auth::user()->lastname}}:
+<ol><h2>Plan zajęć (tygodniowy) użytkownika: {{Auth::user()->firstname}} {{Auth::user()->lastname}}:</h2>
 @foreach ($main_simulations as $simmed)
         @if ($curr_date != $simmed->simmed_date)
         </ol>
@@ -44,7 +44,7 @@ $dni_tygodnia = array( 'Niedziela', 'Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek
 <?php 
 $curr_date='';
 ?>
-<ol>Plan zajęć na najbliższe 2 dni:
+<ol><h2>Plan zajęć na najbliższe 2 dni:</h2>
 @foreach ($next_simulations as $simmed)
         @if ($curr_date != $simmed->simmed_date)
         </ol>
