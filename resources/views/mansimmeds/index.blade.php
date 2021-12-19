@@ -48,7 +48,19 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
                 </form>
         </div>
 
+        <div class="col-sm-2">
+                <form action="{{ route('mansimmeds.sendMail') }}" method="get">
+                        <input class="btn btn-primary btn-lg" type="submit" value="wyślij mail">
+                </form>
+        </div>
+
 </div>
+
+@if (isset($message_show))
+        <div class="alert alert-success">
+        {{ $message_body }}
+        </div>
+@endif
 
 
 

@@ -53,6 +53,15 @@ $Scen_Table.='</ul>';
 <p>{!! $simmed->opis !!}</p>
 <div class="float-right"><a class="btn btn-info" href="{{route('simmeds.edit', $simmed)}}">Edytuj</a></div>
 
+<hr>
+@if ($technician_history->count()>0)
+    <ol><h2>historia zmian techników:</h2>
+    @foreach ($technician_history as $history_row)
+        <li>{{$history_row->updated_at}}:  <strong> {{$history_row->name_of_technician()}} </strong> (przez: {{$history_row->name_of_changer()}}) </li>
+    @endforeach
+    </ol>
+@endif
+
 <div id="calendar" style="height: 800px;"></div>
 @endsection
 <script>

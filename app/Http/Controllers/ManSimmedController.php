@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ManSimmed;
 use App\Simmed;
+use App\SimmedArc;
 use App\SimmedTemp;
 use App\TechnicianCharacter;
 use App\SimmedTempPost;
@@ -11,6 +12,7 @@ use App\SimmedTempRoom;
 use App\User;
 use App\UserTitle;
 use App\Roles;
+use App\RolesHasUsers;
 use App\StudentSubject;
 use App\StudentGroup;
 use App\StudentSubgroup;
@@ -18,6 +20,8 @@ use App\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+
 
 class ManSimmedController extends Controller
 {
@@ -857,8 +861,7 @@ class ManSimmedController extends Controller
                 $step['step_code']=101;
     
         }   //endof switch
-
-                
+                        
         $koniec = microtime();
         $koniec = explode(' ', $koniec);
         $roznica = ($koniec[0]+$koniec[1])-($start[0]+$start[1]);
@@ -943,12 +946,32 @@ class ManSimmedController extends Controller
             if ($data_one->simmed_id>0)
                 {
                 $new_row=SiMmed::find($data_one->simmed_id);
-                //dump('JEST',$new_row);
+                $arc_row=new SimmedArc();
+                $arc_row->simmed_date						= $new_row->simmed_date;
+                $arc_row->simmed_time_begin				    = $new_row->simmed_time_begin;
+                $arc_row->simmed_time_end					= $new_row->simmed_time_end;
+                $arc_row->simmed_type_id					= $new_row->simmed_type_id;
+                $arc_row->student_subject_id	        	= $new_row->student_subject_id;
+                $arc_row->student_group_id    			    = $new_row->student_group_id;
+                $arc_row->student_subgroup_id				= $new_row->student_subgroup_id;
+                $arc_row->room_id     					    = $new_row->room_id;
+                $arc_row->simmed_leader_id	    		    = $new_row->simmed_leader_id;
+                $arc_row->simmed_technician_id    		    = $new_row->simmed_technician_id;
+                $arc_row->simmed_technician_character_id    = $new_row->simmed_technician_character_id;
+                $arc_row->simmed_alternative_title		    = $new_row->simmed_alternative_title;
+                $arc_row->simmed_status 					= $new_row->simmed_status;
+                $arc_row->simmed_status2					= $new_row->simmed_status2;
+                $arc_row->created_at    					= $new_row->created_at;
+                $arc_row->updated_at    					= $new_row->updated_at;
+                $arc_row->change_code                       = $data_one->tmp_status;
+                $arc_row->simmed_id                         = $data_one->simmed_id;
+                $arc_row->save();
+                //dump('JEST + ARCHIWUM',$data_one,$arc_row);
                 }
             else
                 {
                 $new_row=new Simmed();
-                //dump('NOWA',$data_one);
+                //dump('Tu nie będzie ARCHIWUM',$data_one);
                 }
             $new_row->simmed_date						= $data_one->simmed_date;
             $new_row->simmed_time_begin				    = $data_one->simmed_time_begin;
@@ -1004,9 +1027,13 @@ class ManSimmedController extends Controller
             }
 
         $data_all=SimmedTemp::where('tmp_status',3)->get();
-        // if (count($data_all)>0)
-        //     foreach ($data_all as $data_one)
-        //         dd('import_append removeX',$data_one);
+        if (count($data_all)>0)
+            foreach ($data_all as $data_one)
+            {
+                $data_one->simmed_status=4;
+                move_simmed($data_one);
+//                 dd('import_append removeX',$data_one);
+            }
 
         $data_all=SimmedTemp::where('tmp_status',9)->get();
         if (count($data_all)>0)
@@ -1042,7 +1069,7 @@ class ManSimmedController extends Controller
 
         foreach (SimmedTemp::where('tmp_status',1)->get() as $doImport)
         {
-            dd('funkcja doimport status 1');
+            dd('funkcja doimport status 1 + bez ARCHIWUM');
 
             $zmEQ = new Simmed();
 			$zmEQ->simmed_date=$doImport->simmed_date;
@@ -1076,7 +1103,7 @@ class ManSimmedController extends Controller
 
         foreach (SimmedTemp::where('tmp_status',2)->where('simmed_id','=',0)->get() as $doImport)
         {
-            dd('funkcja doimport status 2');
+            dd('funkcja doimport status 2 + ARCHIWUM');
             $id_to_change=SimmedTemp::where('simmed_merge',$doImport->simmed_merge)->where('simmed_id','>',0)->get()->first()->simmed_id;
             
             $zmEQ = Simmed::where('id',$id_to_change)->first();
@@ -1112,7 +1139,7 @@ class ManSimmedController extends Controller
 
         foreach (SimmedTemp::where('tmp_status',9)->get() as $doImport)
         {
-            dd('funkcja doimport status 9');
+            dd('funkcja doimport status 9 + ARCHIWUM');
             $zmEQ = Simmed::where('id',$doImport->simmed_merge)->first();
 			$zmEQ->simmed_date=$doImport->simmed_date;
 			$zmEQ->simmed_time_begin=$doImport->simmed_time_begin;
@@ -1147,7 +1174,7 @@ class ManSimmedController extends Controller
 
         foreach (SimmedTemp::where('tmp_status',3)->where('simmed_id','>',0)->get() as $doImport)
         {
-            dd('funkcja doimport status 3');
+            dd('funkcja doimport status 3 + ARCHIWUM');
             $zmEQ = Simmed::where('id',$doImport->simmed_id)->first();
             $zmEQ->simmed_status=4; //zmiana statutu na 4 (czyli usunięty)
             $return=$zmEQ->save();
@@ -1170,6 +1197,52 @@ class ManSimmedController extends Controller
 
 
 
+public function sendMail(Request $request)
+    {
+
+    $role_id=Roles::select('id')->where('roles_code', 'technicians')->first()->id;
+    $roles_users=RolesHasUsers::select('roles_has_users_users_id')->where('roles_has_users_roles_id','=',$role_id)->get();
+        $users = User::whereIn('id',$roles_users);
+        $users = $users->where('user_status','=',1);
+        $users = $users->where('simmed_notify','=',1);
+        $users = $users->get();
+
+        
+    foreach ($users as $user)
+    {
+        $msgBody='wysyłka maili do:<br>';
+        $msgBody.=$user->full_name().'<br>';
+
+        $user_simmeds=Simmed::where('simmed_technician_id',$user->id);
+        foreach ($user_simmeds as $user_simmed)
+            {
+            $msgBody.=$user_simmed->simmed_date." ";
+            $msgBody.=$user_simmed->simmed_time_begin."-".$user_simmed->simmed_time_end." ";
+            $msgBody.=$user_simmed->room()->room_number." ";
+            $msgBody.=$user_simmed->name_of_leader()." ";
+            $msgBody.="(".$user_simmed->technician_character()->character_name."<br>";
+            
+            }
+
+        //http://127.0.0.1:8000/send-mail
+        $mail_data = [
+            'name'=>$user->full_name(),
+            'msgBody'=>$msgBody
+        ];
+
+        Mail::send('mansimmeds.mailsimmed',$mail_data,function($mail)
+                {
+                $mail->from('info@example.com');
+                $mail->to('jhon@example.com');
+                $mail->subject('terminy symulacji');
+                }
+        );
+    }
+    $data['message_show']=TRUE;
+    $data['message_body']='wysłano maile';
+    return view('mansimmeds.index')->with($data);
+//    return 'Wysłano maila';
+}
 
 
 

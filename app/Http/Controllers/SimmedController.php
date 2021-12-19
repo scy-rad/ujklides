@@ -215,11 +215,11 @@ class SimmedController extends Controller
         ->where('id', $request->id)
         ->update(['simmed_technician_id' => $request->technician_id]);
 
-        $role = new SimmedArcTechnician();
-        $role->simmed_id = $request->id;
-        $role->technician_id = $request->technician_id*1;
-        $role->user_id = Auth::user()->id;
-        $role->save();
+        $history_table = new SimmedArcTechnician();
+        $history_table->simmed_id = $request->id;
+        $history_table->technician_id = $request->technician_id*1;
+        $history_table->user_id = Auth::user()->id;
+        $history_table->save();
 
         //return json_encode(array('statusCode'=>$request->id, 'status'=> $status));
         //return Json(new { result = true });
@@ -244,7 +244,13 @@ class SimmedController extends Controller
     public function show(Simmed $simmed)
     {
         //echo '<h1>funkcja SHOW Simmed Controller</h1>';
-        return view('simmeds.show', compact('simmed'));
+        
+        $technician_history = SimmedArcTechnician::where('simmed_id', $simmed->id)
+        ->get();
+ 
+//        dump($technician_history);
+
+        return view('simmeds.show', compact('simmed'),compact('technician_history'));
     }
 
     /**

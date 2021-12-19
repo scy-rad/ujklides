@@ -33,7 +33,10 @@ $dni_tygodnia = array( 'Niedziela', 'Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek
             <strong >{{ $simmed->room()->room_number }}</strong>: 
             <span class="bg-success">{{ $simmed->name_of_leader() }} </span>
             {{ $simmed->name_of_student_subject() }}
+            <span class="text-light bg-dark">[{{$simmed->code_of_student_group()}}]</span>
             <span class="bg-primary">[{{$simmed->technician_character()->character_name}}]</span>
+            <br>
+            {!!$simmed->simmed_alternative_title!!}
             
         </li>
 @endforeach
@@ -59,6 +62,7 @@ $curr_date='';
             <span class="bg-danger strong">{{ $simmed->login_of_technician() }} </span>
             <span class="bg-success">{{ $simmed->name_of_leader() }} </span>
             {{ $simmed->name_of_student_subject() }}
+            <span class="text-light bg-dark">[{{$simmed->code_of_student_group()}}]</span>
             <span class="bg-primary">[{{$simmed->technician_character()->character_name}}]</span>
             
         </li>

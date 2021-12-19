@@ -60,6 +60,12 @@ class Simmed extends Model
         return $this->hasOne(StudentGroup::class,'id','student_group_id')->get()->first()->student_group_name;
     }
 
+    function code_of_student_group()
+    {
+    if ($this->student_group_id>0)
+        return $this->hasOne(StudentGroup::class,'id','student_group_id')->get()->first()->student_group_code;
+    }
+
     function name_of_student_subgroup()
     {
     if ($this->student_subgroup_id>0)

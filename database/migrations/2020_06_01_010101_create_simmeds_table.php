@@ -32,6 +32,27 @@ class CreateSimmedsTable extends Migration
             $table->timestamps();
         });
 
+        Schema::create('simmed_arcs', function (Blueprint $table) {
+            $table->increments('id');
+            $table->date('simmed_date');
+            $table->time('simmed_time_begin');
+			$table->time('simmed_time_end');
+            $table->smallInteger('simmed_type_id')->default(1);
+            $table->string('simmed_alternative_title')->default('');
+			$table->unsignedInteger('student_subject_id')->nullable();
+            $table->unsignedInteger('student_group_id')->nullable();
+            $table->unsignedInteger('student_subgroup_id')->nullable();
+            $table->unsignedInteger('room_id');
+            $table->unsignedInteger('simmed_leader_id')->nullable();
+            $table->unsignedInteger('simmed_technician_id')->nullable();
+            $table->unsignedInteger('simmed_technician_character_id')->nullable();
+            $table->smallInteger('simmed_status')->default(1);
+			$table->smallInteger('simmed_status2')->default(1);
+            $table->timestamps();
+            $table->unsignedInteger('simmed_id');
+            $table->smallInteger('change_code')->default(0);
+        });
+
 
 		//type:
         // 1 - zajęcia ze studentami
@@ -61,6 +82,7 @@ class CreateSimmedsTable extends Migration
 		Schema::create('student_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('student_group_name');
+            $table->string('student_group_code')->default('');
             $table->unsignedInteger('center_id')->nullable();
             $table->smallInteger('student_group_status')->default(1);
             $table->timestamps();
@@ -213,6 +235,7 @@ class CreateSimmedsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('simmeds');
+        Schema::dropIfExists('simmed_arcs');
         Schema::dropIfExists('student_subgroups');
 		Schema::dropIfExists('student_groups');
         Schema::dropIfExists('student_subjects');

@@ -28,10 +28,12 @@ class SimmedsTableSeeder extends Seeder
 		DB::table('student_subgroups')->truncate();
 		DB::table('student_groups')->truncate();
 
-		function add_student_group($aF_student_group_name)
+		function add_student_group($aF_student_group_name,$aF_student_group_code,$aF_centre)
 		{
         $zmEQ = new StudentGroup();
         $zmEQ->student_group_name = $aF_student_group_name;
+        $zmEQ->student_group_code = $aF_student_group_code;
+        $zmEQ->center_id = $aF_centre;
         $zmEQ->save();
 		return $zmEQ->id;
 		}
@@ -186,34 +188,30 @@ add_student_subject("Ortopedia i traumatologia","");
 
 
 
-$id_group=add_student_group("LEK/Eng-Div-6/16/17");	add_groupsub($id_group,"ćwpk",2);		
-$id_group=add_student_group("LEK/Eng-Div-6/17/18");	add_groupsub($id_group,"ćw",2);	add_groupsub($id_group,"ćwp",2);	
-$id_group=add_student_group("LEK/Eng-Div-6/18/19");	add_groupsub($id_group,"ćwpk",3);		
-$id_group=add_student_group("LEK/Eng-Div-6/19/20");	add_groupsub($id_group,"ćwpk",6);		
-$id_group=add_student_group("LEK/S/16/17");	add_groupsub($id_group,"ćwpk",20);		
-$id_group=add_student_group("LEK/S/17/18");	add_groupsub($id_group,"ćwpk",20);	add_groupsub($id_group,"ćw",5);	
-$id_group=add_student_group("LEK/S/18/19");	add_groupsub($id_group,"ćwpk",20);		
-$id_group=add_student_group("LEK/S/19/20");	add_groupsub($id_group,"ćwpk",20);	add_groupsub($id_group,"sym",12);	add_groupsub($id_group,"ćw",5);
-$id_group=add_student_group("LEK/S/20/21");	add_groupsub($id_group,"ćwpk",20);		
-$id_group=add_student_group("LEK/S/21/22");	add_groupsub($id_group,"ćwpk",20);		
-$id_group=add_student_group("P/IIst./S/2020/2021");			
-$id_group=add_student_group("P/Ist./S/19/20");	add_groupsub($id_group,"ćwp",12);	add_groupsub($id_group,"sym",12);	
-$id_group=add_student_group("P/Ist./S/2020/2021");	add_groupsub($id_group,"ćwp",12);	add_groupsub($id_group,"sym",12);	
-$id_group=add_student_group("PIEL/IIst./S/2021/2022");			
-$id_group=add_student_group("PIEL/Ist./S/2021/2022");	add_groupsub($id_group,"ćwp",16);	add_groupsub($id_group,"ćw",2);	
-$id_group=add_student_group("Po/IIst./S/2020/2021");			
-$id_group=add_student_group("Po/Is./S/19/20");	add_groupsub($id_group,"ćwp",12);	add_groupsub($id_group,"sym",12);	
-$id_group=add_student_group("Po/Ist./S/2020/2021");	add_groupsub($id_group,"ćwp",6);	add_groupsub($id_group,"sym",11);	
-$id_group=add_student_group("POŁ/II st./S/2021/2");			
-$id_group=add_student_group("POŁ/IIst./S/2021/2022");	add_groupsub($id_group,"ćw",2);		
-$id_group=add_student_group("POŁ/Ist./S/2021/2022");	add_groupsub($id_group,"ćwp",12);		
-$id_group=add_student_group("RM/I stopień/niesta");	add_groupsub($id_group,"ćwp",2);	add_groupsub($id_group,"ćw",1);	
-$id_group=add_student_group("RM/I stopień/niestacjonarne/2019/20");	add_groupsub($id_group,"ćwp",2);	add_groupsub($id_group,"ćw",1);	
-$id_group=add_student_group("RM/I stopień/st/201");	add_groupsub($id_group,"ćwp",4);	add_groupsub($id_group,"ćw",2);	
-$id_group=add_student_group("RM/I stopień/st/2019/20");	add_groupsub($id_group,"ćwp",4);	add_groupsub($id_group,"ćw",2);	
-$id_group=add_student_group("RM/Ist/S/2020/2021");	add_groupsub($id_group,"ćwp",5);	add_groupsub($id_group,"ćw",2);	
-$id_group=add_student_group("RM/Ist/S/2021/2022");	add_groupsub($id_group,"ćwp",5);	add_groupsub($id_group,"ćw",2);	
-$id_group=add_student_group("RM/Ist/S/2021/2022/s");	add_groupsub($id_group,"ćwp",5);		
+$id_group=add_student_group("LEK/Eng-Div-6/16/17","6L-ED",1);	add_groupsub($id_group,"ćwpk",2);		
+$id_group=add_student_group("LEK/Eng-Div-6/17/18","5L-ED",1);	add_groupsub($id_group,"ćw",2);	add_groupsub($id_group,"ćwp",2);	
+$id_group=add_student_group("LEK/Eng-Div-6/18/19","4L-ED",1);	add_groupsub($id_group,"ćwpk",3);		
+$id_group=add_student_group("LEK/Eng-Div-6/19/20","3L-ED",1);	add_groupsub($id_group,"ćwpk",6);		
+$id_group=add_student_group("LEK/S/16/17","6L",1);	add_groupsub($id_group,"ćwpk",20);		
+$id_group=add_student_group("LEK/S/17/18","5L",1);	add_groupsub($id_group,"ćwpk",20);	add_groupsub($id_group,"ćw",5);	
+$id_group=add_student_group("LEK/S/18/19","4L",1);	add_groupsub($id_group,"ćwpk",20);		
+$id_group=add_student_group("LEK/S/19/20","3L",1);	add_groupsub($id_group,"ćwpk",20);	add_groupsub($id_group,"sym",12);	add_groupsub($id_group,"ćw",5);
+$id_group=add_student_group("LEK/S/20/21","2L",1);	add_groupsub($id_group,"ćwpk",20);		
+$id_group=add_student_group("LEK/S/21/22","1L",1);	add_groupsub($id_group,"ćwpk",20);		
+$id_group=add_student_group("P/IIst./S/2020/2021","2PII",2);			
+$id_group=add_student_group("P/Ist./S/19/20","3P",2);	add_groupsub($id_group,"ćwp",12);	add_groupsub($id_group,"sym",12);	
+$id_group=add_student_group("P/Ist./S/2020/2021","2P",2);	add_groupsub($id_group,"ćwp",12);	add_groupsub($id_group,"sym",12);	
+$id_group=add_student_group("PIEL/IIst./S/2021/2022","1PII",2);			
+$id_group=add_student_group("PIEL/Ist./S/2021/2022","1P",2);	add_groupsub($id_group,"ćwp",16);	add_groupsub($id_group,"ćw",2);	
+$id_group=add_student_group("Po/Is./S/19/20","3Po",2);	add_groupsub($id_group,"ćwp",12);	add_groupsub($id_group,"sym",12);	
+$id_group=add_student_group("Po/Ist./S/2020/2021","2Po",2);	add_groupsub($id_group,"ćwp",6);	add_groupsub($id_group,"sym",11);	
+$id_group=add_student_group("POŁ/IIst./S/2021/2022","1PoII",2);	add_groupsub($id_group,"ćw",2);		
+$id_group=add_student_group("POŁ/Ist./S/2021/2022","1Po",2);	add_groupsub($id_group,"ćwp",12);		
+$id_group=add_student_group("RM/I stopień/niestacjonarne/2019/20","2RMx",3);	add_groupsub($id_group,"ćwp",2);	add_groupsub($id_group,"ćw",1);	
+$id_group=add_student_group("RM/I stopień/st/2019/20","3RM",3);	add_groupsub($id_group,"ćwp",4);	add_groupsub($id_group,"ćw",2);	
+$id_group=add_student_group("RM/Ist/S/2020/2021","2RM",3);	add_groupsub($id_group,"ćwp",5);	add_groupsub($id_group,"ćw",2);	
+$id_group=add_student_group("RM/Ist/S/2021/2022","1RM",3);	add_groupsub($id_group,"ćwp",5);	add_groupsub($id_group,"ćw",2);	
+$id_group=add_student_group("RM/Ist/S/2021/2022/s","1RMx",3);	add_groupsub($id_group,"ćwp",5);		
 
 
 

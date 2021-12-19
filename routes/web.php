@@ -269,6 +269,11 @@ Route::get('mansimmeds/csv', [
     'as' => 'mansimmeds.csv'
 ]);
 
+Route::get('mansimmeds/send-mail', [
+    'uses' => 'ManSimmedController@sendMail',
+    'as' => 'mansimmeds.sendMail'
+]);
+
 
 
 /////////////////////////////////////////////////////////
@@ -477,7 +482,6 @@ Route::delete('simmed/{simmed}', [
     'uses' => 'SimmedController@destroy',
     'as' => 'simmeds.delete'
 ]);
-
 
 
 //Route::post('simmed/AjaxSavePlane', [
