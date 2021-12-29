@@ -1,4 +1,10 @@
-<div>
-    <h3>Hi,  {{$name}} </h3>
-    <p>{!!$msgBody!!}<p> 
-</div>
+<!DOCTYPE html>
+<html lang="pl-PL">
+    <head>
+        <meta charset="utf-8"><title>{{$title}}</title>
+    </head>
+    <body>
+        Dear {{$name}} !
+        <p>{!!$msgBody!!}<p>
+    </body>
+</html>

@@ -115,8 +115,10 @@ class SimmedTemp extends Model
         ->whereNotIn("id" , DB::table('simmed_temps')->pluck('simmed_id'))
         ->whereBetween('simmed_date',$date_between)
         ;
-        if ($with=='room,date,time')
-            $doit=true;                 //a jak sprawdzamy zmianę zajęć w tym samym miejscu - to już może być puste :)                 
+        $doit=true;
+
+        // if ($with=='room,date,time')
+        //     $doit=true;                 //a jak sprawdzamy zmianę zajęć w tym samym miejscu - to już może być puste :)                 
 
         if (strpos($with,'date')>0)
             $check=$check->where("simmed_date" , $this->simmed_date);
@@ -128,23 +130,23 @@ class SimmedTemp extends Model
         if (strpos($with,'leader')>0)
             {
             $check=$check->where("simmed_leader_id" , $this->simmed_leader_id);
-            if ($this->simmed_leader_id>0)
-                $doit=true;
+            if ($this->simmed_leader_id==0)
+                $doit=false;
             }
         
         if (strpos($with,'subject')>0)
             {
             $check=$check->where("student_subject_id" , $this->student_subject_id);
-            if ($this->student_subject_id>0)
-                $doit=true;
+            if ($this->student_subject_id==0)
+                $doit=false;
             }
 
         if (strpos($with,'group')>0)
             {
             $check=$check->where("student_group_id" , $this->student_group_id)
                          ->where("student_subgroup_id" , $this->student_subgroup_id);
-            if ($this->student_group_id>0)
-                $doit=true;
+            if ($this->student_group_id==0)
+                $doit=false;
             }
         
         if (strpos($with,'room')>0)
@@ -160,11 +162,12 @@ class SimmedTemp extends Model
                 
         if (($check->count()>0) && $doit)
             {
-            if ($check->first()->simmed_date == $this->simmed_date)
-                {
-                $this->simmed_technician_id=$check->first()->simmed_technician_id;
-                $this->simmed_technician_character_id=$check->first()->simmed_technician_character_id;
-                }
+            // nie wiem, co to poniżej miało robić...
+            // if ($check->first()->simmed_date == $this->simmed_date)
+            //     {
+            //     $this->simmed_technician_id=$check->first()->simmed_technician_id;
+            //     $this->simmed_technician_character_id=$check->first()->simmed_technician_character_id;
+            //     }
             //$this->simmed_alternative_title='['.$this->room_id.'-'.$check->first()->room_id.'] '.$with.': '.$this->simmed_alternative_title;
             $this->simmed_merge=$this->id;
             $this->simmed_id=$check->first()->id;

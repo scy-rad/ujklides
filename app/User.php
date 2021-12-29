@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 use App\RolesHasUsers;
+use App\Notifications\MyResetPassword;
 
 class User extends Authenticatable
 {
@@ -28,6 +29,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function sendPasswordResetNotification($token)
+    {
+        // to add costom reset password mail template: 
+        // https://stackoverflow.com/questions/39327954/laravel-5-3-redefine-reset-email-blade-template
+        $this->notify(new MyResetPassword($token));
+    }
 
 
     public function roles() {

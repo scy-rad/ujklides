@@ -226,6 +226,7 @@ class ManSimmedController extends Controller
                         $new_tmp['student_group_txt']          = trim($data_rows[6]);
                         $new_tmp['student_subgroup_txt']       = trim($data_rows[7]);
                         $new_tmp['simmed_alternative_title']   = trim($data_rows[10]);
+                        
                         if (User::where('name',$data_rows[8])->count()>0)
                             $new_tmp['simmed_technician_id']       = User::where('name',$data_rows[8])->first()->id;
                         if ((TechnicianCharacter::where('character_short',$data_rows[9]))->get()->count()>0)
@@ -973,6 +974,10 @@ class ManSimmedController extends Controller
                 $new_row=new Simmed();
                 //dump('Tu nie będzie ARCHIWUM',$data_one);
                 }
+            
+            if ($data_one->simmed_status == 0)
+                $data_one->simmed_status = $new_row->simmed_status;
+
             $new_row->simmed_date						= $data_one->simmed_date;
             $new_row->simmed_time_begin				    = $data_one->simmed_time_begin;
             $new_row->simmed_time_end					= $data_one->simmed_time_end;
@@ -1001,7 +1006,7 @@ class ManSimmedController extends Controller
                     $alt_txt.=$data_one->student_group_txt.' ';
                 $new_row->simmed_alternative_title=trim($alt_txt);
             }
-            $new_row['simmed_status']					= 1;
+            $new_row->simmed_status = $data_one->simmed_status;
             $new_row['simmed_status2']					= 1;
             
             $ret=$new_row->save();
@@ -1032,6 +1037,7 @@ class ManSimmedController extends Controller
             {
                 $data_one->simmed_status=4;
                 move_simmed($data_one);
+                //dump($data_one);
 //                 dd('import_append removeX',$data_one);
             }
 
@@ -1210,10 +1216,16 @@ public function sendMail(Request $request)
         
     foreach ($users as $user)
     {
+        if ($user->id>1)
+            {
+            dump('trap fin ManSimmedController for send email only to user ID 1 (me) :)');
+            break;
+            }
         $msgBody='wysyłka maili do:<br>';
         $msgBody.=$user->full_name().'<br>';
 
-        $user_simmeds=Simmed::where('simmed_technician_id',$user->id);
+        $user_simmeds=Simmed::where('simmed_technician_id',$user->id)->get();
+        dump($user->id.': '.$user->name,$user_simmeds);
         foreach ($user_simmeds as $user_simmed)
             {
             $msgBody.=$user_simmed->simmed_date." ";
@@ -1226,20 +1238,30 @@ public function sendMail(Request $request)
 
         //http://127.0.0.1:8000/send-mail
         $mail_data = [
+            'title'=>'inforamcje z systemu SIMinfo',
             'name'=>$user->full_name(),
             'msgBody'=>$msgBody
         ];
 
-        Mail::send('mansimmeds.mailsimmed',$mail_data,function($mail)
-                {
-                $mail->from('info@example.com');
-                $mail->to('jhon@example.com');
-                $mail->subject('terminy symulacji');
-                }
+        //$mail_data_address['email']=$user->email;
+        $mail_data_address['email']='sebastian@scyzoryk.info';
+        $mail_data_address['name']=$user->firstname.' '.$user->lastname;
+        $mail_data_address['from_email']='technicy@wcsm.pl';
+        $mail_data_address['from_name']='imperator CSM UJK';
+                
+
+        $zwrocik=Mail::send('mansimmeds.mailsimmed',$mail_data,function($mail) use ($mail_data_address)
+                 {
+                //$mail->from('nadawca@example.com');
+                $mail->from($mail_data_address['from_email'],$mail_data_address['from_name']);
+                $mail->to($mail_data_address['email'],$mail_data_address['name']);
+                $mail->subject('[SIMinfo] terminy symulacji');
+                 }
         );
     }
+    dump($zwrocik);
     $data['message_show']=TRUE;
-    $data['message_body']='wysłano maile';
+    $data['message_body']='wysłano maile do '.$mail_data_address['email'].' '.$mail_data_address['name'];
     return view('mansimmeds.index')->with($data);
 //    return 'Wysłano maila';
 }
@@ -1474,6 +1496,9 @@ public function sendMail(Request $request)
           ->leftjoin('student_groups','simmeds.student_group_id','=','student_groups.id')
           ->leftjoin('student_subgroups','simmeds.student_subgroup_id','=','student_subgroups.id')
           ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
+          ->orderBy('simmed_date')
+          ->orderBy('time')
+          ->orderBy('room_number')
             ->get();
 
             foreach ($alldata as $row_one)

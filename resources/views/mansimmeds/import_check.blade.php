@@ -154,11 +154,6 @@ function rowEK($new_simmed)
         <input type="hidden" name="step" value="complement_data">
         <input class="btn btn-primary btn-lg" type="submit" value="uzupełnij braki">
         </form>
-
-        <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
-                {{ csrf_field() }}
-                <input class="btn btn-primary btn-lg" type="submit" value="analizuj dane z UXP">
-        </form>
         
         <script>
         function onclickHandler(id_name)
@@ -176,6 +171,11 @@ function rowEK($new_simmed)
         </script>
 
     @endif
+
+    <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
+                {{ csrf_field() }}
+                <input class="btn btn-primary btn-lg" type="submit" value="analizuj dane z UXP">
+        </form>
 
 
 
