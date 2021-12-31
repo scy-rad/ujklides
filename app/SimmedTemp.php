@@ -171,6 +171,8 @@ class SimmedTemp extends Model
             //$this->simmed_alternative_title='['.$this->room_id.'-'.$check->first()->room_id.'] '.$with.': '.$this->simmed_alternative_title;
             $this->simmed_merge=$this->id;
             $this->simmed_id=$check->first()->id;
+
+            $this->simmed_trap='['.$with.']';   //SD dodane tymczasowo żeby sprawdzić, kiedy dany wpis jest uznawany za zmieniony.
                       
             if (strpos($with,'deleted')>0)
                 $this->tmp_status=9;    //reactivate inactive

@@ -88,7 +88,11 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
                 if ($new_simmed->simmed_alternative_title == $prev->simmed_alternative_title)
                     $rowek2.='<td></td>';
                 else
-                    $rowek2.='<td>'.$prev->simmed_alternative_title."</td>";
+                    {
+                    $rowek2.='<td>'.$prev->simmed_alternative_title;
+                    $rowek2.=' '.$new_simmed->simmed_trap."</td>";
+                    }
+
                 
                 $rowek2.='<td></td>'; //simmed_id
                 $rowek2.='<td></td>'; //status_tmp

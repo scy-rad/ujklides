@@ -168,6 +168,8 @@ class CreateSimmedsTable extends Migration
             $table->unsignedInteger('simmed_merge')->default(0);
             $table->smallInteger('tmp_status')->default(0);
             $table->timestamps();
+
+            $table->string('simmed_trap')->default('');
         });
 
         Schema::create('simmed_temp_rooms', function (Blueprint $table) {
