@@ -714,16 +714,17 @@ class ManSimmedController extends Controller
                 $step['step_code']=7;
                 if (intval(($koniec[0]+$koniec[1])-($start[0]+$start[1]))>40)
                     break;
+                break; //SD dodane, bo mimo wszystko coś się przepełniało...
             case '7':
-                if (SimmedTemp::whereNotNull('simmed_technician_id')->count()>0 )
-                    dump('ilość: ',SimmedTemp::whereNotNull('simmed_technician_id')->count());
-                else
-                    {
-                    dump('ilość: ',SimmedTemp::whereNotNull('simmed_technician_id')->count());
+                // if (SimmedTemp::whereNotNull('simmed_technician_id')->count()>0 )
+                //     dump('ilość: ',SimmedTemp::whereNotNull('simmed_technician_id')->count());
+                // else
+                //     {
+                //     dump('ilość 72: ',SimmedTemp::whereNotNull('simmed_technician_id')->count());
                     $alltmps=SimmedTemp::where('simmed_id','=',0)->where('tmp_status','=',0)->get();
                     foreach ($alltmps as $onetemp)
                             $onetemp->check_similar($date_anal,'room,leader,subject,group,date,time');//zmiana tylko technika
-                    }
+                    // }
                 $koniec = microtime();
                 $koniec = explode(' ', $koniec);
                 $step['step_code']=8;
@@ -799,7 +800,7 @@ class ManSimmedController extends Controller
                     ->get();
 
                 $data_return=DB::table('simmed_temps')
-                    ->select('simmed_date', \DB::raw('concat(substr(simmed_time_begin,1,5),"-",substr(simmed_time_end,1,5)) as time'), 'room_number', 
+                    ->select('simmed_trap','simmed_date', \DB::raw('concat(substr(simmed_time_begin,1,5),"-",substr(simmed_time_end,1,5)) as time'), 'room_number', 
                     \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as leader'), 
                     'student_subject_name', 'student_group_name', 'subgroup_name',
                     'technicians.name as technician_name', 
