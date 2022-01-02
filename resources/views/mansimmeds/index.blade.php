@@ -50,6 +50,7 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
 
         <div class="col-sm-2">
                 <form action="{{ route('mansimmeds.sendMail') }}" method="get">
+                        <input type="hidden" name="mailtype" value="monthinfo">
                         <input class="btn btn-primary btn-lg" type="submit" value="wyślij mail">
                 </form>
         </div>
@@ -58,7 +59,7 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
 
 @if (isset($message_show))
         <div class="alert alert-success">
-        {{ $message_body }}
+        {!! $message_body !!}
         </div>
 @endif
 
