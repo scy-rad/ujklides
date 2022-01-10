@@ -68,57 +68,67 @@ else
     }
 
 ?>
-        <table id ="simlist">
-        <tr>
-            <th>Data</th>
-            <th>Dzień</th>
-            <th>godz.</th>
-            <th>sala</th>
-            <th>prowadzący</th>
-            <th>przedmiot</th>
-            <th>grp.</th>
-            <th>technik</th>
-            <th>char.</th>
-        </tr>
-        @foreach ($simTable as $simRow)
-            @if ($simRow->simmed_alternative_title=='') 
-                <?php $spanRow=''; ?>
-            @else 
-                <?php $spanRow='rowspan="2"'; ?>
-            @endif
-            <tr<?php if ($simRow->simmed_status==4) echo ' style="background:red"'; ?>>
-                <td {!!$spanRow!!}>
-                    <?php echo date_changes($simRow->simmed_date,$simRow->send_simmed_date); ?>
-                </td>
-                <td {!!$spanRow!!}>
-                {{$simRow->DayOfWeek}}
-                <?php if ($simRow->simmed_status==4) echo '<br><strong> USUNIĘTY!</strong> '; ?>
-                </td>
-                <td {!!$spanRow!!}>
-                    <?php echo time_changes($simRow->time,$simRow->send_time); ?>
-                </td>
-                <td {!!$spanRow!!}>{{$simRow->room_number}}</td>
-                <td>
-                    <?php echo show_changes($simRow->leader,$simRow->send_leader); ?>
-                </td>
-                <td>{{$simRow->student_subject_name}}</td>
-                <td>{{$simRow->student_group_code}}</td>
-                <td>
-                    <?php echo show_changes($simRow->technician_name,$simRow->send_technician_name); ?>
-                </td>
-                <td>
-                    <?php echo show_changes($simRow->character_name,$simRow->send_character_name); ?>
-                </td>
-                @if ($simRow->simmed_alternative_title!='') 
+
+    
+    @foreach ($BigTable as $oneTable)
+        <?php if (!(is_null($oneTable))) { ?>
+        @if ($oneTable['table']->count()>0)
+            <hr>
+            {!!$oneTable['head']!!}
+            <table id ="simlist">
                 <tr>
-                    <td colspan="5">
-                        {!!$simRow->simmed_alternative_title!!}
-                    </td>
+                    <th>Data</th>
+                    <th>Dzień</th>
+                    <th>godz.</th>
+                    <th>sala</th>
+                    <th>prowadzący</th>
+                    <th>przedmiot</th>
+                    <th>grp.</th>
+                    <th>technik</th>
+                    <th>char.</th>
                 </tr>
-                @endif
-            </tr>
-        @endforeach
-        </table>          
+                @foreach ($oneTable['table'] as $simRow)
+                    @if ($simRow->simmed_alternative_title=='') 
+                        <?php $spanRow=''; ?>
+                    @else 
+                        <?php $spanRow='rowspan="2"'; ?>
+                    @endif
+                    <tr<?php if ($simRow->simmed_status==4) echo ' style="background:red"'; ?>>
+                        <td {!!$spanRow!!}>
+                            <?php echo date_changes($simRow->simmed_date,$simRow->send_simmed_date); ?>
+                        </td>
+                        <td {!!$spanRow!!}>
+                        {{$simRow->DayOfWeek}}
+                        <?php if ($simRow->simmed_status==4) echo '<br><strong> USUNIĘTY!</strong> '; ?>
+                        </td>
+                        <td {!!$spanRow!!}>
+                            <?php echo time_changes($simRow->time,$simRow->send_time); ?>
+                        </td>
+                        <td {!!$spanRow!!}>{{$simRow->room_number}}</td>
+                        <td>
+                            <?php echo show_changes($simRow->leader,$simRow->send_leader); ?>
+                        </td>
+                        <td>{{$simRow->student_subject_name}}</td>
+                        <td>{{$simRow->student_group_code}}</td>
+                        <td>
+                            <?php echo show_changes($simRow->technician_name,$simRow->send_technician_name); ?>
+                        </td>
+                        <td>
+                            <?php echo show_changes($simRow->character_name,$simRow->send_character_name); ?>
+                        </td>
+                        @if ($simRow->simmed_alternative_title!='') 
+                        <tr>
+                            <td colspan="5">
+                                {!!$simRow->simmed_alternative_title!!}
+                            </td>
+                        </tr>
+                        @endif
+                    </tr>
+                @endforeach
+            </table>
+        @endif
+        <?php } ?>
+    @endforeach         
         
         <br>
         <br>

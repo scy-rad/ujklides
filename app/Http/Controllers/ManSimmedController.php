@@ -1374,20 +1374,20 @@ public function sendMail(Request $request)
                 $date_between[]=date('Y-m-t', strtotime($date_between[0]));
         
                 //if choice is monthinfo, do SQL query now, and don't do it in loop
-                $user_simmeds_get=$user_simmeds_prepare
+                $BigTable[1]['head']='Lista symulacji w okresie: '.$date_between[0].' - '.$date_between[1];
+                $BigTable[1]['table']=$user_simmeds_prepare
                     ->whereBetween('simmed_date',$date_between)
                     ->get();
 
                 $msgBodyPrep='<h2>Oto lista wszystkich symulacji w okresie od '.$date_between[0].' do '.$date_between[1].'</h2>';
-                $msgBodyPrep.='<italic>(informacja może nie zawierać wszystkich zmian - np. zajęć, które zostały przełożone na inny dzień. Pracuję nad tym jeszcze...)</italic>';
-                $msgTitle='[SIMinfo] Informacja o miesięcznych symulacjach z systemu SIMinfo';
+                $msgTitle['subject']='[SIMinfo] Informacja o miesięcznych symulacjach z systemu SIMinfo';
                 $mail_data_address['subject_email']='[SIMinfo] terminy symulacji: '.$date_between[0].' - '.$date_between[1];
 
                 break; 
 
 
             case 'threedaysinfo':
-                $date_between[]=date('Y-m-d', strtotime('+0 days'));
+                $date_between[]=date('Y-m-d', strtotime('+1 days'));
                 if (date('N',strtotime($date_between[0]))==7) 
                     $addDays=3;
                 elseif (date('N',strtotime($date_between[0]))>3) 
@@ -1399,7 +1399,7 @@ public function sendMail(Request $request)
 
                 $msgBodyPrep='<h2>Oto lista Twoich symulacji na najbliższe dni (od '.$date_between[0].' do '.$date_between[1].')</h2>';
                 $msgBodyPrep.='<italic>(informacja ...)</italic>';
-                $msgTitle='[SIMinfo] Informacja o bieżących symulacjach z systemu SIMinfo';
+                $msgTitle['subject']='[SIMinfo] Informacja o bieżących symulacjach z systemu SIMinfo';
                 $mail_data_address['subject_email']='[SIMinfo] najbliższe symulacje: '.$date_between[0];
 
                 break; 
@@ -1412,7 +1412,7 @@ public function sendMail(Request $request)
 
                 $msgBodyPrep='<h2>Oto lista zmian w symulacjach </h2>';
                 $msgBodyPrep.='<italic>(informacja o zmianach...)</italic>';
-                $msgTitle='[SIMinfo] informacje o zmianach w symulacjach w systemie SIMinfo';
+                $msgTitle['subject']='[SIMinfo] informacje o zmianach w symulacjach w systemie SIMinfo';
                 $mail_data_address['subject_email']='[SIMinfo] zmiany w symulacjach: '.date('Y-m-d H:i');
 
                 $user_simmeds_prepare=
@@ -1447,20 +1447,20 @@ public function sendMail(Request $request)
 
 
         
-        function mail_send_now($user, $msgTitle, $msgBody, $simmeds_data)
+        function mail_send_now($user, $msgTitle, $msgBody, $BigTable)
         {
             $ret['user']=$user->firstname.' '.$user->lastname;
-            if ($simmeds_data->count()==0)
+            if (count($BigTable)==0)
                 {
                 $ret['code']=100;
                 return $ret; //100 - nic do wysłania
                 }
             //http://127.0.0.1:8000/send-mail
             $mail_data = [
-                'title'=>$msgTitle,
+                'title'=>$msgTitle['subject'],
                 'name'=>$user->full_name(),
                 'msgBody'=>$msgBody,
-                'simTable'=>$simmeds_data
+                'BigTable'=>$BigTable
             ];
 
             $mail_data_address['email']=$user->email;
@@ -1468,11 +1468,11 @@ public function sendMail(Request $request)
             $mail_data_address['name']=$user->firstname.' '.$user->lastname;
             $mail_data_address['from_email']='technicy@wcsm.pl';
             $mail_data_address['from_name']='Pegasus CSM UJK';
-            $mail_data_address['subject_email']=$msgTitle;
+            $mail_data_address['subject_email']=$msgTitle['subject'];
 
             // echo '<hr>'.$msgBody;
             // dump($mail_data_address);
-            // dump($user->id.': '.$user->name,$simmeds_data);
+            // dump($user->id.': '.$user->name,$BigTable);
 
             $zwrocik=Mail::send('mansimmeds.mailsimmed',$mail_data,function($mail) use ($mail_data_address)
                     {
@@ -1488,7 +1488,7 @@ public function sendMail(Request $request)
             // echo '<br>';
             // print_r($mail_data_address);
             // dump($mail_data);
-//dd('mail_send_one');
+// dd('mail_send_one');
             //$data['message_body'].='<li><strong>'.$user->firstname.' '.$user->lastname.'</strong> '.$user->email.'</li>';
 
             // dump($zwrocik);
@@ -1504,14 +1504,14 @@ public function sendMail(Request $request)
                 foreach ($technician_users as $user)
                 {
                     $msgBody='Ogólna informacja dla techników i koordynatorów (technik: <strong>'.$user->full_name().'</strong>)<hr><br>'.$msgBodyPrep;
-     
-                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $user_simmeds_get);
+                    
+                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
                 }
                 foreach ($coordinator_users as $user)
                 {
                     $msgBody='Ogólna informacja dla techników i koordynatorów (koordynator: <strong>'.$user->full_name().'</strong>)<hr><br>'.$msgBodyPrep;
      
-                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $user_simmeds_get);
+                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
                 }
                 break;
 
@@ -1519,14 +1519,21 @@ public function sendMail(Request $request)
                 foreach ($technician_users as $user)
                 {
                     $msgBody='Codzienna informacja dla technika: <strong>'.$user->full_name().'</strong><hr><br>'.$msgBodyPrep;
-     
+                    
                     $user_simmeds=clone $user_simmeds_prepare;
                     $user_simmeds=$user_simmeds
                         ->where('simmed_technician_id',$user->id)
                         ->whereBetween('simmed_date',$date_between)
                         ->get();
 
-                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $user_simmeds);
+                    if ($user_simmeds->count()>0)
+                        {
+                        $BigTable[1]['head']='wykaz symulacji technika: <strong>'.$user->full_name().'</strong>';
+                        $BigTable[1]['table']=$user_simmeds;
+                        }
+
+
+                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
                 }
                 break;
 
@@ -1536,52 +1543,87 @@ public function sendMail(Request $request)
                     ->pluck('id')
                     ->toArray();
 
+                $tmp_table=clone $user_simmeds_prepare;
+                $tmp_table=$tmp_table
+                    ->where(function ($query) use ($look_characters) {
+                        $query->whereNull('simmed_technician_id')
+                            ->whereIn('simmed_technician_character_id',$look_characters);
+                        })                    
+                    ->whereBetween('simmed_date',$date_between)
+                    ->get();
 
-                // foreach ($technician_users as $user)
-                // {
-                //     $msgBody='Informacja o zmianach w symulacjach technika: <strong>'.$user->full_name().'</strong><br><hr><br>'.$msgBodyPrep;
-     
-                //     $user_simmeds=clone $user_simmeds_prepare;
-                //     $user_simmeds=$user_simmeds
-                //         ->where(function ($query) use ($user) {
-                //             $query->where('simmed_technician_id', $user->id)
-                //                 ->orWhere('send_simmed_technician_id', $user->id);
-                //             })
-                //         ->orWhere(function ($query) use ($look_characters) {
-                //             $query->whereNull('simmed_technician_id')
-                //                 ->whereIn('simmed_technician_character_id',$look_characters);
-                //             })
-                        
-                //         ->whereBetween('simmed_date',$date_between)
-                //         ->get();
-
-                //     $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $user_simmeds);
-                // }
-                // foreach ($coordinator_users as $user)
-                // {
-                //     $msgBody='Informacja o zmianach w symulacjach dla koordynatora: <strong>'.$user->full_name().'</strong><br><hr><br>'.$msgBodyPrep;
-     
-                //     $user_simmeds=clone $user_simmeds_prepare;
-                //     $user_simmeds=$user_simmeds
-                //         ->orWhereNull('simmed_technician_id')
-                //         ->whereBetween('simmed_date',$date_between)
-                //         ->get();
-
-                //     $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $user_simmeds);
-                // }
+                if ($tmp_table->count()>0)
+                {
+                    $BigTable[2]['head']='Symulacje, któe nia mają przypisanego technika, a powinny...:';
+                    $BigTable[2]['table']=$tmp_table;
+                }
 
 
                 foreach ($technician_users as $user)
                 {
-                    $msgBody='A taką informajcę otrzymują koordynatorzy: <br><hr><br>'.$msgBodyPrep;
+                    $msgBody='<h1>Informacja o zmianach w symulacjach i o symulacjach do których należy przypisac technika </h1><hr><br>'.$msgBodyPrep;
      
-                    $user_simmeds=clone $user_simmeds_prepare;
-                    $user_simmeds=$user_simmeds
-                        ->orWhereNull('simmed_technician_id')
+                    $tmp_table=clone $user_simmeds_prepare;
+                    $tmp_table=$tmp_table
+                        ->where(function ($query) use ($user) {
+                            $query->where('simmed_technician_id', $user->id)
+                                ->orWhere('send_simmed_technician_id', $user->id);
+                            })
                         ->whereBetween('simmed_date',$date_between)
                         ->get();
+                    
+                    if ($tmp_table->count()>0)
+                    {
+                        $BigTable[1]['head']='zmiany w symulacjach przypisanych do technika: <strong>'.$user->full_name().'</strong>';
+                        $BigTable[1]['table']=$tmp_table;
+                    }
+                    else
+                        $BigTable[1]=null;
 
-                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $user_simmeds);
+     
+                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
+
+                }
+
+
+                $BigTable=null;
+
+                $tmp_table=clone $user_simmeds_prepare;
+                $tmp_table=$tmp_table
+                    ->where('send_simmed_date', '<>', '2022-01-01')
+                    ->whereBetween('simmed_date',$date_between)
+                    ->get();
+                if ($tmp_table->count()>0)
+                    {
+                        $BigTable[1]['head']='zmiany w symulacjach';
+                        $BigTable[1]['table']=$tmp_table;
+                    }
+
+                $tmp_table=clone $user_simmeds_prepare;
+                $tmp_table=$tmp_table
+                    ->where('send_simmed_date', '=', '2022-01-01')
+                    ->whereBetween('simmed_date',$date_between)
+                    ->get();
+                if ($tmp_table->count()>0)
+                    {
+                        $BigTable[2]['head']='nowe symulacje';
+                        $BigTable[2]['table']=$tmp_table;
+                    }
+    
+    
+                foreach ($coordinator_users as $user)
+                {
+                    $msgBody='Informacja o zmianach w symulacjach dla koordynatora: <strong>'.$user->full_name().'</strong><br><hr><br>'.$msgBodyPrep;
+     
+                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
+                }
+
+
+                foreach ($technician_users as $user)
+                {
+                    $msgBody='<h1 style="background:yellow">A taką informację otrzymują koordynatorzy:<h1> <br><hr><br>'.$msgBodyPrep;
+                    $msgTitle['subject']='[SIMinfo] informacje dla koordynatora o zmianach w symulacjach w systemie SIMinfo';
+                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
                 }
 
                 break;
@@ -1606,7 +1648,7 @@ public function sendMail(Request $request)
         $data['message_body'].='</ul>';
         
     
-//dump('dopisałem poniże X');
+dump('dopisałem poniżej X żeby nie aktualizował zmienionych danych wysyłki');
     //jeszcze jedna pętla, żeby zaktualizować info o wysłanych danych
     if ($request->mailtype=='simchangesX')
     {
