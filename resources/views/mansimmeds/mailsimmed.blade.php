@@ -33,7 +33,41 @@
     </head>
     <body>
         {!! $msgBody !!}
+<?php
+if (function_exists('show_changes'))
+            {
+                echo '.';
+            }
+else
+    {
+        function show_changes($current,$previous)
+            {
+            if ($current == $previous)
+                return $current;
+            else
+                return $current.'<br>'.'<del>'.$previous.'</del>';
+            }
+        function date_changes($current,$previous)
+            {
+            if ($current == $previous)
+                return $current;
+            elseif ($previous == '2022-01-01')
+                    return $current.'<br>(nowy)';
+                else 
+                    return $current.'<br>'.'<del>'.$previous.'</del>';
+            }
+        function time_changes($current,$previous)
+            {
+            if ($current == $previous)
+                return $current;
+            elseif ($previous == '00:00-00:00')
+                    return $current;
+                else
+                    return $current.'<br>'.'<del>'.$previous.'</del>';
+            }
+    }
 
+?>
         <table id ="simlist">
         <tr>
             <th>Data</th>
@@ -52,16 +86,29 @@
             @else 
                 <?php $spanRow='rowspan="2"'; ?>
             @endif
-            <tr>
-                <td {!!$spanRow!!}>{{$simRow->simmed_date}}</td>
-                <td {!!$spanRow!!}>{{$simRow->DayOfWeek}}</td>
-                <td {!!$spanRow!!}>{{$simRow->time}}</td>
+            <tr<?php if ($simRow->simmed_status==4) echo ' style="background:red"'; ?>>
+                <td {!!$spanRow!!}>
+                    <?php echo date_changes($simRow->simmed_date,$simRow->send_simmed_date); ?>
+                </td>
+                <td {!!$spanRow!!}>
+                {{$simRow->DayOfWeek}}
+                <?php if ($simRow->simmed_status==4) echo '<br><strong> USUNIĘTY!</strong> '; ?>
+                </td>
+                <td {!!$spanRow!!}>
+                    <?php echo time_changes($simRow->time,$simRow->send_time); ?>
+                </td>
                 <td {!!$spanRow!!}>{{$simRow->room_number}}</td>
-                <td>{{$simRow->leader}}</td>
+                <td>
+                    <?php echo show_changes($simRow->leader,$simRow->send_leader); ?>
+                </td>
                 <td>{{$simRow->student_subject_name}}</td>
                 <td>{{$simRow->student_group_code}}</td>
-                <td>{{$simRow->technician_name}}</td>
-                <td>{{$simRow->character_name}}</td>
+                <td>
+                    <?php echo show_changes($simRow->technician_name,$simRow->send_technician_name); ?>
+                </td>
+                <td>
+                    <?php echo show_changes($simRow->character_name,$simRow->send_character_name); ?>
+                </td>
                 @if ($simRow->simmed_alternative_title!='') 
                 <tr>
                     <td colspan="5">

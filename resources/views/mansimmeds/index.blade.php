@@ -49,9 +49,44 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         </div>
 
         <div class="col-sm-2">
+        </div>
+
+</div>
+
+
+<div class="row">
+        <div class="col-sm-12">
+        </div>
+</div>
+
+<div class="row">
+        <div class="col-sm-7">
+        </div>
+
+        <div class="col-sm-1">
+        </div>
+
+        <div class="col-sm-1">
+        </div>
+
+        <div class="col-sm-1">
+                <form action="{{ route('mansimmeds.sendMail') }}" method="get">
+                        <input type="hidden" name="mailtype" value="simchanges">
+                        <input class="btn btn-success btn-sm" type="submit" value="mail zmiany">
+                </form>
+        </div>
+
+        <div class="col-sm-1">
+                <form action="{{ route('mansimmeds.sendMail') }}" method="get">
+                        <input type="hidden" name="mailtype" value="threedaysinfo">
+                        <input class="btn btn-success btn-sm" type="submit" value="mail 3 dni">
+                </form>
+        </div>
+
+        <div class="col-sm-1">
                 <form action="{{ route('mansimmeds.sendMail') }}" method="get">
                         <input type="hidden" name="mailtype" value="monthinfo">
-                        <input class="btn btn-primary btn-lg" type="submit" value="wyślij mail">
+                        <input class="btn btn-success btn-sm" type="submit" value="mail miesiąc">
                 </form>
         </div>
 

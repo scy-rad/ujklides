@@ -162,12 +162,17 @@ class SimmedTemp extends Model
                 
         if (($check->count()>0) && $doit)
             {
-            // nie wiem, co to poniżej miało robić...
-            // if ($check->first()->simmed_date == $this->simmed_date)
-            //     {
-            //     $this->simmed_technician_id=$check->first()->simmed_technician_id;
-            //     $this->simmed_technician_character_id=$check->first()->simmed_technician_character_id;
-            //     }
+            // Jeżeli sprawdzany wpis importu ma taką samą datę jak znaleziony wpis symulacji
+            // i jeszcze importowany wpis nie zawiera informacji o techniku ani charakterze
+            // to zczytaj te parametry z iatniejącego wpisu
+            if ($this->simmed_date == $check->first()->simmed_date)
+                {
+                $with.='SameDate';
+                if ($this->simmed_technician_id==0)
+                    $this->simmed_technician_id=$check->first()->simmed_technician_id;
+                if ($this->simmed_technician_character_id==0)
+                    $this->simmed_technician_character_id=$check->first()->simmed_technician_character_id;
+                }
             //$this->simmed_alternative_title='['.$this->room_id.'-'.$check->first()->room_id.'] '.$with.': '.$this->simmed_alternative_title;
             $this->simmed_merge=$this->id;
             $this->simmed_id=$check->first()->id;

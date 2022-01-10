@@ -13,3 +13,7 @@ yarn-error.log
 /database/seeds/Users*
 /database/seeds/Items*
 composer
+
+.vscode/*
+.vscode/sftp.json
+!.vscode/something.json

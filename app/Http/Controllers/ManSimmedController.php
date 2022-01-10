@@ -152,7 +152,8 @@ class ManSimmedController extends Controller
                         if (strpos($new_tmp['student_group_txt'],'/sem.',0)>0)
                             $new_tmp['student_group_txt'] = substr($new_tmp['student_group_txt'],0,strpos($new_tmp['student_group_txt'],'/sem.',0));                  
                         $new_tmp['student_subgroup_txt']       = trim($data_rows[7]);
-                        $new_tmp['simmed_technician_character_id']=1;
+                        $new_tmp['simmed_technician_character_id']=0;
+                        $new_tmp['simmed_technician_character_propose_id']=$character_propose;
 
                        $return=$new_tmp->save();
                     }
@@ -162,6 +163,10 @@ class ManSimmedController extends Controller
                     $sub_data=explode(" ",$import_row);
                     $current_room_xp_code=trim($sub_data[3]);
                     $current_room_id=Room::find_xp_room($current_room_xp_code);
+                    if ($current_room_id>0)
+                        $character_propose=Room::find($current_room_id)->simmed_technician_character_propose_id;
+                    else
+                        $character_propose=0;
 
                         $now = new \DateTime();
                         $d = $now::createFromFormat('d-m-Y', $sub_data[8]);
@@ -579,24 +584,35 @@ class ManSimmedController extends Controller
         $data['missing_subgroups']=0;
         if (count($no_subgroups)>0)
         foreach ($no_subgroups as $no_subgroup)
+        {
+            $student_subgroup_one=StudentSubgroup::where('subgroup_name',$no_subgroup->student_subgroup_txt)->where('student_group_id',$no_subgroup->student_group_id)->first();
+            if ($student_subgroup_one===NULL)
             {
-            $student_subgroup_id=StudentSubgroup::where('subgroup_name',$no_subgroup->student_subgroup_txt)->where('student_group_id',$no_subgroup->student_group_id)->first();
-            if ($student_subgroup_id===NULL)
-                {
                 $licz=SimmedTemp::where('student_subgroup_txt',$no_subgroup->student_subgroup_txt)->where('student_group_id',$no_subgroup->student_group_id)->first()->id;
                 $data['no_subgroup_list'][$no_subgroup->student_group_id][$licz]['row']=$licz;
                 $data['no_subgroup_list'][$no_subgroup->student_group_id][$licz]['name']=$no_subgroup->student_subgroup_txt;
 				$data['no_subgroup_list'][$no_subgroup->student_group_id][$licz]['action']='pomiń';//'dodaj';
 				$data['missing_subgroups']++;
-                }
+            }
             else
+            {
+                if ($student_subgroup_one->write_technician_character==0)   //jeśli grupa ma nie mieć proponowanego charakteru technika, to usuń wartość proponowaną
                 {
-                SimmedTemp::where('student_subgroup_txt',$no_subgroup->student_subgroup_txt)->where('student_group_id',$no_subgroup->student_group_id)
-                    ->whereNull('student_subgroup_id')
-                    ->update(['student_subgroup_id' => $student_subgroup_id->id]);
+                    SimmedTemp::where('student_subgroup_txt',$no_subgroup->student_subgroup_txt)->where('student_group_id',$no_subgroup->student_group_id)
+                        ->whereNull('student_subgroup_id')
+                        ->update([
+                            'student_subgroup_id' => $student_subgroup_one->id,
+                            'simmed_technician_character_propose_id' => 0
+                        ]);
                 }
-            } // end of $no_subgroups as $no_subgroup
-
+                else
+                {
+                    SimmedTemp::where('student_subgroup_txt',$no_subgroup->student_subgroup_txt)->where('student_group_id',$no_subgroup->student_group_id)
+                        ->whereNull('student_subgroup_id')
+                        ->update(['student_subgroup_id' => $student_subgroup_one->id]);
+                }
+            }
+        } // end of $no_subgroups as $no_subgroup
 
         return $data;
     }   //end of function check_tmp_data()
@@ -776,6 +792,34 @@ class ManSimmedController extends Controller
                 if (intval(($koniec[0]+$koniec[1])-($start[0]+$start[1]))>40)
                     break;
             case '13':
+                $Characters_to_propose=SimmedTemp::where('simmed_technician_character_id',0)
+                    ->where('simmed_technician_character_propose_id','>',0)
+                    ->where('simmed_id',0)
+                    ->update(['simmed_technician_character_id' => DB::raw("`simmed_technician_character_propose_id`")]);
+
+                $Character_free_code=TechnicianCharacter::where('character_short','=','free')
+                    ->get()->first()->id;
+
+                $Characters_to_free=SimmedTemp::where('simmed_technician_character_id',0)
+                    ->where('simmed_technician_character_propose_id','=',0)
+                    ->where('simmed_id',0)
+                    ->update(['simmed_technician_character_id' => $Character_free_code]);
+
+                // $Character_look_code=TechnicianCharacter::where('character_short','=','look')
+                //     ->get()->first()->id;
+
+                // $Characters_to_look=SimmedTemp::where('simmed_technician_character_id',0)
+                //     ->update(['simmed_technician_character_id' => $Character_look_code]);
+
+                
+                // ->orWhere('simmed_time_begin', '!=', DB::raw("`send_simmed_time_begin`"))
+
+                $koniec = microtime();
+                $koniec = explode(' ', $koniec);
+                $step['step_code']=14;
+                if (intval(($koniec[0]+$koniec[1])-($start[0]+$start[1]))>40)
+                    break;
+            case '14':
                 $IDSy=SimmedTemp::pluck('simmed_id')->toArray();
                 $for_delete=Simmed::where('simmed_status','<',4)->whereNotIn('id',$IDSy)->whereBetween('simmed_date',$date_anal)->get();
 
@@ -789,7 +833,7 @@ class ManSimmedController extends Controller
                 }
                 $koniec = microtime();
                 $koniec = explode(' ', $koniec);
-                $step['step_code']=14;
+                $step['step_code']=15;
                 if (intval(($koniec[0]+$koniec[1])-($start[0]+$start[1]))>40)
                     break;
             case '100':
@@ -991,8 +1035,19 @@ class ManSimmedController extends Controller
             $new_row->student_subgroup_id				= $data_one->student_subgroup_id;
             $new_row->room_id     					    = $data_one->room_id;
             $new_row->simmed_leader_id	    		    = $data_one->simmed_leader_id;
-            $new_row->simmed_technician_id    		    = $data_one->simmed_technician_id;
-            $new_row->simmed_technician_character_id    = $data_one->simmed_technician_character_id;
+            // if ($data_one->simmed_technician_id==0) 
+            //     $new_row->simmed_technician_id    		= NULL;
+            // else
+                $new_row->simmed_technician_id    		    = $data_one->simmed_technician_id;
+
+                $new_row->simmed_alternative_title = 'próba nulla';
+
+            if ($data_one->simmed_technician_character_id==0)
+                $new_row->simmed_technician_character_id    = NULL;
+            else
+                $new_row->simmed_technician_character_id    = $data_one->simmed_technician_character_id;
+
+            
             $new_row->simmed_alternative_title		    = $data_one->simmed_alternative_title;
             if ($data_one->simmed_alternative_title!='')
                 $new_row->simmed_alternative_title=$data_one->simmed_alternative_title;
@@ -1213,26 +1268,25 @@ public function sendMail(Request $request)
     // if choice is monthinfo - mail is for technicians and coordinators
     // if choice is threedaysinfo - mail is for technicians only
 
-    $roles_id=Roles::where('roles_code', 'technicians');
-
-    if ($request->mailtype=='monthinfo')
-        $roles_id=$roles_id->orWhere('roles_code', 'coordinators');
-    
-    $roles_id=$roles_id->pluck('id')
-        ->toArray();
- 
-    
-    $roles_users=RolesHasUsers::whereIn('roles_has_users_roles_id',$roles_id)
+    $roles_technicians_id=Roles::where('roles_code', 'technicians')
+        ->first()->id;
+    $roles_technicians=RolesHasUsers::where('roles_has_users_roles_id',$roles_technicians_id)
         ->pluck('roles_has_users_users_id')
         ->toArray();
-    
-    $users = User::whereIn('id',$roles_users);
-        $users = $users->where('user_status','=',1);
-        $users = $users->where('simmed_notify','=',1);
+    $technician_users = User::whereIn('id',$roles_technicians)
+            ->where('user_status','=',1)
+            ->where('simmed_notify','=',1)
+            ->get();
 
-        //$users = $users->where('name','=','mbaczek');
-
-        $users = $users->get();
+    $roles_coordinators_id=Roles::where('roles_code', 'coordinators')
+        ->first()->id;
+    $roles_coordinators=RolesHasUsers::where('roles_has_users_roles_id',$roles_coordinators_id)
+        ->pluck('roles_has_users_users_id')
+        ->toArray();
+    $coordinator_users = User::whereIn('id',$roles_coordinators)
+            ->where('user_status','=',1)
+            ->where('simmed_notify','=',1)
+            ->get();
 
     //prepare SQL question
     
@@ -1240,12 +1294,14 @@ public function sendMail(Request $request)
         ->select('simmed_date',
             \DB::raw('dayname(simmed_date) as DayOfWeek'),
             \DB::raw('concat(substr(simmed_time_begin,1,5),"-",substr(simmed_time_end,1,5)) as time'), 
+            \DB::raw('concat(substr(send_simmed_time_begin,1,5),"-",substr(send_simmed_time_end,1,5)) as send_time'), 
             'room_number', 
-            \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as leader'), 
+            \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as leader'),
+            \DB::raw('concat(send_user_titles.user_title_short," ",send_leaders.lastname," ",send_leaders.firstname) as send_leader'),  
             'student_subject_name', 'student_group_name', 'subgroup_name',
             'technicians.name as technician_name', 
-            'character_short',
-            'character_name',
+            'technician_characters.character_short',
+            'technician_characters.character_name',
             'simmed_alternative_title',
             'room_id',
             'leaders.id as leader_id',
@@ -1256,7 +1312,30 @@ public function sendMail(Request $request)
                 'student_subgroup_id',
                 'student_group_code',
             'simmed_time_begin',
-            'simmed_time_end'
+            'simmed_time_end',
+            'simmed_type_id',
+            'simmed_leader_id',
+            'simmed_status',
+            'simmed_status2',
+
+            'send_simmed_date',
+            'send_simmed_time_begin',
+            'send_simmed_time_end',
+            'send_simmed_type_id',
+            'send_student_subject_id',
+            'send_student_group_id',
+            'send_student_subgroup_id',
+            'send_room_id',
+            'send_simmed_leader_id',
+            'send_simmed_technician_id',
+            'send_simmed_technician_character_id',
+            'send_simmed_status',
+            'send_simmed_status2',
+           
+            'send_technicians.name as send_technician_name',
+            'send_technician_characters.character_name as send_character_name',
+
+           
             )
         ->leftjoin('rooms','simmeds.room_id','=','rooms.id')
         ->leftjoin('users as leaders','simmeds.simmed_leader_id','=','leaders.id')
@@ -1267,112 +1346,306 @@ public function sendMail(Request $request)
         ->leftjoin('student_subgroups','simmeds.student_subgroup_id','=','student_subgroups.id')
         ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
 
+        ->leftjoin('users as send_technicians','simmeds.send_simmed_technician_id','=','send_technicians.id')
+        ->leftjoin('users as send_leaders','simmeds.send_simmed_leader_id','=','send_leaders.id')
+        ->leftjoin('user_titles as send_user_titles','send_leaders.user_title_id','=','send_user_titles.id')
+        ->leftjoin('technician_characters as send_technician_characters','simmeds.send_simmed_technician_character_id','=','send_technician_characters.id')
+        
+
         ->orderBy('simmed_date')
         ->orderBy('time')
         ->orderBy('room_number');
     
-    // calculate start and end date for simmeds to mail sending
-    if ($request->mailtype=='threedaysinfo')
-    {
-        $date_between[]=date('Y-m-d', strtotime('+1 days'));
-        if (date('N',strtotime($date_between[0]))==7) 
-            $addDays=3;
-        elseif (date('N',strtotime($date_between[0]))>3) 
-            $addDays=4;
-        else
-            $addDays=2;
-        $date_between[]=date('Y-m-d', strtotime($date_between[0]."+$addDays days"));
-    }
-    elseif ($request->mailtype=='monthinfo')
-    {
-        if (date('d')<15)
-            $date_between[]=date('Y-m-01');
-        else
-            $date_between[]=date('Y-m-01', strtotime(date('Y-m-01')."+1 month"));
-
-        $date_between[]=date('Y-m-t', strtotime($date_between[0]));
-
-        //if choice is monthinfo, do SQL query now, and don't do it in loop
-        $user_simmeds=$user_simmeds_prepare
-            ->whereBetween('simmed_date',$date_between)
-            ->get();
-
-    }
 
 
+        // calculate start and end date for simmeds to mail sending
+        // creating mail subject, body etc.
         $msgBody='';
 
+        // first switch for prepare data for email
         switch ($request->mailtype)
         {
             case 'monthinfo':
-                $msgBody.='<h2>Oto lista wszystkich symulacji w okresie od '.$date_between[0].' do '.$date_between[1].'</h2>';
+                if (date('d')<15)
+                    $date_between[]=date('Y-m-01');
+                else
+                    $date_between[]=date('Y-m-01', strtotime(date('Y-m-01')."+1 month"));
+        
+                $date_between[]=date('Y-m-t', strtotime($date_between[0]));
+        
+                //if choice is monthinfo, do SQL query now, and don't do it in loop
+                $user_simmeds_get=$user_simmeds_prepare
+                    ->whereBetween('simmed_date',$date_between)
+                    ->get();
+
+                $msgBodyPrep='<h2>Oto lista wszystkich symulacji w okresie od '.$date_between[0].' do '.$date_between[1].'</h2>';
+                $msgBodyPrep.='<italic>(informacja może nie zawierać wszystkich zmian - np. zajęć, które zostały przełożone na inny dzień. Pracuję nad tym jeszcze...)</italic>';
+                $msgTitle='[SIMinfo] Informacja o miesięcznych symulacjach z systemu SIMinfo';
+                $mail_data_address['subject_email']='[SIMinfo] terminy symulacji: '.$date_between[0].' - '.$date_between[1];
+
                 break; 
+
+
             case 'threedaysinfo':
-                $msgBody.='<h2>Oto lista Twoich symulacji na najbliższe dni (od '.$date_between[0].' do '.$date_between[1].')</h2>';
+                $date_between[]=date('Y-m-d', strtotime('+0 days'));
+                if (date('N',strtotime($date_between[0]))==7) 
+                    $addDays=3;
+                elseif (date('N',strtotime($date_between[0]))>3) 
+                    $addDays=4;
+                else
+                    $addDays=2;
+
+                $date_between[]=date('Y-m-d', strtotime($date_between[0]."+$addDays days"));
+
+                $msgBodyPrep='<h2>Oto lista Twoich symulacji na najbliższe dni (od '.$date_between[0].' do '.$date_between[1].')</h2>';
+                $msgBodyPrep.='<italic>(informacja ...)</italic>';
+                $msgTitle='[SIMinfo] Informacja o bieżących symulacjach z systemu SIMinfo';
+                $mail_data_address['subject_email']='[SIMinfo] najbliższe symulacje: '.$date_between[0];
+
                 break; 
-        }
 
 
-    $data['message_body']='wysłano maile do <ul>';
+            case 'simchanges':
 
-    foreach ($users as $user)
-    {
-        $msgBody='Specjalna informacja dla użytkownika: <strong>'.$user->full_name().'</strong><br>';
-        $msgBody.='<hr>';
-        switch ($request->mailtype)
-            {
-                case 'monthinfo':
-                    $msgBody.='<h2>Oto lista wszystkich symulacji w okresie od '.$date_between[0].' do '.$date_between[1].'</h2>';
-                    break; 
-                case 'threedaysinfo':
-                    $msgBody.='<h2>Oto lista Twoich symulacji na najbliższe dni (od '.$date_between[0].' do '.$date_between[1].')</h2>';
-                    break; 
-            }
-        $msgBody.='<italic>(informacja ...)</italic>';  
+                $date_between[]='2020-01-01';
+                $date_between[]='2030-01-01';
 
-        //do SQL query in loop only for threedaysinfo
-        if ($request->mailtype=='threedaysinfo')
-        {
-            $user_simmeds=clone $user_simmeds_prepare;
-            //echo $user_simmeds->toSql();
-            $user_simmeds=$user_simmeds
-                ->where('simmed_technician_id',$user->id)
-                ->whereBetween('simmed_date',$date_between)
-                ->get();
-        }
+                $msgBodyPrep='<h2>Oto lista zmian w symulacjach </h2>';
+                $msgBodyPrep.='<italic>(informacja o zmianach...)</italic>';
+                $msgTitle='[SIMinfo] informacje o zmianach w symulacjach w systemie SIMinfo';
+                $mail_data_address['subject_email']='[SIMinfo] zmiany w symulacjach: '.date('Y-m-d H:i');
+
+                $user_simmeds_prepare=
+                    $user_simmeds_prepare
+                    ->where(function ($query) {
+                        $query->where('simmed_date', '!=', DB::raw("`send_simmed_date`"))
+                        ->orWhere('simmed_time_begin', '!=', DB::raw("`send_simmed_time_begin`"))
+                        ->orWhere('simmed_time_end', '!=', DB::raw("`send_simmed_time_end`"))
+                        ->orWhere('simmed_type_id', '!=', DB::raw("`send_simmed_type_id`"))
+                        ->orWhere('student_subject_id', '!=', DB::raw("`send_student_subject_id`"))
+                      //  ->orWhere('student_group_id', '!=', DB::raw("`send_student_group_id`"))
+                        ->orWhere('student_subgroup_id', '!=', DB::raw("`send_student_subgroup_id`"))
+                        ->orWhere('room_id', '!=', DB::raw("`send_room_id`"))
+                        ->orWhere('simmed_leader_id', '!=', DB::raw("`send_simmed_leader_id`"))
+                        ->orWhere('simmed_technician_id', '!=', DB::raw("`send_simmed_technician_id`"))
+                        ->orWhere('simmed_technician_character_id', '!=', DB::raw("`send_simmed_technician_character_id`"))
+                        ->orWhere('simmed_status', '!=', DB::raw("`send_simmed_status`"))
+                        ->orWhere('simmed_status2', '!=', DB::raw("`send_simmed_status2`"))
+                        ;
+                    });
+
+                $coordinators_data=clone $user_simmeds_prepare;
+                
+                $coordinators_data=$coordinators_data
+                    ->whereBetween('simmed_date',$date_between)
+                    ->get();
+
     
-        //http://127.0.0.1:8000/send-mail
-        $mail_data = [
-            'title'=>'inforamcje z systemu SIMinfo',
-            'name'=>$user->full_name(),
-            'msgBody'=>$msgBody,
-            'simTable'=>$user_simmeds
-        ];
 
-        $mail_data_address['email']=$user->email;
-        //$mail_data_address['email']='sebastian@scyzoryk.info';
-        $mail_data_address['name']=$user->firstname.' '.$user->lastname;
-        $mail_data_address['from_email']='technicy@wcsm.pl';
-        $mail_data_address['from_name']='Pegasus CSM UJK';
+        }
 
-        // echo '<hr>'.$msgBody;
-        // dump($mail_data_address);
-        // dump($user->id.': '.$user->name,$user_simmeds);
 
-        $zwrocik=Mail::send('mansimmeds.mailsimmed',$mail_data,function($mail) use ($mail_data_address)
+
+        
+        function mail_send_now($user, $msgTitle, $msgBody, $simmeds_data)
+        {
+            $ret['user']=$user->firstname.' '.$user->lastname;
+            if ($simmeds_data->count()==0)
                 {
-                    $mail->from($mail_data_address['from_email'],$mail_data_address['from_name']);
-                    $mail->to($mail_data_address['email'],$mail_data_address['name']);
-                    $mail->subject('[SIMinfo] terminy symulacji');
+                $ret['code']=100;
+                return $ret; //100 - nic do wysłania
                 }
-            );
-        $data['message_body'].='<li><strong>'.$mail_data_address['name'].'</strong> '.$mail_data_address['email'].'</li>';
+            //http://127.0.0.1:8000/send-mail
+            $mail_data = [
+                'title'=>$msgTitle,
+                'name'=>$user->full_name(),
+                'msgBody'=>$msgBody,
+                'simTable'=>$simmeds_data
+            ];
 
-        // dump($zwrocik);
+            $mail_data_address['email']=$user->email;
+            //$mail_data_address['email']='sebastian@scyzoryk.info';
+            $mail_data_address['name']=$user->firstname.' '.$user->lastname;
+            $mail_data_address['from_email']='technicy@wcsm.pl';
+            $mail_data_address['from_name']='Pegasus CSM UJK';
+            $mail_data_address['subject_email']=$msgTitle;
+
+            // echo '<hr>'.$msgBody;
+            // dump($mail_data_address);
+            // dump($user->id.': '.$user->name,$simmeds_data);
+
+            $zwrocik=Mail::send('mansimmeds.mailsimmed',$mail_data,function($mail) use ($mail_data_address)
+                    {
+                        $mail->from($mail_data_address['from_email'],$mail_data_address['from_name']);
+                        $mail->to($mail_data_address['email'],$mail_data_address['name']);
+                        $mail->subject($mail_data_address['subject_email']);
+                    }
+                );
+            $ret['code']=1;
+
+            // echo'<h3>No Mail Sending to '.$mail_data_address['email'].'</h3>';
+            // echo $msgBody;
+            // echo '<br>';
+            // print_r($mail_data_address);
+            // dump($mail_data);
+//dd('mail_send_one');
+            //$data['message_body'].='<li><strong>'.$user->firstname.' '.$user->lastname.'</strong> '.$user->email.'</li>';
+
+            // dump($zwrocik);
+            return $ret;
+        }
+
+        // second switch for email sending
+
+        $zwrot=[];
+        switch ($request->mailtype)
+        {
+            case 'monthinfo':
+                foreach ($technician_users as $user)
+                {
+                    $msgBody='Ogólna informacja dla techników i koordynatorów (technik: <strong>'.$user->full_name().'</strong>)<hr><br>'.$msgBodyPrep;
+     
+                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $user_simmeds_get);
+                }
+                foreach ($coordinator_users as $user)
+                {
+                    $msgBody='Ogólna informacja dla techników i koordynatorów (koordynator: <strong>'.$user->full_name().'</strong>)<hr><br>'.$msgBodyPrep;
+     
+                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $user_simmeds_get);
+                }
+                break;
+
+            case 'threedaysinfo':
+                foreach ($technician_users as $user)
+                {
+                    $msgBody='Codzienna informacja dla technika: <strong>'.$user->full_name().'</strong><hr><br>'.$msgBodyPrep;
+     
+                    $user_simmeds=clone $user_simmeds_prepare;
+                    $user_simmeds=$user_simmeds
+                        ->where('simmed_technician_id',$user->id)
+                        ->whereBetween('simmed_date',$date_between)
+                        ->get();
+
+                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $user_simmeds);
+                }
+                break;
+
+            case 'simchanges':
+
+                $look_characters=TechnicianCharacter::where('character_short','<>','free')
+                    ->pluck('id')
+                    ->toArray();
+
+
+                // foreach ($technician_users as $user)
+                // {
+                //     $msgBody='Informacja o zmianach w symulacjach technika: <strong>'.$user->full_name().'</strong><br><hr><br>'.$msgBodyPrep;
+     
+                //     $user_simmeds=clone $user_simmeds_prepare;
+                //     $user_simmeds=$user_simmeds
+                //         ->where(function ($query) use ($user) {
+                //             $query->where('simmed_technician_id', $user->id)
+                //                 ->orWhere('send_simmed_technician_id', $user->id);
+                //             })
+                //         ->orWhere(function ($query) use ($look_characters) {
+                //             $query->whereNull('simmed_technician_id')
+                //                 ->whereIn('simmed_technician_character_id',$look_characters);
+                //             })
+                        
+                //         ->whereBetween('simmed_date',$date_between)
+                //         ->get();
+
+                //     $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $user_simmeds);
+                // }
+                // foreach ($coordinator_users as $user)
+                // {
+                //     $msgBody='Informacja o zmianach w symulacjach dla koordynatora: <strong>'.$user->full_name().'</strong><br><hr><br>'.$msgBodyPrep;
+     
+                //     $user_simmeds=clone $user_simmeds_prepare;
+                //     $user_simmeds=$user_simmeds
+                //         ->orWhereNull('simmed_technician_id')
+                //         ->whereBetween('simmed_date',$date_between)
+                //         ->get();
+
+                //     $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $user_simmeds);
+                // }
+
+
+                foreach ($technician_users as $user)
+                {
+                    $msgBody='A taką informajcę otrzymują koordynatorzy: <br><hr><br>'.$msgBodyPrep;
+     
+                    $user_simmeds=clone $user_simmeds_prepare;
+                    $user_simmeds=$user_simmeds
+                        ->orWhereNull('simmed_technician_id')
+                        ->whereBetween('simmed_date',$date_between)
+                        ->get();
+
+                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $user_simmeds);
+                }
+
+                break;
+        }
+
+
+        $data['message_body']='wysłano maile do <ul>';
+        foreach ($zwrot as $zwrot_one)
+        {
+            switch ($zwrot_one['code'])
+            {
+                case 1:
+                    $data['message_body'].='<li>wysłano <strong>'.$zwrot_one['user'].'</strong> </li>';
+                    break;
+                case 100:
+                    $data['message_body'].='<li>nie wysłano <strong>'.$zwrot_one['user'].'</strong> (brak danych) </li>';
+                    break;
+                default:
+                    $data['message_body'].='<li>nie wysłano <strong>'.$zwrot_one['user'].'</strong> (brak danych) </li>';
+                }   
+        }
+        $data['message_body'].='</ul>';
+        
+    
+//dump('dopisałem poniże X');
+    //jeszcze jedna pętla, żeby zaktualizować info o wysłanych danych
+    if ($request->mailtype=='simchangesX')
+    {
+            $update_simmeds=Simmed::where(function ($query) {
+                    $query->Where('simmed_date', '!=', DB::raw("`send_simmed_date`"))
+                    ->orWhere('simmed_time_begin', '!=', DB::raw("`send_simmed_time_begin`"))
+                    ->orWhere('simmed_time_end', '!=', DB::raw("`send_simmed_time_end`"))
+                    ->orWhere('simmed_type_id', '!=', DB::raw("`send_simmed_type_id`"))
+                    ->orWhere('student_subject_id', '!=', DB::raw("`send_student_subject_id`"))
+                    ->orWhere('student_group_id', '!=', DB::raw("`send_student_group_id`"))
+                    ->orWhere('student_subgroup_id', '!=', DB::raw("`send_student_subgroup_id`"))
+                    ->orWhere('room_id', '!=', DB::raw("`send_room_id`"))
+                    ->orWhere('simmed_leader_id', '!=', DB::raw("`send_simmed_leader_id`"))
+                    ->orWhere('simmed_technician_id', '!=', DB::raw("`send_simmed_technician_id`"))
+                    ->orWhere('simmed_technician_character_id', '!=', DB::raw("`send_simmed_technician_character_id`"))
+                    ->orWhere('simmed_status', '!=', DB::raw("`send_simmed_status`"))
+                    ->orWhere('simmed_status2', '!=', DB::raw("`send_simmed_status2`"));
+                })
+                ->whereBetween('simmed_date',$date_between)
+                ->update([
+                    "send_simmed_date" => DB::raw("`simmed_date`"),
+                    "send_simmed_time_begin" => DB::raw("`simmed_time_begin`"),
+                    "send_simmed_time_end" => DB::raw("`simmed_time_end`"),
+                    "send_simmed_type_id" => DB::raw("`simmed_type_id`"),
+                    "send_student_subject_id" => DB::raw("ifNull(`student_subject_id`,0)"),
+                    "send_student_group_id" => DB::raw("ifNull(`student_group_id`,0)"),
+                    "send_student_subgroup_id" => DB::raw("ifNull(`student_subgroup_id`,0)"),
+                    "send_room_id" => DB::raw("`room_id`"),
+                    "send_simmed_leader_id" => DB::raw("ifNull(`simmed_leader_id`,0)"),
+                    "send_simmed_technician_id" => DB::raw("ifNull(`simmed_technician_id`,0)"),
+                    "send_simmed_technician_character_id" => DB::raw("ifNull(`simmed_technician_character_id`,0)"),
+                    "send_simmed_status" => DB::raw("`simmed_status`"),
+                    "send_simmed_status2" => DB::raw("`simmed_status2`"),
+                ]);
     }
     
+
+    
     $data['message_show']=TRUE;
-    $data['message_body'].='</ul>';
     return view('mansimmeds.index')->with($data);
 //    return 'Wysłano maila';
 }

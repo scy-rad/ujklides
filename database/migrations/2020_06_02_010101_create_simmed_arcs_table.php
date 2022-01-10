@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSimmedsTable extends Migration
+class CreateSimmedArcsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,8 @@ class CreateSimmedsTable extends Migration
      */
     public function up()
     {
-        Schema::create('simmeds', function (Blueprint $table) {
+
+        Schema::create('simmed_arcs', function (Blueprint $table) {
             $table->increments('id');
             $table->date('simmed_date');
             $table->time('simmed_time_begin');
@@ -30,44 +31,9 @@ class CreateSimmedsTable extends Migration
             $table->smallInteger('simmed_status')->default(1);
 			$table->smallInteger('simmed_status2')->default(1);
             $table->timestamps();
+            $table->unsignedInteger('simmed_id');
+            $table->smallInteger('change_code')->default(0);
         });
-
-
-		//simmed_type_id:
-        // 1 - zajęcia ze studentami
-        // 2 - szkolenie
-        // 3 - prace serwisowe
-        // 4 - wyłączenie z użytkowania
-
-        // simmed_status
-        // 1 - rezerwacja
-        // 2 - potwierdzone
-		// 3 - zrealizowane
-        // 4 - odwołane
-
-        Schema::table('simmeds', function (Blueprint $table) {
-            $table->foreign('simmed_technician_character_id')
-                ->references('id')
-                ->on('technician_characters');
-        });
-
-        Schema::table('simmeds', function (Blueprint $table) {
-            $table->foreign('room_id')
-                ->references('id')
-                ->on('rooms');
-        });
-        Schema::table('simmeds', function (Blueprint $table) {
-            $table->foreign('simmed_leader_id')
-                ->references('id')
-                ->on('users');
-        });
-        Schema::table('simmeds', function (Blueprint $table) {
-            $table->foreign('simmed_technician_id')
-                ->references('id')
-                ->on('users');
-        });
-
-
 
 
     }
@@ -79,6 +45,6 @@ class CreateSimmedsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('simmeds');
+        Schema::dropIfExists('simmed_arcs');
     }
 }
