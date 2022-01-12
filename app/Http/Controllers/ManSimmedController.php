@@ -1295,7 +1295,7 @@ public function sendMail(Request $request)
             \DB::raw('dayname(simmed_date) as DayOfWeek'),
             \DB::raw('concat(substr(simmed_time_begin,1,5),"-",substr(simmed_time_end,1,5)) as time'), 
             \DB::raw('concat(substr(send_simmed_time_begin,1,5),"-",substr(send_simmed_time_end,1,5)) as send_time'), 
-            'room_number', 
+            'rooms.room_number', 
             \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as leader'),
             \DB::raw('concat(send_user_titles.user_title_short," ",send_leaders.lastname," ",send_leaders.firstname) as send_leader'),  
             'student_subject_name', 'student_group_name', 'subgroup_name',
@@ -1334,7 +1334,7 @@ public function sendMail(Request $request)
            
             'send_technicians.name as send_technician_name',
             'send_technician_characters.character_name as send_character_name',
-
+            'send_rooms.room_number as send_room_number',
            
             )
         ->leftjoin('rooms','simmeds.room_id','=','rooms.id')
@@ -1346,6 +1346,7 @@ public function sendMail(Request $request)
         ->leftjoin('student_subgroups','simmeds.student_subgroup_id','=','student_subgroups.id')
         ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
 
+        ->leftjoin('rooms as send_rooms','simmeds.send_room_id','=','send_rooms.id')
         ->leftjoin('users as send_technicians','simmeds.send_simmed_technician_id','=','send_technicians.id')
         ->leftjoin('users as send_leaders','simmeds.send_simmed_leader_id','=','send_leaders.id')
         ->leftjoin('user_titles as send_user_titles','send_leaders.user_title_id','=','send_user_titles.id')
@@ -1380,7 +1381,7 @@ public function sendMail(Request $request)
                     ->get();
 
                 $msgBodyPrep='<h2>Oto lista wszystkich symulacji w okresie od '.$date_between[0].' do '.$date_between[1].'</h2>';
-                $msgTitle['subject']='[SIMinfo] Informacja o miesięcznych symulacjach z systemu SIMinfo';
+                $msgTitle['subject']='[SIMinfo] Informacja o miesięcznych symulacjach';
                 $mail_data_address['subject_email']='[SIMinfo] terminy symulacji: '.$date_between[0].' - '.$date_between[1];
 
                 break; 
@@ -1399,7 +1400,7 @@ public function sendMail(Request $request)
 
                 $msgBodyPrep='<h2>Oto lista Twoich symulacji na najbliższe dni (od '.$date_between[0].' do '.$date_between[1].')</h2>';
                 $msgBodyPrep.='<italic>(informacja ...)</italic>';
-                $msgTitle['subject']='[SIMinfo] Informacja o bieżących symulacjach z systemu SIMinfo';
+                $msgTitle['subject']='[SIMinfo] Informacja o bieżących symulacjach';
                 $mail_data_address['subject_email']='[SIMinfo] najbliższe symulacje: '.$date_between[0];
 
                 break; 
@@ -1412,7 +1413,7 @@ public function sendMail(Request $request)
 
                 $msgBodyPrep='<h2>Oto lista zmian w symulacjach </h2>';
                 $msgBodyPrep.='<italic>(informacja o zmianach...)</italic>';
-                $msgTitle['subject']='[SIMinfo] informacje o zmianach w symulacjach w systemie SIMinfo';
+                $msgTitle['subject']='[SIMinfo] informacje o zmianach w symulacjach';
                 $mail_data_address['subject_email']='[SIMinfo] zmiany w symulacjach: '.date('Y-m-d H:i');
 
                 $user_simmeds_prepare=
@@ -1450,11 +1451,21 @@ public function sendMail(Request $request)
         function mail_send_now($user, $msgTitle, $msgBody, $BigTable)
         {
             $ret['user']=$user->firstname.' '.$user->lastname;
-            if (count($BigTable)==0)
+            if (
+                (!is_array($BigTable))
+                || (count($BigTable)==0)
+                ) 
                 {
                 $ret['code']=100;
                 return $ret; //100 - nic do wysłania
                 }
+            if (count($BigTable)==1) 
+                if (is_null($BigTable[1]))
+                {
+                    $ret['code']=100;
+                    return $ret; //100 - nic do wysłania
+                    }
+                
             //http://127.0.0.1:8000/send-mail
             $mail_data = [
                 'title'=>$msgTitle['subject'],
@@ -1552,6 +1563,7 @@ public function sendMail(Request $request)
                     ->whereBetween('simmed_date',$date_between)
                     ->get();
 
+                $BigTable[1]=null;
                 if ($tmp_table->count()>0)
                 {
                     $BigTable[2]['head']='Symulacje, któe nia mają przypisanego technika, a powinny...:';
@@ -1622,7 +1634,7 @@ public function sendMail(Request $request)
                 foreach ($technician_users as $user)
                 {
                     $msgBody='<h1 style="background:yellow">A taką informację otrzymują koordynatorzy:<h1> <br><hr><br>'.$msgBodyPrep;
-                    $msgTitle['subject']='[SIMinfo] informacje dla koordynatora o zmianach w symulacjach w systemie SIMinfo';
+                    $msgTitle['subject']='[SIMinfo] informacje dla koordynatora o zmianach w symulacjach';
                     $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
                 }
 
@@ -1650,6 +1662,7 @@ public function sendMail(Request $request)
     
 dump('dopisałem poniżej X żeby nie aktualizował zmienionych danych wysyłki');
     //jeszcze jedna pętla, żeby zaktualizować info o wysłanych danych
+
     if ($request->mailtype=='simchangesX')
     {
             $update_simmeds=Simmed::where(function ($query) {

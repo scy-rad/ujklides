@@ -104,12 +104,24 @@ else
                         <td {!!$spanRow!!}>
                             <?php echo time_changes($simRow->time,$simRow->send_time); ?>
                         </td>
-                        <td {!!$spanRow!!}>{{$simRow->room_number}}</td>
+                        <td {!!$spanRow!!}>
+                            <?php echo show_changes($simRow->room_number,$simRow->send_room_number); ?>
+                        </td>
                         <td>
                             <?php echo show_changes($simRow->leader,$simRow->send_leader); ?>
                         </td>
-                        <td>{{$simRow->student_subject_name}}</td>
-                        <td>{{$simRow->student_group_code}}</td>
+                        <td>
+                            {{$simRow->student_subject_name}}
+                            @if ( ($simRow->student_subject_id != $simRow->send_student_subject_id) && ($simRow->send_simmed_date!='2022-01-01') )
+                                <br>(zmiana tematu)
+                            @endif
+                        </td>
+                        <td>
+                            {{$simRow->student_group_code}}
+                            @if ( ($simRow->student_group_id != $simRow->send_student_group_id) && ($simRow->send_simmed_date!='2022-01-01') )
+                                <br>(zmiana grupy)
+                            @endif
+                        </td>
                         <td>
                             <?php echo show_changes($simRow->technician_name,$simRow->send_technician_name); ?>
                         </td>
