@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\DB;
 
 class Simmed extends Model
 {
+
+    public static function status_table()
+        {
+        $i=1;
+        $tab[$i]['id']      = 1;
+        $tab[$i++]['name']  = 'zaimportowane';
+        $tab[$i]['id']      = 4;
+        $tab[$i++]['name']  = 'odwołane';
+        $tab[$i]['id']      = 5;
+        $tab[$i++]['name']  = 'dopisane'; //(nie usuwane podczas importu)
+        return $tab;
+        }
+
     function leader()
     {
         return $this->hasOne(User::class,'id','simmed_leader_id')->get()->first();

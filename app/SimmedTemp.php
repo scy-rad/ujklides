@@ -40,6 +40,8 @@ class SimmedTemp extends Model
                 return 'nie usuwaj';
             case (9):
                 return 'przywróć';
+            case (20):
+                return 'edycja ręczna';
             }
         }
 

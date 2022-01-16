@@ -1660,10 +1660,10 @@ public function sendMail(Request $request)
         $data['message_body'].='</ul>';
         
     
-dump('dopisałem poniżej X żeby nie aktualizował zmienionych danych wysyłki');
+//dump('dopisałem poniżej X żeby nie aktualizował zmienionych danych wysyłki');
     //jeszcze jedna pętla, żeby zaktualizować info o wysłanych danych
 
-    if ($request->mailtype=='simchangesX')
+    if ($request->mailtype=='simchanges')
     {
             $update_simmeds=Simmed::where(function ($query) {
                     $query->Where('simmed_date', '!=', DB::raw("`send_simmed_date`"))

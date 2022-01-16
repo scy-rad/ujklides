@@ -473,7 +473,7 @@ Route::get('simmed/edit/{simmed}', [
     'as' => 'simmeds.edit'
 ]);
 
-Route::put('simmed/{simmed}', [
+Route::put('simmed', [
     'uses' => 'SimmedController@update',
     'as' => 'simmeds.update'
 ]);

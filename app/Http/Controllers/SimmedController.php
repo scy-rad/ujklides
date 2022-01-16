@@ -262,8 +262,13 @@ class SimmedController extends Controller
 //    public function edit($id)
     public function edit(Simmed $simmed)
     {
-        echo '<h1>funkcja EDIT Simmed Controller</h1>';
-        //return view('simmeds.edit', compact('simmed'));
+        $ret['technicians_list']=User::role_users('technicians', 1, 1)->get();
+        $ret['leaders_list']=User::role_users('instructors', 1, 1)->get();
+        $ret['subjects_list']=\App\StudentSubject::where('student_subject_status',1)->orderBy('student_subject_name')->get();
+        $ret['rooms_list']=\App\Room::where('room_status',1)->orderBy('room_number')->get();
+        $ret['status_list']=Simmed::status_table();
+        $ret['technician_characters_list']=\App\TechnicianCharacter::orderBy('id')->get();
+        return view('simmeds.edit', compact('simmed'), $ret);
     }
 
     /**
@@ -271,11 +276,42 @@ class SimmedController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @rnurn \Illuminate\Http\Response
      */
-    public function update(Request $request, Simmed $simmed)
+    public function update(Request $request)
     {
         echo '<h1>funkcja UPDATE Simmed Controller</h1>';
+        echo '<h2>request:</h2>';
+        dump($request);
+
+            $old_row=SiMmed::find($request->id);
+            $arc_row=new \App\SimmedArc();
+            $arc_row->simmed_date						= $request->simmed_date;
+            $arc_row->simmed_time_begin				    = $request->simmed_time_begin;
+            $arc_row->simmed_time_end					= $request->simmed_time_end;
+            $arc_row->simmed_type_id					= $old_row->simmed_type_id;
+            $arc_row->student_subject_id	        	= $request->student_subject_id;
+            $arc_row->student_group_id    			    = $old_row->student_group_id;
+            $arc_row->student_subgroup_id				= $old_row->student_subgroup_id;
+            $arc_row->room_id     					    = $request->room_id;
+            $arc_row->simmed_leader_id	    		    = $request->simmed_leader_id;
+            $arc_row->simmed_technician_id    		    = $request->simmed_technician_id;
+            $arc_row->simmed_technician_character_id    = $request->simmed_technician_character_id;
+            $arc_row->simmed_alternative_title		    = $request->simmed_alternative_title;
+            $arc_row->simmed_status 					= $request->simmed_status;
+            $arc_row->simmed_status2					= $old_row->simmed_status2;
+            $arc_row->created_at    					= $old_row->created_at;
+            $arc_row->updated_at    					= $old_row->updated_at;
+            $arc_row->change_code                       = 20; //edycja ręczna
+            $arc_row->simmed_id                         = $request->id;
+            //$arc_row->save();
+
+        echo '<h2>simmed:</h2>';
+        dump($arc_row);
+        dd('aaa');
+
+        return redirect()->route('simmeds.index')->with('success', 'Dane zostały zapisane.');
+
     }
 
 

@@ -40,10 +40,12 @@ class CreateSimmedsTable extends Migration
         // 4 - wyłączenie z użytkowania
 
         // simmed_status
-        // 1 - rezerwacja
-        // 2 - potwierdzone
-		// 3 - zrealizowane
+        //   aktualny opis w modelu
+        // 1 - zaimportowane
+        // 2 - 
+		// 3 - 
         // 4 - odwołane
+        // 5 - dopisane (nie usuwane podczas importu)
 
         Schema::table('simmeds', function (Blueprint $table) {
             $table->foreign('simmed_technician_character_id')
