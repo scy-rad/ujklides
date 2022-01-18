@@ -12,13 +12,19 @@ class Simmed extends Model
     public static function status_table()
         {
         $i=1;
-        $tab[$i]['id']      = 1;
-        $tab[$i++]['name']  = 'zaimportowane';
-        $tab[$i]['id']      = 4;
-        $tab[$i++]['name']  = 'odwołane';
-        $tab[$i]['id']      = 5;
-        $tab[$i++]['name']  = 'dopisane'; //(nie usuwane podczas importu)
+        $tab[1]['id']       = 1;
+        $tab[1]['name']     = 'zaimportowane';
+        $tab[4]['id']       = 4;
+        $tab[4]['name']     = 'odwołane';
+        $tab[5]['id']       = 5;
+        $tab[5]['name']     = 'dopisane'; //(nie usuwane podczas importu)
         return $tab;
+        }
+
+    public static function status_name($ids)
+        {
+        $statustab=Simmed::status_table();
+        return $statustab[$ids]['name'];
         }
 
     function leader()

@@ -990,67 +990,78 @@ class ManSimmedController extends Controller
         function move_simmed($data_one)
         {
             if ($data_one->simmed_id>0)
-                {
-                $new_row=SiMmed::find($data_one->simmed_id);
+            {
+                $edited_row=SiMmed::find($data_one->simmed_id);
+
                 $arc_row=new SimmedArc();
-                $arc_row->simmed_date						= $new_row->simmed_date;
-                $arc_row->simmed_time_begin				    = $new_row->simmed_time_begin;
-                $arc_row->simmed_time_end					= $new_row->simmed_time_end;
-                $arc_row->simmed_type_id					= $new_row->simmed_type_id;
-                $arc_row->student_subject_id	        	= $new_row->student_subject_id;
-                $arc_row->student_group_id    			    = $new_row->student_group_id;
-                $arc_row->student_subgroup_id				= $new_row->student_subgroup_id;
-                $arc_row->room_id     					    = $new_row->room_id;
-                $arc_row->simmed_leader_id	    		    = $new_row->simmed_leader_id;
-                $arc_row->simmed_technician_id    		    = $new_row->simmed_technician_id;
-                $arc_row->simmed_technician_character_id    = $new_row->simmed_technician_character_id;
-                $arc_row->simmed_alternative_title		    = $new_row->simmed_alternative_title;
-                $arc_row->simmed_status 					= $new_row->simmed_status;
-                $arc_row->simmed_status2					= $new_row->simmed_status2;
-                $arc_row->created_at    					= $new_row->created_at;
-                $arc_row->updated_at    					= $new_row->updated_at;
+                $arc_row->simmed_date						= $edited_row->simmed_date;
+                $arc_row->simmed_time_begin				    = $edited_row->simmed_time_begin;
+                $arc_row->simmed_time_end					= $edited_row->simmed_time_end;
+                $arc_row->simmed_type_id					= $edited_row->simmed_type_id;
+                $arc_row->student_subject_id	        	= $edited_row->student_subject_id;
+                $arc_row->student_group_id    			    = $edited_row->student_group_id;
+                $arc_row->student_subgroup_id				= $edited_row->student_subgroup_id;
+                $arc_row->room_id     					    = $edited_row->room_id;
+                $arc_row->simmed_leader_id	    		    = $edited_row->simmed_leader_id;
+                $arc_row->simmed_technician_id    		    = $edited_row->simmed_technician_id;
+                $arc_row->simmed_technician_character_id    = $edited_row->simmed_technician_character_id;
+                $arc_row->simmed_alternative_title		    = $edited_row->simmed_alternative_title;
+                $arc_row->simmed_status 					= $edited_row->simmed_status;
+                $arc_row->simmed_status2					= $edited_row->simmed_status2;
+                $arc_row->created_at    					= $edited_row->created_at;
+                $arc_row->updated_at    					= $edited_row->updated_at;
                 $arc_row->change_code                       = $data_one->tmp_status;
                 $arc_row->simmed_id                         = $data_one->simmed_id;
                 $arc_row->save();
                 //dump('JEST + ARCHIWUM',$data_one,$arc_row);
-                }
+            }
             else
-                {
-                $new_row=new Simmed();
-                $new_row->simmed_status=1;
+            {
+                $edited_row=new Simmed();
+                $edited_row->simmed_status=1;
                 //dump('Tu nie będzie ARCHIWUM',$data_one);
-                }
+            }
             
             if ($data_one->simmed_status == 0)
-                {
-                $data_one->simmed_status = $new_row->simmed_status;
-                }
+            {
+                $data_one->simmed_status = $edited_row->simmed_status;
+            }
 
-            $new_row->simmed_date						= $data_one->simmed_date;
-            $new_row->simmed_time_begin				    = $data_one->simmed_time_begin;
-            $new_row->simmed_time_end					= $data_one->simmed_time_end;
-            $new_row->simmed_type_id					= $data_one->simmed_type_id;
-            $new_row->student_subject_id	        	= $data_one->student_subject_id;
-            $new_row->student_group_id    			    = $data_one->student_group_id;
-            $new_row->student_subgroup_id				= $data_one->student_subgroup_id;
-            $new_row->room_id     					    = $data_one->room_id;
-            $new_row->simmed_leader_id	    		    = $data_one->simmed_leader_id;
+
+            if ( ($edited_row->simmed_technician_id*1) != ($data_one->simmed_technician_id*1) )
+            {
+                $history_table = new SimmedArcTechnician();
+                $history_table->simmed_id = $data_one->id;
+                $history_table->technician_id = $data_one->technician_id*1;
+                $history_table->user_id = Auth::user()->id;
+                $history_table->save();
+            }
+
+            $edited_row->simmed_date						= $data_one->simmed_date;
+            $edited_row->simmed_time_begin				    = $data_one->simmed_time_begin;
+            $edited_row->simmed_time_end					= $data_one->simmed_time_end;
+            $edited_row->simmed_type_id					= $data_one->simmed_type_id;
+            $edited_row->student_subject_id	        	= $data_one->student_subject_id;
+            $edited_row->student_group_id    			    = $data_one->student_group_id;
+            $edited_row->student_subgroup_id				= $data_one->student_subgroup_id;
+            $edited_row->room_id     					    = $data_one->room_id;
+            $edited_row->simmed_leader_id	    		    = $data_one->simmed_leader_id;
             // if ($data_one->simmed_technician_id==0) 
-            //     $new_row->simmed_technician_id    		= NULL;
+            //     $edited_row->simmed_technician_id    		= NULL;
             // else
-                $new_row->simmed_technician_id    		    = $data_one->simmed_technician_id;
+                $edited_row->simmed_technician_id    		    = $data_one->simmed_technician_id;
 
-                $new_row->simmed_alternative_title = 'próba nulla';
+            //       $edited_row->simmed_alternative_title = 'próba nulla';
 
             if ($data_one->simmed_technician_character_id==0)
-                $new_row->simmed_technician_character_id    = NULL;
+                $edited_row->simmed_technician_character_id    = NULL;
             else
-                $new_row->simmed_technician_character_id    = $data_one->simmed_technician_character_id;
+                $edited_row->simmed_technician_character_id    = $data_one->simmed_technician_character_id;
 
             
-            $new_row->simmed_alternative_title		    = $data_one->simmed_alternative_title;
+            $edited_row->simmed_alternative_title		    = $data_one->simmed_alternative_title;
             if ($data_one->simmed_alternative_title!='')
-                $new_row->simmed_alternative_title=$data_one->simmed_alternative_title;
+                $edited_row->simmed_alternative_title=$data_one->simmed_alternative_title;
             else
             {
                 $alt_txt='';
@@ -1063,12 +1074,12 @@ class ManSimmedController extends Controller
                     $alt_txt.=$data_one->student_subject_txt.', ';
                 if (is_null($data_one->student_group_id))
                     $alt_txt.=$data_one->student_group_txt.' ';
-                $new_row->simmed_alternative_title=trim($alt_txt);
+                $edited_row->simmed_alternative_title=trim($alt_txt);
             }
-            $new_row->simmed_status = $data_one->simmed_status;
-            $new_row['simmed_status2']					= 1;
+            $edited_row->simmed_status = $data_one->simmed_status;
+            $edited_row['simmed_status2']					= 1;
             
-            $ret=$new_row->save();
+            $ret=$edited_row->save();
             $data_one->delete();
         }
 
@@ -1267,6 +1278,7 @@ public function sendMail(Request $request)
     // choose users for mail sending
     // if choice is monthinfo - mail is for technicians and coordinators
     // if choice is threedaysinfo - mail is for technicians only
+    
 
     $roles_technicians_id=Roles::where('roles_code', 'technicians')
         ->first()->id;
@@ -1450,7 +1462,15 @@ public function sendMail(Request $request)
         
         function mail_send_now($user, $msgTitle, $msgBody, $BigTable)
         {
+
             $ret['user']=$user->firstname.' '.$user->lastname;
+
+            if ($user->id!=1)
+            { 
+                $ret['code']=128;
+                return $ret; //128 - blokada administratora
+            }
+
             if (
                 (!is_array($BigTable))
                 || (count($BigTable)==0)
@@ -1654,16 +1674,16 @@ public function sendMail(Request $request)
                     $data['message_body'].='<li>nie wysłano <strong>'.$zwrot_one['user'].'</strong> (brak danych) </li>';
                     break;
                 default:
-                    $data['message_body'].='<li>nie wysłano <strong>'.$zwrot_one['user'].'</strong> (brak danych) </li>';
+                    $data['message_body'].='<li>nie wysłano <strong>'.$zwrot_one['user'].'</strong> (przyczyna nieznana) </li>';
                 }   
         }
         $data['message_body'].='</ul>';
         
     
-//dump('dopisałem poniżej X żeby nie aktualizował zmienionych danych wysyłki');
+dump('dopisałem poniżej X żeby nie aktualizował zmienionych danych wysyłki');
     //jeszcze jedna pętla, żeby zaktualizować info o wysłanych danych
 
-    if ($request->mailtype=='simchanges')
+    if ($request->mailtype=='simchangesX')
     {
             $update_simmeds=Simmed::where(function ($query) {
                     $query->Where('simmed_date', '!=', DB::raw("`send_simmed_date`"))
