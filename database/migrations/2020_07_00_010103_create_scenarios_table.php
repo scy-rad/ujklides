@@ -21,7 +21,7 @@ class CreateScenariosTable extends Migration
 
 		Schema::create('scenarios', function (Blueprint $table) {
 			$table->increments('id');
-			$table->unsignedInteger('scenario_author_id');
+			$table->unsignedInteger('scenario_author_id')->nullable();
 			$table->smallInteger('scenario_type');
             $table->string('scenario_name');
             $table->string('scenario_code');
@@ -29,45 +29,6 @@ class CreateScenariosTable extends Migration
 			$table->text('scenario_description');
 			$table->smallInteger('scenario_status')->default(1);	
             $table->timestamps();
-        });
-
-		Schema::create('scenario_for_subjects', function (Blueprint $table) {
-			$table->increments('id');
-			$table->unsignedInteger('scenario_id');
-			$table->unsignedInteger('student_subject_id');
-			$table->timestamps();
-		});
-
-		Schema::create('scenario_for_simmeds', function (Blueprint $table) {
-			$table->increments('id');
-			$table->unsignedInteger('scenario_id');
-			$table->unsignedInteger('simmed_id');
-			$table->timestamps();
-		});
-
-
-		Schema::table('scenario_for_subjects', function (Blueprint $table) {
-            $table->foreign('student_subject_id')
-                ->references('id')
-                ->on('student_subjects');
-		});
-		
-		Schema::table('scenario_for_subjects', function (Blueprint $table) {
-            $table->foreign('scenario_id')
-                ->references('id')
-                ->on('scenarios');
-		});
-		
-		Schema::table('scenario_for_simmeds', function (Blueprint $table) {
-            $table->foreign('simmed_id')
-                ->references('id')
-                ->on('simmeds');
-		});
-		
-		Schema::table('scenario_for_simmeds', function (Blueprint $table) {
-            $table->foreign('scenario_id')
-                ->references('id')
-                ->on('scenarios');
         });
 
 		
@@ -85,8 +46,6 @@ class CreateScenariosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('scenario_for_simmeds');
-		Schema::dropIfExists('scenario_for_subjects');
-		Schema::dropIfExists('scenarios');
+ 		Schema::dropIfExists('scenarios');
     }
 }

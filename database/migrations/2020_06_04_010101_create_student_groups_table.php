@@ -19,6 +19,7 @@ class CreateStudentGroupsTable extends Migration
             $table->string('student_group_name');
             $table->string('student_group_code')->default('');
             $table->unsignedInteger('center_id')->nullable();
+            $table->smallInteger('write_technician_character_default')->default('0');
             $table->smallInteger('student_group_status')->default(1);
             $table->timestamps();
         });

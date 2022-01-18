@@ -29,6 +29,7 @@ class CreateSimmedsTable extends Migration
             $table->unsignedInteger('simmed_technician_character_id')->nullable();
             $table->smallInteger('simmed_status')->default(1);
 			$table->smallInteger('simmed_status2')->default(1);
+            $table->unsignedInteger('user_id');
             $table->timestamps();
         });
 
@@ -65,6 +66,11 @@ class CreateSimmedsTable extends Migration
         });
         Schema::table('simmeds', function (Blueprint $table) {
             $table->foreign('simmed_technician_id')
+                ->references('id')
+                ->on('users');
+        });
+        Schema::table('simmeds', function (Blueprint $table) {
+            $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
         });

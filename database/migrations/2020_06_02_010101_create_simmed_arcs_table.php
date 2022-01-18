@@ -32,6 +32,7 @@ class CreateSimmedArcsTable extends Migration
 			$table->smallInteger('simmed_status2')->default(1);
             $table->timestamps();
             $table->unsignedInteger('simmed_id');
+            $table->unsignedInteger('user_id');
             $table->smallInteger('change_code')->default(0);
         });
 

@@ -18,6 +18,7 @@ class CreateStudentSubgroupsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('student_group_id');
             $table->string('subgroup_name');
+            $table->smallInteger('write_technician_character')->default('0');
             $table->smallInteger('subgroup_status')->default(1);
             $table->timestamps();
         });

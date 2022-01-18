@@ -34,6 +34,8 @@ class CreateSimmedTempsTable extends Migration
             $table->unsignedInteger('simmed_technician_id')->nullable();
             $table->unsignedInteger('simmed_technician_character_id')->nullable();
 
+            $table->unsignedInteger('simmed_technician_character_propose_id')->default('0');
+            
             $table->string('student_subject_txt')->default('');
             $table->string('student_group_txt')->default('');
             $table->string('student_subgroup_txt')->default('');
