@@ -1011,8 +1011,8 @@ class ManSimmedController extends Controller
                 $arc_row->created_at    					= $edited_row->created_at;
                 $arc_row->updated_at    					= $edited_row->updated_at;
                 $arc_row->change_code                       = $data_one->tmp_status;
-                $arc_row->simmed_id                         = $data_one->simmed_id;
-                $arc_row->user_id                           = $data_one->user_id;
+                $arc_row->simmed_id                         = $edited_row->id;
+                $arc_row->user_id                           = $edited_row->user_id;
                 $arc_row->save();
                 //dump('JEST + ARCHIWUM',$data_one,$arc_row);
             }
@@ -1041,8 +1041,8 @@ class ManSimmedController extends Controller
             $edited_row->simmed_date						= $data_one->simmed_date;
             $edited_row->simmed_time_begin				    = $data_one->simmed_time_begin;
             $edited_row->simmed_time_end					= $data_one->simmed_time_end;
-            $edited_row->simmed_type_id					= $data_one->simmed_type_id;
-            $edited_row->student_subject_id	        	= $data_one->student_subject_id;
+            $edited_row->simmed_type_id					    = $data_one->simmed_type_id;
+            $edited_row->student_subject_id	        	    = $data_one->student_subject_id;
             $edited_row->student_group_id    			    = $data_one->student_group_id;
             $edited_row->student_subgroup_id				= $data_one->student_subgroup_id;
             $edited_row->room_id     					    = $data_one->room_id;

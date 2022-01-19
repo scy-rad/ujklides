@@ -171,10 +171,9 @@ data;dz.tyg.;godz.;sala;instr;przedmiot;grupa;podgr.;technik;char.;uwagi
 2022-01-18;Tuesday;15:00-19:00;"D 0.09";"lek. med. Krzciuk Piotr";;;;wojtek;stay;"[Rezerwacja sali],"
 2022-01-18;Tuesday;15:30-19:15;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";Po/Is./S/19/20;"ćwp 04";wojtek;prep;
 2022-01-19;Wednesday;07:15-14:45;"B 0.30";"mgr Litwin Kamil";"Procedury ratunkowe przedszpitalne";RM/Ist/S/2021/2022;"ćwp 03";nikt;free;
-2022-01-19;Wednesday;07:30-13:30;"B 3.37";"lekarz Korzeluch Tomasz";Chirurgia;LEK/S/16/17;"ćwpk 06";marcin;stay;
 2022-01-19;Wednesday;08:00-11:00;"B 1.01";"dr Kamińska-Gwóźdź Ewelina";"Pielęgniarstwo opieki długoterminowej";P/Ist./S/19/20;"sym 01";darek;prep;
 2022-01-19;Wednesday;08:00-11:45;"B 0.28";"mgr Falkiewicz Maciej";"Ortopedia i traumatologia narządu ruchu";"RM/I stopień/st/2019/20";"ćw 02";nikt;free;
-2022-01-19;Wednesday;08:00-15:45;"A 1.01";"mgr Włodarczyk Jakub";"Podstawy ratownictwa medycznego";Po/Is./S/19/20;"ćwp 06";;prep;
+2022-01-19;Wednesday;08:00-15:45;"A 1.01";"mgr Włodarczyk Jakub";"Podstawy ratownictwa medycznego";Po/Is./S/19/20;"ćwp 06";sebek;prep;
 2022-01-19;Wednesday;13:45-19:45;"C 2.07";"lek. med. Niedziela Łukasz";Chirurgia;LEK/S/16/17;"ćwpk 07";bartek;stay;
 2022-01-19;Wednesday;13:45-19:45;"C 2.11";"lek. med. Milewski Piotr";Chirurgia;LEK/S/16/17;"ćwpk 08";wojtek;stay;
 2022-01-19;Wednesday;14:00-20:00;"B 1.01";"mgr Stróżyk Paulina";"Pielęgniarstwo w zagrożeniu życia";P/Ist./S/19/20;"sym 10";mateusz;stay;
@@ -186,6 +185,7 @@ data;dz.tyg.;godz.;sala;instr;przedmiot;grupa;podgr.;technik;char.;uwagi
 2022-01-20;Thursday;13:00-20:30;"C 2.07";"lek. med. Krzciuk Piotr";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 12";marcin;stay;
 2022-01-20;Thursday;13:00-20:30;"D 0.09";"lekarz Kuchareczko Artur";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 14";sebek;stay;
 2022-01-20;Thursday;13:00-20:30;"D 0.10";"lekarz Trybek Tomasz";"Choroby wewnętrzne";LEK/S/16/17;"ćwpk 13";darek;stay;
+2022-01-20;Thursday;14:00-20:00;"B 3.37";"lekarz Korzeluch Tomasz";Chirurgia;LEK/S/16/17;"ćwpk 06";marcin;phon;
 2022-01-20;Thursday;14:45-20:45;"B 1.05";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";Po/Is./S/19/20;"sym 01";angelika;stay;
 2022-01-20;Thursday;15:00-18:00;"B 1.01";"mgr Saługa Agnieszka";"Anestezjologia i stany zagrożenia życia";Po/Is./S/19/20;"sym 04";mateusz;stay;
 2022-01-20;Thursday;15:30-17:45;"B 0.26";"mgr Kwiecień Krzysztof";"Medycyna katastrof";"RM/I stopień/st/2019/20";"ćw 01";nikt;free;
@@ -222,19 +222,19 @@ data;dz.tyg.;godz.;sala;instr;przedmiot;grupa;podgr.;technik;char.;uwagi
 2022-01-24;Monday;11:00-15:30;"D 0.10";;Pediatria;LEK/S/16/17;"ćwpk 03";wojtek;stay;_Wakat_WO_3,
 2022-01-24;Monday;12:00-17:15;"B 0.28";"mgr Makowski Kamil";"Medycyna ratunkowa";RM/Ist/S/2020/2021;"ćw 02";nikt;free;
 2022-01-24;Monday;12:00-18:00;"B 0.25";"mgr Putowski Mateusz";"Medyczne czynności ratunkowe";"RM/I stopień/st/2019/20";"ćwp 01";nikt;free;
-2022-01-24;Monday;14:45-20:45;"B 1.01";"dr Nowak Ewelina";"Pielęgniarstwo w zagrożeniu życia";P/Ist./S/19/20;"sym 05";sebek;stay;
+2022-01-24;Monday;14:45-20:45;"B 1.01";"dr Nowak Ewelina";"Pielęgniarstwo w zagrożeniu życia";P/Ist./S/19/20;"sym 05";marcin;stay;
 2022-01-24;Monday;15:30-19:15;"A 1.02";"mgr Stróżyk Paulina";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 12";marcin;prep;
 2022-01-24;Monday;15:45-20:15;"D 0.09";"lek. med. Kozubal Katarzyna";Pediatria;LEK/S/16/17;"ćwpk 04";paulina;stay;
 2022-01-24;Monday;15:45-20:15;"D 0.10";"lek. med. Gładyś-Jakubczyk Aleksandra";Pediatria;LEK/S/16/17;"ćwpk 03";darek;stay;
 2022-01-25;Tuesday;07:00-11:30;"D 0.09";;Pediatria;LEK/S/16/17;"ćwpk 04";darek;stay;_Wakat_WO_4,
 2022-01-25;Tuesday;07:00-11:30;"D 0.10";"lek. med. Gładyś-Jakubczyk Aleksandra";Pediatria;LEK/S/16/17;"ćwpk 03";bartek;stay;
 2022-01-25;Tuesday;08:00-11:45;"B 0.28";"mgr Falkiewicz Maciej";"Ortopedia i traumatologia narządu ruchu";"RM/I stopień/st/2019/20";"ćw 01";nikt;free;
-2022-01-25;Tuesday;10:30-14:15;"A 1.02";"mgr Włodarczyk Jakub";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 02";sebek;prep;
+2022-01-25;Tuesday;10:30-14:15;"A 1.02";"mgr Włodarczyk Jakub";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 02";marcin;prep;
 2022-01-25;Tuesday;11:45-16:15;"D 0.10";"lek. med. Gładyś-Jakubczyk Aleksandra";Pediatria;LEK/S/16/17;"ćwpk 04";bartek;stay;
 2022-01-25;Tuesday;12:00-15:45;"B 0.28";"mgr Falkiewicz Maciej";"Ortopedia i traumatologia narządu ruchu";"RM/I stopień/st/2019/20";"ćw 02";nikt;free;
 2022-01-25;Tuesday;13:45-18:15;"D 0.09";"lek. med. Kozubal Katarzyna";Pediatria;LEK/S/16/17;"ćwpk 03";paulina;stay;
 2022-01-25;Tuesday;14:00-17:00;"B 1.05";"mgr Kaleta Agnieszka";"Interna i pielęgniarstwo internistyczne";Po/Ist./S/2020/2021;"sym 03";angelika;stay;
-2022-01-25;Tuesday;14:15-18:00;"A 1.02";"mgr Włodarczyk Jakub";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 04";sebek;prep;
+2022-01-25;Tuesday;14:15-18:00;"A 1.02";"mgr Włodarczyk Jakub";"Podstawy ratownictwa medycznego";P/Ist./S/19/20;"ćwp 04";marcin;prep;
 2022-01-25;Tuesday;16:00-19:00;"B 1.01";"mgr Saługa Agnieszka";"Interna i pielęgniarstwo internistyczne";Po/Ist./S/2020/2021;"sym 06";wojtek;stay;
 2022-01-26;Wednesday;08:00-11:00;"B 1.01";"dr Kamińska-Gwóźdź Ewelina";"Pielęgniarstwo opieki długoterminowej";P/Ist./S/19/20;"sym 02";wojtek;prep;
 2022-01-26;Wednesday;11:15-14:15;"B 1.01";"dr Kamińska-Gwóźdź Ewelina";"Rehabilitacja w położnictwie, neonatologii i ginekologii";Po/Is./S/19/20;"sym 05";wojtek;prep;
