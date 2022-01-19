@@ -630,7 +630,7 @@ class ManSimmedController extends Controller
     {
         app('debugbar')->disable();
 
-        // funkcja azalizuje wpisy zawarte w tabeli tymczasowej i uznaje któe z nich są nowe, które zmienione, oraz których brakuje w imporcie
+        // funkcja azalizuje wpisy zawarte w tabeli tymczasowej i uznaje które z nich są nowe, które zmienione, oraz których brakuje w imporcie
         if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania funkcji impanalyze kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
@@ -1012,6 +1012,7 @@ class ManSimmedController extends Controller
                 $arc_row->updated_at    					= $edited_row->updated_at;
                 $arc_row->change_code                       = $data_one->tmp_status;
                 $arc_row->simmed_id                         = $data_one->simmed_id;
+                $arc_row->user_id                           = $data_one->user_id;
                 $arc_row->save();
                 //dump('JEST + ARCHIWUM',$data_one,$arc_row);
             }
@@ -1030,9 +1031,9 @@ class ManSimmedController extends Controller
 
             if ( ($edited_row->simmed_technician_id*1) != ($data_one->simmed_technician_id*1) )
             {
-                $history_table = new SimmedArcTechnician();
+                $history_table = new \App\SimmedArcTechnician();
                 $history_table->simmed_id = $data_one->id;
-                $history_table->technician_id = $data_one->technician_id*1;
+                $history_table->technician_id = $data_one->simmed_technician_id*1;
                 $history_table->user_id = Auth::user()->id;
                 $history_table->save();
             }
@@ -1079,6 +1080,8 @@ class ManSimmedController extends Controller
             $edited_row->simmed_status = $data_one->simmed_status;
             $edited_row['simmed_status2']					= 1;
             
+            $edited_row->user_id                            = Auth::user()->id;
+
             $ret=$edited_row->save();
             $data_one->delete();
         }
@@ -1374,6 +1377,8 @@ public function sendMail(Request $request)
         // calculate start and end date for simmeds to mail sending
         // creating mail subject, body etc.
         $msgBody='';
+        $BigTable[1]['table']=null;
+        $BigTable[2]['table']=null;
 
         // first switch for prepare data for email
         switch ($request->mailtype)
@@ -1428,8 +1433,8 @@ public function sendMail(Request $request)
                 $msgTitle['subject']='[SIMinfo] informacje o zmianach w symulacjach';
                 $mail_data_address['subject_email']='[SIMinfo] zmiany w symulacjach: '.date('Y-m-d H:i');
 
-                $user_simmeds_prepare=
-                    $user_simmeds_prepare
+                $user_simmeds_prepare_changes=clone $user_simmeds_prepare;
+                $user_simmeds_prepare_changes
                     ->where(function ($query) {
                         $query->where('simmed_date', '!=', DB::raw("`send_simmed_date`"))
                         ->orWhere('simmed_time_begin', '!=', DB::raw("`send_simmed_time_begin`"))
@@ -1447,7 +1452,7 @@ public function sendMail(Request $request)
                         ;
                     });
 
-                $coordinators_data=clone $user_simmeds_prepare;
+                $coordinators_data=clone $user_simmeds_prepare_changes;
                 
                 $coordinators_data=$coordinators_data
                     ->whereBetween('simmed_date',$date_between)
@@ -1465,27 +1470,28 @@ public function sendMail(Request $request)
 
             $ret['user']=$user->firstname.' '.$user->lastname;
 
-            if ($user->id!=1)
-            { 
-                $ret['code']=128;
-                return $ret; //128 - blokada administratora
-            }
 
             if (
                 (!is_array($BigTable))
                 || (count($BigTable)==0)
                 ) 
-                {
+            {
                 $ret['code']=100;
                 return $ret; //100 - nic do wysłania
-                }
-            if (count($BigTable)==1) 
-                if (is_null($BigTable[1]))
-                {
-                    $ret['code']=100;
-                    return $ret; //100 - nic do wysłania
-                    }
-                
+            }
+
+            if ( (is_null($BigTable[1]['table'])) && (is_null($BigTable[2]['table'])) )
+            {
+                $ret['code']=100;
+                return $ret; //100 - nic do wysłania
+            }
+            
+            // if ($user->id!=1)
+            // { 
+            //     $ret['code']=128;
+            //     return $ret; //128 - blokada administratora
+            // }
+
             //http://127.0.0.1:8000/send-mail
             $mail_data = [
                 'title'=>$msgTitle['subject'],
@@ -1529,6 +1535,7 @@ public function sendMail(Request $request)
         // second switch for email sending
 
         $zwrot=[];
+
         switch ($request->mailtype)
         {
             case 'monthinfo':
@@ -1562,6 +1569,8 @@ public function sendMail(Request $request)
                         $BigTable[1]['head']='wykaz symulacji technika: <strong>'.$user->full_name().'</strong>';
                         $BigTable[1]['table']=$user_simmeds;
                         }
+                    else
+                        $BigTable[1]['table']=null;
 
 
                     $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
@@ -1576,26 +1585,25 @@ public function sendMail(Request $request)
 
                 $tmp_table=clone $user_simmeds_prepare;
                 $tmp_table=$tmp_table
-                    ->where(function ($query) use ($look_characters) {
-                        $query->whereNull('simmed_technician_id')
-                            ->whereIn('simmed_technician_character_id',$look_characters);
-                        })                    
-                    ->whereBetween('simmed_date',$date_between)
-                    ->get();
+                        ->where(function ($query) use ($look_characters) {
+                            $query->whereNull('simmed_technician_id')
+                                ->whereIn('simmed_technician_character_id',$look_characters);
+                            })                    
+                        ->whereBetween('simmed_date',$date_between)
+                        ->get();
 
-                $BigTable[1]=null;
                 if ($tmp_table->count()>0)
                 {
-                    $BigTable[2]['head']='Symulacje, któe nia mają przypisanego technika, a powinny...:';
+                    $BigTable[2]['head']='Symulacje, które nia mają przypisanego technika, a powinny...:';
                     $BigTable[2]['table']=$tmp_table;
                 }
 
 
                 foreach ($technician_users as $user)
                 {
-                    $msgBody='<h1>Informacja o zmianach w symulacjach i o symulacjach do których należy przypisac technika </h1><hr><br>'.$msgBodyPrep;
+                    $msgBody='<h1>Informacja o zmianach w symulacjach i o symulacjach do których należy przypisać technika </h1><hr><br>'.$msgBodyPrep;
      
-                    $tmp_table=clone $user_simmeds_prepare;
+                    $tmp_table=clone $user_simmeds_prepare_changes;
                     $tmp_table=$tmp_table
                         ->where(function ($query) use ($user) {
                             $query->where('simmed_technician_id', $user->id)
@@ -1610,8 +1618,7 @@ public function sendMail(Request $request)
                         $BigTable[1]['table']=$tmp_table;
                     }
                     else
-                        $BigTable[1]=null;
-
+                        $BigTable[1]['table']=null;
      
                     $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
 
@@ -1619,8 +1626,10 @@ public function sendMail(Request $request)
 
 
                 $BigTable=null;
+                $BigTable[1]['table']=null;
+                $BigTable[2]['table']=null;
 
-                $tmp_table=clone $user_simmeds_prepare;
+                $tmp_table=clone $user_simmeds_prepare_changes;
                 $tmp_table=$tmp_table
                     ->where('send_simmed_date', '<>', '2022-01-01')
                     ->whereBetween('simmed_date',$date_between)
@@ -1631,7 +1640,7 @@ public function sendMail(Request $request)
                         $BigTable[1]['table']=$tmp_table;
                     }
 
-                $tmp_table=clone $user_simmeds_prepare;
+                $tmp_table=clone $user_simmeds_prepare_changes;
                 $tmp_table=$tmp_table
                     ->where('send_simmed_date', '=', '2022-01-01')
                     ->whereBetween('simmed_date',$date_between)
@@ -1680,7 +1689,7 @@ public function sendMail(Request $request)
         $data['message_body'].='</ul>';
         
     
-dump('dopisałem poniżej X żeby nie aktualizował zmienionych danych wysyłki');
+    dump('dopisałem poniżej X żeby nie aktualizował zmienionych danych wysyłki');
     //jeszcze jedna pętla, żeby zaktualizować info o wysłanych danych
 
     if ($request->mailtype=='simchangesX')

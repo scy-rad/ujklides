@@ -19,10 +19,11 @@
         <input type="text" class="form-control" name="simmed_time_end" id="simmed_time_end" placeholder="podaj czas zakończenia symulacji" value="{{$simmed->simmed_time_end}}">
 
         <label>informacje</label>
-        <textarea type="text" class="form-control" name="simmed_alternative_title" id="simmed_alternative_title" placeholder="najważniejsze informacje o symulacji">{{$simmed->simmed_alternative_title}}</textarea>
+        <textarea type="text" class="form-control" name="simmed_alternative_title" id="simmed_alternative_title" placeholder="dodatkowe informacje o zajęciach">{{$simmed->simmed_alternative_title}}</textarea>
 
         <label for="simmed_technician_id">Technik:</label>
         <select name="simmed_technician_id" id="simmed_technician_id">
+            <option value="0"<?php if (0 == $simmed->simmed_technician_id) echo 'selected="selected"'; ?>>!! brak wyboru !!</option>
             @foreach ($technicians_list as $technician_one)
             <option value="{{$technician_one->id}}"<?php if ($technician_one->id == $simmed->simmed_technician_id) echo 'selected="selected"'; ?>>{{$technician_one->lastname}} {{$technician_one->firstname}}</option>
             @endforeach
@@ -31,6 +32,7 @@
         <br>
         <label for="simmed_technician_character_id">Charakter:</label>
         <select name="simmed_technician_character_id" id="simmed_technician_character_id">
+            <option value="0"<?php if (0 == $simmed->simmed_technician_character_id) echo 'selected="selected"'; ?>>!! brak wyboru !!</option>
             @foreach ($technician_characters_list as $character_one)
             <option value="{{$character_one->id}}"<?php if ($character_one->id == $simmed->simmed_technician_character_id) echo 'selected="selected"'; ?>>{{$character_one->character_short}}: {{$character_one->character_name}}</option>
             @endforeach

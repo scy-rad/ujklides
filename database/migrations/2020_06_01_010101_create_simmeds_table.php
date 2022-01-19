@@ -19,7 +19,7 @@ class CreateSimmedsTable extends Migration
             $table->time('simmed_time_begin');
 			$table->time('simmed_time_end');
             $table->smallInteger('simmed_type_id')->default(1);
-            $table->string('simmed_alternative_title')->default('');
+            $table->string('simmed_alternative_title')->nullable();
 			$table->unsignedInteger('student_subject_id')->nullable();
             $table->unsignedInteger('student_group_id')->nullable();
             $table->unsignedInteger('student_subgroup_id')->nullable();

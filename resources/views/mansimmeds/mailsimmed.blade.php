@@ -71,8 +71,7 @@ else
 
     
     @foreach ($BigTable as $oneTable)
-        <?php if (!(is_null($oneTable))) { ?>
-        @if ($oneTable['table']->count()>0)
+        <?php if (!(is_null($oneTable['table']))) { ?>
             <hr>
             {!!$oneTable['head']!!}
             <table id ="simlist">
@@ -138,7 +137,7 @@ else
                     </tr>
                 @endforeach
             </table>
-        @endif
+        
         <?php } ?>
     @endforeach         
         
