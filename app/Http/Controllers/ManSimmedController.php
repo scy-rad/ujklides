@@ -1525,7 +1525,7 @@ public function sendMail(Request $request)
             // echo '<br>';
             // print_r($mail_data_address);
             // dump($mail_data);
-// dd('mail_send_one');
+     // dd('mail_send_one');
             //$data['message_body'].='<li><strong>'.$user->firstname.' '.$user->lastname.'</strong> '.$user->email.'</li>';
 
             // dump($zwrocik);
@@ -1734,6 +1734,158 @@ public function sendMail(Request $request)
 //    return 'Wysłano maila';
 }
 
+
+public function changes(Request $request)
+    {
+    //prepare SQL question
+    
+    $user_simmeds_prepare=DB::table('simmeds')
+        ->select('simmed_date',
+            \DB::raw('dayname(simmed_date) as DayOfWeek'),
+            \DB::raw('concat(substr(simmed_time_begin,1,5),"-",substr(simmed_time_end,1,5)) as time'), 
+            \DB::raw('concat(substr(send_simmed_time_begin,1,5),"-",substr(send_simmed_time_end,1,5)) as send_time'), 
+            'rooms.room_number', 
+            \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as leader'),
+            \DB::raw('concat(send_user_titles.user_title_short," ",send_leaders.lastname," ",send_leaders.firstname) as send_leader'),  
+            'student_subject_name', 'student_group_name', 'subgroup_name',
+            'technicians.name as technician_name', 
+            'technician_characters.character_short',
+            'technician_characters.character_name',
+            'simmed_alternative_title',
+            'room_id',
+            'leaders.id as leader_id',
+            'simmed_technician_id',
+            'simmed_technician_character_id',
+                'student_subject_id',
+                'simmeds.student_group_id',
+                'student_subgroup_id',
+                'student_group_code',
+            'simmed_time_begin',
+            'simmed_time_end',
+            'simmed_type_id',
+            'simmed_leader_id',
+            'simmed_status',
+            'simmed_status2',
+
+            'send_simmed_date',
+            'send_simmed_time_begin',
+            'send_simmed_time_end',
+            'send_simmed_type_id',
+            'send_student_subject_id',
+            'send_student_group_id',
+            'send_student_subgroup_id',
+            'send_room_id',
+            'send_simmed_leader_id',
+            'send_simmed_technician_id',
+            'send_simmed_technician_character_id',
+            'send_simmed_status',
+            'send_simmed_status2',
+           
+            'send_technicians.name as send_technician_name',
+            'send_technician_characters.character_name as send_character_name',
+            'send_rooms.room_number as send_room_number',
+           
+            )
+        ->leftjoin('rooms','simmeds.room_id','=','rooms.id')
+        ->leftjoin('users as leaders','simmeds.simmed_leader_id','=','leaders.id')
+        ->leftjoin('users as technicians','simmeds.simmed_technician_id','=','technicians.id')
+        ->leftjoin('user_titles','leaders.user_title_id','=','user_titles.id')
+        ->leftjoin('student_subjects','simmeds.student_subject_id','=','student_subjects.id')
+        ->leftjoin('student_groups','simmeds.student_group_id','=','student_groups.id')
+        ->leftjoin('student_subgroups','simmeds.student_subgroup_id','=','student_subgroups.id')
+        ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
+
+        ->leftjoin('rooms as send_rooms','simmeds.send_room_id','=','send_rooms.id')
+        ->leftjoin('users as send_technicians','simmeds.send_simmed_technician_id','=','send_technicians.id')
+        ->leftjoin('users as send_leaders','simmeds.send_simmed_leader_id','=','send_leaders.id')
+        ->leftjoin('user_titles as send_user_titles','send_leaders.user_title_id','=','send_user_titles.id')
+        ->leftjoin('technician_characters as send_technician_characters','simmeds.send_simmed_technician_character_id','=','send_technician_characters.id')
+        
+
+        ->orderBy('simmed_date')
+        ->orderBy('time')
+        ->orderBy('room_number');
+    
+
+        $msgBody='';
+        $BigTable[1]['table']=null;
+        $BigTable[2]['table']=null;
+
+
+                $msgBodyPrep='<h2>Oto lista zmian w symulacjach </h2>';
+                $msgBodyPrep.='<italic>(informacja o zmianach...)</italic>';
+                $msgTitle['subject']='[SIMinfo] informacje o zmianach w symulacjach';
+                $mail_data_address['subject_email']='[SIMinfo] zmiany w symulacjach: '.date('Y-m-d H:i');
+
+                $simmeds_changes=clone $user_simmeds_prepare;
+                $simmeds_changes=$simmeds_changes
+                    ->where(function ($query) {
+                        $query->where('simmed_date', '!=', DB::raw("`send_simmed_date`"))
+                        ->orWhere('simmed_time_begin', '!=', DB::raw("`send_simmed_time_begin`"))
+                        ->orWhere('simmed_time_end', '!=', DB::raw("`send_simmed_time_end`"))
+                        ->orWhere('simmed_type_id', '!=', DB::raw("`send_simmed_type_id`"))
+                        ->orWhere('student_subject_id', '!=', DB::raw("`send_student_subject_id`"))
+                      //  ->orWhere('student_group_id', '!=', DB::raw("`send_student_group_id`"))
+                        ->orWhere('student_subgroup_id', '!=', DB::raw("`send_student_subgroup_id`"))
+                        ->orWhere('room_id', '!=', DB::raw("`send_room_id`"))
+                        ->orWhere('simmed_leader_id', '!=', DB::raw("`send_simmed_leader_id`"))
+                        ->orWhere('simmed_technician_id', '!=', DB::raw("`send_simmed_technician_id`"))
+                        ->orWhere('simmed_technician_character_id', '!=', DB::raw("`send_simmed_technician_character_id`"))
+                        ->orWhere('simmed_status', '!=', DB::raw("`send_simmed_status`"))
+                        ->orWhere('simmed_status2', '!=', DB::raw("`send_simmed_status2`"))
+                        ;
+                    })
+                    ->get();
+
+                if ($simmeds_changes->count()>0)
+                    {
+                        $BigTable[1]['head']='zmiany w symulacjach';
+                        $BigTable[1]['table']=$simmeds_changes;
+                    }
+
+
+
+                $look_characters=TechnicianCharacter::where('character_short','<>','free')
+                    ->pluck('id')
+                    ->toArray();
+
+                $tmp_table=clone $user_simmeds_prepare;
+                $tmp_table=$tmp_table
+                        ->where(function ($query) use ($look_characters) {
+                            $query->whereNull('simmed_technician_id')
+                                ->whereIn('simmed_technician_character_id',$look_characters);
+                            })                    
+                        ->get();
+
+                if ($tmp_table->count()>0)
+                {
+                    $BigTable[2]['head']='Symulacje, które nia mają przypisanego technika, a powinny...:';
+                    $BigTable[2]['table']=$tmp_table;
+                }
+
+
+
+                $mail_data = [
+                    'title'=>$msgTitle['subject'],
+                    'msgBody'=>$msgBody,
+                    'BigTable'=>$BigTable
+                ];
+    
+//                $zwrocik=Mail::send('mansimmeds.mailsimmed',$mail_data,function($mail) use ($mail_data_address));
+    
+
+
+
+                    $msgBody='Informacja o zmianach w symulacjach dla koordynatora: <strong> ... </strong><br><hr><br>'.$msgBodyPrep;
+    
+
+//        dd($mail_data);
+
+    
+    $data['message_show']=TRUE;
+    return view('mansimmeds.mailsimmedhtml')->with($mail_data);
+//    return 'Wysłano maila';
+}
 
 
 

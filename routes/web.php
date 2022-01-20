@@ -213,6 +213,11 @@ Route::get('mansimmeds/groups', [
     'as' => 'mansimmeds.groups'
 ]);
 
+Route::get('mansimmeds/changes', [
+    'uses' => 'ManSimmedController@changes',
+    'as' => 'mansimmeds.changes'
+]);
+
 Route::post('mansimmeds/import_file', [
     'uses' => 'ManSimmedController@import_file',
     'as' => 'mansimmeds.import_file'
