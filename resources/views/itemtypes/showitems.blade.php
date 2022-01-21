@@ -24,13 +24,14 @@
 function show_groups($curr_id)
 {
     $ItemGroups=App\ItemGroup::where('item_type_id','=',$curr_id)->get();
-
     foreach ($ItemGroups as $ItemGroup)
         {
+        echo '<ol>'.$ItemGroup->item_group_name.':';
         $Items=App\Item::where('item_group_id','=',$ItemGroup->id)->get();
         foreach ($Items as $Item)
             {
             ?>
+            <?php /* card-version
             <a href="{{route('items.show', $Item->id)}}">
                 <div class="tile">
                     <img src="/storage/img/items/{{$Item->photo_OK()}}" class="tile">
@@ -40,9 +41,17 @@ function show_groups($curr_id)
                     </div>
                 </div>
             </a>
+            */ ?>
+            <li>
+            <a href="{{route('items.show', $Item->id)}}">
+                        {{ $Item->item_description }}
+            </a>
+            </li>
             <?php
             }
+        echo '</ol>';
         }
+    
 }
 
 

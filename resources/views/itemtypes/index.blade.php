@@ -31,6 +31,7 @@
 
 
 <hr>
+<?php /*   card-version 
      @foreach($ItemTypes as $ItemType)
      
         <a href="{{route('itemtypes.index', $ItemType->id)}}">
@@ -43,6 +44,13 @@
             </div>
         </a>
     @endforeach
+*/ ?>
+<ol>
+@foreach($ItemTypes as $ItemType)
+     <li><a href="{{route('itemtypes.index', $ItemType->id)}}">
+        {{ $ItemType->item_type_name }}
+     </a></li>
+ @endforeach
 
 
 @endsection

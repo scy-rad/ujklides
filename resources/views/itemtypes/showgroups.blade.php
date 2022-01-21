@@ -27,8 +27,8 @@ function show_groups($curr_id)
 
     foreach ($ItemGroups as $ItemGroup)
         {
-
         ?>
+        <?php /* card-version
         <a href="{{route('itemgroups.showitems', $ItemGroup->id)}}">
             <div class="tile">
                 <img src="/storage/img/items/{{$ItemGroup->photo_OK()}}" class="tile">
@@ -38,6 +38,12 @@ function show_groups($curr_id)
                 </div>
             </div>
         </a>
+        */ ?>
+        <li>
+        <a href="{{route('itemgroups.showitems', $ItemGroup->id)}}">
+                    {{ $ItemGroup->item_group_name }}
+        </a>
+        </li>
         <?php
         }
 }

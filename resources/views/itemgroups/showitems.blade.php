@@ -17,12 +17,13 @@
 
 <div class="row">
 
-<?php
-
+        <ol>
+        <?php
         $Items=App\Item::where('item_group_id','=',$ItemGroup->id)->get();
         foreach ($Items as $Item)
             {
             ?>
+            <?php /* card-version
             <a href="{{route('items.show', $Item->id)}}">
                 <div class="tile">
                     <img src="/storage/img/items/{{$Item->photo_OK()}}" class="tile">
@@ -32,8 +33,15 @@
                     </div>
                 </div>
             </a>
+            */ ?>
+            <li>
+            <a href="{{route('items.show', $Item->id)}}">
+                        {{ $Item->group()->item_group_name }}>
+            </a>
+            </li>
             <?php
             }
-?>
+            ?>
+        </ol>
 </div>
 @endsection
