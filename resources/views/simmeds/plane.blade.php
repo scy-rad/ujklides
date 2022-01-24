@@ -1,6 +1,6 @@
 <?php
-if (!Auth::user()->hasRole('Operator Symulacji'))
-        return view('error',['head'=>'błąd wywołania widoku Palne','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+if (!Auth::user()->hasRole('Technik'))
+        return view('error',['head'=>'błąd wywołania widoku Plane','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 ?>
 
 

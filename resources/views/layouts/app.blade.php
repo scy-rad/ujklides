@@ -96,6 +96,7 @@
                                     <li><a href="{{ route('simmeds.index',['route' => 'all']) }}">Wszystkie</a></li>
                                     <li><a href="{{ route('simmeds.scheduler',date('Y-m-d')) }}">Dziś</a></li>
                                     <li><a href="{{ route('simmeds.timetable') }}">Terminarz</a></li>
+                                    <li><strong><a href="{{ route('simmeds.plane') }}">Planowanie</a></strong></li>
                                     @endif
                                     <br>
                                     <li><a href="{{ route('scenarios.index') }}">Scenariusze</a></li>
@@ -104,7 +105,6 @@
                                     <?php /* @if (Auth::user()->CenterRole('Operator Symulacji','CSM-Piel')) */ ?>
                                     @if (Auth::user()->hasRole('Operator Symulacji'))
                                     <br>
-                                    <li><a href="{{ route('simmeds.plane') }}">Planowanie</a></li>
                                     <li style="background-color: #FF0;"><a href="{{ route('mansimmeds.index') }}">zarządzanie</a></li>
                                     @endif
                                 </ul>
