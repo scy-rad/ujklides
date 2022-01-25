@@ -43,10 +43,11 @@ if (!Auth::user()->hasRole('Technik'))
                 <input type="hidden" name="date" value="{{$sch_date_prev}}">
                 <input type="submit" class="form-control" value="Poprzedni tydzień od {{$sch_date_prev}}">
                 <input type="hidden" name="csm" value="{{$sch_csm}}">
+                <input type="hidden" name="important" value="{{$sch_important}}">
             </form>
         </div>
-        <div class="col-md-2 align-items-center">
-            <span class="glyphicon glyphicon-calendar"></span>{{$sch_date}}<span class="glyphicon glyphicon-calendar"></span>
+        <div class="col-md-1 align-items-center">
+            <span class="glyphicon glyphicon-calendar"></span><br>{{$sch_date}}
         </div>
         <div class="col-md-3">
             <form action="/simmedsplane">
@@ -54,6 +55,7 @@ if (!Auth::user()->hasRole('Technik'))
                 <input type="hidden" name="date" value="{{$sch_date_next}}">
                 <input type="submit" class="form-control" value="Kolejny tydzień od {{$sch_date_next}}">
                 <input type="hidden" name="csm" value="{{$sch_csm}}">
+                <input type="hidden" name="important" value="{{$sch_important}}">
             </form>
         </div>
         <div class="col-md-2">
@@ -69,6 +71,11 @@ if (!Auth::user()->hasRole('Technik'))
                             @endforeach
                         </select>
                     </div>
+                    <div class="col-auto">
+                        <input type="checkbox" name="important" @if ('on' == $sch_important) checked @endif>
+                            tylko obsługa
+                    </div>
+
                     <div class="col-auto">
                         <input type="submit" class="form-control" value="pokaż grupy">
                     </div>
@@ -111,7 +118,11 @@ if (!Auth::user()->hasRole('Technik'))
             <td>{{$row_one->simmed_date }}: {{$dni_tygodnia[ date('w',strtotime($row_one->simmed_date)) ]}}</td>
             <td>{{substr($row_one->simmed_time_begin,0,5) }} - {{ substr($row_one->simmed_time_end,0,5) }}</td>
             <td>{{$row_one->room()->room_number }} {{$row_one->technician_id}}</td>
+            @if (Auth::user()->hasRole('Operator Symulacji'))
             <td><div id="type{{$row_one->sim_id }}" onclick="ChangeSimType({{$row_one->sim_id }},{{$row_one->simmed_technician_character_id *1 }});"> {{$row_one->technician_character()->character_short }} </div></td>
+            @else
+            <td>{{$row_one->technician_character()->character_short }}</td>
+            @endif
             <td><div id="{{$row_one->sim_id }}" onclick="onclickHandler({{$row_one->sim_id }},{{$row_one->simmed_technician_id *1 }});"> {{$row_one->name_of_technician() }} </div></td>
 
             <td>{{$row_one->name_of_leader() }}</td>
@@ -124,10 +135,9 @@ if (!Auth::user()->hasRole('Technik'))
 </table>
 
 <script>
-
+@if (Auth::user()->hasRole('Operator Symulacji'))
     function ChangeSimType(id_row,id_character)
     {
-
         //let activities = [0 => 'Location Zero', 1 => 'Location One', 2 => 'Location Two'];
         var char_array = new Array();
         var next_array = new Array();
@@ -163,6 +173,7 @@ if (!Auth::user()->hasRole('Technik'))
                 },
             });
     }
+@endif
 
     function onclickHandler(id_row,id_technika)
     {

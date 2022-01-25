@@ -47,6 +47,7 @@ class SimmedController extends Controller
 
         $ret_sch_date=$request['date'];
         $ret['sch_csm']=$request['csm'];
+        $ret['sch_important']=$request['important'];
 
         if (!(validateDate($ret_sch_date, 'Y-m-d')))
             $ret_sch_date=date('Y-m-d');
@@ -62,12 +63,14 @@ class SimmedController extends Controller
             $rows_plane=Simmed::select('*','simmeds.id as sim_id')->where('simmed_date','>=',$ret_sch_date)->where('simmed_date','<=',$ret['sch_date_to'])
                 ->where('simmed_status','<',4);
             if ($ret['sch_csm']<0)
-                //dump($request);
                 $rows_plane=$rows_plane->whereNull('student_group_id');
             if ($ret['sch_csm']>0)
-                //dump($request);
                 $rows_plane=$rows_plane->join('student_groups', 'simmeds.student_group_id', '=', 'student_groups.id')->where('center_id','=',$ret['sch_csm']);
 
+            if($ret['sch_important']=="on")
+                $rows_plane=$rows_plane->where('simmed_technician_character_id','<>',TechnicianCharacter::where('character_short','free')->get()->first()->id);
+
+            // dump(TechnicianCharacter::where('character_short','free')->get()->first()->id);
 
                 $rows_plane=$rows_plane->orderBy('simmed_date')
                 ->orderBy('simmed_time_begin')

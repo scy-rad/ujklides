@@ -94,8 +94,10 @@
                                     <li><a href="{{ route('simmeds.index',['route' => 'now']) }}">Bieżące</a></li>
                                     @if ( (Auth::user()->hasRole('Technik')) || (Auth::user()->hasRole('koordynator')) )
                                     <li><a href="{{ route('simmeds.index',['route' => 'all']) }}">Wszystkie</a></li>
-                                    <li><a href="{{ route('simmeds.scheduler',date('Y-m-d')) }}">Dziś</a></li>
+                                    <li><a href="{{ route('simmeds.scheduler',date('Y-m-d')) }}">Dziś (stay)</a></li>
                                     <li><a href="{{ route('simmeds.timetable') }}">Terminarz</a></li>
+                                    @endif
+                                    @if ( (Auth::user()->hasRole('Technik')) || (Auth::user()->hasRole('Operator Symulacji')) )
                                     <li><strong><a href="{{ route('simmeds.plane') }}">Planowanie</a></strong></li>
                                     @endif
                                     <br>

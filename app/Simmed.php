@@ -114,45 +114,74 @@ class Simmed extends Model
    
 
     public static function simmeds_for_scheduler($day) {
-        $simday=Simmed::where('simmed_date','=',$day)->where('simmed_status','<',4)->get();
-//        $simrooms=Room::where('room_type_id','=',11) // 11 - sala ćwiczeniowa CSM Pielęgniarstwo
-//                ->orWhere('room_type_id','=',21) // 11 - sala ćwiczeniowa CSM Pielęgniarstwo + Lekarski
-//                ->orderBy('room_number')->get();
-        $simrooms=Room::where('room_xp_code','<>','')
-                ->orderBy('room_number')->get();
+        $simday=Simmed::where('simmed_date','=',$day)
+        ->where('simmed_status','<',4)
+        ->where('simmed_technician_character_id','=',TechnicianCharacter::where('character_short','stay')->get()->first()->id)
+        ->get();
+
+        // $simrooms=Room::where('room_xp_code','<>','')
+        //         ->orderBy('room_number')->get();
+        $technicians=User::role_users('technicians', 1, 1)->get();
         $Par=Param::first();
 
         $tabela=null;
         $row_no=1;
-        foreach ($simrooms as $simroom)
+        
+        foreach ($technicians as $technician)
             {
-            $tabela[$simroom->id]['id']=$row_no++;
-            $tabela[$simroom->id]['id_room']=$simroom->id;
-            $tabela[$simroom->id]['number']=$simroom->room_number;
+            $tabela[$technician->id]['id']=$row_no++;
+            $tabela[$technician->id]['id_room']=$technician->id;
+            $tabela[$technician->id]['number']=$technician->name;
             }
-            
+        // foreach ($simrooms as $simroom)
+        //     {
+        //     $tabela[$simroom->id]['id']=$row_no++;
+        //     $tabela[$simroom->id]['id_room']=$simroom->id;
+        //     $tabela[$simroom->id]['number']=$simroom->room_number;
+        //     }
+
         foreach ($simday as $simone)
-            {
-            //dump($simone->leader()->title->user_title_short);
-            $tabela[$simone->room_id]['sim'][$simone->id]['id']=$simone->id;
-            $tabela[$simone->room_id]['sim'][$simone->id]['leader']=$simone->simmed_leader_id;
-            $tabela[$simone->room_id]['sim'][$simone->id]['leader_name']=$simone->name_of_leader();
-            $tabela[$simone->room_id]['sim'][$simone->id]['technician']=$simone->simmed_technician_id;
-            $tabela[$simone->room_id]['sim'][$simone->id]['technician_name']=$simone->name_of_technician();
-            //if ($simone->simmed_technician_id!=null) 
-            //    $tabela[$simone->room_id]['sim'][$simone->id]['technician_name']=$simone->technician()->lastname.' '.$simone->technician()->firstname.', '.$simone->technician()->title->user_title_short;
-            //else
-            //    $tabela[$simone->room_id]['sim'][$simone->id]['technician_name']='?BRAK?';
-            $tabela[$simone->room_id]['sim'][$simone->id]['date']=$simone->simmed_date;
-            $tabela[$simone->room_id]['sim'][$simone->id]['begin']=substr($simone->simmed_time_begin,0,5);
-            $tabela[$simone->room_id]['sim'][$simone->id]['end']=substr($simone->simmed_time_end,0,5);
-            $tabela[$simone->room_id]['sim'][$simone->id]['date_sent']=$simone->simmed_date_sent;
-            $tabela[$simone->room_id]['sim'][$simone->id]['begin_sent']=substr($simone->simmed_time_begin_sent,0,5);
-            $tabela[$simone->room_id]['sim'][$simone->id]['end_sent']=substr($simone->simmed_time_end_sent,0,5);
+        {
+        //dump($simone->leader()->title->user_title_short);
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['id']=$simone->id;
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['leader']=$simone->simmed_leader_id;
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['leader_name']=$simone->name_of_leader();
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['technician']=$simone->room_id;
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['technician_name']=$simone->room_number;
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['date']=$simone->simmed_date;
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['begin']=substr($simone->simmed_time_begin,0,5);
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['end']=substr($simone->simmed_time_end,0,5);
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['date_sent']=$simone->simmed_date_sent;
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['begin_sent']=substr($simone->simmed_time_begin_sent,0,5);
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['end_sent']=substr($simone->simmed_time_end_sent,0,5);
+        
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['status']=$simone->simmed_status;
+        
+        }
+
+
+        // foreach ($simday as $simone)
+        //     {
+        //     //dump($simone->leader()->title->user_title_short);
+        //     $tabela[$simone->room_id]['sim'][$simone->id]['id']=$simone->id;
+        //     $tabela[$simone->room_id]['sim'][$simone->id]['leader']=$simone->simmed_leader_id;
+        //     $tabela[$simone->room_id]['sim'][$simone->id]['leader_name']=$simone->name_of_leader();
+        //     $tabela[$simone->room_id]['sim'][$simone->id]['technician']=$simone->simmed_technician_id;
+        //     $tabela[$simone->room_id]['sim'][$simone->id]['technician_name']=$simone->name_of_technician();
+        //     //if ($simone->simmed_technician_id!=null) 
+        //     //    $tabela[$simone->room_id]['sim'][$simone->id]['technician_name']=$simone->technician()->lastname.' '.$simone->technician()->firstname.', '.$simone->technician()->title->user_title_short;
+        //     //else
+        //     //    $tabela[$simone->room_id]['sim'][$simone->id]['technician_name']='?BRAK?';
+        //     $tabela[$simone->room_id]['sim'][$simone->id]['date']=$simone->simmed_date;
+        //     $tabela[$simone->room_id]['sim'][$simone->id]['begin']=substr($simone->simmed_time_begin,0,5);
+        //     $tabela[$simone->room_id]['sim'][$simone->id]['end']=substr($simone->simmed_time_end,0,5);
+        //     $tabela[$simone->room_id]['sim'][$simone->id]['date_sent']=$simone->simmed_date_sent;
+        //     $tabela[$simone->room_id]['sim'][$simone->id]['begin_sent']=substr($simone->simmed_time_begin_sent,0,5);
+        //     $tabela[$simone->room_id]['sim'][$simone->id]['end_sent']=substr($simone->simmed_time_end_sent,0,5);
             
-            $tabela[$simone->room_id]['sim'][$simone->id]['status']=$simone->simmed_status;
+        //     $tabela[$simone->room_id]['sim'][$simone->id]['status']=$simone->simmed_status;
             
-            }
+        //     }
             
         $zwrocik='';
         $separator_room="";
