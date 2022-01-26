@@ -326,7 +326,10 @@ class SimmedController extends Controller
         $modified_row->simmed_date						= $request->simmed_date;
         $modified_row->simmed_time_begin				= $request->simmed_time_begin;
         $modified_row->simmed_time_end					= $request->simmed_time_end;
-        $modified_row->student_subject_id	        	= $request->student_subject_id;
+        if ($request->student_subject_id==0)
+            $modified_row->student_subject_id	        = null;
+        else
+            $modified_row->student_subject_id	        = $request->student_subject_id;
         $modified_row->room_id     					    = $request->room_id;
         if ($request->simmed_leader_id==0)
             $modified_row->simmed_leader_id     		= null;

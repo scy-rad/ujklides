@@ -23,7 +23,10 @@ class SimmedArc extends Model
     }
     function leader()
     {
-        return User::find($this->simmed_leader_id)->full_name();
+        if ($this->simmed_leader_id>0)
+            return User::find($this->simmed_leader_id)->full_name();
+        else
+            return '- - -';
     }
     function technician()
     {
@@ -31,10 +34,13 @@ class SimmedArc extends Model
             return User::find($this->simmed_technician_id)->name;
         else
             return '- - -';
-}
+    }
     function subject()
     {
-        return StudentSubject::find($this->student_subject_id)->student_subject_name;
+        if ($this->student_subject_id>0)
+            return StudentSubject::find($this->student_subject_id)->student_subject_name;
+        else
+            return '- - -';
     }
 
     function character()
