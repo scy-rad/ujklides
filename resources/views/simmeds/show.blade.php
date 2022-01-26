@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
 <link href="{{ asset('css/_cards.css') }}" rel="stylesheet">
 
-@section('title', 'scenariusze '.$simmed->simmed_date.': '.$simmed->student_subject()->student_subject_name)
+@section('title', 'scenariusze '.$simmed->simmed_date.': ')
 
 @section('content')
 
@@ -41,7 +41,7 @@ $Scen_Table.='</ul>';
     {{ kafelek(2, 'data symulacji', $simmed->simmed_date,NULL) }}
     {{ kafelek(2, 'godziny', substr($simmed->simmed_time_begin,0,5).' - '.substr($simmed->simmed_time_end,0,5),NULL) }}
         
-    {{ kafelek(4, 'dział', $simmed->student_subject()->student_subject_name,NULL) }}
+    {{ kafelek(4, 'dział', $simmed->name_of_student_subject(),NULL) }}
     {{ kafelek(2, 'grupa studencka', $simmed->name_of_student_group(),NULL) }}
     {{ kafelek(2, 'podgrupa ', $simmed->name_of_student_subgroup(),NULL) }}
 </div>
