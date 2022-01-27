@@ -925,11 +925,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           rows: {},
           startTime: '07:00',
           endTime: '19:30',
-          widthTimeX: 15, //25, //SZEROKOŚĆ
+          widthTimeX: 10, //25, //SZEROKOŚĆ
           // 1cell辺りの幅(px)
           widthTime: 600,
           // 区切り時間(秒)
-          timeLineY: 80,
+          timeLineY: 45,
           // timeline height(px)
           timeLineBorder: 1,
           // timeline height border
@@ -939,7 +939,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           timeLinePaddingBottom: 0,
           headTimeBorder: 1,
           // time border width
-          dataWidth: 160,
+          dataWidth: 80,
           // data width
           verticalScrollbar: 0,
           // vertical scrollbar width
@@ -983,7 +983,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         for (var t = tableStartTime; t < tableEndTime; t += config.widthTime) {
           if (beforeTime < 0 || Math.floor(beforeTime / 3600) !== Math.floor(t / 3600)) {
             html = '';
-            html += '<div class="sc_time">' + methods.formatTime(t) + '</div>';
+            // html += '<div class="sc_time">' + methods.formatTime(t) + '</div>';
+            html += '<div class="sc_time">' + Math.floor(t / 36000) + Math.floor(t / 3600 % 10) + '</div>';
+            
+            
             var $time = $(html);
             var cn = Number(Math.min(Math.ceil((t + config.widthTime) / 3600) * 3600, tableEndTime) - t);
             var cellNum = Math.floor(cn / config.widthTime);

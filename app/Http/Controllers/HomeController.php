@@ -25,13 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->name=='admindudek')
-            {
-            dump(Auth::user()->name);
-            Auth::user()->id=1;
-            dump('przywróć ID użytkownika do rzeczywistego w HomeController');
-            }
-
         //date('N',strtotime('2021-11-21'));
 
         if (date('N',strtotime(date('Y-m-d')))>4)

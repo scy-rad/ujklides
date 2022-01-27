@@ -127,7 +127,7 @@ if (!Auth::user()->hasRole('Technik'))
 
             <td>{{$row_one->name_of_leader() }}</td>
             <td>{{$row_one->name_of_student_subject() }}</td>
-            <td>{{$row_one->name_of_student_group() }}</td>
+            <td>{{$row_one->code_of_student_group() }}</td>
             <!--td><a href="#" class=actions>X: {{$row_one->simmed_status }}</a></td-->
         <tr>
         @endforeach

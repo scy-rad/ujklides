@@ -81,7 +81,9 @@ class Simmed extends Model
 
     function code_of_student_group()
     {
-    if ($this->student_group_id>0)
+    if ($this->student_subgroup_id>0)
+        return $this->hasOne(StudentGroup::class,'id','student_group_id')->get()->first()->student_group_code.'-'.$this->hasOne(StudentSubgroup::class,'id','student_subgroup_id')->get()->first()->subgroup_name;
+    elseif ($this->student_group_id>0)
         return $this->hasOne(StudentGroup::class,'id','student_group_id')->get()->first()->student_group_code;
     }
 
@@ -154,6 +156,7 @@ class Simmed extends Model
         $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['date_sent']=$simone->simmed_date_sent;
         $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['begin_sent']=substr($simone->simmed_time_begin_sent,0,5);
         $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['end_sent']=substr($simone->simmed_time_end_sent,0,5);
+        //$tabela[$simone->simmed_technician_id]['sim'][$simone->id]['room_number']=$simone->room_number;
         
         $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['status']=$simone->simmed_status;
         
@@ -205,6 +208,7 @@ class Simmed extends Model
                     $zwrocik.="{\n";
                     $zwrocik.='start: \''.$simrow['begin'].'\','."\n";
                     $zwrocik.='end: \''.$simrow['end'].'\','."\n";
+                    $zwrocik.='room_number: \''.$simrow['room_number'].'\','."\n";
                     $zwrocik.='text: \''.$simrow['leader_name'].'\','."\n";
                     $zwrocik.='subtxt: \''.$simrow['technician_name'].'\','."\n";
                     $zwrocik.='data: {'."\n";
