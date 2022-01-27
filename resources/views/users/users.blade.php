@@ -4,8 +4,9 @@
 
 @section('content')
 
-<h1>SD users</h1>
+<h1>użytkownicy</h1>
 @if ($users->count()>0)
+<?php /*
 @foreach ($users as $user)
 <?php if ($user->user_status!=1) $able="danger"; else $able=""; ?>
 
@@ -40,9 +41,25 @@
 
 </div>
 @endforeach
-@endif
 
 {{$users->links()}}
+
+*/ ?>
+
+<ol>
+@foreach ($users as $user)
+<?php if ($user->user_status!=1) $able="danger"; else $able=""; ?>
+
+  <li><span class="bg-{{$able}}"><a href="{{route('user.profile', $user->id)}}"> {{$user->title->user_title_short}} {{$user->firstname}} {{$user->lastname}} </a> </span>
+      @foreach ($user->roles as $row)
+        [ {{$row->roles_name}} ]                   
+      @endforeach
+</li>
+@endforeach
+</ol>
+
+@endif
+
 
 
 @endsection

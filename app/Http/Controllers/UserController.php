@@ -101,12 +101,11 @@ class UserController extends Controller
             $users = User::orderBy('lastname', 'ASC');
             if (!(Auth::user()->hasRole('Administrator')))
                 $users = $users->where('user_status','=',1);
-            $users = $users->paginate(6);
+     //       $users = $users->paginate(6);
         }
     else
         {
         if (Auth::user()->hasRole('Administrator'))
-        dump('to trzeba zmienić - UserController -> function users -> Add OrderBy and Paginate') ;
         //$users = Roles::where('roles_code', $type)->first()->users();
         //i wtedy nie będzie potrzebne to poniżej
         $role_id=Roles::select('id')->where('roles_code', $type)->first()->id;
@@ -114,8 +113,10 @@ class UserController extends Controller
         $users = User::whereIn('id',$roles_users);
         if (!(Auth::user()->hasRole('Administrator')))
             $users = $users->where('user_status','=',1);
-        $users = $users->orderBy('lastname', 'ASC')->paginate(6);
+        $users = $users->orderBy('lastname', 'ASC');
+        //$users = $users->->paginate(6);
         }
+        $users=$users->get();
         return view('users/users',compact('users'));
     }
 

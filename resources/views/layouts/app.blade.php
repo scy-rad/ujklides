@@ -98,7 +98,7 @@
                                     <li><a href="{{ route('simmeds.timetable') }}">Terminarz</a></li>
                                     @endif
                                     @if ( (Auth::user()->hasRole('Technik')) || (Auth::user()->hasRole('Operator Symulacji')) )
-                                    <li><strong><a href="{{ route('simmeds.plane') }}">Planowanie</a></strong></li>
+                                    <li><a href="{{ route('simmeds.plane') }}">Planowanie</a></li>
                                     @endif
                                     <br>
                                     <li><a href="{{ route('scenarios.index') }}">Scenariusze</a></li>
