@@ -299,7 +299,9 @@ class ManSimmedController extends Controller
         //sprawdza, czy importowane dane mają odzwierciedlenie w już istniejących danych (np. sale, tematy itd.)
         //$data['simmeds']=SimmedTemp::all()->toArray();
         $data['miss']=app('App\Http\Controllers\ManSimmedController')->check_tmp_data();
-        $data['simmeds']=SimmedTemp::whereNull('simmed_leader_id')
+        $data['simmeds']=SimmedTemp::select('*')
+            ->leftjoin('rooms','simmed_temps.room_id','=','rooms.id')
+            ->whereNull('simmed_leader_id')
             ->orWhereNull('student_subject_id')
             ->orWhereNull('student_group_id')
             ->get();

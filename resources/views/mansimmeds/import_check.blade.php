@@ -205,9 +205,7 @@ function rowEK($new_simmed)
                 <td>{{$new_simmed->simmed_time_begin}}</td>
                 <td>{{$new_simmed->simmed_time_end}}</td>
                 <td class="bg-info">{{$new_simmed->room_id}}</td>
-                <td>@if ($new_simmed->room_id!=0)
-                    {{App\room::find($new_simmed->room_id)->room_number}}
-                    @endif </td>
+                <td>{{$new_simmed->room_number}}</td>
                 <td class="bg-info">{{$new_simmed->simmed_leader_id}}</td>
                 <td>{{$new_simmed->simmed_leader_txt}}</td>
                 <td class="bg-info">{{$new_simmed->student_subject_id}}</td>
