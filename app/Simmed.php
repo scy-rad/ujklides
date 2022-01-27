@@ -156,7 +156,7 @@ class Simmed extends Model
         $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['date_sent']=$simone->simmed_date_sent;
         $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['begin_sent']=substr($simone->simmed_time_begin_sent,0,5);
         $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['end_sent']=substr($simone->simmed_time_end_sent,0,5);
-        //$tabela[$simone->simmed_technician_id]['sim'][$simone->id]['room_number']=$simone->room_number;
+        $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['room_number']=$simone->room_number;
         
         $tabela[$simone->simmed_technician_id]['sim'][$simone->id]['status']=$simone->simmed_status;
         
