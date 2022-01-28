@@ -101,13 +101,10 @@ class UserController extends Controller
             $users = User::orderBy('lastname', 'ASC');
             if (!(Auth::user()->hasRole('Administrator')))
                 $users = $users->where('user_status','=',1);
-     //       $users = $users->paginate(6);
+            //$users = $users->paginate(6);
         }
     else
         {
-        if (Auth::user()->hasRole('Administrator'))
-        //$users = Roles::where('roles_code', $type)->first()->users();
-        //i wtedy nie będzie potrzebne to poniżej
         $role_id=Roles::select('id')->where('roles_code', $type)->first()->id;
         $roles_users=RolesHasUsers::select('roles_has_users_users_id')->where('roles_has_users_roles_id','=',$role_id)->get();
         $users = User::whereIn('id',$roles_users);

@@ -48,13 +48,21 @@
 
 <ol>
 @foreach ($users as $user)
-<?php if ($user->user_status!=1) $able="danger"; else $able=""; ?>
-
-  <li><span class="bg-{{$able}}"><a href="{{route('user.profile', $user->id)}}"> {{$user->title->user_title_short}} {{$user->firstname}} {{$user->lastname}} </a> </span>
-      @foreach ($user->roles as $row)
-        [ {{$row->roles_name}} ]                   
+<div class="row">
+  <?php if ($user->user_status!=1) $able="danger"; else $able=""; ?>
+  <div class="col-lg-5 col-sm-5 col-5">
+    <li><span class="bg-{{$able}}"><a href="{{route('user.profile', $user->id)}}"> {{$user->title->user_title_short}} {{$user->firstname}} {{$user->lastname}} </a> </span>
+  </div>
+  <div class="col-lg-3 col-sm-3 col-3">
+    <a href="mailto:{{$user->email}}"><span class="glyphicon glyphicon-envelope" style="font-size: 5rem;"></span><br>{{$user->email}}</a>
+  </div>
+  <div class="col-lg-4 col-sm-4 col-4">
+      @foreach ($user->phones()->get() as $phone)
+        <div style="float:left; margin-right:10px;"><?php echo $phone->phone_for_me('html5'); ?></div>
       @endforeach
-</li>
+  </div>
+      </li>
+</div>
 @endforeach
 </ol>
 
