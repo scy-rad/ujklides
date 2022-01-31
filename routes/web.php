@@ -329,6 +329,15 @@ Route::put('user/updatepersonal', [
     'as' => 'user.update_personal'
 ]);
 
+
+//Route::get('/changePassword','HomeController@showChangePasswordForm');
+
+Route::get('/changePasswordForm', [
+    'uses' => 'HomeController@showChangePasswordForm',
+    'as' => 'changePasswordForm'
+]);
+Route::post('/changePassword','HomeController@changePassword')->name('changePassword');
+
 Route::post('ajax/user-notify', 'UserController@ajax_update_notify');
 
 

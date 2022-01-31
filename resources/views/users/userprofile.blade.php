@@ -197,7 +197,13 @@ else
             <h5> login: <strong>{{$user->name}}</strong></h5>
             <hr>
             <div class="form-group">
-                <div class="col-sm-8">
+            
+            <div class="col-sm-8">
+                &nbsp;
+                </div>
+                <a href="{{ route('changePasswordForm') }}"><button class="col-sm-4 btn btn-primary">Zmień hasło</button></a>
+            </div>
+            <div class="col-sm-8">
                 &nbsp;
                 </div>
                 <button class="col-sm-4 btn btn-primary" onClick="openPhoneModal('0','0','','1','1','1','0','0')">Dodaj numer telefonu</button>
