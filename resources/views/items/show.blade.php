@@ -95,7 +95,7 @@
 
 
     <div class="col-sm-2">
-      @if (Auth::user()->hasRole('magazynier')) 
+      @if ( (Auth::user()->hasRole('magazynier'))  || (Auth::user()->hasRole('technik')) )
         <button type="button" class="btn btn-primary btn-outline-primary btn-lg btn-block" data-toggle="modal" data-target="#realocateModal">
         <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
             wypożycz
@@ -108,7 +108,7 @@
     </div>
 </div>
 
-@if (Auth::user()->hasRole('magazynier')) 
+@if ( (Auth::user()->hasRole('magazynier'))  || (Auth::user()->hasRole('technik')) )
     @include('items.modalrealocate')
 @endif
 @include('items.modalfault')
@@ -162,7 +162,7 @@
     <hr>
     <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
     serwis
-    @if (Auth::user()->hasRole('magazynier')) 
+    @if ( (Auth::user()->hasRole('magazynier'))  || (Auth::user()->hasRole('technik')) )
         <a href="{{ route('fault.showall', $item->id) }}" alt="wszystkie"><span class="bg-info glyphicon glyphicon-th-list pull-right"></span></a>
     @endif
     <br>   
