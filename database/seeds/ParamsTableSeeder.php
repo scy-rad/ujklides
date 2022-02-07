@@ -20,8 +20,8 @@ class ParamsTableSeeder extends Seeder
 
         $zmEQ = new Param();
 
-        $leader_id = User::where('name','nikt')->first()->id;
-        $technician_id = User::where('name','nikt')->first()->id;
+        $leader_id = User::where('name','_nikt')->first()->id;
+        $technician_id = User::where('name','_nikt')->first()->id;
 
         $zmEQ->leader_for_simmed = $leader_id;
         $zmEQ->technician_for_simmed = $technician_id;
