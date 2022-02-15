@@ -6,62 +6,7 @@
 
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('js/jquery.schedule/dist/css/style.css')}}" />
 
-    <style>
-        body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-        }
-        #logs{
-            border: solid 1px #bbb;
-            padding: 16px;
-            background: #eee;
-        }
-        #logs .table{
-            margin-bottom: 0;
-        }
-        #logs .table td,
-        #logs .table th{
-            border: none;
-        }
-        #schedule .sc_bar_insert{
-            background-color: #ff0000;
-        }
-        #schedule .sc_bar_move{
-            background-color: #ffaa00;
-        }
 
-        #schedule .sc_bar_no_leader{
-            background-color: #ff4500;
-        }
-        #schedule .sc_bar_no_technician{
-            background-color: #6a5acd;
-        }
-        #schedule .sc_bar_team{
-            background-color: #1e90ff;
-        }
-        #schedule .example2{
-            background-color: #3eb698;
-        }
-        #schedule .example3{
-            color: #2c0000;
-            font-weight: bold;
-            background-color: #c7ae50;
-        }
-        #schedule .sc_bar.sc_bar_photo .head,
-        #schedule .sc_bar.sc_bar_photo .text
-        #schedule .sc_bar.sc_bar_photo .subtxt{
-            padding-left: 60px;
-        }
-        
-        #schedule .sc_bar.sc_bar_photo .photo{
-            position: absolute;
-            left: 10px;
-            top: 10px;
-            width: 38px;
-        }
-        #schedule .sc_bar.sc_bar_photo .photo img{
-            max-width: 100%;
-        }
-    </style>
 
 <?php
 $dayofweek[1]='poniedziałek';
@@ -79,10 +24,10 @@ if (date('N', strtotime($sch_date))==5) $aft=3;
 
 <h1>
 <div class="row">
-<div class="col-md-1">
+<div class="col-md-2 text-right">
         <a href="{{route('simmeds.scheduler', date('Y-m-d', strtotime($sch_date . ' -'.$bef.' day')))}}"><span class="glyphicon glyphicon-backward"></span></a>
 </div>
-<div class="col-md-3">
+<div class="col-md-5 text-center">
         {{$sch_date}} {{ $dayofweek[date('N', strtotime($sch_date))] }}
 </div>
 <div class="col-md-1">
@@ -119,34 +64,27 @@ if (date('N', strtotime($sch_date))==5) $aft=3;
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">zgłoszenie usterki</h5>
+        <h3 class="modal-title" id="editModalLabel">szczegóły zadania...</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>    <!-- modal-header -->
       <div class="modal-body">
-        <h2>nowe złoszenie </h2>
-
         <form method="post" action="{{ route('fault.store') }}">
             {{ csrf_field() }}
 
             <fieldset>
-                <label for="instruktor">instruktor:</label>
-                <input type="text" id="modal_leader" name="leader" value=""><br><br>
-                <label for="technik">trchnik:</label>
-                <input type="text" id="modal_technician" name="technician" value=""><br><br>
-                <label for="start">start:</label>
-                <input type="text" id="modal_start" name="start" value=""><br><br>
-                <label for="end">end:</label>
-                <input type="text" id="modal_end" name="end" value=""><br><br>
-                
+                <span id="span_start"></span> - <span id="span_end"></span><br>
+                <span id="span_character"></span><br><br>
+                <span id="span_text"></span><br>
+                <span id="span_simdescript"></span>
             </fieldset>
       </div> <!-- modal-body -->
 
       <div class="modal-footer">
           <input type="hidden" id="simmed_id" name="simmed_id" value="">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">anuluj</button>
-            <button type="submit" class="btn btn-primary">zapisz</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">zamknij</button>
+            <!--button type="submit" class="btn btn-primary">zapisz</button-->
       </div>    <!-- modal-footer -->
         </form>
     </div>  <!-- /modal-content -->
@@ -181,8 +119,8 @@ function openModal(num)
     }
     $(function(){
         $("#logs").append('<table class="table">');
-        var isDraggable = true;
-        var isResizable = true;
+        var isDraggable = false;
+        var isResizable = false;
         var $sc = $("#schedule").timeSchedule({
             startTime: "07:00", // schedule start time(HH:ii)
             endTime: "22:00",   // schedule end time(HH:ii)
@@ -194,10 +132,21 @@ function openModal(num)
             draggable: isDraggable,
             resizable: isResizable,
             resizableLeft: true,
-            draggable: false,   //dodane żeby nie dało się nic zmieniać
-            resizable: false,   //dodane żeby nie dało się nic zmieniać
             rows : {
                 {!!$rows_scheduler!!}
+            },
+            onClick: function(node, data){
+                addLog('onClick!', data);
+                addLog('onClick!', data['data']['id']);
+                $('#editModal').modal('show');
+                //alert(JSON.stringify(data, null, 4));
+                document.getElementById('span_start').innerHTML = data['start'];
+                document.getElementById('span_end').innerHTML = data['end'];
+                document.getElementById('span_character').innerHTML = data['class'];
+                document.getElementById('span_text').innerHTML = data['text'];
+                document.getElementById('span_simdescript').innerHTML = data['simdescript'];
+                
+              //  ui-resizable
             },
         /*
             onChange: function(node, data){

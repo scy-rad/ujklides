@@ -41,6 +41,8 @@ class DatabaseSeeder extends Seeder
        $this->call('ReviewsTableSeeder');
 
        $this->call('ParamsTableSeeder');
+
+       $this->call('WorkTimesTableSeeder');
         
 		}
 }

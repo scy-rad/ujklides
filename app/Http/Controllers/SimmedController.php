@@ -111,9 +111,10 @@ class SimmedController extends Controller
     public function scheduler( string $sch_date)
     {
         //$simmeds =  Simmed::all();
-        $rows_scheduler=Simmed::simmeds_for_scheduler($sch_date);
-        return view('simmeds.scheduler', compact('rows_scheduler'),['sch_date' => $sch_date]);
-    }
+        $rows_scheduler=\App\WorkTime::activity_for_scheduler($sch_date);
+        return view('simmeds.scheduler', ['rows_scheduler' => $rows_scheduler,'sch_date' => $sch_date]);
+        //return view('simmeds.scheduler', compact('rows_scheduler'),['sch_date' => $sch_date]);
+}
 
     public function timetable(Request $request)
     {

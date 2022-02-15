@@ -51,7 +51,7 @@
 
 .jq-schedule .sc_main_box,
 .jq-schedule .sc_data {
-  max-height: 740px;    //WYSOKOŚĆ
+  max-height: 1740px;    //WYSOKOŚĆ
   overflow: hidden; }
 
 .jq-schedule .sc_main_box {
@@ -75,7 +75,37 @@
   background: #4f93d6;
   cursor: pointer;
   z-index: 10; }
-  .jq-schedule .sc_bar .head {
+  .jq-schedule .stay {
+    color: #fff;
+    background: #003366;}
+  .jq-schedule .phon {
+    color: #003366;
+    background: #ffee55;}
+  .jq-schedule .prep {
+    color: #00f;
+    background: #77ddff;}
+  
+    .jq-schedule .in_work {
+      color: #00f;
+      background: #0f0;}
+    .jq-schedule .out_work {
+      color: #ff0;
+      background: #000;}
+    .jq-schedule .home_work {
+      color: #ee0;
+      background: #008800;}
+    .jq-schedule .phone_work {
+      color: #f00;
+      background: #ff0;}
+    .jq-schedule .busy_work {
+      color: #ff0;
+      background: #ff0000;}
+    .jq-schedule .break {
+      color: #bbb;
+      background: #000;}
+  
+
+  .jq-schedule .head {
     display: block;
     margin-top: 6px;
     font-size: 12px;

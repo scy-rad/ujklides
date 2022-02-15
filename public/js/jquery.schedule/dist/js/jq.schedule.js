@@ -168,6 +168,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           endTime: methods.calcStringTime(data.end),
           text: data.text,
           subtxt: data.subtxt,
+          simdescript: data.simdescript,
+          class: data.class,
           timeline: timeline
         };
 
@@ -352,6 +354,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         if (data.subtxt) {
           $bar.find('.subtxt').text(data.subtxt);
         }
+        if (data.simdescript) {
+          $bar.find('.simdescript').text(data.simdescript);
+        }
+        
 
         if (data.class) {
           $bar.addClass(data.class);
@@ -400,8 +406,16 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           $bar.find('.text').text(data.text);
         }
         if (data.subtxt) {
-          $bar.find('.subtxt').text(data.subtxt);
+          $bar.find('.subtxt').text(data.subtxt);  
+//  alert(JSON.stringify(data, null, 4));
         }
+        if (data.simdescript) {
+          $bar.find('.simdescript').text(data.simdescript);
+        }
+
+        // if (data.subtxt) {
+        //   $bar.addClass(data.subtxt);
+        // }
 
         if (data.class) {
           $bar.addClass(data.class);
@@ -676,6 +690,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
             if (bdata.subtxt) {
               data.subtxt = bdata.subtxt;
             }
+            if (bdata.simdescript) {
+              data.simdescript = bdata.simdescript;
+            }
+            
+            if (bdata.class) {
+              data.class = bdata.class;
+            }
 
             data.timeline = i;
             data.data = {};
@@ -925,7 +946,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           rows: {},
           startTime: '07:00',
           endTime: '19:30',
-          widthTimeX: 10, //25, //SZEROKOŚĆ
+          widthTimeX: 20, //25, //SZEROKOŚĆ
           // 1cell辺りの幅(px)
           widthTime: 600,
           // 区切り時間(秒)

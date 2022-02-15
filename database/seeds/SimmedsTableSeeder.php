@@ -30,80 +30,79 @@ class SimmedsTableSeeder extends Seeder
 
 		function add_student_group($aF_student_group_name,$aF_student_group_code,$aF_centre, $aF_tech_char_def)
 		{
-        $zmEQ = new StudentGroup();
-        $zmEQ->student_group_name = $aF_student_group_name;
-        $zmEQ->student_group_code = $aF_student_group_code;
-        $zmEQ->center_id = $aF_centre;
-		$zmEQ->write_technician_character_default = $aF_tech_char_def;
-        $zmEQ->save();
-		return $zmEQ->id;
+			$zmEQ = new StudentGroup();
+			$zmEQ->student_group_name = $aF_student_group_name;
+			$zmEQ->student_group_code = $aF_student_group_code;
+			$zmEQ->center_id = $aF_centre;
+			$zmEQ->write_technician_character_default = $aF_tech_char_def;
+			$zmEQ->save();
+			return $zmEQ->id;
 		}
 
 		function add_groupsub($aF_id_group,$aF_prefix,$aF_count, $aF_tech_char)
 		{
-		for($i = 1; $i <= $aF_count; $i++)
+			for($i = 1; $i <= $aF_count; $i++)
 			{
-			$zmEQ = new StudentSubgroup();
-			$zmEQ->student_group_id=$aF_id_group;
-            $zmEQ->subgroup_name=$aF_prefix." ".str_pad($i, 2, 0, STR_PAD_LEFT);
-			$zmEQ->write_technician_character=$aF_tech_char;
-			$zmEQ->save();
+				$zmEQ = new StudentSubgroup();
+				$zmEQ->student_group_id=$aF_id_group;
+				$zmEQ->subgroup_name=$aF_prefix." ".str_pad($i, 2, 0, STR_PAD_LEFT);
+				$zmEQ->write_technician_character=$aF_tech_char;
+				$zmEQ->save();
 			}
 		}
 
 		function add_student_subject($aF_student_subject_name,$aF_student_subject_name_en)
 		{
-        $zmEQ = new StudentSubject();
-        $zmEQ->student_subject_name = $aF_student_subject_name;
-		$zmEQ->student_subject_name_en = $aF_student_subject_name_en;
-        $zmEQ->save();
-		return $zmEQ->id;
+			$zmEQ = new StudentSubject();
+			$zmEQ->student_subject_name = $aF_student_subject_name;
+			$zmEQ->student_subject_name_en = $aF_student_subject_name_en;
+			$zmEQ->save();
+			return $zmEQ->id;
 		}
 
 
 		function insert_sims($aF_simmed_date, $aF_simmed_time_begin, $aF_simmed_time_end, $aF_student_subject, $aF_student_group, $aF_simmed_room, $aF_simmed_leader, $aF_simmed_technician, $aF_simmed_technician_character_id, $aF_simmed_status)
-			{
+		{
 			if (StudentSubject::where('student_subject_name',$aF_student_subject)->count()>0)
 				$aF_student_subject_id = StudentSubject::where('student_subject_name',$aF_student_subject)->first()->id;
 			else
-				{
+			{
 				echo "temat $aF_student_subject nie został znaleziony"."\n";
 				return 0;
-				}
+			}
 
 			if (StudentGroup::where('student_group_name',$aF_student_group)->count()>0)
 				$aF_student_group_id = StudentGroup::where('student_group_name',$aF_student_group)->first()->id;
 			else
-				{
+			{
 				echo "grupa $aF_student_group nie została znaleziona"."\n";
 				return 0;
-				}
+			}
 
 			if (Room::where('room_number',$aF_simmed_room)->count()>0)
 				$aF_simmed_room_id = Room::where('room_number',$aF_simmed_room)->first()->id;
 			else
-				{
+			{
 				echo "pokój $aF_simmed_room nie został znaleziony"."\n";
 				return 0;
-				}
+			}
 
 			if (User::where('name',$aF_simmed_leader)->count()>0)
 				$aF_simmed_leader_id = User::where('name',$aF_simmed_leader)->first()->id;
 			else
-				{
+			{
 				echo "instruktor $aF_simmed_leader nie został znaleziony"."\n";
 				return 0;
-				}
+			}
 
 
 			if (User::where('name',$aF_simmed_technician)->count()>0)
 				$aF_simmed_technician_id = User::where('name',$aF_simmed_technician)->first()->id;
 			else
-				{
+			{
 				echo "instruktor $aF_simmed_technician nie został znaleziony"."\n";
 				return 0;
-				}
-
+			}
 
 			$zmEQ = new Simmed();
 			$zmEQ->simmed_date=$aF_simmed_date;
@@ -116,11 +115,12 @@ class SimmedsTableSeeder extends Seeder
 			$zmEQ->simmed_leader_id=$aF_simmed_leader_id;
 			$zmEQ->simmed_technician_id=$aF_simmed_technician_id;
 			$zmEQ->simmed_technician_character_id=$aF_simmed_technician_character_id;
+			$zmEQ->user_id=1;
 			$zmEQ->save();
-			}
+		}
 
 
-
+add_student_subject("Temat testowy","Test subject");
 add_student_subject("Anestezjologia i intensywna terapia","Anesthesiology and Intensive Care");
 add_student_subject("Anestezjologia i stany zagrożenia życia","");
 add_student_subject("Chirurgia","Surgery");
@@ -169,6 +169,7 @@ add_student_subject("Endokrynologia","Endocrynology");
 
 
 
+$id_group=add_student_group("RokTestowy","TST",1,1);	add_groupsub($id_group,"ćw",2,1);		
 $id_group=add_student_group("LEK/Eng-Div-6/16/17","6L-ED",1,1);	add_groupsub($id_group,"ćwpk",2,1);		
 $id_group=add_student_group("LEK/Eng-Div-6/17/18","5L-ED",1,1);	add_groupsub($id_group,"ćw",2,1);	add_groupsub($id_group,"ćwp",2,1);	
 $id_group=add_student_group("LEK/Eng-Div-6/18/19","4L-ED",1,1);	add_groupsub($id_group,"ćwpk",3,1);		
@@ -197,6 +198,28 @@ $id_group=add_student_group("Po/IIst./S/2020/2021","2PoII",2,1);
 $id_group=add_student_group("LEK/Eng-Div-6/20/21","2L-ED",1,1);	add_groupsub($id_group,"ćw",2,1);		
 
 
+
+$aF_simmed_date=date('Y-m-d');
+$aF_simmed_technician_character_id=TechnicianCharacter::where('character_short','stay')->first()->id;
+
+insert_sims($aF_simmed_date, '07:30', '13:00', 'Temat testowy', 'RokTestowy', 'D 0.10', 'mbaczek', 'sebek', $aF_simmed_technician_character_id, 1);
+insert_sims($aF_simmed_date, '12:00', '15:30', 'Temat testowy', 'RokTestowy', 'C 2.07', 'mbaczek', 'paulina', $aF_simmed_technician_character_id, 1);
+insert_sims($aF_simmed_date, '07:30', '13:00', 'Temat testowy', 'RokTestowy', 'C 2.07', 'mbaczek', 'darek', $aF_simmed_technician_character_id, 1);
+insert_sims($aF_simmed_date, '12:00', '15:30', 'Temat testowy', 'RokTestowy', 'C 2.10', 'mbaczek', 'wojtek', $aF_simmed_technician_character_id, 1);
+insert_sims($aF_simmed_date, '09:30', '15:00', 'Temat testowy', 'RokTestowy', 'D 0.09', 'mbaczek', 'marcin', $aF_simmed_technician_character_id, 1);
+insert_sims($aF_simmed_date, '14:00', '17:30', 'Temat testowy', 'RokTestowy', 'D 0.10', 'mbaczek', 'bartek', $aF_simmed_technician_character_id, 1);
+insert_sims($aF_simmed_date, '13:30', '19:00', 'Temat testowy', 'RokTestowy', 'D 0.09', 'mbaczek', 'marcin', $aF_simmed_technician_character_id, 1);
+
+$aF_simmed_technician_character_id=TechnicianCharacter::where('character_short','phon')->first()->id;
+insert_sims($aF_simmed_date, '13:00', '16:30', 'Temat testowy', 'RokTestowy', 'B 3.34', 'pkrzciuk', 'bartek', $aF_simmed_technician_character_id, 1);
+insert_sims($aF_simmed_date, '13:00', '16:30', 'Temat testowy', 'RokTestowy', 'B 3.37', 'pkrzciuk', 'bartek', $aF_simmed_technician_character_id, 1);
+insert_sims($aF_simmed_date, '14:00', '16:30', 'Temat testowy', 'RokTestowy', 'B 3.34', 'pkrzciuk', 'darek', $aF_simmed_technician_character_id, 1);
+insert_sims($aF_simmed_date, '14:00', '16:30', 'Temat testowy', 'RokTestowy', 'B 3.37', 'pkrzciuk', 'darek', $aF_simmed_technician_character_id, 1);
+
+
+$aF_simmed_technician_character_id=TechnicianCharacter::where('character_short','prep')->first()->id;
+insert_sims($aF_simmed_date, '09:30', '15:00', 'Temat testowy', 'RokTestowy', 'A 1.01', 'pkrzciuk', 'marcin', $aF_simmed_technician_character_id, 1);
+insert_sims($aF_simmed_date, '13:30', '17:00', 'Temat testowy', 'RokTestowy', 'A 1.02', 'pkrzciuk', 'bartek', $aF_simmed_technician_character_id, 1);
 
     }
 }
