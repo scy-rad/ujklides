@@ -939,16 +939,47 @@ class ManSimmedController extends Controller
 
         SimmedTemp::where('tmp_status','=','0')->where('simmed_id', '=', '0')->update(['tmp_status' => 1]); //ustaw status pozostałych na zaimportuj
 
-        $data_return=SimmedTemp::orderByDesc('tmp_status')
+            $data_return=DB::table('simmed_temps')
+            ->select('simmed_trap','simmed_date', \DB::raw('concat(substr(simmed_time_begin,1,5),"-",substr(simmed_time_end,1,5)) as time'), 'room_number', 
+            \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as leader'), 
+            'student_subject_name', 'student_group_name', 'subgroup_name',
+            'technicians.name as technician_name', 
+            'character_short',
+            'simmed_alternative_title',
+            'tmp_status',
+            'simmed_merge',
+            'simmed_id',
+            'room_id',
+            'leaders.id as leader_id',
+            'simmed_technician_id',
+            'simmed_technician_character_id',
+                'student_subject_id',
+                'simmed_temps.student_group_id',
+                'student_subgroup_id',
+            'simmed_temps.id',
+            'simmed_time_begin',
+            'simmed_time_end'
+            )
+            ->leftjoin('rooms','simmed_temps.room_id','=','rooms.id')
+            ->leftjoin('users as leaders','simmed_temps.simmed_leader_id','=','leaders.id')
+            ->leftjoin('users as technicians','simmed_temps.simmed_technician_id','=','technicians.id')
+            ->leftjoin('user_titles','leaders.user_title_id','=','user_titles.id')
+            ->leftjoin('student_subjects','simmed_temps.student_subject_id','=','student_subjects.id')
+            ->leftjoin('student_groups','simmed_temps.student_group_id','=','student_groups.id')
+            ->leftjoin('student_subgroups','simmed_temps.student_subgroup_id','=','student_subgroups.id')
+            ->leftjoin('technician_characters','simmed_temps.simmed_technician_character_id','=','technician_characters.id')
+    
+            ->orderByDesc('tmp_status')
             ->orderBy('simmed_merge')
             ->orderByDesc('simmed_id')
 
+            ->orderBy('simmed_date')
+            ->orderBy('simmed_time_begin')
+            
             ->orderBy('student_group_id')
             ->orderBy('student_subgroup_id')
             ->orderBy('student_subject_id')
 
-            ->orderBy('simmed_date')
-            ->orderBy('simmed_time_begin')
             ->get()
             ;
 

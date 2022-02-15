@@ -140,7 +140,7 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
 @section('title', " Analiza importu")
 
 @section('content')
-<h1>Import zajęć z pliku tekstowego</h1>
+<h1>Import zajęć z pliku tekstowego (analiza)</h1>
     <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
         {{ csrf_field() }}
         @if (isset($currrent_status_list))

@@ -115,7 +115,11 @@ if ( !(Auth::user()->hasRole('Technik') || Auth::user()->hasRole('Operator Symul
         ?>
         <tr class="{{$curr_class}}">
             <!--th scope="row">{{$row_one->sim_id }}</th-->
-            <td>{{$row_one->simmed_date }}: {{$dni_tygodnia[ date('w',strtotime($row_one->simmed_date)) ]}}</td>
+            <td>
+                <a href="{{route('simmeds.show', $row_one->id)}}">
+                {{$row_one->simmed_date }}: {{$dni_tygodnia[ date('w',strtotime($row_one->simmed_date)) ]}}
+                </a>
+            </td>
             <td>{{substr($row_one->simmed_time_begin,0,5) }} - {{ substr($row_one->simmed_time_end,0,5) }}</td>
             <td>{{$row_one->room()->room_number }} {{$row_one->technician_id}}</td>
             @if (Auth::user()->hasRole('Operator Symulacji'))
