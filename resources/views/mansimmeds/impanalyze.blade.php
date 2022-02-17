@@ -63,14 +63,20 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
                 //     $rowek2.='<td>'.$prev->simmed_leader_id.'</td><td>'.$prev->leader()->full_name()."</td>";
                 else 
                     $rowek2.='<td></td><td>- - -</td>';
-                if ($new_simmed->student_subject_id == $prev->student_subject_id)
-                    $rowek2.='<td></td><td></td>';
-                else
+
+
+                    
+                if ( ($new_simmed->student_subject_id != $prev->student_subject_id) && ($prev->student_subject_id>0) )
                     $rowek2.='<td>'.$prev->student_subject_id.'</td><td>'.$prev->student_subject()->student_subject_name."</td>";
-                if ($new_simmed->student_group_id == $prev->student_group_id)
-                    $rowek2.='<td></td><td></td>';
                 else
+                    $rowek2.='<td></td><td></td>';
+                if ( ($new_simmed->student_group_id != $prev->student_group_id) && ($prev->student_group_id>0) )
                     $rowek2.='<td>'.$prev->student_group_id.'</td><td>'.$prev->student_group()->student_group_name."</td>";
+                else
+                    $rowek2.='<td></td><td></td>';
+
+                    
+
                 if (($new_simmed->student_subgroup_id != $prev->student_subgroup_id) &&
                     ($prev->student_subgroup_id > 0 ))
                     $rowek2.='<td>'.$prev->student_subgroup_id.'</td><td>'.$prev->student_subgroup()->subgroup_name."</td>";

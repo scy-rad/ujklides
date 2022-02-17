@@ -108,20 +108,39 @@ class User extends Authenticatable
             $title                  =   $pozostalo_do_analizy;
         }
 
+        if ( ($lastname=="Krzciuk") || ($firstname=="Krzciuk") )
+            echo 'Krzciuk: |'.$lastname.'| |'.$firstname.'| |'.$title.'|<br>';
         if (($lastname)!='')//jeśli nazwa składa się conajmniej z dwóch członów - to szukaj tej osoby w bazie danych
-            {
+        {
             if (UserTitle::where('user_title_short',$title)->first()!==NULL)
-                {
+            {
                 $user = User::where('user_title_id',UserTitle::where('user_title_short',$title)->first()->id)
                         ->where('lastname',$lastname)
                         ->where('firstname',$firstname);
                 if ($user->first()!==NULL)
-                    {
                     return $user->first()->id;
-                    }
-                }
-            return 0;
+
+                $user = User::where('user_title_id',UserTitle::where('user_title_short',$title)->first()->id)
+                        ->where('lastname',$firstname)
+                        ->where('firstname',$lastname);
+                if ($user->first()!==NULL)
+                    return $user->first()->id;
+
             }
+            else
+            {
+                $user = User::where('lastname',$lastname)
+                        ->where('firstname',$firstname);
+                if ($user->first()!==NULL)
+                    return $user->first()->id;
+                    
+                $user = User::where('lastname',$firstname)
+                        ->where('firstname',$lastname);
+                if ($user->first()!==NULL)
+                    return $user->first()->id;
+            }
+            return 0;
+        }
         return 0; //jeśli nazwa składa się tylko z jednego członu - zwróć 0
         }
 

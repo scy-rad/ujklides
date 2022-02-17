@@ -531,7 +531,9 @@ class ManSimmedController extends Controller
         if (count($no_subjects)>0)
         foreach ($no_subjects as $no_subject)
             {
-            $student_subject_id=StudentSubject::where('student_subject_name',$no_subject->student_subject_txt)->orWhere('student_subject_name_en',$no_subject->student_subject_txt)->first();
+            $student_subject_id=StudentSubject::where('student_subject_name',$no_subject->student_subject_txt)
+            ->orWhere('student_subject_name_en',$no_subject->student_subject_txt)
+            ->first();
             if ($student_subject_id===NULL)
                 {
                 $licz=SimmedTemp::where('student_subject_txt',$no_subject->student_subject_txt)->first()->id;
@@ -562,7 +564,9 @@ class ManSimmedController extends Controller
         if (count($no_groups)>0)
         foreach ($no_groups as $no_group)
             {
-            $student_group_id=StudentGroup::where('student_group_name',$no_group->student_group_txt)->first();
+            $student_group_id=StudentGroup::where('student_group_name',$no_group->student_group_txt)
+                    ->orWhere('student_group_code',$no_group->student_group_txt)
+                    ->first();
             if ($student_group_id===NULL)
                 {
                 $licz=SimmedTemp::where('student_group_txt',$no_group->student_group_txt)->first()->id;
