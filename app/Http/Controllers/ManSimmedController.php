@@ -563,25 +563,23 @@ class ManSimmedController extends Controller
         $data['missing_groups']=0;
         if (count($no_groups)>0)
         foreach ($no_groups as $no_group)
+        {
+            $student_group_id=StudentGroup::find_group($no_group->student_group_txt);
+            if ($student_group_id==0)
             {
-            $student_group_id=StudentGroup::where('student_group_name',$no_group->student_group_txt)
-                    ->orWhere('student_group_code',$no_group->student_group_txt)
-                    ->first();
-            if ($student_group_id===NULL)
-                {
                 $licz=SimmedTemp::where('student_group_txt',$no_group->student_group_txt)->first()->id;
                 $data['no_group_list'][$licz]['row']=$licz;
                 $data['no_group_list'][$licz]['name']=$no_group->student_group_txt;
 				$data['no_group_list'][$licz]['action']='pomiń';//'dodaj';
 				$data['missing_groups']++;
-                }
+            }
             else
-                {
+            {
                 SimmedTemp::where('student_group_txt',$no_group->student_group_txt)
                     ->whereNull('student_group_id')
-                    ->update(['student_group_id' => $student_group_id->id]);
-                }
-            } // end of $no_groups as $no_group
+                    ->update(['student_group_id' => $student_group_id]);
+            }
+        } // end of $no_groups as $no_group
 
         //
         //      SUBGROUPS
