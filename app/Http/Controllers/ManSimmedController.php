@@ -562,8 +562,8 @@ class ManSimmedController extends Controller
         if (count($no_groups)>0)
         foreach ($no_groups as $no_group)
             {
-            $student_group_id=StudentGroup::where('student_group_name',$no_group->student_group_txt)->first();
-            if ($student_group_id===NULL)
+            $student_group_id=StudentGroup::find_group($no_group->student_group_txt);
+            if ($student_group_id==0)
                 {
                 $licz=SimmedTemp::where('student_group_txt',$no_group->student_group_txt)->first()->id;
                 $data['no_group_list'][$licz]['row']=$licz;
@@ -575,7 +575,7 @@ class ManSimmedController extends Controller
                 {
                 SimmedTemp::where('student_group_txt',$no_group->student_group_txt)
                     ->whereNull('student_group_id')
-                    ->update(['student_group_id' => $student_group_id->id]);
+                    ->update(['student_group_id' => $student_group_id]);
                 }
             } // end of $no_groups as $no_group
 

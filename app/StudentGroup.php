@@ -11,6 +11,9 @@ class StudentGroup extends Model
         $group = StudentGroup::where('student_group_name',$student_group_name);
         if ($group->first()!==NULL)
             return $group->first()->id;
+        $group = StudentGroup::where('student_group_code',$student_group_name);
+        if ($group->first()!==NULL)
+            return $group->first()->id;
         return 0;
         }
 
