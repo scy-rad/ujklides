@@ -86,7 +86,8 @@ class User extends Authenticatable
         return json_encode($data);
     }
 
-    public static function find_user($fullname) {
+    public static function find_user($fullname)
+    {
         //funkcja wukorzystywana przez kontroler ManSimmed
 
         $firstname='';
@@ -139,10 +140,9 @@ class User extends Authenticatable
                 if ($user->first()!==NULL)
                     return $user->first()->id;
             }
-            return 0;
         }
-        return 0; //jeśli nazwa składa się tylko z jednego członu - zwróć 0
-        }
+       return 0; //jeśli nazwa składa się tylko z jednego członu - zwróć 0
+    }
 
 
     public function add_roles($role_id, $center_id) {
