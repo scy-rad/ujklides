@@ -165,15 +165,29 @@ add_student_subject("Opieka ginekologiczna","");
 add_student_subject("Ortopedia i traumatologia","");
 add_student_subject("Nefrologia","Nefrology");
 add_student_subject("Endokrynologia","Endocrynology");
+add_student_subject("Farmakologia z toksykologią","Pharmacology with toxicology");
+add_student_subject("Ginekologia","");
+add_student_subject("Dermatologia i wenerologia","Dermatology and venerology");
+add_student_subject("Anestezjologia","Anesthesiology");
+add_student_subject("Diagnostyka obrazowa","");
+add_student_subject("Koło naukowe","");
+add_student_subject("specjalizacje","");
+add_student_subject("Pierwsza pomoc z elementami pielęgniarstwa","");
+add_student_subject("Pielęgniarstwo geriatryczne","");
+add_student_subject("Specjalność wybrana przez studenta","");
+add_student_subject("Chirurgia ogólna","General Surgery");
+add_student_subject("OSCE Pielęgniarstwo","");
+add_student_subject("OSCE Położnictwo","");
 
 
 
 
-$id_group=add_student_group("RokTestowy","TST",1,1);	add_groupsub($id_group,"ćw",2,1);		
+$id_group=add_student_group("RokTestowy","TST",1,1);	add_groupsub($id_group,"ćwp",2,1);		
 $id_group=add_student_group("LEK/Eng-Div-6/16/17","6L-ED",1,1);	add_groupsub($id_group,"ćwpk",2,1);		
 $id_group=add_student_group("LEK/Eng-Div-6/17/18","5L-ED",1,1);	add_groupsub($id_group,"ćw",2,1);	add_groupsub($id_group,"ćwp",2,1);	
 $id_group=add_student_group("LEK/Eng-Div-6/18/19","4L-ED",1,1);	add_groupsub($id_group,"ćwpk",3,1);		
 $id_group=add_student_group("LEK/Eng-Div-6/19/20","3L-ED",1,1);	add_groupsub($id_group,"ćwpk",6,1);		
+$id_group=add_student_group("LEK/Eng-Div-6/20/21","2L-ED",1,1);	add_groupsub($id_group,"ćw",2,1);		
 $id_group=add_student_group("LEK/S/16/17","6L",1,1);	add_groupsub($id_group,"ćwpk",20,1);	add_groupsub($id_group,"ćwp",3,1);	
 $id_group=add_student_group("LEK/S/17/18","5L",1,1);	add_groupsub($id_group,"ćwpk",20,1);	add_groupsub($id_group,"ćw",5,1);	
 $id_group=add_student_group("LEK/S/18/19","4L",1,1);	add_groupsub($id_group,"ćwpk",20,1);	add_groupsub($id_group,"ćw",4,1);	
@@ -185,6 +199,7 @@ $id_group=add_student_group("P/Ist./S/19/20","3P",2,1);	add_groupsub($id_group,"
 $id_group=add_student_group("P/Ist./S/2020/2021","2P",2,1);	add_groupsub($id_group,"ćwp",12,1);	add_groupsub($id_group,"sym",12,1);	add_groupsub($id_group,"ćw",2,1);
 $id_group=add_student_group("PIEL/IIst./S/2021/2022","1PII",2,1);	add_groupsub($id_group,"ćw",3,1);		
 $id_group=add_student_group("PIEL/Ist./S/2021/2022","1P",2,1);	add_groupsub($id_group,"ćwp",16,1);	add_groupsub($id_group,"ćw",2,1);	
+$id_group=add_student_group("Po/IIst./S/2020/2021","2PoII",2,1);			
 $id_group=add_student_group("Po/Is./S/19/20","3Po",2,1);	add_groupsub($id_group,"ćwp",12,1);	add_groupsub($id_group,"sym",12,1);	
 $id_group=add_student_group("Po/Ist./S/2020/2021","2Po",2,1);	add_groupsub($id_group,"ćwp",6,1);	add_groupsub($id_group,"sym",11,1);	
 $id_group=add_student_group("POŁ/IIst./S/2021/2022","1PoII",2,1);	add_groupsub($id_group,"ćw",2,1);		
@@ -194,8 +209,6 @@ $id_group=add_student_group("RM/I stopień/st/2019/20","3RM",3,0);	add_groupsub(
 $id_group=add_student_group("RM/Ist/S/2020/2021","2RM",3,0);	add_groupsub($id_group,"ćwp",5,0);	add_groupsub($id_group,"ćw",2,0);	
 $id_group=add_student_group("RM/Ist/S/2021/2022","1RM",3,0);	add_groupsub($id_group,"ćwp",5,0);	add_groupsub($id_group,"ćw",2,0);	
 $id_group=add_student_group("RM/Ist/S/2021/2022/s","1RMx",3,0);	add_groupsub($id_group,"ćwp",5,0);		
-$id_group=add_student_group("Po/IIst./S/2020/2021","2PoII",2,1);			
-$id_group=add_student_group("LEK/Eng-Div-6/20/21","2L-ED",1,1);	add_groupsub($id_group,"ćw",2,1);		
 
 
 

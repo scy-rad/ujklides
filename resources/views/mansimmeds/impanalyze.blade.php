@@ -161,8 +161,7 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         <input type="hidden" name="step_code" value="100">
     </form>
 
-
-@if ($step_code==101)
+    @if ($step_code==101)
     sprawdź przed importem:
     <table width="100%">
         <?php rowEK_head(""); ?>
@@ -178,10 +177,14 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         <input class="btn btn-primary btn-lg" type="submit" value="zmień status pozostałym">
     </form>
 
+    <form action="{{ route('mansimmeds.import_noremove') }}" method="post">
+        {{ csrf_field() }}
+        <input type="hidden" name="step_code" value="100">
+        <input class="btn btn-primary btn-lg" type="submit" value="nie usuwaj niczego...">
+    </form>
 
     <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
                 {{ csrf_field() }}
-                <input type="hidden" name="step" value="edit_import">
                 <input class="btn btn-primary btn-lg" type="submit" value="analizuj dane">
     </form>
 

@@ -109,8 +109,6 @@ class User extends Authenticatable
             $title                  =   $pozostalo_do_analizy;
         }
 
-        if ( ($lastname=="Krzciuk") || ($firstname=="Krzciuk") )
-            echo 'Krzciuk: |'.$lastname.'| |'.$firstname.'| |'.$title.'|<br>';
         if (($lastname)!='')//jeśli nazwa składa się conajmniej z dwóch członów - to szukaj tej osoby w bazie danych
         {
             if (UserTitle::where('user_title_short',$title)->first()!==NULL)
@@ -126,19 +124,24 @@ class User extends Authenticatable
                         ->where('firstname',$lastname);
                 if ($user->first()!==NULL)
                     return $user->first()->id;
-
             }
-            else
+
+            $user = User::where('lastname',$lastname)
+                    ->where('firstname',$firstname);
+            if ($user->first()!==NULL)
             {
-                $user = User::where('lastname',$lastname)
-                        ->where('firstname',$firstname);
-                if ($user->first()!==NULL)
-                    return $user->first()->id;
-                    
-                $user = User::where('lastname',$firstname)
-                        ->where('firstname',$lastname);
-                if ($user->first()!==NULL)
-                    return $user->first()->id;
+                if (UserTitle::where('user_title_short',$title)->first()!==NULL)
+                    echo 'inny tytuł naukowy: '.$title.' '.$firstname.' '.$lastname.'<br>';
+                return $user->first()->id;
+            }
+
+            $user = User::where('lastname',$firstname)
+                    ->where('firstname',$lastname);
+            if ($user->first()!==NULL)
+            {
+                if (UserTitle::where('user_title_short',$title)->first()!==NULL)
+                    echo 'inny tytuł naukowy + zamiana imienia i nazwiska: '.$title.' '.$firstname.' '.$lastname.'<br>';
+                return $user->first()->id;
             }
         }
        return 0; //jeśli nazwa składa się tylko z jednego członu - zwróć 0

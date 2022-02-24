@@ -248,6 +248,11 @@ Route::post('mansimmeds/impanalyze', [
     'as' => 'mansimmeds.impanalyze'
 ]);
 
+Route::post('mansimmeds/import_noremove', [
+    'uses' => 'ManSimmedController@import_noremove',
+    'as' => 'mansimmeds.import_noremove'
+]);
+
 Route::post('mansimmeds/mark_import', [
     'uses' => 'ManSimmedController@markimport',
     'as' => 'mansimmeds.markimport'
