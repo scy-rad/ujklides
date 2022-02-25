@@ -120,64 +120,65 @@ class SimmedsTableSeeder extends Seeder
 		}
 
 
-add_student_subject("Temat testowy","Test subject");
-add_student_subject("Anestezjologia i intensywna terapia","Anesthesiology and Intensive Care");
-add_student_subject("Anestezjologia i stany zagrożenia życia","");
-add_student_subject("Chirurgia","Surgery");
-add_student_subject("Chirurgia dziecięca","");
-add_student_subject("Chirurgia i pielęgniarstwo chirurgiczne","");
-add_student_subject("Choroby wewnętrzne","Internal Medicine");
-add_student_subject("Choroby wewnętrzne z elementami onkologii","");
-add_student_subject("Choroby wewnętrzne-Propedeutyka Interny z elementami Kardiologii","Internal Medicine-propaedeutics in internal medicine with elements of cardiology");
-add_student_subject("Ginekologia i położnictwo","");
-add_student_subject("Intensywna terapia","");
-add_student_subject("Medycyna katastrof","");
-add_student_subject("Medycyna ratunkowa","");
-add_student_subject("Medycyna Ratunkowa i Medycyna Katastrof","Emergency medicine and disaster medicine");
-add_student_subject("Medyczne czynności ratunkowe","");
-add_student_subject("Neurologia","Neurology");
-add_student_subject("Opieka położnicza","");
-add_student_subject("Pediatria","Pediatrics");
-add_student_subject("Pielęgniarstwo opieki długoterminowej","");
-add_student_subject("Podstawowe zabiegi medyczne","");
-add_student_subject("Podstawy ratownictwa medycznego","");
-add_student_subject("Procedury ratunkowe przedszpitalne","");
-add_student_subject("Procedury ratunkowe wewnątrzszpitalne","");
-add_student_subject("Propedeutyka medycyny","");
-add_student_subject("Rehabilitacja w położnictwie, neonatologii i ginekologii","");
-add_student_subject("Podstawy pielęgniarstwa","");
-add_student_subject("Ortopedia i traumatologia narządu ruchu","");
-add_student_subject("Psychiatria i pielęgniarstwo psychiatryczne","");
-add_student_subject("Podstawy opieki położniczej","");
-add_student_subject("Techniki położnicze i prowadzenie porodu","");
-add_student_subject("Pielęgniarstwo chirurgiczne","");
-add_student_subject("Pielęgniarstwo pediatryczne","");
-add_student_subject("Pielęgniarstwo neurologiczne","");
-add_student_subject("Pielęgniarstwo internistyczne","");
-add_student_subject("Pielęgniarstwo w zagrożeniu życia","");
-add_student_subject("Interna i pielęgniarstwo internistyczne","");
-add_student_subject("Opieka paliatywna","");
-add_student_subject("Pielęgniarstwo położniczo - ginekologiczne","");
-add_student_subject("Opieka neonatologiczna","");
-add_student_subject("Pielęgniarstwo psychiatryczne","");
-add_student_subject("Podstawowa opieka zdrowotna","");
-add_student_subject("Opieka ginekologiczna","");
-add_student_subject("Ortopedia i traumatologia","");
-add_student_subject("Nefrologia","Nefrology");
-add_student_subject("Endokrynologia","Endocrynology");
-add_student_subject("Farmakologia z toksykologią","Pharmacology with toxicology");
-add_student_subject("Ginekologia","");
-add_student_subject("Dermatologia i wenerologia","Dermatology and venerology");
-add_student_subject("Anestezjologia","Anesthesiology");
-add_student_subject("Diagnostyka obrazowa","");
-add_student_subject("Koło naukowe","");
-add_student_subject("specjalizacje","");
-add_student_subject("Pierwsza pomoc z elementami pielęgniarstwa","");
-add_student_subject("Pielęgniarstwo geriatryczne","");
-add_student_subject("Specjalność wybrana przez studenta","");
-add_student_subject("Chirurgia ogólna","General Surgery");
-add_student_subject("OSCE Pielęgniarstwo","");
-add_student_subject("OSCE Położnictwo","");
+		add_student_subject("_Temat testowy","Test subject");
+		add_student_subject("Anestezjologia","Anesthesiology");
+		add_student_subject("Anestezjologia i intensywna terapia","Anesthesiology and Intensive Care");
+		add_student_subject("Anestezjologia i stany zagrożenia życia","");
+		add_student_subject("Chirurgia","Surgery");
+		add_student_subject("Chirurgia dziecięca","");
+		add_student_subject("Chirurgia i pielęgniarstwo chirurgiczne","");
+		add_student_subject("Chirurgia ogólna","General Surgery");
+		add_student_subject("Choroby wewnętrzne","Internal Medicine");
+		add_student_subject("Choroby wewnętrzne z elementami onkologii","");
+		add_student_subject("Choroby wewnętrzne-Propedeutyka Interny z elementami Kardiologii","Internal Medicine-propaedeutics in internal medicine with elements of cardiology");
+		add_student_subject("Dermatologia i wenerologia","Dermatology and venerology");
+		add_student_subject("Diagnostyka obrazowa","");
+		add_student_subject("Endokrynologia","Endocrynology");
+		add_student_subject("Farmakologia z toksykologią","Pharmacology with toxicology");
+		add_student_subject("Ginekologia","");
+		add_student_subject("Ginekologia i położnictwo","");
+		add_student_subject("Intensywna terapia","");
+		add_student_subject("Interna i pielęgniarstwo internistyczne","");
+		add_student_subject("Koło naukowe","");
+		add_student_subject("Medycyna katastrof","");
+		add_student_subject("Medycyna ratunkowa","");
+		add_student_subject("Medycyna Ratunkowa i Medycyna Katastrof","Emergency medicine and disaster medicine");
+		add_student_subject("Medyczne czynności ratunkowe","");
+		add_student_subject("Nefrologia","Nefrology");
+		add_student_subject("Neurologia","Neurology");
+		add_student_subject("Opieka ginekologiczna","");
+		add_student_subject("Opieka neonatologiczna","");
+		add_student_subject("Opieka paliatywna","");
+		add_student_subject("Opieka położnicza","");
+		add_student_subject("Ortopedia i traumatologia","");
+		add_student_subject("Ortopedia i traumatologia narządu ruchu","");
+		add_student_subject("OSCE Pielęgniarstwo","");
+		add_student_subject("OSCE Położnictwo","");
+		add_student_subject("Pediatria","Pediatrics");
+		add_student_subject("Pielęgniarstwo chirurgiczne","");
+		add_student_subject("Pielęgniarstwo geriatryczne","");
+		add_student_subject("Pielęgniarstwo internistyczne","");
+		add_student_subject("Pielęgniarstwo neurologiczne","");
+		add_student_subject("Pielęgniarstwo opieki długoterminowej","");
+		add_student_subject("Pielęgniarstwo pediatryczne","");
+		add_student_subject("Pielęgniarstwo położniczo - ginekologiczne","");
+		add_student_subject("Pielęgniarstwo psychiatryczne","");
+		add_student_subject("Pielęgniarstwo w zagrożeniu życia","");
+		add_student_subject("Pierwsza pomoc z elementami pielęgniarstwa","");
+		add_student_subject("Podstawowa opieka zdrowotna","");
+		add_student_subject("Podstawowe zabiegi medyczne","");
+		add_student_subject("Podstawy opieki położniczej","");
+		add_student_subject("Podstawy pielęgniarstwa","");
+		add_student_subject("Podstawy ratownictwa medycznego","");
+		add_student_subject("Procedury ratunkowe przedszpitalne","");
+		add_student_subject("Procedury ratunkowe wewnątrzszpitalne","");
+		add_student_subject("Propedeutyka medycyny","");
+		add_student_subject("Psychiatria i pielęgniarstwo psychiatryczne","");
+		add_student_subject("Rehabilitacja w położnictwie, neonatologii i ginekologii","");
+		add_student_subject("specjalizacje","");
+		add_student_subject("Specjalność wybrana przez studenta","");
+		add_student_subject("Techniki położnicze i prowadzenie porodu","");
+		
 
 
 
@@ -212,27 +213,27 @@ $id_group=add_student_group("RM/Ist/S/2021/2022/s","1RMx",3,0);	add_groupsub($id
 
 
 
-$aF_simmed_date=date('Y-m-d');
-$aF_simmed_technician_character_id=TechnicianCharacter::where('character_short','stay')->first()->id;
+// $aF_simmed_date=date('Y-m-d');
+// $aF_simmed_technician_character_id=TechnicianCharacter::where('character_short','stay')->first()->id;
 
-insert_sims($aF_simmed_date, '07:30', '13:00', 'Temat testowy', 'RokTestowy', 'D 0.10', 'mbaczek', 'sebek', $aF_simmed_technician_character_id, 1);
-insert_sims($aF_simmed_date, '12:00', '15:30', 'Temat testowy', 'RokTestowy', 'C 2.07', 'mbaczek', 'paulina', $aF_simmed_technician_character_id, 1);
-insert_sims($aF_simmed_date, '07:30', '13:00', 'Temat testowy', 'RokTestowy', 'C 2.07', 'mbaczek', 'darek', $aF_simmed_technician_character_id, 1);
-insert_sims($aF_simmed_date, '12:00', '15:30', 'Temat testowy', 'RokTestowy', 'C 2.10', 'mbaczek', 'wojtek', $aF_simmed_technician_character_id, 1);
-insert_sims($aF_simmed_date, '09:30', '15:00', 'Temat testowy', 'RokTestowy', 'D 0.09', 'mbaczek', 'marcin', $aF_simmed_technician_character_id, 1);
-insert_sims($aF_simmed_date, '14:00', '17:30', 'Temat testowy', 'RokTestowy', 'D 0.10', 'mbaczek', 'bartek', $aF_simmed_technician_character_id, 1);
-insert_sims($aF_simmed_date, '13:30', '19:00', 'Temat testowy', 'RokTestowy', 'D 0.09', 'mbaczek', 'marcin', $aF_simmed_technician_character_id, 1);
+// insert_sims($aF_simmed_date, '07:30', '13:00', '_Temat testowy', 'RokTestowy', 'D 0.10', 'mbaczek', 'sebek', $aF_simmed_technician_character_id, 1);
+// insert_sims($aF_simmed_date, '12:00', '15:30', '_Temat testowy', 'RokTestowy', 'C 2.07', 'mbaczek', 'paulina', $aF_simmed_technician_character_id, 1);
+// insert_sims($aF_simmed_date, '07:30', '13:00', '_Temat testowy', 'RokTestowy', 'C 2.07', 'mbaczek', 'darek', $aF_simmed_technician_character_id, 1);
+// insert_sims($aF_simmed_date, '12:00', '15:30', '_Temat testowy', 'RokTestowy', 'C 2.10', 'mbaczek', 'wojtek', $aF_simmed_technician_character_id, 1);
+// insert_sims($aF_simmed_date, '09:30', '15:00', '_Temat testowy', 'RokTestowy', 'D 0.09', 'mbaczek', 'marcin', $aF_simmed_technician_character_id, 1);
+// insert_sims($aF_simmed_date, '14:00', '17:30', '_Temat testowy', 'RokTestowy', 'D 0.10', 'mbaczek', 'bartek', $aF_simmed_technician_character_id, 1);
+// insert_sims($aF_simmed_date, '13:30', '19:00', '_Temat testowy', 'RokTestowy', 'D 0.09', 'mbaczek', 'marcin', $aF_simmed_technician_character_id, 1);
 
-$aF_simmed_technician_character_id=TechnicianCharacter::where('character_short','phon')->first()->id;
-insert_sims($aF_simmed_date, '13:00', '16:30', 'Temat testowy', 'RokTestowy', 'B 3.34', 'pkrzciuk', 'bartek', $aF_simmed_technician_character_id, 1);
-insert_sims($aF_simmed_date, '13:00', '16:30', 'Temat testowy', 'RokTestowy', 'B 3.37', 'pkrzciuk', 'bartek', $aF_simmed_technician_character_id, 1);
-insert_sims($aF_simmed_date, '14:00', '16:30', 'Temat testowy', 'RokTestowy', 'B 3.34', 'pkrzciuk', 'darek', $aF_simmed_technician_character_id, 1);
-insert_sims($aF_simmed_date, '14:00', '16:30', 'Temat testowy', 'RokTestowy', 'B 3.37', 'pkrzciuk', 'darek', $aF_simmed_technician_character_id, 1);
+// $aF_simmed_technician_character_id=TechnicianCharacter::where('character_short','phone')->first()->id;
+// insert_sims($aF_simmed_date, '13:00', '16:30', '_Temat testowy', 'RokTestowy', 'B 3.34', 'pkrzciuk', 'bartek', $aF_simmed_technician_character_id, 1);
+// insert_sims($aF_simmed_date, '13:00', '16:30', '_Temat testowy', 'RokTestowy', 'B 3.37', 'pkrzciuk', 'bartek', $aF_simmed_technician_character_id, 1);
+// insert_sims($aF_simmed_date, '14:00', '16:30', '_Temat testowy', 'RokTestowy', 'B 3.34', 'pkrzciuk', 'darek', $aF_simmed_technician_character_id, 1);
+// insert_sims($aF_simmed_date, '14:00', '16:30', '_Temat testowy', 'RokTestowy', 'B 3.37', 'pkrzciuk', 'darek', $aF_simmed_technician_character_id, 1);
 
 
-$aF_simmed_technician_character_id=TechnicianCharacter::where('character_short','prep')->first()->id;
-insert_sims($aF_simmed_date, '09:30', '15:00', 'Temat testowy', 'RokTestowy', 'A 1.01', 'pkrzciuk', 'marcin', $aF_simmed_technician_character_id, 1);
-insert_sims($aF_simmed_date, '13:30', '17:00', 'Temat testowy', 'RokTestowy', 'A 1.02', 'pkrzciuk', 'bartek', $aF_simmed_technician_character_id, 1);
+// $aF_simmed_technician_character_id=TechnicianCharacter::where('character_short','prep')->first()->id;
+// insert_sims($aF_simmed_date, '09:30', '15:00', '_Temat testowy', 'RokTestowy', 'A 1.01', 'pkrzciuk', 'marcin', $aF_simmed_technician_character_id, 1);
+// insert_sims($aF_simmed_date, '13:30', '17:00', '_Temat testowy', 'RokTestowy', 'A 1.02', 'pkrzciuk', 'bartek', $aF_simmed_technician_character_id, 1);
 
     }
 }

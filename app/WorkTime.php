@@ -42,7 +42,7 @@ class WorkTime extends Model
 
         ->where('simmed_date','=',$day)
         ->where('simmed_status','<',4)
-//        ->where('simmed_technician_character_id','=',TechnicianCharacter::where('character_short','stay')->get()->first()->id)
+        ->where('simmed_technician_character_id','<>',TechnicianCharacter::where('character_short','free')->get()->first()->id)
 
         //->get()
         ;
@@ -62,7 +62,11 @@ class WorkTime extends Model
         ->get();
         
         $tabela=null;
-        $row_no=1;
+        $row_no=0;
+
+        $tabela[0]['id']       = $row_no++;
+        $tabela[0]['id_room']  = 0;
+        $tabela[0]['number']   = '??';
         
         foreach ($technicians as $technician)
         {
@@ -116,15 +120,12 @@ class WorkTime extends Model
            $work_one['simdescript']=$simone->student_subject_name;//.' ['.$workday->student_group_name.', '.$workday->subgroup_name.']';
 
         
-           $tabela[$simone->technician_id]['sim'][] = $work_one;
+           $tabela[$simone->technician_id*1]['sim'][] = $work_one;
         }
-
-
-//dump($tabela);
 
         $zwrocik='';
         $record_separator="";
-        
+
         foreach ($tabela as $roomrow)
         {
             $zwrocik.=$record_separator;

@@ -167,7 +167,7 @@ class RoomsTableSeeder extends Seeder
         $ir=Add_Room($Center_id, 'free', 4, 'B 1.11', '', 'b111/b1.11.jpg', 'OSCE-KomPol', 'komunikacja OSCE Położnictwo',$room_noactive);
             Add_Storage($ir, $storage_cwiczeniowy, 'korytarz', 'korytarz', 'korytarz', 1, 0);
 
-        $ir=Add_Room($Center_id, 'phon', 1, 'B 1.12', 'CM_B1.12_OSCE', 'b112/b1.12a.jpg', 'OSCE Poł 01', 'Sala Egzaminacyjna OSCE - położnictwo 01',$room_noactive);
+        $ir=Add_Room($Center_id, 'phone', 1, 'B 1.12', 'CM_B1.12_OSCE', 'b112/b1.12a.jpg', 'OSCE Poł 01', 'Sala Egzaminacyjna OSCE - położnictwo 01',$room_noactive);
             Add_Storage($ir, $storage_cwiczeniowy, 'sala', 'sala', 'sala', 1, 0);
             $sort_count=1;
             Add_Storage($ir, $storage_cwiczeniowy, 'blat 01', 'Blat roboczy 1-C', 'Blat roboczy ćwiczeniowy 1', 1, $sort_count++);
@@ -175,7 +175,7 @@ class RoomsTableSeeder extends Seeder
             Add_Storage($ir, $storage_cwiczeniowy, 'szafka P02', 'Szafka podblatowa 2-C', 'Szafka podblatowa ćwiczeniowa 2', 3, $sort_count++);
             Add_Storage($ir, $storage_cwiczeniowy, 'szafka P03', 'Szafka podblatowa 3-M', 'Szafka podblatowa magazynowa 3', 2, $sort_count++);
 
-        $ir=Add_Room($Center_id, 'phon', 1, 'B 1.13', 'CM_B1.13_OSCE', 'b113/b1.13a.jpg', 'OSCE Poł 02', 'Sala Egzaminacyjna OSCE - położnictwo 02',$room_noactive);
+        $ir=Add_Room($Center_id, 'phone', 1, 'B 1.13', 'CM_B1.13_OSCE', 'b113/b1.13a.jpg', 'OSCE Poł 02', 'Sala Egzaminacyjna OSCE - położnictwo 02',$room_noactive);
             Add_Storage($ir, $storage_cwiczeniowy, 'sala', 'sala', 'sala', 1, 0);
             $sort_count=1;
             Add_Storage($ir, $storage_cwiczeniowy, 'blat 01', 'Blat roboczy 1-C', 'Blat roboczy ćwiczeniowy 1', 1, $sort_count++);
@@ -183,10 +183,10 @@ class RoomsTableSeeder extends Seeder
             Add_Storage($ir, $storage_cwiczeniowy, 'szafka P02', 'Szafka podblatowa 2-C', 'Szafka podblatowa ćwiczeniowa 2', 3, $sort_count++);
             Add_Storage($ir, $storage_cwiczeniowy, 'szafka P03', 'Szafka podblatowa 3-M', 'Szafka podblatowa magazynowa 3', 2, $sort_count++);
 
-        $ir=Add_Room($Center_id, 'phon', 2, 'B 1.14', '', 'b114/b1.14a.jpg', 'OSCE kontrolka', 'Sala Egzaminacyjna OSCE - kontrolka',$room_noactive);
+        $ir=Add_Room($Center_id, 'phone', 2, 'B 1.14', '', 'b114/b1.14a.jpg', 'OSCE kontrolka', 'Sala Egzaminacyjna OSCE - kontrolka',$room_noactive);
             Add_Storage($ir, $storage_cwiczeniowy, 'sala', 'sala', 'sala', 1, 0);
 
-        $ir=Add_Room($Center_id, 'phon', 11, 'B 1.15', 'CM_B1.15_OSCE', 'b115/b1.15a.jpg', 'OSCE Pie 01', 'Sala Egzaminacyjna OSCE - pielęgniarstwo 01',$room_noactive);
+        $ir=Add_Room($Center_id, 'phone', 11, 'B 1.15', 'CM_B1.15_OSCE', 'b115/b1.15a.jpg', 'OSCE Pie 01', 'Sala Egzaminacyjna OSCE - pielęgniarstwo 01',$room_noactive);
             Add_Storage($ir, $storage_cwiczeniowy, 'sala', 'sala', 'sala', 1, 0);
             $sort_count=1;
             Add_Storage($ir, $storage_cwiczeniowy, 'blat 01', 'Blat roboczy 1-C', 'Blat roboczy ćwiczeniowy 1', 1, $sort_count++);
@@ -194,16 +194,16 @@ class RoomsTableSeeder extends Seeder
             Add_Storage($ir, $storage_cwiczeniowy, 'szafka P02', 'Szafka podblatowa 2-C', 'Szafka podblatowa ćwiczeniowa 2', 3, $sort_count++);
             Add_Storage($ir, $storage_cwiczeniowy, 'szafka P03', 'Szafka podblatowa 3-M', 'Szafka podblatowa magazynowa 3', 2, $sort_count++);
 
-        $ir=Add_Room($Center_id, 'phon', 11, 'B 1.16', 'CM_B1.16_OSCE', 'b116/b1.16a.jpg', 'OSCE Pie 02', 'Sala Egzaminacyjna OSCE - pielęgniarstwo 02',$room_noactive);
+        $ir=Add_Room($Center_id, 'phone', 11, 'B 1.16', 'CM_B1.16_OSCE', 'b116/b1.16a.jpg', 'OSCE Pie 02', 'Sala Egzaminacyjna OSCE - pielęgniarstwo 02',$room_noactive);
             Add_Storage($ir, $storage_cwiczeniowy, 'sala', 'sala', 'sala', 1, 0);
             $sort_count=1;
             Add_Storage($ir, $storage_cwiczeniowy, 'blat 01', 'Blat roboczy 1-C', 'Blat roboczy ćwiczeniowy 1', 1, $sort_count++);
             Add_Storage($ir, $storage_cwiczeniowy, 'szafka P01', 'Szafka podblatowa 1-C', 'Szafka podblatowa ćwiczeniowa 1', 2, $sort_count++);
             Add_Storage($ir, $storage_cwiczeniowy, 'szafka P02', 'Szafka podblatowa 2-C', 'Szafka podblatowa ćwiczeniowa 2', 3, $sort_count++);
             Add_Storage($ir, $storage_cwiczeniowy, 'szafka P03', 'Szafka podblatowa 3-M', 'Szafka podblatowa magazynowa 3', 2, $sort_count++);
-        $ir=Add_Room($Center_id, 'phon', 11, 'B 1.17', 'CM_B1.17_OSCE', 'b117/b1.17a.jpg', 'OSCE Pie 03', 'Sala Egzaminacyjna OSCE - pielęgniarstwo 03',$room_noactive);
+        $ir=Add_Room($Center_id, 'phone', 11, 'B 1.17', 'CM_B1.17_OSCE', 'b117/b1.17a.jpg', 'OSCE Pie 03', 'Sala Egzaminacyjna OSCE - pielęgniarstwo 03',$room_noactive);
             Add_Storage($ir, $storage_cwiczeniowy, 'sala', 'sala', 'sala', 1, 0);
-        $ir=Add_Room($Center_id, 'phon', 11, 'B 1.18', 'CM_B1.18_OSCE', 'b118/b1.18a.jpg', 'OSCE Pie 04', 'Sala Egzaminacyjna OSCE - pielęgniarstwo 04',$room_noactive);
+        $ir=Add_Room($Center_id, 'phone', 11, 'B 1.18', 'CM_B1.18_OSCE', 'b118/b1.18a.jpg', 'OSCE Pie 04', 'Sala Egzaminacyjna OSCE - pielęgniarstwo 04',$room_noactive);
             Add_Storage($ir, $storage_cwiczeniowy, 'sala', 'sala', 'sala', 1, 0);
         $ir=Add_Room($Center_id, 'free', 4, 'B 1.19', '', 'b119/b1.19.jpg', 'OSCE-KomPiel', 'komunikacja OSCE Pielęgniarstwo',$room_noactive);
             Add_Storage($ir, $storage_cwiczeniowy, 'korytarz', 'korytarz', 'korytarz', 1, 0);
