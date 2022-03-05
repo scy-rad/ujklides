@@ -162,6 +162,7 @@ if ( !(Auth::user()->hasRole('Technik') || Auth::user()->hasRole('Operator Symul
             type:"POST",
             data:{
                 id: id_row,
+                table: 'simmeds',
                 character_id: next_array[id_character],
                 _token: _token
                 },

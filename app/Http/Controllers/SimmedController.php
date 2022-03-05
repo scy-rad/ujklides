@@ -233,7 +233,7 @@ class SimmedController extends Controller
 
     public function ajaxtechnicianchar(Request $request) 
     {
-        $status = DB::table('simmeds')
+        $status = DB::table($request->table)
        ->where('id', $request->id)
        ->update(['simmed_technician_character_id' => $request->character_id]);
        return json_encode(array('result'=>false, 'tescik' =>'przykladowy_tekst', 'statusx'=> $status));

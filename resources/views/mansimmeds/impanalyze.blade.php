@@ -3,7 +3,7 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         return view('error',['head'=>'błąd wywołania widoku ManSimMeds impanalyze','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 ?>
 
-@if ($step_code==101)
+@if ($step['step_code']==101)
     <?php
     function rowEK_head($head)
     {
@@ -130,7 +130,9 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
             <td>{{$new_simmed->subgroup_name}}</td>
             <td class="bg-info">{{$new_simmed->simmed_technician_id}}</td>
             <td>{{$new_simmed->technician_name}}</td>
-            <td>{{$new_simmed->character_short}}</td>
+            
+            <td><div id="type{{$new_simmed->id}}" onclick="ChangeSimType({{$new_simmed->id}},{{$new_simmed->simmed_technician_character_id }});"> {{$new_simmed->character_short}} </div></td>
+            
             <td>{{$new_simmed->simmed_alternative_title}}</td>
             <td>{{$new_simmed->simmed_id}}</td>
             <td><div id="status{{$new_simmed->id }}" onclick="ChangeSimStatus({{$new_simmed->id }},{{$new_simmed->tmp_status }});"> {{ App\SimmedTemp::status_name($new_simmed->tmp_status) }} </div></td>
@@ -149,8 +151,8 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
 <h1>Import zajęć z pliku tekstowego (analiza)</h1>
     <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
         {{ csrf_field() }}
-        @if (isset($currrent_status_list))
-        @foreach ($currrent_status_list as $current_status)
+        @if (isset($step['currrent_status_list']))
+        @foreach ($step['currrent_status_list'] as $current_status)
         <input type="checkbox" name="code{{$current_status->tmp_status}}" value ="{{$current_status->tmp_status}}"{{$current_status->check}}>
         
         status: <strong>{{App\SimmedTemp::status_name($current_status->tmp_status)}}</strong>
@@ -161,7 +163,7 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         <input type="hidden" name="step_code" value="100">
     </form>
 
-    @if ($step_code==101)
+    @if ($step['step_code']==101)
     sprawdź przed importem:
     <table width="100%">
         <?php rowEK_head(""); ?>
@@ -219,12 +221,12 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
 
 
 @else
-    @if ($step_code<80)
+    @if ($step['step_code']<80)
 
         <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
                 {{ csrf_field() }}
-                <input class="btn btn-primary btn-lg" type="submit" value="zacznij od kroku {{$step_code}}">
-                <input type="hidden" name="step_code" value="{{$step_code}}">
+                <input class="btn btn-primary btn-lg" type="submit" value="zacznij od kroku {{$step['step_code']}}">
+                <input type="hidden" name="step_code" value="{{$step['step_code']}}">
         </form>
         <form action="{{ route('mansimmeds.impanalyze') }}" method="post">
                 {{ csrf_field() }}
@@ -290,6 +292,53 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
                 },
             });
     }
+
+
+
+
+
+
+
+
+    function ChangeSimType(id_row,id_character)
+    {
+        //let activities = [0 => 'Location Zero', 1 => 'Location One', 2 => 'Location Two'];
+        var char_array = new Array();
+        var next_array = new Array();
+            @foreach ($ret['technician_char'] as $one_row)
+                char_array[{{$one_row['next_value']}}] = "{{$one_row['character_short']}}";
+                next_array[{{$one_row['next_value']}}] = "{{$one_row['id']}}";
+            @endforeach
+
+        zmiana = document.getElementById('type'+id_row);
+
+        zmiana.innerHTML=char_array[id_character];
+        zmiana.setAttribute("onclick","ChangeSimType("+id_row+","+next_array[id_character]+")");
+
+        let _token   = '{{csrf_token()}}';
+            $.ajax(
+            {
+            url: "/simmed/ajaxtechnicianchar",
+            type:"POST",
+            data:{
+                id: id_row,
+                table: 'simmed_temps',
+                character_id: next_array[id_character],
+                _token: _token
+                },
+            success:function(response)
+                {
+                    console.log(response);
+                    if(response)
+                    {
+                        $('.success').text(response.success);
+                        //$("#ajaxform")[0].reset();
+                        //alert(response.success);
+                    }
+                },
+            });
+    }
+
 </script>
 
 

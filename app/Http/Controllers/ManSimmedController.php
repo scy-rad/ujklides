@@ -910,19 +910,43 @@ class ManSimmedController extends Controller
                     //dump($step['currrent_status_list']);                    // ->limit(100)
                     // ->offset(0)
                     $data_return=$data_return->where('room_id',0);
+//                    dump($data_return->toSql());
                     $data_return=$data_return->get();
-
+                    
                 $step['step_code']=101;
     
         }   //endof switch
-                        
+
+        
+        $technician_char=TechnicianCharacter::all();
+        $prev_id=0;
+        foreach ($technician_char as $technician_one)
+            {
+            if ($prev_id==0)
+                {
+                $prev_id=$technician_one->id;
+                $change_tech=$technician_one;
+                }
+            else
+                {
+                $change_tech->next_value=$technician_one->id;
+                $change_tech=$technician_one;
+                }
+            }
+            $change_tech->next_value=$prev_id;
+        
+        $ret_technician_char=$technician_char->toArray();
+        foreach ($ret_technician_char as $row)
+            $ret['technician_char'][$row['id']]=$row;   //zmiana, żeby id wiersza było id tabeli
+
+
         $koniec = microtime();
         $koniec = explode(' ', $koniec);
         $roznica = ($koniec[0]+$koniec[1])-($start[0]+$start[1]);
-        dump('czas wykonywania do kroku '.$request->step_code.': '.$roznica);
+        dump('Czas wykonywania do kroku '.$request->step_code.': '.$roznica);
         dump((intval(($koniec[0]+$koniec[1])-($start[0]+$start[1])))>40);
- 
-        return view('mansimmeds.impanalyze', compact('data_return'),$step);
+        
+        return view('mansimmeds.impanalyze', compact('data_return'),['ret' => $ret, 'step' => $step] );
     }   // end of public function impanalyze
 
 
@@ -1029,7 +1053,9 @@ class ManSimmedController extends Controller
 
         $data_return=[];
         $step['step_code']='101';
-        return view('mansimmeds.impanalyze', compact('data_return'),$step);
+        $ret['technician_char']=[];
+        return view('mansimmeds.impanalyze', compact('data_return'),['ret' => $ret, 'step' => $step] );
+
     }   // end of public function clearimport
 
 
@@ -1185,7 +1211,8 @@ class ManSimmedController extends Controller
 
         $data_return=[];
         $step['step_code']='101';
-        return view('mansimmeds.impanalyze', compact('data_return'),$step);
+        $ret['technician_char']=[];
+        return view('mansimmeds.impanalyze', compact('data_return'),['ret' => $ret, 'step' => $step] );
         //return view('mansimmeds.import')->with($data);
     }   //end of public function import_append
 
