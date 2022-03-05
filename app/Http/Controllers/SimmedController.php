@@ -271,7 +271,8 @@ class SimmedController extends Controller
         $ret['technicians_list']=User::role_users('technicians', 1, 1)->get();
         $ret['leaders_list']=User::role_users('instructors', 1, 1)->get();
         $ret['subjects_list']=\App\StudentSubject::where('student_subject_status',1)->orderBy('student_subject_name')->get();
-        $ret['rooms_list']=\App\Room::where('room_status',1)->orderBy('room_number')->get();
+        //$ret['rooms_list']=\App\Room::where('room_status',1)->orderBy('room_number')->get();
+        $ret['rooms_list']=\App\Room::where('room_xp_code','<>','')->orderBy('room_number')->get();
         $ret['status_list']=Simmed::status_table();
         $ret['technician_characters_list']=\App\TechnicianCharacter::orderBy('id')->get();
         return view('simmeds.edit', compact('simmed'), $ret);

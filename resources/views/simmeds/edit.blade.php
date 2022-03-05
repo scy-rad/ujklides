@@ -42,7 +42,8 @@
 
         <br>
         <label for="simmed_leader_id">Instruktor:</label>
-        <select name="simmed_leader_id" id="simmed_leader_id">
+            <select name="simmed_leader_id" id="simmed_leader_id">
+            <option value="0"<?php if (0 == $simmed->simmed_leader_id) echo 'selected="selected"'; ?>>!! brak wyboru !!</option>
             @foreach ($leaders_list as $leader_one)
             <option value="{{$leader_one->id}}"<?php if ($leader_one->id == $simmed->simmed_leader_id) echo 'selected="selected"'; ?>>{{$leader_one->lastname}} {{$leader_one->firstname}}</option>
             @endforeach

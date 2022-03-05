@@ -97,7 +97,7 @@ class RoomsLekTableSeeder extends Seeder
                 Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
             $ir=Add2_Room($Center_id, 'phone', 21, 'B 0.30', 'CM_B0.30_CSM', 'b030/b0.30a.jpg', 'Sala ALS RatMed 30', 'Sala ALS (Advanced  Life Support) 30',$room_noactive);
                 Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
-            $ir=Add2_Room($Center_id, 'ready', 21, 'RatMed', '', 'room.jpg', 'CSM ratownictwo medyczne', 'CSM ratownictwo medyczne',$room_noactive);
+            $ir=Add2_Room($Center_id, 'ready', 21, 'RatMed', 'RatMed_no_code', 'room.jpg', 'CSM ratownictwo medyczne', 'CSM ratownictwo medyczne',$room_noactive);
                 Add2_Storage($ir, $storage_cwicz_magaz, 'sala', 'sala', 'sala', 1, 0);
 
             $ir=Add2_Room($Center_id, 'free', 21, 'B 0.31', 'CM_B0.31_CIM', 'b031/b0.31a.jpg', 'Sala CIM 31', 'Sala CIM 31',$room_noactive);
