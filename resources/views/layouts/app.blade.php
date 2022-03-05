@@ -100,6 +100,10 @@
                                     @if ( (Auth::user()->hasRole('Technik')) || (Auth::user()->hasRole('Operator Symulacji')) )
                                     <li><a href="{{ route('simmeds.plane') }}">Planowanie</a></li>
                                     @endif
+                                    @if ( (Auth::user()->hasRole('Technik')) || (Auth::user()->hasRole('Operator Kadr')) )
+                                    <br>
+                                    <li><a href="{{ route('worktime.month') }}">Czas pracy</a></li>
+                                    @endif
                                     <br>
                                     <li><a href="{{ route('scenarios.index') }}">Scenariusze</a></li>
 

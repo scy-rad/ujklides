@@ -112,11 +112,11 @@ class RoomsLekTableSeeder extends Seeder
                 for ($i=1; $i<=1; $i++)
                     Add2_Storage($ir, $storage_magazynowy, 'regał '.str_pad($i, 2, 0, STR_PAD_LEFT), 'regał '.str_pad($i, 2, 0, STR_PAD_LEFT), 'regał magazynowy '.str_pad($i, 2, 0, STR_PAD_LEFT), 5, $sort_count++);
 
-            $ir=Add2_Room($Center_id, 'prep', 1, 'B 3.04', 'CM_B3.04', 'b304/b3.04a.jpg', 'Sala OSCE 04', 'Sala egzaminacyjna OSCE 3.04',$room_active);
+            $ir=Add2_Room($Center_id, 'prep', 1, 'B 3.04', 'CM_B3.04_OSCE', 'b304/b3.04a.jpg', 'Sala OSCE 04', 'Sala egzaminacyjna OSCE 3.04',$room_active);
                 Add2_Storage($ir, $storage_cwiczeniowy, 'sala', 'sala', 'sala', 1, 0);
             $ir=Add2_Room($Center_id, 'free', 1, 'B 3.05', '', 'b305/b3.05a.jpg', 'kontrolka sal OSCE 04 i OSCE 06', 'pomieszczenie kontrolne dla sal OSCE 3.04 i OSCE 3.06',$room_active);
                 Add2_Storage($ir, $storage_magazynowy, 'sala', 'sala', 'sala', 1, 0);
-            $ir=Add2_Room($Center_id, 'prep', 1, 'B 3.06', 'CM_B3.06', 'b306/b3.06a.jpg', 'Sala OSCE 06', 'Sala egzaminacyjna OSCE 3.06',$room_active);
+            $ir=Add2_Room($Center_id, 'prep', 1, 'B 3.06', 'CM_B3.06_OSCE', 'b306/b3.06a.jpg', 'Sala OSCE 06', 'Sala egzaminacyjna OSCE 3.06',$room_active);
                 Add2_Storage($ir, $storage_cwiczeniowy, 'sala', 'sala', 'sala', 1, 0);
 
             $ir=Add2_Room($Center_id, 'prep', 1, 'B 3.07', 'CM_B3.07', 'b307/b3.07a.jpg', 'Sala um. klinieczne 07', 'Sala nauczania umiejętności klinicznych 3.07',$room_active);

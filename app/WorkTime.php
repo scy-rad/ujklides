@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+
 
 class WorkTime extends Model
 {
@@ -42,6 +44,7 @@ class WorkTime extends Model
 
         ->where('simmed_date','=',$day)
         ->where('simmed_status','<',4)
+        //->where('simmed_technician_character_id','=',TechnicianCharacter::where('character_short','stay')->get()->first()->id)
         ->where('simmed_technician_character_id','<>',TechnicianCharacter::where('character_short','free')->get()->first()->id)
 
         //->get()
@@ -67,7 +70,7 @@ class WorkTime extends Model
         $tabela[0]['id']       = $row_no++;
         $tabela[0]['id_room']  = 0;
         $tabela[0]['number']   = '??';
-        
+
         foreach ($technicians as $technician)
         {
             $tabela[$technician->id]['id']       = $row_no++;
@@ -96,8 +99,6 @@ class WorkTime extends Model
             $work_one['character']=$workday->long_name;
             $work_one['simdescript']=$workday->description;
             ;
-            
-        
             $tabela[$workday->user_id]['sim'][] = $work_one;
  //           dump($work_one);
         }
@@ -119,7 +120,6 @@ class WorkTime extends Model
            $work_one['character']='symulacja: '.$simone->character_name;
            $work_one['simdescript']=$simone->student_subject_name;//.' ['.$workday->student_group_name.', '.$workday->subgroup_name.']';
 
-        
            $tabela[$simone->technician_id*1]['sim'][] = $work_one;
         }
 
@@ -172,89 +172,17 @@ class WorkTime extends Model
         return $zwrocik;
     }
 
-
-
-    public static function old_activity_for_scheduler($day) 
+    public static function get_worktime_characters()
     {
-        $simdays=Simmed::
-        select('simmeds.id',
-        \DB::raw('substr(simmed_time_begin,1,5) as start'),
-        \DB::raw('substr(simmed_time_end,1,5) as end'),  
-        'room_number',
-        \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as text'),
-        'technicians.id as technician_id',
-        'technicians.name as subtxt'
+    return DB::table('simmeds')
+    ->select(
+        'character_short as worktime_type',
+        \DB::raw('count(character_short) as worktime_count'),
+        \DB::raw('sum(floor(timediff(simmed_time_end,simmed_time_begin)/10000)) as worktime_hours'),
+        \DB::raw('sum(timediff(simmed_time_end,simmed_time_begin)%10000/100) as worktime_minutes'),
         )
-
-        ->leftjoin('rooms','simmeds.room_id','=','rooms.id')
-        ->leftjoin('users as leaders','simmeds.simmed_leader_id','=','leaders.id')
-        ->leftjoin('users as technicians','simmeds.simmed_technician_id','=','technicians.id')
-        ->leftjoin('user_titles','leaders.user_title_id','=','user_titles.id')
-        ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
-            
-
-        ->where('simmed_date','=',$day)
-        ->where('simmed_status','<',4);
-//        ->where('simmed_technician_character_id','=',TechnicianCharacter::where('character_short','stay')->get()->first()->id);
-
-        //->get();
-
-        $workdays=WorkTime::select('date','time_begin','time_end')
-        ->where('date','=',$day);
-//        ->get();
-
-        //dump($workdays);
-
-        // $simrooms=Room::where('room_xp_code','<>','')
-        //         ->orderBy('room_number')->get();
-        $technicians=User::role_users('technicians', 1, 1)
-        ->select('id', 'name as title', \DB::raw('"CSM tech" as subtitle'))
-        ->get();
-
-        
-        $wynikJSON=null;
-        $zwrocik='';
-        $record_separator="";
-        
-        foreach ($technicians as $technician)
-        {
-            $tabela[$technician->id]['id']       = $technician->id;
-            $tabela[$technician->id]['id_room']  = $technician->id;
-            $tabela[$technician->id]['number']   = $technician->title;
-
-            $wynikJSON.=$record_separator;
-            $record_separator=',';
-            $wynikJSON.='\''.$technician->id.'\' : {';
-            $wynikJSON.='title : \''.$technician->title.'\'';
-            $wynikJSON.=',';
-            $wynikJSON.='subtitle : \'<i>CSMson</i>\'';
-
-            $simdaysClone                        = clone $simdays;
-            $workdaysClone                       = clone $workdays;
-            
-            $wynikJSON.=','."\nschedule:[";
-            $count=1;
-            foreach ($simdaysClone->where('simmeds.simmed_technician_id',$technician->id)->get() as $RowOne)
-            {
-                $xdata['id']=$count++;
-                $xdata['sdparam']='z modelu Simmed';
-                $xdata['class']='sc_bar_move';
-                $RowOne->data=$xdata;
-                $wynikJSON.=$RowOne->toJson();    
-            }
-            foreach ($workdaysClone->where('user_id',$technician->id)->get() as $RowTwo)
-            {
-                $xdata['id']=$count++;
-                $xdata['sdparam']='z modelu Simmed';
-                $xdata['class']='sc_bar_move';
-                $RowTwo->data=$xdata;
-                $wynikJSON.=$RowTwo->toJson();    
-            }
-
-            $wynikJSON.=']}';
-        }
-
-        return($wynikJSON);
-      }
+    ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
+    ->groupBy('worktime_type');
+    }
 
 }

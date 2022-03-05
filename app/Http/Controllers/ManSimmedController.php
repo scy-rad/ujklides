@@ -1721,12 +1721,12 @@ public function sendMail(Request $request)
                 }
 
 
-                foreach ($technician_users as $user)
-                {
-                    $msgBody='<h1 style="background:yellow">A taką informację otrzymują koordynatorzy:<h1> <br><hr><br>'.$msgBodyPrep;
-                    $msgTitle['subject']='[SIMinfo] informacje dla koordynatora o zmianach w symulacjach';
-                    $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
-                }
+                // foreach ($technician_users as $user)
+                // {
+                //     $msgBody='<h1 style="background:yellow">A taką informację otrzymują koordynatorzy:<h1> <br><hr><br>'.$msgBodyPrep;
+                //     $msgTitle['subject']='[SIMinfo] informacje dla koordynatora o zmianach w symulacjach';
+                //     $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
+                // }
 
                 break;
         }
