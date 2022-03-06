@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\WorkTime;
 use App\User;
+use App\TechnicianCharacter;
 
 class WorkTimeController extends Controller
 {
@@ -241,6 +242,103 @@ class WorkTimeController extends Controller
         return view('worktime/month',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $table, 'total' => $total ]);
 
     }
+
+    
+    public function statistics(Request $request)
+    {
+        $months['2022-02']='2022-02';
+        $months['2022-03']='2022-03';
+    
+        function m2h($min)
+        {
+            $sign = $min < 0 ? '-' : '';
+            $min = abs($min);
+            return $sign.floor($min/60).':'.str_pad($min%60, 2, '0', STR_PAD_LEFT);
+        }
+
+        if (isset($request->month))
+            $filtr['month'] = $request->month;
+        else
+            $filtr['month'] = date('Y-m');
+
+        $begin = strtotime($filtr['month'].'-01');
+        $end   = strtotime($filtr['month'].'-01 + 1 month');
+        
+        $technician_list=User::role_users('technicians', 1, 1)->get();
+        $technician_char=TechnicianCharacter::all();
+
+        foreach ($technician_list as $technician_one)
+        {
+            $tabelka=null;
+            $tabelka['name']=$technician_one->name;
+            $tabelka['firstname']=$technician_one->firstname;
+            $tabelka['lastname']=$technician_one->lastname;
+            foreach ($technician_char as $character_one)
+            {
+                $tabelka['current'][$character_one->character_short]['count']=0;
+                $tabelka['current'][$character_one->character_short]['time']=0;
+                $tabelka['previous'][$character_one->character_short]['count']=0;
+                $tabelka['previous'][$character_one->character_short]['time']=0;
+                $tabelka['to_date'][$character_one->character_short]['count']=0;
+                $tabelka['to_date'][$character_one->character_short]['time']=0;
+            }
+
+            $work_characters_month = 
+            \App\WorkTime::get_worktime_characters()
+                ->where('simmed_technician_id','=',$technician_one->id)
+                ->where('simmed_date','>=',date('Y-m-d',$begin))
+                ->where('simmed_date','<',date('Y-m-d',$end))
+                ->get();
+
+            foreach ($work_characters_month as $row_one)
+            {
+                $tabelka['current'][$row_one->worktime_type]['count']=$row_one->worktime_count;
+                $tabelka['current'][$row_one->worktime_type]['time']=$row_one->worktime_hours*60+$row_one->worktime_minutes;
+            }
+
+            $work_characters_month = 
+            \App\WorkTime::get_worktime_characters()
+                ->where('simmed_technician_id','=',$technician_one->id)
+                ->where('simmed_date','<',date('Y-m-d',$begin))
+                ->get();
+
+            foreach ($work_characters_month as $row_one)
+            {
+                $tabelka['previous'][$row_one->worktime_type]['count']=$row_one->worktime_count;
+                $tabelka['previous'][$row_one->worktime_type]['time']=$row_one->worktime_hours*60+$row_one->worktime_minutes;
+            }
+
+            $work_characters_month = 
+            \App\WorkTime::get_worktime_characters()
+                ->where('simmed_technician_id','=',$technician_one->id)
+                ->where('simmed_date','<',date('Y-m-d',$end))
+                ->get();
+
+            foreach ($work_characters_month as $row_one)
+            {
+                $tabelka['to_date'][$row_one->worktime_type]['count']=$row_one->worktime_count;
+                $tabelka['to_date'][$row_one->worktime_type]['time']=$row_one->worktime_hours*60+$row_one->worktime_minutes;
+            }
+
+            
+            $ret_table[]=$tabelka;
+        }
+
+        return view('worktime/statistics',['tabelka'=>$ret_table, 'characters' => $technician_char ]);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

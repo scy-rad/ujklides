@@ -294,6 +294,11 @@ Route::get('worktime/month', [
     'as' => 'worktime.month'
 ]);
 
+Route::get('worktime/statistics', [
+    'uses' => 'WorkTimeController@statistics',
+    'as' => 'worktime.statistics'
+]);
+
 
 
 

@@ -29,6 +29,9 @@ class SimmedController extends Controller
             case 'now':
                 $simmeds =  Simmed::where('simmed_status','<>',4)->where('simmed_date','>=',date('Y-m-d'))->where('simmed_date','<=',date('Y-m-d',strtotime( date('Y-m-d') .' +7 day' )))->orderBy('simmed_date')->orderBy('simmed_time_begin')->get();
             break;
+            case 'month':
+                $simmeds =  Simmed::where('simmed_status','<>',4)->where('simmed_date','>=',date('Y-m').'-01')->where('simmed_date','<=',date('Y-m-t'))->orderBy('simmed_date')->orderBy('simmed_time_begin')->get();
+            break;
         }
         return view('simmeds.index', compact('simmeds'));
     }
