@@ -277,10 +277,13 @@ class WorkTimeController extends Controller
             {
                 $tabelka['current'][$character_one->character_short]['count']=0;
                 $tabelka['current'][$character_one->character_short]['time']=0;
+                $tabelka['current'][$character_one->character_short]['type']='';
                 $tabelka['previous'][$character_one->character_short]['count']=0;
                 $tabelka['previous'][$character_one->character_short]['time']=0;
+                $tabelka['previous'][$character_one->character_short]['type']='';
                 $tabelka['to_date'][$character_one->character_short]['count']=0;
                 $tabelka['to_date'][$character_one->character_short]['time']=0;
+                $tabelka['to_date'][$character_one->character_short]['type']='';
             }
 
             $work_characters_month = 
@@ -292,10 +295,11 @@ class WorkTimeController extends Controller
 
             foreach ($work_characters_month as $row_one)
             {
+                $tabelka['current'][$row_one->worktime_type]['type']=$row_one->worktime_type;
                 $tabelka['current'][$row_one->worktime_type]['count']=$row_one->worktime_count;
                 $tabelka['current'][$row_one->worktime_type]['time']=$row_one->worktime_hours*60+$row_one->worktime_minutes;
             }
-
+     
             $work_characters_month = 
             \App\WorkTime::get_worktime_characters()
                 ->where('simmed_technician_id','=',$technician_one->id)
@@ -304,9 +308,11 @@ class WorkTimeController extends Controller
 
             foreach ($work_characters_month as $row_one)
             {
+                $tabelka['previous'][$row_one->worktime_type]['type']=$row_one->worktime_type;
                 $tabelka['previous'][$row_one->worktime_type]['count']=$row_one->worktime_count;
                 $tabelka['previous'][$row_one->worktime_type]['time']=$row_one->worktime_hours*60+$row_one->worktime_minutes;
             }
+
 
             $work_characters_month = 
             \App\WorkTime::get_worktime_characters()
@@ -316,15 +322,65 @@ class WorkTimeController extends Controller
 
             foreach ($work_characters_month as $row_one)
             {
+                $tabelka['to_date'][$row_one->worktime_type]['type']=$row_one->worktime_type;
                 $tabelka['to_date'][$row_one->worktime_type]['count']=$row_one->worktime_count;
                 $tabelka['to_date'][$row_one->worktime_type]['time']=$row_one->worktime_hours*60+$row_one->worktime_minutes;
+                //$tabelka['to_date'][$row_one->worktime_type]['total']=$work_total->worktime_hours*60+$work_total->worktime_minutes;
             }
 
             
             $ret_table[]=$tabelka;
         }
 
-        return view('worktime/statistics',['tabelka'=>$ret_table, 'characters' => $technician_char ]);
+
+
+        foreach ($technician_char as $character_one)
+        {
+            $work_total['current'][$character_one->character_short]['count']=0;
+            $work_total['current'][$character_one->character_short]['time']=0;
+            $work_total['previous'][$character_one->character_short]['count']=0;
+            $work_total['previous'][$character_one->character_short]['time']=0;
+            $work_total['to_date'][$character_one->character_short]['count']=0;
+            $work_total['to_date'][$character_one->character_short]['time']=0;
+        }
+
+
+        $work_total = 
+        \App\WorkTime::get_worktime_characters()
+            ->where('simmed_date','>=',date('Y-m-d',$begin))
+            ->where('simmed_date','<',date('Y-m-d',$end))
+            ->get();
+        foreach ($work_total as $row_one)
+        {
+            $total['current'][$row_one->worktime_type]['type']=$row_one->worktime_type;
+            $total['current'][$row_one->worktime_type]['count']=$row_one->worktime_count;
+            $total['current'][$row_one->worktime_type]['time']=$row_one->worktime_hours*60+$row_one->worktime_minutes;
+        }
+
+        $work_total = 
+        \App\WorkTime::get_worktime_characters()
+            ->where('simmed_date','<',date('Y-m-d',$begin))
+            ->get();
+        foreach ($work_total as $row_one)
+        {
+            $total['previous'][$row_one->worktime_type]['type']=$row_one->worktime_type;
+            $total['previous'][$row_one->worktime_type]['count']=$row_one->worktime_count;
+            $total['previous'][$row_one->worktime_type]['time']=$row_one->worktime_hours*60+$row_one->worktime_minutes;
+        }
+
+        $work_total = 
+        \App\WorkTime::get_worktime_characters()
+            ->where('simmed_date','<',date('Y-m-d',$end))
+            ->get();
+        foreach ($work_total as $row_one)
+        {
+            $total['to_date'][$row_one->worktime_type]['type']=$row_one->worktime_type;
+            $total['to_date'][$row_one->worktime_type]['count']=$row_one->worktime_count;
+            $total['to_date'][$row_one->worktime_type]['time']=$row_one->worktime_hours*60+$row_one->worktime_minutes;
+        }
+
+
+        return view('worktime/statistics',['tabelka'=>$ret_table, 'total' => $total, 'characters' => $technician_char ]);
 
     }
 
