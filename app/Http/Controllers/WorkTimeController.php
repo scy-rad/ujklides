@@ -104,6 +104,7 @@ class WorkTimeController extends Controller
             
                     ->where('simmed_date','=',$cur_date)
                     ->where('simmed_technician_id','=',$filtr['user'])
+                    ->where('simmed_status','<>',4)
                     ->orderBy('simmed_date')
                     ->orderBy('time')
                     ->orderBy('room_number')
@@ -130,6 +131,7 @@ class WorkTimeController extends Controller
                     ->where('simmed_date','=',$cur_date)
                     ->where('simmed_technician_id','=',$filtr['user'])
                     ->where('character_short','<>','prep')
+                    ->where('simmed_status','<>',4)
                     ->union($qA)
                     ->orderBy('time_start')
                     ->get()->first()
@@ -159,6 +161,7 @@ class WorkTimeController extends Controller
                 ->where('simmed_date','=',$cur_date)
                 ->where('simmed_technician_id','=',$filtr['user'])
                 ->where('character_short','<>','prep')
+                ->where('simmed_status','<>',4)
                 ->union($qA)
                 ->orderBy('time_stop','desc')
                 ->get()->first()

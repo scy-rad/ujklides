@@ -182,6 +182,7 @@ class WorkTime extends Model
         \DB::raw('sum(timediff(simmed_time_end,simmed_time_begin)%10000/100) as worktime_minutes'),
         )
     ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
+    ->where('simmed_status','<>',4)
     ->groupBy('worktime_type');
     }
 
