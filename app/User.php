@@ -32,7 +32,7 @@ class User extends Authenticatable
 
     public function sendPasswordResetNotification($token)
     {
-        // to add costom reset password mail template: 
+        // to add costom reset password mail template:
         // https://stackoverflow.com/questions/39327954/laravel-5-3-redefine-reset-email-blade-template
         $this->notify(new MyResetPassword($token));
     }
@@ -186,6 +186,14 @@ class User extends Authenticatable
 
     public function update_about($user_about) {
         $this->about=$user_about;
+        return $this->save();
+    }
+
+    public function update_personal($user_data) {
+        $this->user_title_id=$user_data->user_title_id;
+        $this->name=$user_data->name;
+        $this->firstname=$user_data->firstname;
+        $this->lastname=$user_data->lastname;
         return $this->save();
     }
 

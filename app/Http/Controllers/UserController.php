@@ -232,14 +232,13 @@ class UserController extends Controller
 
     public function update_personal(Request $request)
     {
-    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator')) 
+    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator'))
         return view('error',['head'=>'błąd wywołania funkcji update_personal kontrolera userprofile','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
-
             $user = User::where('id',$request->user_id)->first();
-            if ($user->update_status($request->user_status))
-                return back()->with('success','Zmiana statusu powiodła się.');
+            if ($user->update_personal($request))
+                return back()->with('success','Zmiana danych osobowych powiodła się.');
             else
-                return back()->withErrors('Zmiana statusu niestety nie powiodła się...');
+                return back()->withErrors('Zmiana danych osobowych niestety nie powiodła się...');
     }
 
     public function update_avatar(Request $request)

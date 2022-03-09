@@ -197,7 +197,7 @@ else
             <h5> login: <strong>{{$user->name}}</strong></h5>
             <hr>
             <div class="form-group">
-            
+
             <div class="col-sm-8">
                 &nbsp;
                 </div>
@@ -251,39 +251,39 @@ else
     <div id="phoneModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <div class="row">
+                <span class="close">&times;</span>
+            </div>
             <form action="{{ route('user.change_phone') }}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-sm-3">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-3">
                             <label for="user_phone_type_id">rodzaj telefonu:</label><br>
                             <select class="form-control" id="user_phone_type_id" name="user_phone_type_id">
                             @foreach (App\UserPhoneType::get() as $row)
                                 <option value="{{$row->id}}"> {{$row->user_phone_type_name}} </option>
                             @endforeach
                             </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <label for="phone_number">numer telefonu:</label><br>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="phone_number">numer telefonu:</label><br>
                             <input type="text" class="form-control" id="phone_number" name="phone_number" value="">
-                            </div>
-
-                            <div class="col-sm-3">
-                                <label for="xyz">prezentowanie telefonu:</label><br>
-                                <input type="checkbox" class="form-check-input" id="phone_for_coordinators" name="phone_for_coordinators">koordynatorom<br>
-                                <input type="checkbox" class="form-check-input" id="phone_for_technicians" name="phone_for_technicians">technikom<br>
-                                <input type="checkbox" class="form-check-input" id="phone_for_trainers" name="phone_for_trainers">instruktorom<br>
-                                <input type="checkbox" class="form-check-input" id="phone_for_guests" name="phone_for_guests" checked>gościom<br>
-                                <input type="checkbox" class="form-check-input" id="phone_for_anonymouse" name="phone_for_anonymouse" checked>wszystkim<br>
-                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="xyz">prezentowanie telefonu:</label><br>
+                            <input type="checkbox" class="form-check-input" id="phone_for_coordinators" name="phone_for_coordinators">koordynatorom<br>
+                            <input type="checkbox" class="form-check-input" id="phone_for_technicians" name="phone_for_technicians">technikom<br>
+                            <input type="checkbox" class="form-check-input" id="phone_for_trainers" name="phone_for_trainers">instruktorom<br>
+                            <input type="checkbox" class="form-check-input" id="phone_for_guests" name="phone_for_guests" checked>gościom<br>
+                            <input type="checkbox" class="form-check-input" id="phone_for_anonymouse" name="phone_for_anonymouse" checked>wszystkim<br>
+                        </div>
                         <input type="hidden" name="user_id" value="{{$user->id}}">
                         <input type="hidden" name="id_phone" id="id_phone" value="">
                         <button type="submit" class="col-sm-3 btn btn-primary">Zapisz</button>
                     </div>
-
-                    </div>
-                </form>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -291,14 +291,15 @@ else
     <div id="mailModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
-            <span class="close">&times;</span>
             <div class="row">
-            <form action="{{ route('user.change_email') }}" method="post" enctype="multipart/form-data">
+                <span class="close">&times;</span>
+            </div>
+            <div class="row">
+                <form action="{{ route('user.change_email') }}" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                     <div class="form-group">
-
                         <div class="col-sm-8">
-                        <input class="form-control" type="text" id="email" name="email" value="{{$user->email}}">
+                            <input class="form-control" type="text" id="email" name="email" value="{{$user->email}}">
                         </div>
 
                         <input type="hidden" name="user_id" value="{{$user->id}}">
@@ -306,7 +307,6 @@ else
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
 
@@ -315,28 +315,29 @@ else
     <div id="aboutModal" class="modal">
         <!-- Modal content -->
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <div class="row">
+                <span class="close">&times;</span>
+            </div>
             <div class="row">
                 <form method="post" action="{{ route('user.change_about') }}">
                     <input type="hidden" name="_method" value="PUT">
-                <div class="form-group">
-                    <label>opis</label>
-                    <textarea class="form-control tinymce-editor {{ $errors->has('about') ? 'error' : '' }}" name="about" id="about"
-                        rows="4">
-                        {!! $user->about !!}
-                    </textarea>
-                    @if ($errors->has('about'))
-                    <div class="error">
-                        {{ $errors->first('about') }}
+                    <div class="form-group">
+                        <label>opis</label>
+                        <textarea class="form-control tinymce-editor {{ $errors->has('about') ? 'error' : '' }}" name="about" id="about"
+                            rows="4">
+                            {!! $user->about !!}
+                        </textarea>
+                        @if ($errors->has('about'))
+                        <div class="error">
+                            {{ $errors->first('about') }}
+                        </div>
+                        @endif
                     </div>
-                    @endif
-                </div>
                     {{ csrf_field() }}
                     <input type="hidden" name="user_id" value="{{$user->id}}">
                     <input type="submit" name="send" value="Zapisz" class="btn btn-dark btn-block">
                 </form>
             </div>
-
         </div>
     </div>
 
@@ -349,11 +350,9 @@ else
                 <span class="close">&times;</span>
             </div>
             <div class="row">
-                <form action="{{ route('user.update_personal') }}" enctype="multipart/form-data">
+                <form method="post" action="{{ route('user.update_personal') }}">
                     <input type="hidden" name="_method" value="PUT">
-                    {{ csrf_field() }}
                     <div class="form-group">
-
                         <div class="col-sm-2">
                             <label for="user_title_id">tytuł:</label><br>
                             <select class="form-control" id="user_title_id" name="user_title_id">
@@ -374,8 +373,7 @@ else
                             <label for="lastname">nazwisko:</label><br>
                             <input type="text" class="form-control" id="lastname" name="lastname" value="{{$user->lastname}}">
                         </div>
-
-                        <label for="lastname">:</label><br>
+                        {{ csrf_field() }}
                         <button type="submit" class="col-sm-1 btn btn-primary">Zapisz</button>
                         <input type="hidden" name="user_id" value="{{$user->id}}">
                     </div>
@@ -413,10 +411,9 @@ else
         },
         });
 
-
-
         };
     </script>
+
     <!-- for modals -->
     <script>
     var openPhoneModal = function(id_phone,type,phone,phone_for_coordinators,phone_for_technicians,phone_for_trainers,phone_for_guests,phone_for_anonymouse) {
@@ -449,7 +446,6 @@ else
     var openPersonalModal = function() {
         modal4.style.display = "block";
         };
-
 
     var modal = document.getElementById("phoneModal");
     // Get the <span> element that closes the modal
