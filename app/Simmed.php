@@ -115,54 +115,10 @@ class Simmed extends Model
     }
    
 
-    public static function simmeds_for_plane($sch_date){
-/*
-        function validateDate($date, $format = 'Y-m-d H:i:s')
-                {
-                    $now = new \DateTime();
-                    $d = $now::createFromFormat($format, $date);
-                    return $d && $d->format($format) == $date;
-                }
-        if (!(validateDate($sch_date, 'Y-m-d')))
-            $sch_date=date('Y-m-d'); 
-
-        $before=date('N', strtotime($sch_date))-1;
-        $start_date=date('Y-m-d', strtotime($sch_date. ' - '.$before.' day'));
-        $end_date=date('Y-m-d', strtotime($sch_date. ' + 35 day'));
-        
-
-        $simday = Simmed::where('simmed_date','>=',$start_date)
-                        ->where('simmed_date','<=',$end_date)
-                        ->orderBy('simmed_date')
-                        ->orderBy('simmed_time_begin')
-                        ->get();
-*/                        
-        $data=[];
-  /*      foreach ($simday as $simrow)
-            {
-                $data[] = [
-                    'id' => $simrow->id,
-                    'simmed_date' => $simrow->simmed_date,
-                    'simmed_time_begin' => $simrow->simmed_time_begin,
-                    'simmed_time_end' => $simrow->simmed_time_end,
-                    'room_id' => $simrow->room_id,
-                    'room_number' => $simrow->room()->room_number.' '.$simrow->room()->room_name,
-                    'simmed_leader_id' => $simrow->simmed_leader_id,
-                    'leader_name' => $simrow->name_of_leader(),
-                    'simmed_technician_id' => $simrow->simmed_technician_id,
-                    'technician_name' => $simrow->name_of_technician(),
-                    'student_subject_id' => $simrow->student_subject_id,
-                    'subject' => $simrow->name_of_student_subject(),
-                    'group' => $simrow->name_of_student_group(),
-                    'simmed_status' => $simrow->simmed_status,
-                    'simmed_status2' => $simrow->simmed_status2
-                ];
-            }
-*/
-        //return json_encode($data);
-        return $data;
-
-    }
+    // public static function simmeds_for_plane($sch_date){
+    //     $data=[];
+    //     return $data;
+    // }
     
 
     public static function simmeds_for_timetable($what_type,$what_no,$date_from,$date_to) {
@@ -207,52 +163,60 @@ class Simmed extends Model
                         
         //dump($ret_tab);
         return $ret_tab;
-/*
-        class Event {}
-$events = array();
-
-
-foreach($result as $row) {
-  $e = new Event();
-  $e->id = $row['id'];
-  $e->text = $row['name'];
-  $e->start = $row['start'];
-  $e->end = $row['end'];
-  $events[] = $e;
-}
-
-echo json_encode($events);
-
-
-*/
        
     }
-/*
-    [
-        {
-          "start": "2021-02-21T10:30:00",
-          "end": "2021-02-21T13:30:00",
-          "id": "225eb40f-5f78-b53b-0447-a885c8e92233",
-          "text": "Calendar Event 1"
-        },
-        {
-          "start": "2021-02-22T12:30:00",
-          "end": "2021-02-22T15:00:00",
-          "id": "1f67def5-e1dd-57fc-2d39-eb7a5f8e789a",
-          "text": "Calendar Event 2"
-        },
-        {
-          "start": "2021-02-23T10:30:00",
-          "end": "2021-02-23T16:00:00",
-          "id": "aba78fd9-09d0-642e-612d-0e7e002c29f5",
-          "text": "Calendar Event 3"
-        }
-      ]
-   */
 
 
+    public static function simmeds_join($without_free,$without_deleted) 
+    {
+        $return=Simmed::
+        select('simmeds.id',
+                    'simmed_date',
+                        \DB::raw('dayname(simmed_date) as DayOfWeek'),
+                        \DB::raw('concat(substr(simmed_time_begin,1,5),"-",substr(simmed_time_end,1,5)) as time'), 
+                        \DB::raw('concat(substr(send_simmed_time_begin,1,5),"-",substr(send_simmed_time_end,1,5)) as send_time'), 
+                        
+        \DB::raw('substr(simmed_time_begin,1,5) as start'),
+        \DB::raw('substr(simmed_time_end,1,5) as end'),  
+        'room_id',
+        'room_number',
+        'leaders.id as leader_id',
+        \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as text'),
+        \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as leader'),
+        'technicians.id as technician_id',
+        'technicians.name as subtxt',
+        'simmed_technician_character_id',
+        'character_short',
+        'character_name',
+        'student_subject_id',
+        'student_subject_name',
+        'simmeds.student_group_id',
+        'student_group_code',
+        'student_group_name',
+        'student_subgroup_id', 
+        'subgroup_name',
+        'simmed_type_id',
+        'simmed_status',
+        'simmed_status2'
+        )
 
+        ->leftjoin('rooms','simmeds.room_id','=','rooms.id')
+        ->leftjoin('users as leaders','simmeds.simmed_leader_id','=','leaders.id')
+        ->leftjoin('users as technicians','simmeds.simmed_technician_id','=','technicians.id')
+        ->leftjoin('user_titles','leaders.user_title_id','=','user_titles.id')
+        ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
+        ->leftjoin('student_subjects','simmeds.student_subject_id','=','student_subjects.id')
+        ->leftjoin('student_groups','simmeds.student_group_id','=','student_groups.id')
+        ->leftjoin('student_subgroups','simmeds.student_subgroup_id','=','student_subgroups.id');
+                    
+        if ($without_deleted=='without_deleted')
+            $return=$return->where('simmed_status','<>',4);
+        if ($without_free=='without_free')
+            $return=$return->where('simmed_technician_character_id','<>',TechnicianCharacter::where('character_short','free')->get()->first()->id);
 
-
+        //->get()
+        ;
+        return $return;
+    }
 
 }

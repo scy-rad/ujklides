@@ -20,35 +20,9 @@ class WorkTime extends Model
 
     public static function activity_for_scheduler($day) 
     {
-        $simdays=Simmed::
-        select('simmeds.id',
-        \DB::raw('substr(simmed_time_begin,1,5) as start'),
-        \DB::raw('substr(simmed_time_end,1,5) as end'),  
-        'room_number',
-        \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as text'),
-        'technicians.id as technician_id',
-        'technicians.name as subtxt',
-        'character_short',
-        'student_subject_id',
-        'student_subject_name'//, 'student_group_name', 'subgroup_name'
-        )
+        $simdays=Simmed::simmeds_join('without_free','without_deleted')
+        ->where('simmed_date','=',$day);
 
-        ->leftjoin('rooms','simmeds.room_id','=','rooms.id')
-        ->leftjoin('users as leaders','simmeds.simmed_leader_id','=','leaders.id')
-        ->leftjoin('users as technicians','simmeds.simmed_technician_id','=','technicians.id')
-        ->leftjoin('user_titles','leaders.user_title_id','=','user_titles.id')
-        ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
-        ->leftjoin('student_subjects','simmeds.student_subject_id','=','student_subjects.id')
-          
-            
-
-        ->where('simmed_date','=',$day)
-        ->where('simmed_status','<',4)
-        //->where('simmed_technician_character_id','=',TechnicianCharacter::where('character_short','stay')->get()->first()->id)
-        ->where('simmed_technician_character_id','<>',TechnicianCharacter::where('character_short','free')->get()->first()->id)
-
-        //->get()
-        ;
         $workdays=WorkTime::select('*','work_times.description as simdescript')
         ->where('date','=',$day)
         //->where('simmed_status','<',4)
@@ -76,9 +50,9 @@ class WorkTime extends Model
             $tabela[$technician->id]['id']       = $row_no++;
             $tabela[$technician->id]['id_room']  = $technician->id;
             $tabela[$technician->id]['number']   = $technician->title;
-            $simdaysClone                        = clone $simdays; 
-            $technician['schedule']              = $simdaysClone->where('simmeds.simmed_technician_id',$technician->id)->get();
-            //dump($simdaysClone->where('simmeds.simmed_technician_id',$technician->id)->get());
+            $technician['schedule']              = Simmed::simmeds_join('without_free','without_deleted')
+                                                    ->where('simmed_date','=',$day)
+                                                    ->where('simmeds.simmed_technician_id',$technician->id)->get();
         }
 
         foreach ($workdays as $workday)
@@ -184,6 +158,72 @@ class WorkTime extends Model
     ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
     ->where('simmed_status','<>',4)
     ->groupBy('worktime_type');
+    }
+
+    public static function calculate_work_time($user_id, $date)
+    {
+        $qA = WorkTime::select(
+            \DB::raw('substring(time_begin,1,5) as time_start'),
+            \DB::raw('substring(time_end,1,5) as time_end')
+        )
+        ->where('user_id',$user_id)
+        ->where('date','=',$date)
+        ->where('code','<>','work_breake')
+        ->leftjoin('work_time_types','work_time_types_id','=','work_time_types.id')
+        ;
+
+        $all_day =
+        DB::table('simmeds')
+            ->select(
+                \DB::raw('substring(simmed_time_begin,1,5) as time_start'),
+                \DB::raw('substring(simmed_time_end,1,5) as time_end')
+                )
+            ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
+
+            ->where('simmed_date','=',$date)
+            ->where('simmed_technician_id','=',$user_id)
+            ->where('character_short','<>','prep')
+            ->where('simmed_status','<>',4)
+            ->union($qA)
+            ->orderBy('time_start')
+            ->get()
+            ;
+        $time_table=[];
+        $minutes=0;
+        if ($all_day->count()>0)
+        {
+            $current['start']=$all_day->first()->time_start;
+            $current['end']=$all_day->first()->time_end;
+
+            foreach ($all_day as $row_one)
+            {
+                if ($row_one->time_start>$current['end'])
+                    {
+                        $time_table[]=$current;
+                        $current['start']=$row_one->time_start;
+                        $current['end']=$row_one->time_end;
+                    }
+                elseif ($current['end']<$row_one->time_end)
+                    {
+                        $current['end']=$row_one->time_end;
+                    }
+            }
+            $time_table[]=$current;
+            
+
+            foreach ($time_table as $row_one)
+                {
+                $minutes+=round(abs(strtotime( $row_one['end']) - strtotime($row_one['start']) ) / 60,0);
+                }
+        }
+        else
+        {
+            $current['start']='-';
+            $current['end']='-';
+            $time_table[]=$current;
+
+        }
+        return ['date' => $date, 'times' => $time_table, 'minutes' => $minutes];
     }
 
 }

@@ -73,17 +73,21 @@
         </td>
         <td>
         @foreach ($row_one['sims'] as $sim_one)
-            <strong>{{$sim_one->time}} {{$sim_one->room_number}} ({{$sim_one->character_short}}) </strong><br>
-            {{$sim_one->student_subject_name}}<br>
+            <strong>{{$sim_one['time']}} {{$sim_one['room_number']}} ({{$sim_one['character_short']}}) </strong><br>
+            {{$sim_one['student_subject_name']}}<br>
             
         @endforeach
         </td>
         
         <td>
-            {{$row_one['time_start']}} - {{$row_one['time_stop']}}
+            <a href="{{route('worktime.day_data', [ $row_one['date'], $user->id ])}}">
+            @foreach ($row_one['times'] as $time_one)
+                {{$time_one['start']}} - {{$time_one['end']}}<br>
+            @endforeach
+            </a>
         </td>
         <td>
-            {{$row_one['times']}}
+            {{$row_one['hoursmin']}}
         </td>
 
     </tr>
