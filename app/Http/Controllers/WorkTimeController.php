@@ -16,6 +16,9 @@ class WorkTimeController extends Controller
 
     public function month_data(Request $request)
     {
+        if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator') && !Auth::user()->hasRole('Technik'))
+        return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
+
         $months['2022-02']='2022-02';
         $months['2022-03']='2022-03';
     
@@ -32,12 +35,16 @@ class WorkTimeController extends Controller
         else
             $filtr['month'] = date('Y-m');
         if ($request->technician==0)
-            $filtr['user'] = Auth::user()->id;
+            {
+            if (Auth::user()->hasRole('Technik'))
+                $filtr['user'] = Auth::user()->id;
+            else
+                $filtr['user'] = User::nobody()->id;
+            }
         else
             $filtr['user'] = $request->technician;
-        
-        $user = user::find($filtr['user']);
 
+        $user = user::find($filtr['user']);
 
         $begin = strtotime($filtr['month'].'-01');
         //$end   = strtotime(date("Y-m-t", strtotime($filtr['month'].'-01')));
@@ -87,17 +94,28 @@ class WorkTimeController extends Controller
     }
 
 
-    public function day_data($date, $user)
+    public function day_data($date, $user_id)
     {
-        $work_characters_month =
+        if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator') && !Auth::user()->hasRole('Technik'))
+        return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
+
+        $simmeds =
             \App\Simmed::simmeds_join('without_free','without_deleted')
                 ->where('simmed_date','=',$date)
-                ->where('simmeds.simmed_technician_id',$user)
+                ->where('simmeds.simmed_technician_id',$user_id)
                 ->orderBy('time')
                 ->orderBy('room_number')
-                ->get(); 
+                ->get();
 
-    return view('worktime/dayinfo',['user'=>'userek', 'work_characters_month' => $work_characters_month ]);
+        $work_times = \App\WorkTime::work_time_join('without_breake')
+        ->where('user_id',$user_id)
+        ->where('date','=',$date)
+        ->get();
+
+        $userdata=User::where('id', '=', $user_id)
+                    ->get()->first();
+
+    return view('worktime/dayinfo',['user'=>$userdata, 'simmeds' => $simmeds, 'work_times' => $work_times, 'date' => $date ]);
     }
 
 

@@ -197,6 +197,11 @@ class User extends Authenticatable
         return $this->save();
     }
 
+    public static function nobody() {
+        return User::where('lastname', '=', '_Nikt')
+        ->get()->first();
+    }
+
 
     public function update_avatar($request)
     {

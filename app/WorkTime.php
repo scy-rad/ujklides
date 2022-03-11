@@ -160,6 +160,36 @@ class WorkTime extends Model
     ->groupBy('worktime_type');
     }
 
+    public static function work_time_join($get_breake)
+    {
+        $ret = WorkTime::select(
+            '*',
+            \DB::raw('substring(time_begin,1,5) as time_begin'),
+            \DB::raw('substring(time_end,1,5) as time_end'),
+            'work_times.description as description',
+            'work_time_types.description as type_description'
+        );
+        //->where('user_id',$user_id)
+        //->where('date','=',$date);
+        switch ($get_breake)
+        {
+            case 'without_breake':
+                $ret=$ret->where('code','<>','work_breake');
+                break;
+            case 'with_breake':
+                //$ret=$ret->where('code','<>','work_breake');
+                break;
+            case 'only_breake':
+                $ret=$ret->where('code','=','work_breake');
+                break;
+            default:
+                dump('WorkTime model: error in calling function work_timne_join ');
+        }
+        
+        $ret=$ret->leftjoin('work_time_types','work_time_types_id','=','work_time_types.id');
+        return $ret;
+        }
+
     public static function calculate_work_time($user_id, $date)
     {
         $qA = WorkTime::select(
@@ -209,7 +239,6 @@ class WorkTime extends Model
                     }
             }
             $time_table[]=$current;
-            
 
             foreach ($time_table as $row_one)
                 {
@@ -221,7 +250,6 @@ class WorkTime extends Model
             $current['start']='-';
             $current['end']='-';
             $time_table[]=$current;
-
         }
         return ['date' => $date, 'times' => $time_table, 'minutes' => $minutes];
     }
