@@ -167,7 +167,8 @@ class WorkTime extends Model
             \DB::raw('substring(time_begin,1,5) as time_begin'),
             \DB::raw('substring(time_end,1,5) as time_end'),
             'work_times.description as description',
-            'work_time_types.description as type_description'
+            'work_time_types.description as type_description',
+            'work_times.id as id'
         );
         //->where('user_id',$user_id)
         //->where('date','=',$date);

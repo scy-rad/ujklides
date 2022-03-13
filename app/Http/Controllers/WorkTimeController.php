@@ -112,11 +112,51 @@ class WorkTimeController extends Controller
         ->where('date','=',$date)
         ->get();
 
+        $work_time_types = \App\WorkTimeType::select('*')
+            ->orderBy('short_name')
+            ->get();
+
         $userdata=User::where('id', '=', $user_id)
                     ->get()->first();
 
-    return view('worktime/dayinfo',['user'=>$userdata, 'simmeds' => $simmeds, 'work_times' => $work_times, 'date' => $date ]);
+    return view('worktime/dayinfo',['user'=>$userdata, 'simmeds' => $simmeds, 'work_times' => $work_times, 'work_time_types' => $work_time_types, 'date' => $date ]);
     }
+
+
+    public function save_data(Request $request)
+    {
+        if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator') && !Auth::user()->hasRole('Technik'))
+        return view('error',['head'=>'błąd wywołania funkcji save_data kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
+
+        if (!Auth::user()->hasRole('Operator Kadr') 
+            && !Auth::user()->hasRole('Administrator') 
+            && !(Auth::user()->id == ($request->user_id*1)) 
+            )
+            {
+                dump('tylko właściciel może edytować wpis');        
+            }
+        elseif (!Auth::user()->hasRole('Operator Kadr') 
+            && !Auth::user()->hasRole('Administrator') 
+            && ($request->date<=date('Y-m-d',strtotime('now - 7 days')))
+            )
+            {
+                dump('zbyt wczesna data do edycji');        
+            }
+            
+        $TimeWork=\App\WorkTime::find($request->id);
+        $TimeWork->work_time_types_id   = $request->work_time_types_id;
+        $TimeWork->time_begin           = $request->modal_start;
+        $TimeWork->time_end             = $request->modal_end;
+        $TimeWork->description          = $request->modal_description;
+        // $TimeWork->date                 = $request->date;
+        // $TimeWork->user_id              = $request->user_id;
+        $TimeWork->save();
+        //dump($request->id,$request);
+
+
+
+        return app('App\Http\Controllers\WorkTimeController')->day_data($request->date, $request->user_id);
+        }
 
 
 
