@@ -233,6 +233,8 @@ class WorkTimeController extends Controller
                         $return=$return->where('room_id',$filtr['room']);
                 
                     $extra_tab=$return
+                        ->where('simmed_date','>=',$filtr['start'])
+                        ->where('simmed_date','<=',$filtr['stop'])
                         ->orderBy('simmed_date')
                         ->orderBy('time')
                         ->orderBy('room_number')
