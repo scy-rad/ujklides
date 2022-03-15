@@ -211,6 +211,7 @@ class WorkTimeController extends Controller
                 $filtr['stop'] = date('Y-m-t');
                 $filtr['technician'] = 777;
                 $filtr['character'] = 777;
+                $filtr['room'] = 777;
             }
         else
             {
@@ -218,7 +219,8 @@ class WorkTimeController extends Controller
             $filtr['stop'] = $request->stop;
             $filtr['technician'] = $request->technician;
             $filtr['character'] = $request->character;
-            if ( ($filtr['technician'] != 777)  || ($filtr['character'] != 777) )
+            $filtr['room'] = $request->room;
+            if ( ($filtr['technician'] != 777)  || ($filtr['character'] != 777)  || ($filtr['room'] != 777) )
                 {
                     $return=\App\Simmed::simmeds_join('with_free','without_deleted');
                     if ($filtr['technician']==0)
@@ -227,8 +229,12 @@ class WorkTimeController extends Controller
                         $return=$return->where('simmed_technician_id',$filtr['technician']);
                     if ( ($filtr['character']!=777) && ($filtr['character']>0) )
                         $return=$return->where('simmed_technician_character_id',$filtr['character']);
+                    if ( ($filtr['room']!=777) && ($filtr['room']>0) )
+                        $return=$return->where('room_id',$filtr['room']);
                 
-                    $extra_tab=$return->orderBy('time')
+                    $extra_tab=$return
+                        ->orderBy('simmed_date')
+                        ->orderBy('time')
                         ->orderBy('room_number')
                         ->orderBy('technician_name')
                         ->get();
@@ -309,7 +315,10 @@ class WorkTimeController extends Controller
             $total['current'][$row_one->worktime_type]['time']=$row_one->worktime_hours*60+$row_one->worktime_minutes;
         }
 
-        return view('worktime/statistics',['tabelka'=>$ret_table, 'total' => $total, 'characters' => $technician_char, 'filtr' => $filtr, 'technician_list' => $technician_list, 'technician_char' => $technician_char, 'extra_tab' => $extra_tab ]);
+        $room_list=\App\Room::where('room_XP_code','<>','')->orderBy('room_number')->get();
+
+
+        return view('worktime/statistics',['tabelka'=>$ret_table, 'total' => $total, 'characters' => $technician_char, 'filtr' => $filtr, 'technician_list' => $technician_list, 'technician_char' => $technician_char, 'room_list' =>$room_list, 'extra_tab' => $extra_tab ]);
 
     }
 

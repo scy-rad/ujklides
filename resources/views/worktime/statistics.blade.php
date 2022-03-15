@@ -51,6 +51,16 @@
                     @endforeach
                 </select>
         </div>
+        <div class="col-sm-1">
+            <label for"room">sala:</label> 
+                <select class="form-control col-sm-2" id="room" name="room">
+                    <option value="777">      </option>
+                   @foreach ($room_list as $row_one)
+                   <option value="{{$row_one->id}}"<?php if ($row_one->id==$filtr['room']) echo ' selected="selected"'; ?>>{{$row_one->room_number}}</option>
+                    @endforeach
+                </select>
+        </div>
+        
         <div class="col-sm-2">            
             <br>
             <input class="btn btn-primary btn-sm" type="submit" value="pokaż">
@@ -103,7 +113,7 @@
     <table class="table" data-toggle="table" data-search="false">
         <tr>
         <th>    data   </th>
-        <th>    dień   </th>
+        <th>    dzień  </th>
         <th>    czas   </th>
         <th>    sala   </th>
         <th>    inst   </th>
