@@ -185,6 +185,7 @@ class Simmed extends Model
         \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as leader'),
         'technicians.id as technician_id',
         'technicians.name as subtxt',
+        'technicians.name as technician_name',
         'simmed_technician_character_id',
         'character_short',
         'character_name',
