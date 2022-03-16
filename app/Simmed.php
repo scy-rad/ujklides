@@ -173,7 +173,8 @@ class Simmed extends Model
         select('simmeds.id',
                     'simmed_date',
                         \DB::raw('dayname(simmed_date) as DayOfWeek'),
-                        \DB::raw('concat(substr(simmed_time_begin,1,5),"-",substr(simmed_time_end,1,5)) as time'), 
+                        \DB::raw('concat(substr(simmed_time_begin,1,5),"-",substr(simmed_time_end,1,5)) as time'),
+                        \DB::raw('TIMESTAMPDIFF(MINUTE, simmed_time_begin, simmed_time_end) as time_minutes'), 
                         \DB::raw('concat(substr(send_simmed_time_begin,1,5),"-",substr(send_simmed_time_end,1,5)) as send_time'), 
                         
         \DB::raw('substr(simmed_time_begin,1,5) as start'),

@@ -290,7 +290,7 @@ class WorkTimeController extends Controller
             {
                 $tabelka['current'][$row_one->worktime_type]['type']=$row_one->worktime_type;
                 $tabelka['current'][$row_one->worktime_type]['count']=$row_one->worktime_count;
-                $tabelka['current'][$row_one->worktime_type]['time']=$row_one->worktime_hours*60+$row_one->worktime_minutes;
+                $tabelka['current'][$row_one->worktime_type]['time']=$row_one->worktime_minutes;
             }
             
             $ret_table[]=$tabelka;
@@ -314,7 +314,7 @@ class WorkTimeController extends Controller
         {
             $total['current'][$row_one->worktime_type]['type']=$row_one->worktime_type;
             $total['current'][$row_one->worktime_type]['count']=$row_one->worktime_count;
-            $total['current'][$row_one->worktime_type]['time']=$row_one->worktime_hours*60+$row_one->worktime_minutes;
+            $total['current'][$row_one->worktime_type]['time']=$row_one->worktime_minutes;
         }
 
         $room_list=\App\Room::where('room_XP_code','<>','')->orderBy('room_number')->get();

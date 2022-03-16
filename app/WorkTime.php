@@ -152,8 +152,7 @@ class WorkTime extends Model
     ->select(
         'character_short as worktime_type',
         \DB::raw('count(character_short) as worktime_count'),
-        \DB::raw('sum(floor(timediff(simmed_time_end,simmed_time_begin)/10000)) as worktime_hours'),
-        \DB::raw('sum(timediff(simmed_time_end,simmed_time_begin)%10000/100) as worktime_minutes'),
+        \DB::raw('sum(TIMESTAMPDIFF(MINUTE, simmed_time_begin, simmed_time_end)) as worktime_minutes')
         )
     ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
     ->where('simmed_status','<>',4)

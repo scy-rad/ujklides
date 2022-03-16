@@ -3,7 +3,11 @@
 @section('title', "Statystyki "." "." - technicy" )
 
 <?php
-        function m2h($time,$total)
+        function m2h($time)
+        {
+            return floor($time/60).':'.str_pad($time%60, 2, '0', STR_PAD_LEFT);
+        }
+        function m2h_total($time,$total)
         {
             if ($time['count']==0)
                 return '-';
@@ -42,7 +46,7 @@
                     @endforeach
                 </select>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-1">
             <label for"character">charakter:</label> 
                 <select class="form-control col-sm-2" id="character" name="character">
                     <option value="777">      </option>
@@ -81,7 +85,7 @@
     <tr>
         <td>{{$tab_one['name']}}</td>
         @foreach ($tab_one['current'] as $tab_one_current)
-            <td>{!!m2h($tab_one_current,$total['current'])!!}
+            <td>{!!m2h_total($tab_one_current,$total['current'])!!}
 
             </td>
         @endforeach
@@ -98,11 +102,11 @@
                {{$tab_one['type']}}
             </td>
             <td>
-                {!!m2h($tab_one,$total['current'])!!} / 8
+                {!!m2h_total($tab_one,$total['current'])!!} / 8
             </td>
             <td>
                 <?php $tab_one['time']=$tab_one['time']/8; ?>
-                {!!m2h($tab_one,$total['current'])!!}
+                {!!m2h_total($tab_one,$total['current'])!!}
             </td>
         </tr>
     @endforeach
@@ -122,12 +126,13 @@
         <th>    tem    </th>
         <th>    grupa  </th>
         </tr>
-
+    <?php $total_min=0; ?>
     @foreach ($extra_tab as $row_one)
+            <?php $total_min+=$row_one->time_minutes; ?>
         <tr>
         <td>    {{$row_one->simmed_date}}   </td>
         <td>    {{$row_one->DayOfWeek}}   </td>
-        <td>    {{$row_one->time}}   </td>
+        <td>    {{$row_one->time}}  ({{m2h($row_one->time_minutes)}})</td>
         <td>    {{$row_one->room_number}}   </td>
         <td>    {{$row_one->leader}}   </td>
         <td>    {{$row_one->technician_name}}   </td>
@@ -136,8 +141,19 @@
         <td>    {{$row_one->student_group_code}}   </td>
         </tr>
     @endforeach
+        <tr>
+        <th>       </th>
+        <th>       </th>
+        <th><h3>{{m2h($total_min)}}</h3>   </th>
+        <th>       </th>
+        <th>       </th>
+        <th>       </th>
+        <th>       </th>
+        <th>       </th>
+        <th>       </th>
+        </tr>
     </table>
-
+    
 @endif
 
 
