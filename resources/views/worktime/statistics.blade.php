@@ -23,11 +23,14 @@
 ?>
 @section('content')
 
-
+<div class="row text-right">
+<a href="{{ route('worktime.statpertech') }}">Statystyki - technicy</a>
+</div>
+                                    
 <form action="{{ route('worktime.statistics') }}" method="get">
     <div class="row">
         <div class="col-sm-3">
-            <label for"start">od-do:</label><br>
+            <label for"start">odd-do:</label><br>
             <input type="date" name="start" value="{{$filtr['start']}}">
             <input type="date" name="stop" value="{{$filtr['stop']}}">
         </div>
@@ -84,45 +87,6 @@
     </div>
 </form>
 
-
-
-<table width="100%" class="table">
-    <tr>
-        <th>Imię i nazwisko</th>
-        @foreach ($characters as $character)
-        <th>{{$character->character_short}}</th>
-        @endforeach
-    </tr>
-    @foreach ($tabelka as $tab_one)
-    <tr>
-        <td>{{$tab_one['name']}}</td>
-        @foreach ($tab_one['current'] as $tab_one_current)
-            <td>{!!m2h_total($tab_one_current,$total['current'])!!}
-
-            </td>
-        @endforeach
-    </tr>
-    @endforeach
-     
- 
-</table>
-<hr>
-<table class="table table-dark" style="background-color: #dfd">
-    @foreach ($total['current'] as $tab_one)
-        <tr>
-            <td>
-               {{$tab_one['type']}}
-            </td>
-            <td>
-                {!!m2h_total($tab_one,$total['current'])!!} / 8
-            </td>
-            <td>
-                <?php $tab_one['time']=$tab_one['time']/8; ?>
-                {!!m2h_total($tab_one,$total['current'])!!}
-            </td>
-        </tr>
-    @endforeach
-</table>
 
 
 @if (!is_null($extra_tab))

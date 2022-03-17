@@ -304,6 +304,12 @@ Route::get('worktime/statistics', [
     'as' => 'worktime.statistics'
 ]);
 
+Route::get('worktime/statpertech', [
+    'uses' => 'WorkTimeController@statpertech',
+    'as' => 'worktime.statpertech'
+]);
+
+
 Route::post('worktime/save', [
     'uses' => 'WorkTimeController@save_data',
     'as' => 'worktime.save_data'

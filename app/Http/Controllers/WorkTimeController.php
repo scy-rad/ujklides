@@ -359,6 +359,164 @@ class WorkTimeController extends Controller
 
 
 
+    public function statpertech(Request $request)
+    {
+        $extra_tab=null;
+        if (!isset($request->start))
+            {
+                //$filtr['start'] = date('Y-m').'-01';
+                $filtr['start'] = \App\Simmed::selectRaw('min(simmed_date) as minvalue')->get()->first()->minvalue;
+                $filtr['stop'] = date('Y-m-t');
+                $filtr['technician'] = 777;
+                $filtr['character'] = 777;
+                $filtr['room'] = 777;
+                $filtr['instructor'] = 777;
+                $filtr['subject'] = 777;
+            }
+        else
+            {
+            $filtr['start'] = $request->start;
+            $filtr['stop'] = $request->stop;
+            $filtr['technician'] = $request->technician;
+            $filtr['character'] = $request->character;
+            $filtr['room'] = $request->room;
+            $filtr['instructor'] = $request->instructor;
+            $filtr['subject'] = $request->subject;
+            if ( ($filtr['technician'] != 777)  || 
+                 ($filtr['character'] != 777)  || 
+                 ($filtr['room'] != 777) ||
+                 ($filtr['instructor'] != 777) ||
+                 ($filtr['subject'] != 777)
+                 
+                 )
+                {
+                    $return=\App\Simmed::simmeds_join('with_free','without_deleted');
+                    if ($filtr['technician']==0)
+                        $return=$return->WhereNull('simmed_technician_id');
+                    if ( ($filtr['technician']!=777) && ($filtr['technician']>0) )
+                        $return=$return->where('simmed_technician_id',$filtr['technician']);
+                    if ( ($filtr['character']!=777) && ($filtr['character']>0) )
+                        $return=$return->where('simmed_technician_character_id',$filtr['character']);
+                    if ( ($filtr['room']!=777) && ($filtr['room']>0) )
+                        $return=$return->where('room_id',$filtr['room']);
+                    if ( ($filtr['instructor']!=777) && ($filtr['instructor']>0) )
+                        $return=$return->where('simmed_leader_id',$filtr['instructor']);
+                    if ( ($filtr['subject']!=777) && ($filtr['subject']>0) )
+                        $return=$return->where('student_subject_id',$filtr['subject']);
+                
+                    $extra_tab=$return
+                        ->where('simmed_date','>=',$filtr['start'])
+                        ->where('simmed_date','<=',$filtr['stop'])
+                        ->orderBy('simmed_date')
+                        ->orderBy('time')
+                        ->orderBy('room_number')
+                        ->orderBy('technician_name')
+                        ->get();
+                }          
+            }
+
+
+    
+        function m2h($min)
+        {
+            $sign = $min < 0 ? '-' : '';
+            $min = abs($min);
+            return $sign.floor($min/60).':'.str_pad($min%60, 2, '0', STR_PAD_LEFT);
+        }
+
+        $active_instructors=\App\Simmed::select('simmed_leader_id')
+            ->where('simmed_date','>=',$filtr['start'])
+            ->where('simmed_date','<=',$filtr['stop'])
+            ->groupBy('simmed_leader_id')
+            ->get();
+        $instructors_list=User::role_users('instructors', 1, 1)
+            ->whereIn('id',$active_instructors)
+            ->get();
+
+        $active_subjects=\App\Simmed::select('student_subject_id')
+            ->where('simmed_date','>=',$filtr['start'])
+            ->where('simmed_date','<=',$filtr['stop'])
+            ->groupBy('student_subject_id')
+            ->get();
+        $subjects_list=\App\StudentSubject::select('*')
+            ->whereIn('id',$active_subjects)
+            ->get();
+
+
+        $technicians_list=User::role_users('technicians', 1, 1)->get();
+        $nulik=new User;
+        $nulik->id = null;
+        $nulik->name='brak wpisu';
+        $nulik->firstname='Brak';
+        $nulik->lasttname='Wpisu';
+
+        $technicians_list[]=$nulik;
+//        dump($technicians_list,$nulik);
+
+        $technician_char=TechnicianCharacter::all();
+
+        foreach ($technicians_list as $technician_one)
+        {
+            $tabelka=null;
+            $tabelka['name']=$technician_one->name;
+            $tabelka['firstname']=$technician_one->firstname;
+            $tabelka['lastname']=$technician_one->lastname;
+            foreach ($technician_char as $character_one)
+            {
+                $tabelka['current'][$character_one->character_short]['count']=0;
+                $tabelka['current'][$character_one->character_short]['time']=0;
+                $tabelka['current'][$character_one->character_short]['type']='';
+            }
+
+            $work_characters_month = 
+            \App\WorkTime::get_worktime_characters()
+                ->where('simmed_technician_id','=',$technician_one->id)
+                //->orWhereNull('simmed_technician_id')
+                ->where('simmed_date','>=',$filtr['start'])
+                ->where('simmed_date','<=',$filtr['stop'])
+                ->get();
+
+            foreach ($work_characters_month as $row_one)
+            {
+                $tabelka['current'][$row_one->worktime_type]['type']=$row_one->worktime_type;
+                $tabelka['current'][$row_one->worktime_type]['count']=$row_one->worktime_count;
+                $tabelka['current'][$row_one->worktime_type]['time']=$row_one->worktime_minutes;
+            }
+            
+            $ret_table[]=$tabelka;
+        }
+
+
+
+        foreach ($technician_char as $character_one)
+        {
+            $work_total['current'][$character_one->character_short]['count']=0;
+            $work_total['current'][$character_one->character_short]['time']=0;
+        }
+
+
+        $work_total = 
+        \App\WorkTime::get_worktime_characters()
+            ->where('simmed_date','>=',$filtr['start'])
+            ->where('simmed_date','<=',$filtr['stop'])
+            ->get();
+        foreach ($work_total as $row_one)
+        {
+            $total['current'][$row_one->worktime_type]['type']=$row_one->worktime_type;
+            $total['current'][$row_one->worktime_type]['count']=$row_one->worktime_count;
+            $total['current'][$row_one->worktime_type]['time']=$row_one->worktime_minutes;
+        }
+
+        $room_list=\App\Room::where('room_XP_code','<>','')->orderBy('room_number')->get();
+
+
+        return view('worktime/statpertech',['tabelka'=>$ret_table, 'total' => $total, 'characters' => $technician_char, 'filtr' => $filtr, 'technicians_list' => $technicians_list, 'instructors_list' => $instructors_list, 'subjects_list' => $subjects_list, 'technician_char' => $technician_char, 'room_list' =>$room_list, 'extra_tab' => $extra_tab ]);
+
+    }
+
+
+
+
 
 
 
