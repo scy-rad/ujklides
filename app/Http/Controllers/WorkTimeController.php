@@ -212,6 +212,8 @@ class WorkTimeController extends Controller
                 $filtr['technician'] = 777;
                 $filtr['character'] = 777;
                 $filtr['room'] = 777;
+                $filtr['instructor'] = 777;
+                $filtr['subject'] = 777;
             }
         else
             {
@@ -220,7 +222,15 @@ class WorkTimeController extends Controller
             $filtr['technician'] = $request->technician;
             $filtr['character'] = $request->character;
             $filtr['room'] = $request->room;
-            if ( ($filtr['technician'] != 777)  || ($filtr['character'] != 777)  || ($filtr['room'] != 777) )
+            $filtr['instructor'] = $request->instructor;
+            $filtr['subject'] = $request->subject;
+            if ( ($filtr['technician'] != 777)  || 
+                 ($filtr['character'] != 777)  || 
+                 ($filtr['room'] != 777) ||
+                 ($filtr['instructor'] != 777) ||
+                 ($filtr['subject'] != 777)
+                 
+                 )
                 {
                     $return=\App\Simmed::simmeds_join('with_free','without_deleted');
                     if ($filtr['technician']==0)
@@ -231,6 +241,10 @@ class WorkTimeController extends Controller
                         $return=$return->where('simmed_technician_character_id',$filtr['character']);
                     if ( ($filtr['room']!=777) && ($filtr['room']>0) )
                         $return=$return->where('room_id',$filtr['room']);
+                    if ( ($filtr['instructor']!=777) && ($filtr['instructor']>0) )
+                        $return=$return->where('simmed_leader_id',$filtr['instructor']);
+                    if ( ($filtr['subject']!=777) && ($filtr['subject']>0) )
+                        $return=$return->where('student_subject_id',$filtr['subject']);
                 
                     $extra_tab=$return
                         ->where('simmed_date','>=',$filtr['start'])
@@ -252,20 +266,38 @@ class WorkTimeController extends Controller
             return $sign.floor($min/60).':'.str_pad($min%60, 2, '0', STR_PAD_LEFT);
         }
 
-        
-        $technician_list=User::role_users('technicians', 1, 1)->get();
+        $active_instructors=\App\Simmed::select('simmed_leader_id')
+            ->where('simmed_date','>=',$filtr['start'])
+            ->where('simmed_date','<=',$filtr['stop'])
+            ->groupBy('simmed_leader_id')
+            ->get();
+        $instructors_list=User::role_users('instructors', 1, 1)
+            ->whereIn('id',$active_instructors)
+            ->get();
+
+        $active_subjects=\App\Simmed::select('student_subject_id')
+            ->where('simmed_date','>=',$filtr['start'])
+            ->where('simmed_date','<=',$filtr['stop'])
+            ->groupBy('student_subject_id')
+            ->get();
+        $subjects_list=\App\StudentSubject::select('*')
+            ->whereIn('id',$active_subjects)
+            ->get();
+
+
+        $technicians_list=User::role_users('technicians', 1, 1)->get();
         $nulik=new User;
         $nulik->id = null;
         $nulik->name='brak wpisu';
         $nulik->firstname='Brak';
         $nulik->lasttname='Wpisu';
 
-        $technician_list[]=$nulik;
-//        dump($technician_list,$nulik);
+        $technicians_list[]=$nulik;
+//        dump($technicians_list,$nulik);
 
         $technician_char=TechnicianCharacter::all();
 
-        foreach ($technician_list as $technician_one)
+        foreach ($technicians_list as $technician_one)
         {
             $tabelka=null;
             $tabelka['name']=$technician_one->name;
@@ -320,7 +352,7 @@ class WorkTimeController extends Controller
         $room_list=\App\Room::where('room_XP_code','<>','')->orderBy('room_number')->get();
 
 
-        return view('worktime/statistics',['tabelka'=>$ret_table, 'total' => $total, 'characters' => $technician_char, 'filtr' => $filtr, 'technician_list' => $technician_list, 'technician_char' => $technician_char, 'room_list' =>$room_list, 'extra_tab' => $extra_tab ]);
+        return view('worktime/statistics',['tabelka'=>$ret_table, 'total' => $total, 'characters' => $technician_char, 'filtr' => $filtr, 'technicians_list' => $technicians_list, 'instructors_list' => $instructors_list, 'subjects_list' => $subjects_list, 'technician_char' => $technician_char, 'room_list' =>$room_list, 'extra_tab' => $extra_tab ]);
 
     }
 

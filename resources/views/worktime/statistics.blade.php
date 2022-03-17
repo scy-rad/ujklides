@@ -24,27 +24,12 @@
 @section('content')
 
 
-
-
-
 <form action="{{ route('worktime.statistics') }}" method="get">
     <div class="row">
-        <div class="col-sm-2">
-            <label for"start">od:</label><br>
-            <input type="date" name="start" value="{{$filtr['start']}}">
-        </div>
-        <div class="col-sm-2">
-            <label for"stop">do:</label><br> 
-            <input type="date" name="stop" value="{{$filtr['stop']}}">
-        </div>
         <div class="col-sm-3">
-            <label for"technician">technik:</label> 
-                <select class="form-control" id="technician" name="technician">
-                    <option value="777">      </option>
-                    @foreach ($technician_list as $row_one)
-                    <option value="{{$row_one->id*1}}"<?php if ($row_one->id*1==$filtr['technician']) echo ' selected="selected"'; ?>>{{$row_one->name}}</option>
-                    @endforeach
-                </select>
+            <label for"start">od-do:</label><br>
+            <input type="date" name="start" value="{{$filtr['start']}}">
+            <input type="date" name="stop" value="{{$filtr['stop']}}">
         </div>
         <div class="col-sm-1">
             <label for"character">charakter:</label> 
@@ -52,6 +37,33 @@
                     <option value="777">      </option>
                    @foreach ($technician_char as $row_one)
                    <option value="{{$row_one->id}}"<?php if ($row_one->id==$filtr['character']) echo ' selected="selected"'; ?>>{{$row_one->character_short}}</option>
+                    @endforeach
+                </select>
+        </div>
+        <div class="col-sm-2">
+            <label for"technician">technik:</label> 
+                <select class="form-control" id="technician" name="technician">
+                    <option value="777">      </option>
+                    @foreach ($technicians_list as $row_one)
+                    <option value="{{$row_one->id*1}}"<?php if ($row_one->id*1==$filtr['technician']) echo ' selected="selected"'; ?>>{{$row_one->name}}</option>
+                    @endforeach
+                </select>
+        </div>
+        <div class="col-sm-2">
+            <label for"instructor">instruktor:</label> 
+                <select class="form-control" id="instructor" name="instructor">
+                    <option value="777">      </option>
+                    @foreach ($instructors_list as $row_one)
+                    <option value="{{$row_one->id*1}}"<?php if ($row_one->id*1==$filtr['instructor']) echo ' selected="selected"'; ?>>{{$row_one->lastname}} {{$row_one->firstname}}</option>
+                    @endforeach
+                </select>
+        </div>
+        <div class="col-sm-2">
+            <label for"subject">przedmiot:</label> 
+                <select class="form-control" id="subject" name="subject">
+                    <option value="777">      </option>
+                    @foreach ($subjects_list as $row_one)
+                    <option value="{{$row_one->id*1}}"<?php if ($row_one->id*1==$filtr['subject']) echo ' selected="selected"'; ?>>{{$row_one->student_subject_name}}</option>
                     @endforeach
                 </select>
         </div>
@@ -65,7 +77,7 @@
                 </select>
         </div>
         
-        <div class="col-sm-2">            
+        <div class="col-sm-1">
             <br>
             <input class="btn btn-primary btn-sm" type="submit" value="pokaż">
         </div>
