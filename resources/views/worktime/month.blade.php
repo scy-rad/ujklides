@@ -46,7 +46,7 @@
                 <tr>
                     <td> {{$total_one->worktime_type}} </td>
                     <td> {{$total_one->worktime_count}} </td>
-                    <td> {{m2h($total_one->worktime_hours*60 + $total_one->worktime_minutes)}} </td>
+                    <td> {{m2h($total_one->worktime_minutes)}} </td>
                 </tr>
                 
             @endforeach
