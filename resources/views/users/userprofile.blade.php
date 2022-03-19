@@ -209,6 +209,22 @@ else
                 <button class="col-sm-4 btn btn-primary" onClick="openPhoneModal('0','0','','1','1','1','0','0')">Dodaj numer telefonu</button>
             </div>
             @if ($isAdmin)
+            
+            <form action="{{ route('user.change_password') }}" method="post" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                    <label for="password">nowe hasło:</label><br>
+                        <div class="col-sm-8">
+                        <input type="password" name="password" value="">
+                        <input type="password" name="passwordre" value="">
+                        </div>
+                        <input type="hidden" name="user_id" value="{{$user->id}}">
+                        <button type="submit" class="col-sm-4 btn btn-primary">Zmień hasło</button>
+                    </div>
+                </form>
+                <hr>
+
+
                 <form action="{{ route('user.change_status') }}" method="post" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <div class="form-group">

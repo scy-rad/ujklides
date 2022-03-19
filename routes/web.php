@@ -352,6 +352,10 @@ Route::post('user/changephone', [
     'uses' => 'UserController@change_phone',
     'as' => 'user.change_phone'
 ]);
+Route::post('user/changepassword', [
+    'uses' => 'UserController@change_password',
+    'as' => 'user.change_password'
+]);
 Route::post('user/changestatus', [
     'uses' => 'UserController@change_status',
     'as' => 'user.change_status'

@@ -205,6 +205,29 @@ class UserController extends Controller
                 return back()->withErrors($comment.' numeru telefonu zakończone niepowodzeniem...');
     }
 
+    public function change_password(Request $request)
+    {
+    if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator'))
+        return view('error',['head'=>'błąd wywołania funkcji change_password kontrolera userprofile','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
+
+            $user = User::where('id',$request->user_id)->first();
+            
+            if ($request->password==$request->passwordre)
+                if (strlen($request->password)>=8)
+                    {
+                    $user->password = bcrypt($request->password);
+                    if ($user->save())
+                        return back()->with('success','Zmiana hasła powiodła się.');
+                    else
+                        return back()->withErrors('Zmiana hasła niestety nie powiodła się...');
+                    }
+                else
+                    return back()->withErrors('Hasło jest zbyt krókie (minimum 8 znaków)...');
+            else
+                return back()->withErrors('Hasła różnią się od siebie...');
+        }
+
+
     public function change_status(Request $request)
     {
     if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator'))
