@@ -19,9 +19,16 @@ class WorkTimeController extends Controller
         if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator') && !Auth::user()->hasRole('Technik'))
         return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
 
-        $months['2022-02']='2022-02';
-        $months['2022-03']='2022-03';
-    
+        $ret_row=WorkTime::selectRaw(" MIN(date) AS StartDate, MAX(date) AS EndDate")->get()->first();
+        
+        $current=date('Y-m-01',strtotime($ret_row->StartDate));
+        $stop=date('Y-m-01',strtotime($ret_row->EndDate));
+
+        while ($current<=$stop)
+        {
+        $months[date('Y-m',strtotime($current))]=date('Y-m',strtotime($current));
+        $current=date('Y-m-01',strtotime('+  1 month',strtotime($current)));
+        }
         
         function m2h($min)
         {
