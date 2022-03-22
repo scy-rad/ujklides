@@ -77,6 +77,8 @@ class WorkTimeController extends Controller
                 ->toArray()
                 ;
             $ret[$cur_date]=$ret_row;
+            $ret[$cur_date]['day_name']= DB::table('pl_days')->find(date('w', strtotime($cur_date))+1)->pl_day;
+            $ret[$cur_date]['day_name_short']= DB::table('pl_days')->find(date('w', strtotime($cur_date))+1)->pl_day_short;
             $ret[$cur_date]['hoursmin']=m2h($ret_row['minutes']);
             $total['minutes']+=$ret_row['minutes'];            
         }
@@ -237,7 +239,7 @@ class WorkTimeController extends Controller
             ->where('simmed_date','<',date('Y-m-d',$end))
             ->get();
 
-        return view('worktime/month',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $table, 'total' => $total ]);
+        return view('worktime/month',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'total' => $total ]);
 
     }
 

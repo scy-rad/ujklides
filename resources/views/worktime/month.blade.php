@@ -69,7 +69,7 @@
     @foreach ($tabelka as $row_one)
     <tr>
         <td>
-        {{$row_one['date']}}
+        {{$row_one['date']}} {{$row_one['day_name_short']}}
         </td>
         <td>
         @foreach ($row_one['sims'] as $sim_one)

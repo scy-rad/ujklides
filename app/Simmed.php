@@ -172,7 +172,8 @@ class Simmed extends Model
         $return=Simmed::
         select('simmeds.id',
                     'simmed_date',
-                        \DB::raw('dayname(simmed_date) as DayOfWeek'),
+                        //\DB::raw('dayname(simmed_date) as DayOfWeek'),
+                        'pl_days.pl_day as DayOfWeek',
                         \DB::raw('concat(substr(simmed_time_begin,1,5),"-",substr(simmed_time_end,1,5)) as time'),
                         \DB::raw('TIMESTAMPDIFF(MINUTE, simmed_time_begin, simmed_time_end) as time_minutes'), 
                         \DB::raw('concat(substr(send_simmed_time_begin,1,5),"-",substr(send_simmed_time_end,1,5)) as send_time'), 
@@ -209,7 +210,8 @@ class Simmed extends Model
         ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
         ->leftjoin('student_subjects','simmeds.student_subject_id','=','student_subjects.id')
         ->leftjoin('student_groups','simmeds.student_group_id','=','student_groups.id')
-        ->leftjoin('student_subgroups','simmeds.student_subgroup_id','=','student_subgroups.id');
+        ->leftjoin('student_subgroups','simmeds.student_subgroup_id','=','student_subgroups.id')
+        ->join('pl_days',\DB::raw('dayofweek(simmed_date)'),'=','pl_days.id');
                     
         if ($without_deleted=='without_deleted')
             $return=$return->where('simmed_status','<>',4);
