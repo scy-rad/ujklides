@@ -43,6 +43,8 @@ class DatabaseSeeder extends Seeder
        $this->call('ParamsTableSeeder');
 
        $this->call('WorkTimesTableSeeder');
+       
+       $this->call('PlDaysMonthsTableSeeder');
         
 		}
 }

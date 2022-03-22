@@ -126,7 +126,11 @@ class WorkTimeController extends Controller
         $userdata=User::where('id', '=', $user_id)
                     ->get()->first();
 
-    return view('worktime/dayinfo',['user'=>$userdata, 'simmeds' => $simmeds, 'work_times' => $work_times, 'work_time_types' => $work_time_types, 'date' => $date ]);
+        $dateT['date']=$date;
+        $dateT['dayname']= DB::table('pl_days')->find(date('w', strtotime($date))+1)->pl_day;
+        
+
+    return view('worktime/dayinfo',['user'=>$userdata, 'simmeds' => $simmeds, 'work_times' => $work_times, 'work_time_types' => $work_time_types, 'dateT' => $dateT ]);
     }
 
 
@@ -147,22 +151,52 @@ class WorkTimeController extends Controller
             && ($request->date<=date('Y-m-d',strtotime('now - 7 days')))
             )
             {
-                dump('zbyt wczesna data do edycji');        
+                return back()->withErrors('zbyt wczesna data do edycji');        
             }
-            
-        $TimeWork=\App\WorkTime::find($request->id);
-        $TimeWork->work_time_types_id   = $request->work_time_types_id;
-        $TimeWork->time_begin           = $request->modal_start;
-        $TimeWork->time_end             = $request->modal_end;
-        $TimeWork->description          = $request->modal_description;
-        // $TimeWork->date                 = $request->date;
-        // $TimeWork->user_id              = $request->user_id;
-        $TimeWork->save();
-        //dump($request->id,$request);
-
-
-
-        return app('App\Http\Controllers\WorkTimeController')->day_data($request->date, $request->user_id);
+        if ($request->id>0)
+        {
+            if ($request->modal_start < $request->modal_end)
+            {
+                $TimeWork=\App\WorkTime::find($request->id);
+                $TimeWork->work_time_types_id   = $request->work_time_types_id;
+                $TimeWork->time_begin           = $request->modal_start;
+                $TimeWork->time_end             = $request->modal_end;
+                $TimeWork->description          = $request->modal_description;
+                // $TimeWork->date                 = $request->date;
+                // $TimeWork->user_id              = $request->user_id;
+                $TimeWork->save();
+                return back()->with('success',' Zapis zakończył się sukcesem.');
+            }
+            elseif (($request->modal_start == $request->modal_end))
+            {
+                $TimeWork=\App\WorkTime::find($request->id);
+                $TimeWork->status=4;
+                $TimeWork->save();
+                return back()->with('success','Usunięto zapis...');
+            }
+            else
+            {
+                return back()->withErrors('zakończenie nie może być wcześniej niż początek...');
+            }
+        }
+        elseif ($request->modal_start < $request->modal_end)
+        {
+            $TimeWork=new \App\WorkTime;
+            $TimeWork->work_time_types_id   = $request->work_time_types_id;
+            $TimeWork->time_begin           = $request->modal_start;
+            $TimeWork->time_end             = $request->modal_end;
+            $TimeWork->description          = $request->modal_description;
+            $TimeWork->date                 = $request->date;
+            $TimeWork->user_id              = $request->user_id;
+            $TimeWork->save();
+            return back()->with('success','Dodano nową pozycję.');
+        }
+        else
+        {
+            return back()->withErrors('nie mogę tego zrobić...');
+        }
+        
+        //return app('App\Http\Controllers\WorkTimeController')->day_data($request->date, $request->user_id);
         }
 
 

@@ -25,6 +25,7 @@ class WorkTime extends Model
 
         $workdays=WorkTime::select('*','work_times.description as simdescript')
         ->where('date','=',$day)
+        ->where('work_times.status','=',1)
         //->where('simmed_status','<',4)
         //->where('simmed_technician_character_id','=',TechnicianCharacter::where('character_short','stay')->get()->first()->id)
         ->leftjoin('work_time_types','work_times.work_time_types_id','=','work_time_types.id')
@@ -168,7 +169,9 @@ class WorkTime extends Model
             'work_times.description as description',
             'work_time_types.description as type_description',
             'work_times.id as id'
-        );
+        )
+        ->where('work_times.status','=',1)
+        ;
         //->where('user_id',$user_id)
         //->where('date','=',$date);
         switch ($get_breake)
@@ -186,7 +189,8 @@ class WorkTime extends Model
                 dump('WorkTime model: error in calling function work_timne_join ');
         }
         
-        $ret=$ret->leftjoin('work_time_types','work_time_types_id','=','work_time_types.id');
+        $ret=$ret->leftjoin('work_time_types','work_time_types_id','=','work_time_types.id')
+                 ->join('pl_days',\DB::raw('dayofweek(date)'),'=','pl_days.id');
         return $ret;
         }
 
@@ -196,6 +200,7 @@ class WorkTime extends Model
             \DB::raw('substring(time_begin,1,5) as time_start'),
             \DB::raw('substring(time_end,1,5) as time_end')
         )
+        ->where('work_times.status','=',1)
         ->where('user_id',$user_id)
         ->where('date','=',$date)
         ->where('code','<>','work_breake')
