@@ -535,7 +535,70 @@ class WorkTimesTableSeeder extends Seeder
             add_work_time('angelika',$ret_work_time,'2022-04-29','07:30','15:30','');			
                         
                         
-
+            add_work_time('wojtek',$ret_work_time,'2022-02-28','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-01','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-02','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-03','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-04','07:30','15:30','');			
+                        
+                        
+            add_work_time('wojtek',$ret_work_time,'2022-03-07','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-08','12:30','20:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-09','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-10','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-11','07:30','15:30','');			
+                        
+                        
+            add_work_time('wojtek',$ret_work_time,'2022-03-14','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-15','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-16','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-17','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-18','11:00','19:00','');			
+                        
+                        
+            add_work_time('wojtek',$ret_work_time,'2022-03-21','12:30','20:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-22','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-23','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-24','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-25','07:30','15:30','');			
+                        
+                        
+            add_work_time('wojtek',$ret_work_time,'2022-03-28','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-29','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-30','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-03-31','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-01','07:30','15:30','');			
+                        
+                        
+            add_work_time('wojtek',$ret_work_time,'2022-04-04','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-05','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-06','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-07','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-08','07:30','15:30','');			
+                        
+                        
+            add_work_time('wojtek',$ret_work_time,'2022-04-11','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-12','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-13','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-14','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-15','07:30','15:30','');			
+                        
+                        
+            add_work_time('wojtek',$ret_work_time,'2022-04-18','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-19','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-20','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-21','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-22','07:30','15:30','');			
+                        
+                        
+            add_work_time('wojtek',$ret_work_time,'2022-04-25','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-26','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-27','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-28','07:30','15:30','');			
+            add_work_time('wojtek',$ret_work_time,'2022-04-29','07:30','15:30','');			
+                        
+                        
+            
 
     }
 }

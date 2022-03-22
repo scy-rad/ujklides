@@ -146,14 +146,15 @@ class WorkTimeController extends Controller
             && !(Auth::user()->id == ($request->user_id*1)) 
             )
             {
-                dump('tylko właściciel może edytować wpis');        
+                dump('tylko właściciel może edytować wpis');
             }
         elseif (!Auth::user()->hasRole('Operator Kadr') 
             && !Auth::user()->hasRole('Administrator') 
             && ($request->date<=date('Y-m-d',strtotime('now - 7 days')))
             )
             {
-                return back()->withErrors('zbyt wczesna data do edycji');        
+                dump('zbyt wczesna data do edycji');
+                //return back()->withErrors('zbyt wczesna data do edycji');        
             }
         if ($request->id>0)
         {
@@ -167,7 +168,7 @@ class WorkTimeController extends Controller
                 // $TimeWork->date                 = $request->date;
                 // $TimeWork->user_id              = $request->user_id;
                 $TimeWork->save();
-                return back()->with('success',' Zapis zakończył się sukcesem.');
+                return back()->with('success',' Zapis zakończył się sukcesem (tymczasowo bez sprawdzania 7 dni wstecz).');
             }
             elseif (($request->modal_start == $request->modal_end))
             {
