@@ -1382,11 +1382,13 @@ public function sendMail(Request $request)
             ->get();
 
     $roles_coordinators_id=Roles::where('roles_code', 'coordinators')
-        ->first()->id;
-    $roles_coordinators=RolesHasUsers::where('roles_has_users_roles_id',$roles_coordinators_id)
+        ->orWhere('roles_name', 'Operator Kadr')
+        ->pluck('id')
+        ->toArray();
+    $roles_coordinators=RolesHasUsers::whereIn('roles_has_users_roles_id',$roles_coordinators_id)
         ->pluck('roles_has_users_users_id')
         ->toArray();
-    $coordinator_users = User::whereIn('id',$roles_coordinators)
+    $coordinator_OpKadr_users = User::whereIn('id',$roles_coordinators)
             ->where('user_status','=',1)
             ->where('simmed_notify','=',1)
             ->get();
@@ -1633,9 +1635,9 @@ public function sendMail(Request $request)
                     
                     $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
                 }
-                foreach ($coordinator_users as $user)
+                foreach ($coordinator_OpKadr_users as $user)
                 {
-                    $msgBody='Ogólna informacja dla techników i koordynatorów (koordynator: <strong>'.$user->full_name().'</strong>)<hr><br>'.$msgBodyPrep;
+                    $msgBody='Ogólna informacja dla techników, koordynatorów i Operatorów Kadr (koordynator/Operator Kadr: <strong>'.$user->full_name().'</strong>)<hr><br>'.$msgBodyPrep;
      
                     $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
                 }
@@ -1740,9 +1742,9 @@ public function sendMail(Request $request)
                     }
     
     
-                foreach ($coordinator_users as $user)
+                foreach ($coordinator_OpKadr_users as $user)
                 {
-                    $msgBody='Informacja o zmianach w symulacjach dla koordynatora: <strong>'.$user->full_name().'</strong><br><hr><br>'.$msgBodyPrep;
+                    $msgBody='Informacja o zmianach w symulacjach dla koordynatora lub operatora kadr: <strong>'.$user->full_name().'</strong><br><hr><br>'.$msgBodyPrep;
      
                     $zwrot[]=mail_send_now($user, $msgTitle, $msgBody, $BigTable);
                 }
