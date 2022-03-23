@@ -218,6 +218,7 @@ class WorkTime extends Model
             ->where('simmed_date','=',$date)
             ->where('simmed_technician_id','=',$user_id)
             ->where('character_short','<>','prep')
+            ->where('character_short','<>','ready')
             ->where('simmed_status','<>',4)
             ->union($qA)
             ->orderBy('time_start')
