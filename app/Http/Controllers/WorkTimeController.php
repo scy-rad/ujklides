@@ -164,7 +164,10 @@ class WorkTimeController extends Controller
                 $TimeWork->work_time_types_id   = $request->work_time_types_id;
                 $TimeWork->time_begin           = $request->modal_start;
                 $TimeWork->time_end             = $request->modal_end;
-                $TimeWork->description          = $request->modal_description;
+                if ($request->modal_description==null)
+                    $TimeWork->description      ='';
+                else
+                    $TimeWork->description      = $request->modal_description;
                 // $TimeWork->date                 = $request->date;
                 // $TimeWork->user_id              = $request->user_id;
                 $TimeWork->save();
@@ -188,7 +191,10 @@ class WorkTimeController extends Controller
             $TimeWork->work_time_types_id   = $request->work_time_types_id;
             $TimeWork->time_begin           = $request->modal_start;
             $TimeWork->time_end             = $request->modal_end;
-            $TimeWork->description          = $request->modal_description;
+            if ($request->modal_description==null)
+                    $TimeWork->description      ='';
+                else
+                    $TimeWork->description      = $request->modal_description;
             $TimeWork->date                 = $request->date;
             $TimeWork->user_id              = $request->user_id;
             $TimeWork->save();
