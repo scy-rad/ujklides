@@ -157,6 +157,7 @@ class WorkTime extends Model
         )
     ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
     ->where('simmed_status','<>',4)
+    ->orderBy('worktime_type')
     ->groupBy('worktime_type');
     }
 

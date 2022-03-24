@@ -434,8 +434,6 @@ class WorkTimeController extends Controller
             $filtr['subject'] = $request->subject;
             }
 
-
-    
         function m2h($min)
         {
             $sign = $min < 0 ? '-' : '';
@@ -457,7 +455,7 @@ class WorkTimeController extends Controller
         $technicians_list[]=$nulik;
         $sick_total=0;
 
-        $technician_char=TechnicianCharacter::all();
+        $technician_char=TechnicianCharacter::all()->sortBy('character_short');
 
         foreach ($technicians_list as $technician_one)
         {
@@ -465,13 +463,17 @@ class WorkTimeController extends Controller
             $tabelka['name']=$technician_one->name;
             $tabelka['firstname']=$technician_one->firstname;
             $tabelka['lastname']=$technician_one->lastname;
+            
+            
             foreach ($technician_char as $character_one)
             {
                 $tabelka['current'][$character_one->character_short]['count']=0;
                 $tabelka['current'][$character_one->character_short]['time']=0;
                 $tabelka['current'][$character_one->character_short]['type']='';
             }
-
+            $tabelka['current']['stay']['sick_average']=0;
+            
+            
             $work_characters_month = 
             \App\WorkTime::get_worktime_characters()
                 ->where('simmed_technician_id','=',$technician_one->id)
@@ -516,13 +518,16 @@ class WorkTimeController extends Controller
                 ->get()
                 ->first()
                 ->sim_stay_minutes;
-                $tabelka['current']['stay']['sick_average']=round($sick_days/$technicians_count);
+                $tabelka['current']['stay']['sick_average']+=round($sick_days/$technicians_count);
                 $tabelka['current']['stay']['time']+=round($sick_days/$technicians_count);
+                $tabelka['current']['stay']['count']++;//bez tego przy zakresie dat obejmujących tyko chorobę na statystykach nie wyświetli się ilość godzin z przeliceniem na procenty
+                $tabelka['current']['stay']['type']='stay';//a to jest potrzebne, bo jeśli w danym okresie nie ma symulacji tylko "chorobowe", to wyświetli się błąd (skorelowany z poprzednią linijką)
                 $sick_total+=round($sick_days/$technicians_count);
                 }
            
             $ret_table[]=$tabelka;
         }
+
 
         $work_total = 
         \App\WorkTime::get_worktime_characters()

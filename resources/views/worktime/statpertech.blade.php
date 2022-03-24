@@ -58,8 +58,6 @@
     </div>
 </form>
 
-
-
 <table width="100%" class="table">
     <tr>
         <th>Imię i nazwisko</th>
@@ -67,6 +65,7 @@
         <th>{{$character->character_short}}</th>
         @endforeach
     </tr>
+
     @foreach ($tabelka as $tab_one)
     <tr>
         <td>{{$tab_one['name']}}</td>
@@ -74,7 +73,10 @@
             <td>
                 {!!m2h_total($tab_one_current['count'],$tab_one_current['time'],$tab_one_current['type'],$total['current'],$total['technicians_count'])!!}
                     @if (isset($tab_one_current['sick_average']))
+                        @if ($tab_one_current['sick_average']>0)
+                        {{$tab_one_current['type']}}
                         <br>(L4: {{m2h($tab_one_current['sick_average'])}})
+                        @endif
                     @endif
             </td>
         @endforeach
