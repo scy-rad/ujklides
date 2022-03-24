@@ -146,7 +146,7 @@ class WorkTimeController extends Controller
             && !(Auth::user()->id == ($request->user_id*1)) 
             )
             {
-                dump('tylko właściciel może edytować wpis');
+                return back()->withErrors('tylko właściciel (lub Operator Kadr i Administrator) może edytować innych użytkowników');
             }
         elseif (!Auth::user()->hasRole('Operator Kadr') 
             && !Auth::user()->hasRole('Administrator') 
