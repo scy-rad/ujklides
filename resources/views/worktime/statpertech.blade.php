@@ -7,15 +7,15 @@
         {
             return floor($time/60).':'.str_pad($time%60, 2, '0', STR_PAD_LEFT);
         }
-        function m2h_total($time,$total)
+        function m2h_total($count,$time,$type,$total,$technician_count)
         {
-            if ($time['count']==0)
+            if ($count==0)
                 return '-';
-            $sign = $time['time'] < 0 ? '-' : '';
-            $time['time'] = abs($time['time']);
-            $return=$sign.floor($time['time']/60).':'.str_pad($time['time']%60, 2, '0', STR_PAD_LEFT);
-            $return.=' ['.$time['count'].']';
-            $return.=' <strong>'.round($time['time']/($total[$time['type']]['time']/8)*100,2).' %</strong>';
+            $sign = $time < 0 ? '-' : '';
+            $time = abs($time);
+            $return=$sign.floor($time/60).':'.str_pad($time%60, 2, '0', STR_PAD_LEFT);
+            $return.=' ['.$count.']';
+            $return.=' <strong>'.round($time/($total[$type]['time']/$technician_count)*100,2).' %</strong>';
 
             return $return;
         }
@@ -71,8 +71,11 @@
     <tr>
         <td>{{$tab_one['name']}}</td>
         @foreach ($tab_one['current'] as $tab_one_current)
-            <td>{!!m2h_total($tab_one_current,$total['current'])!!}
-
+            <td>
+                {!!m2h_total($tab_one_current['count'],$tab_one_current['time'],$tab_one_current['type'],$total['current'],$total['technicians_count'])!!}
+                    @if (isset($tab_one_current['sick_average']))
+                        <br>(L4: {{m2h($tab_one_current['sick_average'])}})
+                    @endif
             </td>
         @endforeach
     </tr>
@@ -88,11 +91,16 @@
                {{$tab_one['type']}}
             </td>
             <td>
-                {!!m2h_total($tab_one,$total['current'])!!} / 8
+                {!!m2h_total($tab_one['count'],$tab_one['time'],$tab_one['type'],$total['current'],$total['technicians_count'])!!} / {{$total['technicians_count']}}
+                @if (isset($tab_one['sick_time']))
+                <br>
+                ( w tym L-4: <strong>{!!m2h($tab_one['sick_time'])!!}</strong>)
+                @endif
+
             </td>
             <td>
-                <?php $tab_one['time']=$tab_one['time']/8; ?>
-                {!!m2h_total($tab_one,$total['current'])!!}
+                <?php $tab_one['time']=$tab_one['time']/$total['technicians_count']; ?>
+                {!!m2h_total($tab_one['count'],$tab_one['time'],$tab_one['type'],$total['current'],$total['technicians_count'])!!}
             </td>
         </tr>
     @endforeach
