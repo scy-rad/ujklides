@@ -1142,7 +1142,7 @@ class ManSimmedController extends Controller
             //       $edited_row->simmed_alternative_title = 'próba nulla';
 
             if ($data_one->simmed_technician_character_id==0)
-                $edited_row->simmed_technician_character_id    = NULL;
+                $edited_row->simmed_technician_character_id    = 1; //defalt is first character (look)
             else
                 $edited_row->simmed_technician_character_id    = $data_one->simmed_technician_character_id;
 
@@ -1176,13 +1176,14 @@ class ManSimmedController extends Controller
         $data=null;
         $data['step']=$request->step;
 
+        //add new elements
         $data_all=SimmedTemp::where('tmp_status',1)->get();
         if (count($data_all)>0)
             foreach ($data_all as $data_one)
                 {
                     move_simmed($data_one);
                 }
-                
+        //update elements
         $data_all=SimmedTemp::where('tmp_status',2)->get();
         if (count($data_all)>0)
             foreach ($data_all as $data_one)
@@ -1191,21 +1192,25 @@ class ManSimmedController extends Controller
                 //dump('updateX',$data_one);
             }
 
+        //delete elements
         $data_all=SimmedTemp::where('tmp_status',3)->get();
         if (count($data_all)>0)
             foreach ($data_all as $data_one)
             {
                 $data_one->simmed_status=4;
                 move_simmed($data_one);
-                //dump($data_one);
-//                 dd('import_append removeX',$data_one);
             }
 
+        // revert deleted elements
         $data_all=SimmedTemp::where('tmp_status',9)->get();
         if (count($data_all)>0)
             foreach ($data_all as $data_one)
-                dd('import_append backX',$data_one);
-
+            {
+                $data_one->simmed_status=1;
+                move_simmed($data_one);
+            }
+            
+        // delete exist from import
         SimmedTemp::where('tmp_status',4)->delete(); //usuń pominięte
 
 
