@@ -213,25 +213,42 @@ class SimmedController extends Controller
      }
 
      public function ajaxsavetechnician(Request $request) {
-         if ($request->technician_id==0)
-        $status = DB::table('simmeds')
-        ->where('id', $request->id)
-        ->update(['simmed_technician_id' => NULL]);
+
+        if (
+            (
+            DB::table('simmeds')->find($request->id)->simmed_date > date('Y-m-d',strtotime('now - 7 days'))
+            && Auth::user()->hasRole('Technik')
+            )
+            || Auth::user()->hasRole('Operator Symulacji')
+            || Auth::user()->hasRole('Administrator')
+           )
+        {
+            if ($request->technician_id==0)
+                $status = DB::table('simmeds')
+                ->where('id', $request->id)
+                ->update(['simmed_technician_id' => NULL]);
+            else
+                $status = DB::table('simmeds')
+                ->where('id', $request->id)
+                ->update(['simmed_technician_id' => $request->technician_id]);
+
+            $history_table = new SimmedArcTechnician();
+            $history_table->simmed_id = $request->id;
+            $history_table->technician_id = $request->technician_id*1;
+            $history_table->user_id = Auth::user()->id;
+            $history_table->save();
+
+            $returnBool=true;
+            $returnTxt='zapis chyba się udał :)';
+        }
         else
-        $status = DB::table('simmeds')
-        ->where('id', $request->id)
-        ->update(['simmed_technician_id' => $request->technician_id]);
-
-        $history_table = new SimmedArcTechnician();
-        $history_table->simmed_id = $request->id;
-        $history_table->technician_id = $request->technician_id*1;
-        $history_table->user_id = Auth::user()->id;
-        $history_table->save();
-
-        //return json_encode(array('statusCode'=>$request->id, 'status'=> $status));
-        //return Json(new { result = true });
-        return json_encode(array('result'=>false, 'tescik' =>'przykladowy_tekst', 'statusx'=> $status));
-     }
+        {
+            $status=0;
+            $returnBool=false;
+            $returnTxt='zmian powyżej 7 dni wstecz może dokonać tylko Operator Symulacji lub Administrator';
+        }
+        return json_encode(array('result' => $returnBool, 'tescik' => $returnTxt, 'status' => $status));
+    }
 
 
     public function ajaxtechnicianchar(Request $request) 

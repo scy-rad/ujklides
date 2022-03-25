@@ -212,8 +212,6 @@ if ( !(Auth::user()->hasRole('Technik') || Auth::user()->hasRole('Operator Symul
 
             var curr_tech_name = document.getElementById(curr_row.dataset.value);
 
-            curr_tech_name.innerHTML=techid.options[techid.selectedIndex].text;
-
             //alert('zmianiam wiersz '+curr_row.dataset.value+' na id '+techid.value+' czyli na '+techid.options[techid.selectedIndex].text);
 
             let _token   = '{{csrf_token()}}';
@@ -226,14 +224,20 @@ if ( !(Auth::user()->hasRole('Technik') || Auth::user()->hasRole('Operator Symul
                 technician_id: techid.value,
                 _token: _token
                 },
-            success:function(response)
+            dataType:"json",
+            success:function(responseX)
                 {
-                    console.log(response);
-                    if(response)
+                    // console.log(responseX);
+                    // console.log(responseX.result);
+                    // console.log(responseX.tescik);
+                    if(responseX.result)
                     {
-                        $('.success').text(response.success);
-                        //$("#ajaxform")[0].reset();
-                        //alert(response.success);
+                        //$('.success').text(responseX.success);
+                        curr_tech_name.innerHTML=techid.options[techid.selectedIndex].text;
+                    }
+                    else
+                    {
+                        alert(responseX.tescik);
                     }
                 },
             });
