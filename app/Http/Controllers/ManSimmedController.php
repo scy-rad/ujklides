@@ -39,14 +39,6 @@ class ManSimmedController extends Controller
         return view('mansimmeds.index');
     }
 
-    public function subjects() //  metoda GET bez parametrów
-    {
-        if (!Auth::user()->hasRole('Operator Symulacji'))
-        return view('error',['head'=>'błąd wywołania funkcji index kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
-
-        return view('mansimmeds.subjects')->with(['subjects' => StudentSubject::all()]);
-    }
-
     public function groups() //  metoda GET bez parametrów
     {
         if (!Auth::user()->hasRole('Operator Symulacji'))

@@ -29,10 +29,6 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         </div>
 
         <div class="col-sm-1">
-        <form action="{{ route('mansimmeds.subjects') }}" method="get">
-                <input type="hidden" name="action" value="addinv">
-                <input class="btn btn-primary btn-sm" type="submit" value="tematy">
-        </form>
         </div>
 
         <div class="col-sm-1">

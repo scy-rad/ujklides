@@ -156,6 +156,21 @@
                                 </ul>
                             </li>
 
+
+
+                            <li class="dropdown">
+                                <a data-toggle="dropdown" href="#" class="dropdown-toggle">Administracja <b class="caret"></b></a>   
+                                <ul class="dropdown-menu">
+
+                                    @if (Auth::user()->hasRole('Operator Symulacji'))
+                                    <li><a href="{{ route('libraries.subjects') }}"> Tematy </a></li>
+                                    @endif
+                                </ul>
+                            </li>
+
+
+                            
+
                             <li><a href="#">Kontakt</a></li>
 
                             <li><a href="http://csmpiel.dudek.net.pl" target="_new">CSM piel</a></li>

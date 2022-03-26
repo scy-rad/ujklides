@@ -10,10 +10,18 @@ use Illuminate\Support\Facades\Auth;
 class LibrariesController extends Controller
 {
 
+public function list_subjects() //  metoda GET bez parametrów
+{
+    if (!Auth::user()->hasRole('Operator Symulacji'))
+    return view('error',['head'=>'błąd wywołania funkcji index kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+    return view('libraries.subjects')->with(['subjects' => \App\StudentSubject::all()]);
+}
+
 public function save_subject(Request $request)
 {
-    if (!Auth::user()->hasRole('Operator Symulacji') && !Auth::user()->hasRole('Administrator'))
-    return view('error',['head'=>'błąd wywołania funkcji save_subject kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji lub Administratorem']);
+    if (!Auth::user()->hasRole('Operator Symulacji'))
+    return view('error',['head'=>'błąd wywołania funkcji save_subject kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
       
     if ($request->id>0)
     {

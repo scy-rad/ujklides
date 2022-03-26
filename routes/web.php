@@ -203,11 +203,6 @@ Route::get('mansimmeds', [
     'as' => 'mansimmeds.index'
 ]);
 
-Route::get('mansimmeds/subjects', [
-    'uses' => 'ManSimmedController@subjects',
-    'as' => 'mansimmeds.subjects'
-]);
-
 Route::get('mansimmeds/groups', [
     'uses' => 'ManSimmedController@groups',
     'as' => 'mansimmeds.groups'
@@ -320,6 +315,11 @@ Route::post('worktime/save', [
 /////////////////////////////////////////////////////////
 //   L I B R A R I E S
 /////////////////////////////////////////////////////////
+
+Route::get('libraries/subjects', [
+    'uses' => 'LibrariesController@list_subjects',
+    'as' => 'libraries.subjects'
+]);
 
 Route::post('libraries/save_subject', [
     'uses' => 'LibrariesController@save_subject',
