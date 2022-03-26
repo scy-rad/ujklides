@@ -214,9 +214,11 @@ class SimmedController extends Controller
 
      public function ajaxsavetechnician(Request $request) {
 
+        $date_back=\App\Param::select('*')->orderBy('id','desc')->get()->first()->simmed_days_edit_back;
+
         if (
             (
-            DB::table('simmeds')->find($request->id)->simmed_date > date('Y-m-d',strtotime('now - 7 days'))
+            DB::table('simmeds')->find($request->id)->simmed_date >= date('Y-m-d',strtotime('now - '.$date_back.' days'))
             && Auth::user()->hasRole('Technik')
             )
             || Auth::user()->hasRole('Operator Symulacji')
@@ -245,7 +247,7 @@ class SimmedController extends Controller
         {
             $status=0;
             $returnBool=false;
-            $returnTxt='zmian powyżej 7 dni wstecz może dokonać tylko Operator Symulacji lub Administrator';
+            $returnTxt='zmian powyżej '.$date_back.' dni wstecz może dokonać tylko Operator Symulacji lub Administrator';
         }
         return json_encode(array('result' => $returnBool, 'tescik' => $returnTxt, 'status' => $status));
     }

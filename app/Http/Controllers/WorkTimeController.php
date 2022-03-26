@@ -141,20 +141,21 @@ class WorkTimeController extends Controller
         if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator') && !Auth::user()->hasRole('Technik'))
         return view('error',['head'=>'błąd wywołania funkcji save_data kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
 
+        $date_back=\App\Param::select('*')->orderBy('id','desc')->get()->first()->worktime_days_edit_back;
+
         if (!Auth::user()->hasRole('Operator Kadr') 
             && !Auth::user()->hasRole('Administrator') 
             && !(Auth::user()->id == ($request->user_id*1)) 
             )
             {
-                return back()->withErrors('tylko właściciel (lub Operator Kadr i Administrator) może edytować innych użytkowników');
+                return back()->withErrors('tylko właściciel (lub Operator Kadr albo Administrator) może edytować innych użytkowników');
             }
         elseif (!Auth::user()->hasRole('Operator Kadr') 
             && !Auth::user()->hasRole('Administrator') 
-            && ($request->date<=date('Y-m-d',strtotime('now - 7 days')))
+            && ($request->date < date('Y-m-d',strtotime('now - '.$date_back.' days')))
             )
             {
-                dump('zbyt wczesna data do edycji');
-                //return back()->withErrors('zbyt wczesna data do edycji');        
+                return back()->withErrors('zbyt wczesna data do edycji. Dopuszczalna ilość dni wstecz to: '.$date_back.'. (nie dotyczy Operatora Kadr i Administratora)');        
             }
         if ($request->id>0)
         {
@@ -171,7 +172,7 @@ class WorkTimeController extends Controller
                 // $TimeWork->date                 = $request->date;
                 // $TimeWork->user_id              = $request->user_id;
                 $TimeWork->save();
-                return back()->with('success',' Zapis zakończył się sukcesem (tymczasowo bez sprawdzania 7 dni wstecz).');
+                return back()->with('success',' Zapis zakończył się sukcesem.');
             }
             elseif (($request->modal_start == $request->modal_end))
             {
