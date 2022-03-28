@@ -43,6 +43,83 @@ public function save_subject(Request $request)
     }    
 }
 
+public function list_workmonths(Request $request) //  metoda GET bez parametrów
+{
+    if (!Auth::user()->hasRole('Operator Kadr'))
+    return view('error',['head'=>'błąd wywołania funkcji list_workmonths kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
+
+    $month_list = \App\WorkMonth::select('*')->get();
+
+
+    $month_listA = \App\WorkMonth::selectRaw(" substring(date_add(MIN(work_month), INTERVAL -1 MONTH),1,7) AS work_month");//->get()->first();
+    $month_listB = \App\WorkMonth::selectRaw(" substring(date_add(MAX(work_month), INTERVAL 1 MONTH),1,7) AS work_month");//->get()->first();
+    $month_listC = \App\WorkMonth::selectRaw("substring(work_month,1,7) AS work_month");//->get();
+
+    $month_list = $month_listA
+                -> union($month_listB)
+                -> union($month_listC)
+                -> orderBy('work_month')
+                ->get();
+    if (isset($request->month_selected))
+        $filtr['month_selected'] = $request->month_selected;
+    else
+        $filtr['month_selected'] = date('Y-m');
+    
+    $WorkMonths = \App\WorkMonth::where('work_month',$filtr['month_selected'].'-01')
+    ->leftjoin('users','work_months.user_id','=','users.id')
+    ->orderBy('name')
+    ->get();
+
+    return view('libraries.workmonths')->with(['WorkMonths' => $WorkMonths, 'month_list' => $month_list, 'filtr' => $filtr ]);
+}
+
+public function save_workmonth(Request $request)
+{
+    if (!Auth::user()->hasRole('Operator Kadr'))
+    return view('error',['head'=>'błąd wywołania funkcji save_workmonth kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
+
+    if ( (isset($request->action)) && ($request->action=='generate') )
+    {
+        if ( (is_null($request->gen_value)) ||  (!is_numeric($request->gen_value)) ||  ($request->gen_value<0) )
+            return back()->withErrors('aby wygenerować czasy pracy musisz wcześniej je podać...');
+        
+        $users = \App\WorkMonth::select("user_id")->where('work_month',$request->month_selected.'-01')->get()->toArray();    //->get();
+
+        $users = \App\User::role_users('technicians', 1, 1)
+        ->whereNotIn('id',$users)
+        ->get();
+        $reti='';
+        
+        if ($users->count()>0)
+        {
+            foreach ($users as $user_one)
+            {
+                $new_row=new \App\WorkMonth;
+                $new_row->user_id       = $user_one->id;
+                $new_row->work_month    = $request->month_selected.'-01';
+                $new_row->hours_to_work = $request->gen_value;
+                $reti.=$user_one->name.': '.$request->gen_value.'<br>';
+                $new_row->save();
+            }
+            return back()->with('success','wygenerowałem co mogłem, czyli:<br>'.$reti);
+        }
+        else
+        return back()->with('success','nie znalazłem nic do wygenerowania...');
+    }
+    if ($request->id>0)
+    {
+        if ( (is_null($request->modal_hr)) ||  (!is_numeric($request->modal_hr)) ||  ($request->modal_hr<0) )
+            return back()->withErrors('aby zmienić czas pracy musisz go podać w zrozumiałej formie...');
+        
+        $row_edit=\App\WorkMonth::find($request->id);
+        $row_edit->hours_to_work      = $request->modal_hr;
+        $row_edit->save();
+        return back()->with('success',' Zapis zakończył się sukcesem.');
+    }
+    return back()->withErrors('procedura zapisu jeszcze nie gotowa...');
+
+}
+
 
     
 }

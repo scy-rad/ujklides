@@ -129,8 +129,11 @@
                                     @endforeach
                                     @if (Auth::user()->hasRole('Operator Kadr'))
                                     <br>
+                                    <div style="background-color: #FF0;">
                                     <li><a href="/users/everybody">Wszyscy</a></li>
-                                    <li style="background-color: #FF0;"><a href="#">zarządzanie</a></li>
+                                    <li><a href="{{ route('libraries.workmonths') }}">ustal czas pracy </a></li>
+                                    <li><a href="#">zarządzanie</a></li>
+                                    </div>
                                     @endif
                                 </ul>
                             </li>

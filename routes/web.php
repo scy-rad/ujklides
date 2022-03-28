@@ -320,12 +320,20 @@ Route::get('libraries/subjects', [
     'uses' => 'LibrariesController@list_subjects',
     'as' => 'libraries.subjects'
 ]);
-
 Route::post('libraries/save_subject', [
     'uses' => 'LibrariesController@save_subject',
     'as' => 'libraries.save_subject'
 ]);
 
+
+Route::get('libraries/workmonths', [
+    'uses' => 'LibrariesController@list_workmonths',
+    'as' => 'libraries.workmonths'
+]);
+Route::post('libraries/save_workmonth', [
+    'uses' => 'LibrariesController@save_workmonth',
+    'as' => 'libraries.save_workmonth'
+]);
 
 
 /////////////////////////////////////////////////////////
