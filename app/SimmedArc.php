@@ -74,7 +74,10 @@ class SimmedArc extends Model
     function change_code()
     {
     $statustab=SimmedArc::change_code_table();
-    return $statustab[$this->change_code]['name'];
+    if (!(isset($statustab[$this->change_code])))
+        return 'nieznany kod zmiany: '.$this->change_code.'!';
+    else
+        return $statustab[$this->change_code]['name'];
     }
 
     
