@@ -121,5 +121,60 @@ public function save_workmonth(Request $request)
 }
 
 
+
+
+
+public function params_show() //  metoda GET bez parametrów
+{
+    if ( (!Auth::user()->hasRole('Operator Symulacji'))
+        && (!Auth::user()->hasRole('Operator Kadr'))
+        && (!Auth::user()->hasRole('Administrator'))
+    )
+    return view('error',['head'=>'błąd wywołania funkcji params_show kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem lub Aministratorem']);
+
+
+    $params = \App\Param::select('*')->orderBy('id','desc')->first();
+    $technicians_list =\App\User::role_users('technicians', 1, 1)->orderBy('name')->get();
+    $leaders_list=\App\User::role_users('instructors', 1, 1)->get();
+
+    return view('libraries.params')->with(['params' => $params, 'technicians_list' => $technicians_list, 'leaders_list' => $leaders_list]);
+}
+
+public function params_save(Request $request)
+{
+    if ( (!Auth::user()->hasRole('Operator Symulacji'))
+        && (!Auth::user()->hasRole('Operator Kadr'))
+        && (!Auth::user()->hasRole('Administrator'))
+    )
+    return view('error',['head'=>'błąd wywołania funkcji params_save kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem lub Administratorem']);
+      
+    if ($request->id>0)
+    {
+        $Param=\App\Param::find($request->id);
+        if (Auth::user()->hasRole('Operator Symulacji'))
+        {
+            if ( (is_null($request->simmed_days_edit_back)) ||  (!is_numeric($request->simmed_days_edit_back)) )
+                return back()->withErrors('simmed_days_edit_back musi być liczbą... ['.$request->simmed_days_edit_back.']');
+
+
+            $Param->leader_for_simmed       = $request->leader_for_simmed;
+            $Param->technician_for_simmed   = $request->technician_for_simmed;
+            $Param->statistics_start        = $request->statistics_start;
+            $Param->simmed_days_edit_back   = $request->simmed_days_edit_back;
+        }
+        if (Auth::user()->hasRole('Operator Kadr'))
+        {
+            if ( (is_null($request->worktime_days_edit_back)) ||  (!is_numeric($request->worktime_days_edit_back)) )
+                return back()->withErrors('worktime_days_edit_back musi być liczbą... ['.$request->worktime_days_edit_back.']');
+
+                $Param->worktime_days_edit_back = $request->worktime_days_edit_back;
+        }
+        $Param->save();
+        return back()->with('success',' Zapis zakończył się sukcesem.');
+    }
+}
+
+
+
     
 }

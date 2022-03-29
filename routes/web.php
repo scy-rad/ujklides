@@ -335,6 +335,15 @@ Route::post('libraries/save_workmonth', [
     'as' => 'libraries.save_workmonth'
 ]);
 
+Route::get('libraries/params', [
+    'uses' => 'LibrariesController@params_show',
+    'as' => 'libraries.params_show'
+]);
+Route::post('libraries/params_save', [
+    'uses' => 'LibrariesController@params_save',
+    'as' => 'libraries.params_save'
+]);
+
 
 /////////////////////////////////////////////////////////
 //   U S E R

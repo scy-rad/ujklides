@@ -168,6 +168,12 @@
                                     @if (Auth::user()->hasRole('Operator Symulacji'))
                                     <li><a href="{{ route('libraries.subjects') }}"> Tematy </a></li>
                                     @endif
+                                    @if ( (Auth::user()->hasRole('Operator Symulacji'))
+                                        || (Auth::user()->hasRole('Operator Kadr'))
+                                        || (Auth::user()->hasRole('Administrator'))
+                                    )
+                                    <li><a href="{{ route('libraries.params_show') }}"> Parametry </a></li>
+                                    @endif
                                 </ul>
                             </li>
 
