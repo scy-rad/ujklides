@@ -143,19 +143,22 @@ class WorkTimeController extends Controller
 
         $date_back=\App\Param::select('*')->orderBy('id','desc')->get()->first()->worktime_days_edit_back;
 
+        if ($date_back<0)
+            $date_back='+'.$date_back*(-1);
+        else
+            $date_back='-'.$date_back;
+
         if (!Auth::user()->hasRole('Operator Kadr') 
-            && !Auth::user()->hasRole('Administrator') 
             && !(Auth::user()->id == ($request->user_id*1)) 
             )
             {
-                return back()->withErrors('tylko właściciel (lub Operator Kadr albo Administrator) może edytować innych użytkowników');
+                return back()->withErrors('tylko Operator Kadr może edytować innych użytkowników');
             }
         elseif (!Auth::user()->hasRole('Operator Kadr') 
-            && !Auth::user()->hasRole('Administrator') 
-            && ($request->date < date('Y-m-d',strtotime('now - '.$date_back.' days')))
+            && ($request->date < date('Y-m-d',strtotime('now '.$date_back.' days')))
             )
             {
-                return back()->withErrors('zbyt wczesna data do edycji. Dopuszczalna ilość dni wstecz to: '.$date_back.'. (nie dotyczy Operatora Kadr i Administratora)');        
+                return back()->withErrors('zbyt wczesna data do edycji. Dopuszczalna ilość dni to: '.$date_back.'. (nie dotyczy Operatora Kadr)');        
             }
         if ($request->id>0)
         {
