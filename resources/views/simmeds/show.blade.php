@@ -51,8 +51,9 @@ $Scen_Table.='</ul>';
 
     
 <p>{!! $simmed->opis !!}</p>
+@if ($show_edit_button==true)
 <div class="float-right"><a class="btn btn-info" href="{{route('simmeds.edit', $simmed)}}">Edytuj</a></div>
-
+@endif
 
 @if ($technician_history->count()>0)
     <hr>
@@ -65,15 +66,15 @@ $Scen_Table.='</ul>';
 @endif
 
 <hr>
+<ol><h2>historia edycji:</h2>
 @if ($simmed_history->count()>0)
-    <hr>
-    <ol><h2>historia edycji:</h2>
     @foreach ($simmed_history as $history_row)
         <li><strong>{{$history_row->updated_at}}:</strong>  {{print_r($history_row->datas())}} (zmiana <strong>{{$history_row->change_code()}}</strong> przez: <strong>{{$history_row->name_of_changer()}}</strong>) </li>
     @endforeach
-    </ol>
-    <hr>
 @endif
+    <li><strong>{{$simmed->updated_at}}:</strong> bieżacy wpis dokonany przez: <strong>{{$simmed->name_of_changer()}}</strong></li> 
+</ol>
+<hr>
 
 
 

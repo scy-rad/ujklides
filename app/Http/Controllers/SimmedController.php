@@ -259,10 +259,16 @@ class SimmedController extends Controller
 
     public function ajaxtechnicianchar(Request $request) 
     {
-        $status = DB::table($request->table)
-       ->where('id', $request->id)
-       ->update(['simmed_technician_character_id' => $request->character_id]);
-       return json_encode(array('result'=>false, 'tescik' =>'przykladowy_tekst', 'statusx'=> $status));
+        if (
+            Auth::user()->hasRole('Operator Symulacji')
+           )
+        {
+            $status = DB::table($request->table)
+            ->where('id', $request->id)
+            ->update(['simmed_technician_character_id' => $request->character_id]);
+            return json_encode(array('result'=>true, 'tescik' =>'przykladowy_tekst', 'statusx'=> $status));
+        }
+        return json_encode(array('result'=>false, 'tescik' =>'Nie masz uprawnień do tego zapisu (ajaxTechnicianChar in SimmedController)', 'statusx'=> 0));
     }
  
     /**
@@ -273,16 +279,30 @@ class SimmedController extends Controller
      */
     public function show(Simmed $simmed)
     {
-        //echo '<h1>funkcja SHOW Simmed Controller</h1>';
+        $date_back=\App\Param::select('*')->orderBy('id','desc')->get()->first()->simmed_days_edit_back;
         
-        $history['technician_history'] = SimmedArcTechnician::where('simmed_id', $simmed->id)
+        if ($date_back<0)
+            $date_back='+'.$date_back*(-1);
+        else
+            $date_back='-'.$date_back;
+        if (
+            (
+            $simmed->simmed_date >= date('Y-m-d',strtotime('now '.$date_back.' days'))
+            && Auth::user()->hasRole('Technik')
+            )
+            || Auth::user()->hasRole('Operator Symulacji')
+           )
+           $data['show_edit_button']=true;
+        else
+           $data['show_edit_button']=false;
+
+
+        $data['technician_history'] = SimmedArcTechnician::where('simmed_id', $simmed->id)
         ->get();
-        $history['simmed_history'] = \App\SimmedArc::where('simmed_id', $simmed->id)
+        $data['simmed_history'] = \App\SimmedArc::where('simmed_id', $simmed->id)
         ->get();
  
-//        dump($technician_history);
-
-        return view('simmeds.show', compact('simmed'),$history);
+        return view('simmeds.show', compact('simmed'), $data);
     }
 
     /**
@@ -313,76 +333,88 @@ class SimmedController extends Controller
      */
     public function update(Request $request)
     {
-        $modified_row=SiMmed::find($request->id);
+        $date_back=\App\Param::select('*')->orderBy('id','desc')->get()->first()->simmed_days_edit_back;
+        
+        if ($date_back<0)
+            $date_back='+'.$date_back*(-1);
+        else
+            $date_back='-'.$date_back;
 
-// dump($request);
-// dump($request->simmed_technician_id);
-// dd();
-
-        if (($modified_row->simmed_technician_id*1) != ($request->simmed_technician_id*1))
+        if (
+            (
+            DB::table('simmeds')->find($request->id)->simmed_date >= date('Y-m-d',strtotime('now '.$date_back.' days'))
+            && Auth::user()->hasRole('Technik')
+            )
+            || Auth::user()->hasRole('Operator Symulacji')
+           )
         {
-            $history_table = new SimmedArcTechnician();
-            $history_table->simmed_id = $request->id;
-            $history_table->technician_id = $request->simmed_technician_id*1;
-            $history_table->user_id = Auth::user()->id;
-            $history_table->save();
+            $modified_row=SiMmed::find($request->id);
+
+            if (($modified_row->simmed_technician_id*1) != ($request->simmed_technician_id*1))
+            {
+                $history_table = new SimmedArcTechnician();
+                $history_table->simmed_id = $request->id;
+                $history_table->technician_id = $request->simmed_technician_id*1;
+                $history_table->user_id = Auth::user()->id;
+                $history_table->save();
+            }
+
+            $arc_row=new \App\SimmedArc();            
+            $arc_row->simmed_date						= $modified_row->simmed_date;
+            $arc_row->simmed_time_begin				    = $modified_row->simmed_time_begin;
+            $arc_row->simmed_time_end					= $modified_row->simmed_time_end;
+            $arc_row->student_subject_id	        	= $modified_row->student_subject_id;
+            $arc_row->room_id     					    = $modified_row->room_id;
+            $arc_row->simmed_leader_id	    		    = $modified_row->simmed_leader_id;
+            $arc_row->simmed_technician_id    		    = $modified_row->simmed_technician_id;
+            $arc_row->simmed_technician_character_id    = $modified_row->simmed_technician_character_id;
+            $arc_row->simmed_alternative_title		    = $modified_row->simmed_alternative_title;
+            $arc_row->simmed_status 					= $modified_row->simmed_status;
+
+            $arc_row->simmed_type_id				    = $modified_row->simmed_type_id;
+            $arc_row->student_group_id    			    = $modified_row->student_group_id;
+            $arc_row->student_subgroup_id   			= $modified_row->student_subgroup_id;
+            $arc_row->simmed_status2		    		= $modified_row->simmed_status2;
+            $arc_row->created_at    			    	= $modified_row->created_at;
+            $arc_row->updated_at    				    = $modified_row->updated_at;
+            $arc_row->change_code                       = 20; //edycja ręczna
+            $arc_row->simmed_id                         = $modified_row->id;
+            $arc_row->user_id                           = $modified_row->user_id;
+            
+
+            $modified_row->simmed_date						= $request->simmed_date;
+            $modified_row->simmed_time_begin				= $request->simmed_time_begin;
+            $modified_row->simmed_time_end					= $request->simmed_time_end;
+            if ($request->student_subject_id==0)
+                $modified_row->student_subject_id	        = null;
+            else
+                $modified_row->student_subject_id	        = $request->student_subject_id;
+            $modified_row->room_id     					    = $request->room_id;
+            if ($request->simmed_leader_id==0)
+                $modified_row->simmed_leader_id     		= null;
+            else
+                $modified_row->simmed_leader_id     		= $request->simmed_leader_id;
+            if ($request->simmed_technician_id==0)
+                $modified_row->simmed_technician_id    		= null;
+            else
+                $modified_row->simmed_technician_id    		= $request->simmed_technician_id;
+            $modified_row->simmed_technician_character_id   = $request->simmed_technician_character_id;
+            $modified_row->simmed_alternative_title		    = $request->simmed_alternative_title;
+            $modified_row->simmed_status 					= $request->simmed_status;
+            $modified_row->user_id                          = Auth::user()->id;
+            
+            $ret_save=$modified_row->save();
+
+            if (count($modified_row->getChanges())>0 )
+                $arc_row->save();
+            
+          return redirect()->route('simmeds.show',$request->id)->with('success', 'Dane zostały zmienione.');
+
         }
-
-        $arc_row=new \App\SimmedArc();            
-        $arc_row->simmed_date						= $modified_row->simmed_date;
-        $arc_row->simmed_time_begin				    = $modified_row->simmed_time_begin;
-        $arc_row->simmed_time_end					= $modified_row->simmed_time_end;
-        $arc_row->student_subject_id	        	= $modified_row->student_subject_id;
-        $arc_row->room_id     					    = $modified_row->room_id;
-        $arc_row->simmed_leader_id	    		    = $modified_row->simmed_leader_id;
-        $arc_row->simmed_technician_id    		    = $modified_row->simmed_technician_id;
-        $arc_row->simmed_technician_character_id    = $modified_row->simmed_technician_character_id;
-        $arc_row->simmed_alternative_title		    = $modified_row->simmed_alternative_title;
-        $arc_row->simmed_status 					= $modified_row->simmed_status;
-
-        $arc_row->simmed_type_id				    = $modified_row->simmed_type_id;
-        $arc_row->student_group_id    			    = $modified_row->student_group_id;
-        $arc_row->student_subgroup_id   			= $modified_row->student_subgroup_id;
-        $arc_row->simmed_status2		    		= $modified_row->simmed_status2;
-        $arc_row->created_at    			    	= $modified_row->created_at;
-        $arc_row->updated_at    				    = $modified_row->updated_at;
-        $arc_row->change_code                       = 20; //edycja ręczna
-        $arc_row->simmed_id                         = $modified_row->id;
-        $arc_row->user_id                           = $modified_row->user_id;
-        
-
-        $modified_row->simmed_date						= $request->simmed_date;
-        $modified_row->simmed_time_begin				= $request->simmed_time_begin;
-        $modified_row->simmed_time_end					= $request->simmed_time_end;
-        if ($request->student_subject_id==0)
-            $modified_row->student_subject_id	        = null;
         else
-            $modified_row->student_subject_id	        = $request->student_subject_id;
-        $modified_row->room_id     					    = $request->room_id;
-        if ($request->simmed_leader_id==0)
-            $modified_row->simmed_leader_id     		= null;
-        else
-            $modified_row->simmed_leader_id     		= $request->simmed_leader_id;
-        if ($request->simmed_technician_id==0)
-            $modified_row->simmed_technician_id    		= null;
-        else
-            $modified_row->simmed_technician_id    		= $request->simmed_technician_id;
-        $modified_row->simmed_technician_character_id   = $request->simmed_technician_character_id;
-        $modified_row->simmed_alternative_title		    = $request->simmed_alternative_title;
-        $modified_row->simmed_status 					= $request->simmed_status;
-        $modified_row->user_id                          = Auth::user()->id;
-        
-        $ret_save=$modified_row->save();
-
-        if (count($modified_row->getChanges())>0 )
-            $arc_row->save();
-        
-        $history['technician_history'] = SimmedArcTechnician::where('simmed_id', $modified_row->id)
-        ->get();
-        $history['simmed_history'] = \App\SimmedArc::where('simmed_id', $modified_row->id)
-        ->get();
-        $simmed=$modified_row;
-        return view('simmeds.show', compact('simmed'),$history);
+        {
+            return back()->withErrors('brak uprawnień do zapisu (update in SimmedController)');   
+        }
     }
 
 

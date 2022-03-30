@@ -98,6 +98,12 @@ class Simmed extends Model
     if ($this->student_subject_id>0)
         return $this->hasOne(StudentSubject::class,'id','student_subject_id')->get()->first()->student_subject_name;
     }
+    function name_of_changer()
+    {
+        if ($this->user_id>0)
+            return $this->hasOne(User::class,'id','user_id')->get()->first()->name;
+    }
+
     
     function room()
     {
