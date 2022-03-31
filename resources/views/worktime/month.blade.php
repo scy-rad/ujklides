@@ -52,7 +52,11 @@
             @endforeach
             </table>
         </td>
-        <td class="text-right"><h3>czas pracy: {{$total['times']}}</h3></td>
+        <td class="text-right">
+        <h3>czas pracy: {{$total['times']}}</h3>
+
+        <h3>planowo godzin: {{$total['month_data']->hours_to_work}}</h3>
+        </td>
     </tr>
     </thead>
     </table>

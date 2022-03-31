@@ -98,6 +98,13 @@ class WorkTimeController extends Controller
             ->where('simmed_technician_id','=',$filtr['user'])
             ->get();
 
+        $total['month_data'] = 
+        \App\WorkMonth::select('*')
+            ->where('user_id','=',$filtr['user'])
+            ->where('work_month','=',date('Y-m-d',$begin))
+            ->get()
+            ->first();
+
         return view('worktime/month',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
 
     }
