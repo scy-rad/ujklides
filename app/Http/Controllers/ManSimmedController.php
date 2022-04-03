@@ -664,7 +664,8 @@ class ManSimmedController extends Controller
                                 ->where('student_group_id',$onetmp->student_group_id)
                                 ->where('student_subgroup_id',$onetmp->student_subgroup_id)
                                 ->where('room_id',$onetmp->room_id)
-                                ->where('simmed_leader_id',$onetmp->simmed_leader_id);
+                                ->where('simmed_leader_id',$onetmp->simmed_leader_id)
+                                ->where('simmed_status','<>',4);
                     if (SimmedTemp::whereNotNull('simmed_technician_id')->count()>0 )
                         {
                         $wynk=$wynk->where('simmed_technician_id',$onetmp->simmed_technician_id)
