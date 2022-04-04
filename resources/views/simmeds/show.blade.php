@@ -46,14 +46,31 @@ $Scen_Table.='</ul>';
     {{ kafelek(2, 'podgrupa ', $simmed->name_of_student_subgroup(),NULL) }}
 </div>
 <div class="row">
-    {{ kafelek(12, 'scenariusze', $Scen_Table,NULL) }}
+    {{ kafelek(12, 'informacje', $simmed->simmed_alternative_title,NULL) }}
 </div>
+<!--div class="row">
+    {{ kafelek(12, 'scenariusze', $Scen_Table,NULL) }}
+</div-->
 
     
 <p>{!! $simmed->opis !!}</p>
 @if ($show_edit_button==true)
 <div class="float-right"><a class="btn btn-info" href="{{route('simmeds.edit', $simmed)}}">Edytuj</a></div>
 @endif
+
+@if ($simulation_info->count()>0)
+    <hr>
+    <ol><h2>informacje o zajęciach:</h2>
+    @foreach ($simulation_info as $simulation_row)
+        <li> {{$simulation_row->simmed_date}} 
+            <strong>{{$simulation_row->room()->room_number}}</strong> 
+            <br>
+            <div class="card-text" style="white-space: pre-line">{!! $simulation_row->simmed_alternative_title !!}</div>
+    @endforeach
+    </ol>
+    <hr>
+@endif
+
 
 @if ($technician_history->count()>0)
     <hr>

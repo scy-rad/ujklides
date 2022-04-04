@@ -545,7 +545,7 @@ Route::post('simmed/store', [
     'as' => 'simmeds.store'
 ]);
 
-Route::get('simmed/{simmed}', [
+Route::get('simmed/{simmed}/{filtr}', [
     'uses' => 'SimmedController@show',
     'as' => 'simmeds.show'
 ]);

@@ -116,7 +116,7 @@ if ( !(Auth::user()->hasRole('Technik') || Auth::user()->hasRole('Operator Symul
         <tr class="{{$curr_class}}">
             <!--th scope="row">{{$row_one->sim_id }}</th-->
             <td>
-                <a href="{{route('simmeds.show', $row_one->id)}}">
+                <a href="{{route('simmeds.show', [$row_one->id, 0])}}">
                 {{$row_one->simmed_date }}: {{$dni_tygodnia[ date('w',strtotime($row_one->simmed_date)) ]}}
                 </a>
             </td>

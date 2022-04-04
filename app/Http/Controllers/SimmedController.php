@@ -277,10 +277,10 @@ class SimmedController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Simmed $simmed)
+    public function show(Simmed $simmed, Int $filtr)
     {
         $date_back=\App\Param::select('*')->orderBy('id','desc')->get()->first()->simmed_days_edit_back;
-        
+
         if ($date_back<0)
             $date_back='+'.$date_back*(-1);
         else
@@ -301,7 +301,17 @@ class SimmedController extends Controller
         ->get();
         $data['simmed_history'] = \App\SimmedArc::where('simmed_id', $simmed->id)
         ->get();
- 
+
+        $date_stat=\App\Param::select('statistics_start')->get()->first()->statistics_start;
+
+        $data['simulation_info'] = \App\Simmed::select('*')
+            ->where('id', '<>' ,$simmed->id)
+            ->where('simmed_alternative_title', '<>' ,'')
+            ->where('student_subject_id', '=' ,$simmed->student_subject_id)
+            ->where('simmed_leader_id', '=' ,$simmed->simmed_leader_id)
+            ->where('simmed_date','>=',$date_stat)
+            ->get();
+
         return view('simmeds.show', compact('simmed'), $data);
     }
 

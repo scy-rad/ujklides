@@ -25,7 +25,7 @@ function rowek($simmed)
         <li>
         <div class="row">
             <div class="col-md-2">
-            <a href="{{route('simmeds.show', $simmed)}}">
+            <a href="{{route('simmeds.show', [$simmed, 0])}}">
                 {{ substr($simmed->simmed_time_begin,0,5) }} - {{ substr($simmed->simmed_time_end,0,5) }} 
                 </a>
             </div>
@@ -60,7 +60,7 @@ function rowek_tech($simmed)
             <div class="col-md-2">
             <li>
                 <div class="col-md-12 col-sm-6">
-                    <a href="{{route('simmeds.show', $simmed)}}">
+                    <a href="{{route('simmeds.show', [$simmed, 0])}}">
                     {{ substr($simmed->simmed_time_begin,0,5) }} - {{ substr($simmed->simmed_time_end,0,5) }}
                     </a>
                 </div>

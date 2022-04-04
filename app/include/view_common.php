@@ -68,7 +68,7 @@ function kafelek($column, $header, $text, $colors)
       <div class="card">
         <div class="card-header"><?php echo $header; ?></div>
         <div class="card-body">
-          <div class="card-text"><?php echo $text; ?></div>
+          <div class="card-text" style="white-space: pre-line"><?php echo $text; ?></div>
         </div>
       </div>
     </div>
