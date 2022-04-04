@@ -400,7 +400,9 @@ class SimmedController extends Controller
                 $modified_row->simmed_technician_id    		= $request->simmed_technician_id;
             $modified_row->simmed_technician_character_id   = $request->simmed_technician_character_id;
             $modified_row->simmed_alternative_title		    = $request->simmed_alternative_title;
-            $modified_row->simmed_status 					= $request->simmed_status;
+            if (Auth::user()->hasRole('Operator Symulacji')
+                )
+                $modified_row->simmed_status 					= $request->simmed_status;
             $modified_row->user_id                          = Auth::user()->id;
             
             $ret_save=$modified_row->save();
