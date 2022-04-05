@@ -420,7 +420,7 @@ class SimmedController extends Controller
             if (count($modified_row->getChanges())>0 )
                 $arc_row->save();
             
-          return redirect()->route('simmeds.show',$request->id)->with('success', 'Dane zostały zmienione.');
+          return redirect()->route('simmeds.show',[$request->id, 0])->with('success', 'Dane zostały zmienione.');
 
         }
         else
