@@ -550,7 +550,7 @@ Route::get('simmed/{simmed}/{filtr}', [
     'as' => 'simmeds.show'
 ]);
 
-Route::get('simmed/edit/{simmed}', [
+Route::get('simmededit/{simmed}', [
     'uses' => 'SimmedController@edit',
     'as' => 'simmeds.edit'
 ]);
