@@ -378,7 +378,7 @@ class SimmedController extends Controller
             $arc_row->simmed_leader_id	    		    = $modified_row->simmed_leader_id;
             $arc_row->simmed_technician_id    		    = $modified_row->simmed_technician_id;
             $arc_row->simmed_technician_character_id    = $modified_row->simmed_technician_character_id;
-            $arc_row->simmed_alternative_title		    = $modified_row->simmed_alternative_title;
+            $arc_row->simmed_alternative_title		    = substr($modified_row->simmed_alternative_title,0,254);
             $arc_row->simmed_status 					= $modified_row->simmed_status;
 
             $arc_row->simmed_type_id				    = $modified_row->simmed_type_id;
@@ -409,7 +409,7 @@ class SimmedController extends Controller
             else
                 $modified_row->simmed_technician_id    		= $request->simmed_technician_id;
             $modified_row->simmed_technician_character_id   = $request->simmed_technician_character_id;
-            $modified_row->simmed_alternative_title		    = $request->simmed_alternative_title;
+            $modified_row->simmed_alternative_title		    = substr($request->simmed_alternative_title,0,254);
             if (Auth::user()->hasRole('Operator Symulacji')
                 )
                 $modified_row->simmed_status 					= $request->simmed_status;

@@ -46,7 +46,7 @@ $Scen_Table.='</ul>';
     {{ kafelek(2, 'podgrupa ', $simmed->name_of_student_subgroup(),NULL) }}
 </div>
 <div class="row">
-    {{ kafelek(12, 'informacje', $simmed->simmed_alternative_title,NULL) }}
+    {{ kafelek(12, 'informacje (max. 255 znaków)', $simmed->simmed_alternative_title,NULL) }}
 </div>
 <!--div class="row">
     {{ kafelek(12, 'scenariusze', $Scen_Table,NULL) }}
