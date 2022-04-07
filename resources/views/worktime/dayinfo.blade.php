@@ -56,21 +56,36 @@
 <div>
 @foreach ($simmeds as $row_one)
     <div class="row">
-    <div class="col-sm-2">
-        {{$row_one->start}} - {{$row_one->end}}
-    </div>
-    <div class="col-sm-1">
-        <strong>{{$row_one->character_short}}</strong>
-    </div>
-    <div class="col-sm-1">
-        <strong>{{$row_one->room_number}}</strong>
-    </div>
-    <div class="col-sm-2">
-        {{$row_one->text}}
-    </div>
-    <div class="col-sm-2">
-        [{{$row_one->student_group_code}}: {{$row_one->student_subject_name}}]
-    </div>
+      <div class="col-sm-1">
+        <a href="/scheduler/{{$row_one->simmed_date}}">
+            {{ $row_one->simmed_date }}
+            <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+            </a>
+            <br>
+        <?php 
+        $dni_tygodnia = array( 'Ni', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb' );
+        $date = date( "w" );
+        echo $dni_tygodnia[ date('w',strtotime($row_one->simmed_date)) ];
+        ?>
+          <a href="{{route('simmeds.show', [$row_one->id, 0])}}"> pokaż
+              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+          </a>
+      </div>
+      <div class="col-sm-1">
+          {{$row_one->start}} - {{$row_one->end}}
+      </div>
+      <div class="col-sm-1">
+          <strong>{{$row_one->character_short}}</strong>
+      </div>
+      <div class="col-sm-1">
+          <strong>{{$row_one->room_number}}</strong>
+      </div>
+      <div class="col-sm-2">
+          {{$row_one->text}}
+      </div>
+      <div class="col-sm-2">
+          [{{$row_one->student_group_code}}: {{$row_one->student_subject_name}}]
+      </div>
     </div>
 @endforeach
 </div>

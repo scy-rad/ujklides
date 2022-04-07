@@ -30,7 +30,7 @@
 <form action="{{ route('worktime.statistics') }}" method="get">
     <div class="row">
         <div class="col-sm-3">
-            <label for"start">odd-do:</label><br>
+            <label for"start">od-do:</label><br>
             <input type="date" name="start" value="{{$filtr['start']}}">
             <input type="date" name="stop" value="{{$filtr['stop']}}">
         </div>
@@ -106,9 +106,21 @@
     @foreach ($extra_tab as $row_one)
             <?php $total_min+=$row_one->time_minutes; ?>
         <tr>
-        <td>    {{$row_one->simmed_date}}   </td>
+        <td>    <a href="/scheduler/{{$row_one->simmed_date}}">
+            {{ $row_one->simmed_date }}
+            <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+            </a>
+       </td>
         <td>    {{$row_one->DayOfWeek}}   </td>
-        <td>    {{$row_one->time}}  ({{m2h($row_one->time_minutes)}})</td>
+        <td>    
+
+            <a href="{{route('simmeds.show', [$row_one->id, 0])}}">
+            {{$row_one->time}}  ({{m2h($row_one->time_minutes)}})
+                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+            </a>
+
+
+        </td>
         <td>    {{$row_one->room_number}}   </td>
         <td>    {{$row_one->leader}}   </td>
         <td>    {{$row_one->technician_name}}   </td>

@@ -73,21 +73,25 @@
     @foreach ($tabelka as $row_one)
     <tr>
         <td>
-        {{$row_one['date']}} {{$row_one['day_name_short']}}
-        </td>
+        <a href="/scheduler/{{$row_one['date']}}">
+            {{$row_one['date']}}
+            <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+        </a>
+            {{$row_one['day_name_short']}}
+       </td>
         <td>
         @foreach ($row_one['sims'] as $sim_one)
             <strong>{{$sim_one['time']}} {{$sim_one['room_number']}} ({{$sim_one['character_short']}}) </strong><br>
-            {{$sim_one['student_subject_name']}}<br>
-            
+            {{$sim_one['student_subject_name']}}<br>     
         @endforeach
         </td>
-        
         <td>
             <a href="{{route('worktime.day_data', [ $row_one['date'], $user->id ])}}">
             @foreach ($row_one['times'] as $time_one)
                 {{$time_one['start']}} - {{$time_one['end']}}<br>
             @endforeach
+            <span class="glyphicon glyphicon glyphicon-briefcase" aria-hidden="true"></span>
+            
             </a>
         </td>
         <td>

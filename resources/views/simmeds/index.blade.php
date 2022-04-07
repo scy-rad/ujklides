@@ -25,8 +25,6 @@ data-sort-priority='[{"sortName": "DaTe","sortOrder":"desc"},{"sortName":"FromTo
             <th>Grupa</th>
             <th>Zajęcia</th>
             <th>Info</th>
-            <th data-sortable="false">x</th>
-            
         </tr>
     </thead>
     <tbody>
@@ -35,13 +33,17 @@ data-sort-priority='[{"sortName": "DaTe","sortOrder":"desc"},{"sortName":"FromTo
 <tr>
     <td><a href="/scheduler/{{$simmed->simmed_date}}">
         {{ $simmed->simmed_date }}
-</a>
+        <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+        </a>
         <br>
     <?php 
     $dni_tygodnia = array( 'Niedziela', 'Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek', 'Sobota' );
     $date = date( "w" );
     echo $dni_tygodnia[ date('w',strtotime($simmed->simmed_date)) ];
      ?>
+        <a href="{{route('simmeds.show', [$simmed->id, 0])}}"> pokaż
+            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+        </a>
     </td>
     <td>{{ substr($simmed->simmed_time_begin,0,5) }} - {{ substr($simmed->simmed_time_end,0,5) }}</td>
     <td>{{ $simmed->room()->room_number }}</td>
@@ -51,7 +53,6 @@ data-sort-priority='[{"sortName": "DaTe","sortOrder":"desc"},{"sortName":"FromTo
     <td>{{ $simmed->name_of_student_group() }} {{ $simmed->name_of_student_subgroup() }}</td>
     <td>{{ $simmed->name_of_student_subject() }}</td>
     <td>{{ $simmed->simmed_alternative_title }}</td>
-    <td> <a href="{{route('simmeds.show', [$simmed, 0])}}">pokaż</a></td>
 </tr>
 @endforeach
     </tbody>
@@ -65,7 +66,6 @@ data-sort-priority='[{"sortName": "DaTe","sortOrder":"desc"},{"sortName":"FromTo
             <th>Grupa</th>
             <th>Zajęcia</th>
             <th>Info</th>
-            <th>x</th>
         </tr>
     </tfoot>
     </table>

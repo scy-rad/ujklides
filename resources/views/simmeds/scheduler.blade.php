@@ -87,6 +87,9 @@ if (date('N', strtotime($sch_date))==5) $aft=3;
             <!--button type="submit" class="btn btn-primary">zapisz</button-->
       </div>    <!-- modal-footer -->
         </form>
+        <span id="foot_edit">
+        <span id="span_link"></span>
+        </span>
     </div>  <!-- /modal-content -->
   </div>    <!-- /modal-dialog -->
 </div>      <!-- /modal fade -->
@@ -138,6 +141,7 @@ function openModal(num)
             onClick: function(node, data){
                 addLog('onClick!', data);
                 addLog('onClick!', data['data']['id']);
+                
                 $('#editModal').modal('show');
                 //alert(JSON.stringify(data, null, 4));
                 document.getElementById('span_start').innerHTML = data['start'];
@@ -145,7 +149,33 @@ function openModal(num)
                 document.getElementById('span_character').innerHTML = data['class'];
                 document.getElementById('span_text').innerHTML = data['text'];
                 document.getElementById('span_simdescript').innerHTML = data['simdescript'];
-                
+                if ( (data['class'] == 'stay') ||
+                     (data['class'] == 'ready') ||
+                     (data['class'] == 'phone') ||
+                     (data['class'] == 'prep')
+                   )
+                {
+                document.getElementById('span_link').innerHTML = ' _ <a href="/simmed/'+data['data']['id']+'/0">pokaż</a>';
+                //alert(JSON.stringify(data, null, 4));
+                }
+                else
+                {
+                if ( (data['class'] == 'in_work') ||
+                         (data['class'] == 'out_work') ||
+                         (data['class'] == 'busy_work') ||
+                         (data['class'] == 'home_work') ||
+                         (data['class'] == 'phone_work')
+                       )
+                    {
+                    document.getElementById('span_link').innerHTML = ' _ <a href="/worktime/day/{{$sch_date}}/'+data['data']['id']+'">pokaż</a>';
+                    }      
+                else
+                    {
+                    document.getElementById('span_link').innerHTML = '...'+data['class']+'...';
+                    }
+                }
+
+
               //  ui-resizable
             },
         /*
