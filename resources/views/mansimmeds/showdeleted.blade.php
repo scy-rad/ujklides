@@ -1,3 +1,7 @@
+<?php
+if (!Auth::user()->hasRole('Operator Symulacji'))
+        return view('error',['head'=>'błąd wywołania widoku ManSimMeds show deleted','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+?>
 @extends('layouts.app')
 
 @section('title', 'wykaz usuniętych pozycji')
@@ -10,7 +14,6 @@
 
 <h1>Wykaz usuniętych zajęć:</h1>
 <hr>
-<?php dump($simmeds_deleted); ?>    
 <!--table class="table table-hover"-->
 <table id="exatwo" class="display" style="width:100%"
 data-sort-priority='[{"sortName": "DaTe","sortOrder":"desc"},{"sortName":"FromTo","sortOrder":"desc"}]'
@@ -22,9 +25,10 @@ data-sort-priority='[{"sortName": "DaTe","sortOrder":"desc"},{"sortName":"FromTo
             <th>Sala</th>
             <th data-sortable="true">Instruktor</th>
             <th data-sortable="true">Technik</th>
+            <th data-sortable="true">Char</th>
             <th>Grupa</th>
             <th>Zajęcia</th>
-            <th>Info</th>
+            <th data-sortable="true">usun.</th>
         </tr>
     </thead>
     <tbody>
@@ -47,12 +51,12 @@ data-sort-priority='[{"sortName": "DaTe","sortOrder":"desc"},{"sortName":"FromTo
     </td>
     <td>{{ substr($simmed->simmed_time_begin,0,5) }} - {{ substr($simmed->simmed_time_end,0,5) }}</td>
     <td>{{ $simmed->room_number }}</td>
-    <td>{{ $simmed->leader }}</td>
-    
+    <td>{{ $simmed->leader }}</td>    
     <td>{{ $simmed->technician_name }}</td>
+    <td>{{ $simmed->character_short }}</td>
     <td>{{ $simmed->student_group_name }} </td>
     <td>{{ $simmed->student_subject_name }}</td>
-    <td>{{ $simmed->simmed_alternative_title }}</td>
+    <td>{{ $simmed->updated_at }}</td>
 </tr>
 @endforeach
     </tbody>

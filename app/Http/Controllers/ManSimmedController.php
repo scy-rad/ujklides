@@ -2026,7 +2026,7 @@ public function showdeleted(Request $request)
             'send_technicians.name as send_technician_name',
             'send_technician_characters.character_name as send_character_name',
             'send_rooms.room_number as send_room_number',
-           
+            'simmeds.updated_at',           
             )
         ->leftjoin('rooms','simmeds.room_id','=','rooms.id')
         ->leftjoin('users as leaders','simmeds.simmed_leader_id','=','leaders.id')
