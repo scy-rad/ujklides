@@ -1976,6 +1976,86 @@ public function changes(Request $request)
 }
 
 
+public function showdeleted(Request $request)
+    {
+    //prepare SQL question
+    
+    $user_simmeds_prepare=DB::table('simmeds')
+        ->select('simmeds.id',
+            'simmed_date',
+            \DB::raw('dayname(simmed_date) as DayOfWeek'),
+            \DB::raw('concat(substr(simmed_time_begin,1,5),"-",substr(simmed_time_end,1,5)) as time'), 
+            \DB::raw('concat(substr(send_simmed_time_begin,1,5),"-",substr(send_simmed_time_end,1,5)) as send_time'), 
+            'rooms.room_number', 
+            \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as leader'),
+            \DB::raw('concat(send_user_titles.user_title_short," ",send_leaders.lastname," ",send_leaders.firstname) as send_leader'),  
+            'student_subject_name', 'student_group_name', 'subgroup_name',
+            'technicians.name as technician_name', 
+            'technician_characters.character_short',
+            'technician_characters.character_name',
+            'simmed_alternative_title',
+            'room_id',
+            'leaders.id as leader_id',
+            'simmed_technician_id',
+            'simmed_technician_character_id',
+                'student_subject_id',
+                'simmeds.student_group_id',
+                'student_subgroup_id',
+                'student_group_code',
+            'simmed_time_begin',
+            'simmed_time_end',
+            'simmed_type_id',
+            'simmed_leader_id',
+            'simmed_status',
+            'simmed_status2',
+
+            'send_simmed_date',
+            'send_simmed_time_begin',
+            'send_simmed_time_end',
+            'send_simmed_type_id',
+            'send_student_subject_id',
+            'send_student_group_id',
+            'send_student_subgroup_id',
+            'send_room_id',
+            'send_simmed_leader_id',
+            'send_simmed_technician_id',
+            'send_simmed_technician_character_id',
+            'send_simmed_status',
+            'send_simmed_status2',
+           
+            'send_technicians.name as send_technician_name',
+            'send_technician_characters.character_name as send_character_name',
+            'send_rooms.room_number as send_room_number',
+           
+            )
+        ->leftjoin('rooms','simmeds.room_id','=','rooms.id')
+        ->leftjoin('users as leaders','simmeds.simmed_leader_id','=','leaders.id')
+        ->leftjoin('users as technicians','simmeds.simmed_technician_id','=','technicians.id')
+        ->leftjoin('user_titles','leaders.user_title_id','=','user_titles.id')
+        ->leftjoin('student_subjects','simmeds.student_subject_id','=','student_subjects.id')
+        ->leftjoin('student_groups','simmeds.student_group_id','=','student_groups.id')
+        ->leftjoin('student_subgroups','simmeds.student_subgroup_id','=','student_subgroups.id')
+        ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
+
+        ->leftjoin('rooms as send_rooms','simmeds.send_room_id','=','send_rooms.id')
+        ->leftjoin('users as send_technicians','simmeds.send_simmed_technician_id','=','send_technicians.id')
+        ->leftjoin('users as send_leaders','simmeds.send_simmed_leader_id','=','send_leaders.id')
+        ->leftjoin('user_titles as send_user_titles','send_leaders.user_title_id','=','send_user_titles.id')
+        ->leftjoin('technician_characters as send_technician_characters','simmeds.send_simmed_technician_character_id','=','send_technician_characters.id')
+        
+
+        ->orderBy('simmed_date')
+        ->orderBy('time')
+        ->orderBy('room_number');
+    
+                $simmeds_deleted=$user_simmeds_prepare->where('simmed_status',4)
+                    ->get();
+        //dump($simmeds_deleted);
+        return view('mansimmeds.showdeleted')->with([ 'simmeds_deleted' => $simmeds_deleted ]);
+
+}
+
+
 
 
 

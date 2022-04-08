@@ -213,6 +213,11 @@ Route::get('mansimmeds/changes', [
     'as' => 'mansimmeds.changes'
 ]);
 
+Route::get('mansimmeds/showdeleted', [
+    'uses' => 'ManSimmedController@showdeleted',
+    'as' => 'mansimmeds.showdeleted'
+]);
+
 Route::post('mansimmeds/import_file', [
     'uses' => 'ManSimmedController@import_file',
     'as' => 'mansimmeds.import_file'

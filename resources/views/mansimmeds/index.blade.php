@@ -48,6 +48,9 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         </div>
 
         <div class="col-sm-1">
+        <form action="{{ route('mansimmeds.showdeleted') }}" method="get">
+                        <input class="btn btn-primary btn-sm" type="submit" value="pokaż usunięte">
+                </form>
         </div>
 
         <div class="col-sm-1">
