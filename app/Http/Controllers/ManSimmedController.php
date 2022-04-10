@@ -1613,7 +1613,7 @@ public function sendMail(Request $request)
             // echo '<br>';
             // print_r($mail_data_address);
             // dump($mail_data);
-     // dd('mail_send_one');
+            // dd('mail_send_one');
             //$data['message_body'].='<li><strong>'.$user->firstname.' '.$user->lastname.'</strong> '.$user->email.'</li>';
 
             // dump($zwrocik);
@@ -1676,13 +1676,14 @@ public function sendMail(Request $request)
                         ->where(function ($query) use ($look_characters) {
                             $query->whereNull('simmed_technician_id')
                                 ->whereIn('simmed_technician_character_id',$look_characters);
-                            })                    
+                            })
                         ->whereBetween('simmed_date',$date_between)
+                        ->where('simmed_status','<>',4)
                         ->get();
 
                 if ($tmp_table->count()>0)
                 {
-                    $BigTable[2]['head']='Symulacje, które nia mają przypisanego technika, a powinny...:';
+                    $BigTable[2]['head']='Symulacje, które nie mają przypisanego technika, a powinny...:';
                     $BigTable[2]['table']=$tmp_table;
                 }
 
@@ -1942,12 +1943,12 @@ public function changes(Request $request)
                         ->where(function ($query) use ($look_characters) {
                             $query->whereNull('simmed_technician_id')
                                 ->whereIn('simmed_technician_character_id',$look_characters);
-                            })                    
+                            })
+                            ->where('simmed_status','<>',4)  
                         ->get();
-
                 if ($tmp_table->count()>0)
                 {
-                    $BigTable[2]['head']='Symulacje, które nia mają przypisanego technika, a powinny...:';
+                    $BigTable[2]['head']='Symulacje, które nie mają przypisanego technika, a powinny...:';
                     $BigTable[2]['table']=$tmp_table;
                 }
 
