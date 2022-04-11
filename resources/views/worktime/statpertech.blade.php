@@ -7,7 +7,7 @@
         {
             return floor($time/60).':'.str_pad($time%60, 2, '0', STR_PAD_LEFT);
         }
-        function m2h_total($count,$time,$type,$total,$technician_count)
+        function m2h_total($count,$time,$type,$totaltime,$technician_count)
         {
             if ($count==0)
                 return '-';
@@ -15,7 +15,8 @@
             $time = abs($time);
             $return=$sign.floor($time/60).':'.str_pad($time%60, 2, '0', STR_PAD_LEFT);
             $return.=' ['.$count.']';
-            $return.=' <strong>'.round($time/($total[$type]['time']/$technician_count)*100,2).' %</strong>';
+            if ($totaltime*$technician_count>0)
+            $return.=' <br><strong>'.round($time/($totaltime/$technician_count)*100,2).' %</strong>';
 
             return $return;
         }
@@ -35,20 +36,21 @@
             <input type="date" name="start" value="{{$filtr['start']}}">
             <input type="date" name="stop" value="{{$filtr['stop']}}">
         </div>
-        <div class="col-sm-1">
-            <label for"character">charakter:</label> 
+        <div class="col-sm-3">
+            <label for"perspective">perspektywa:</label>
+                <select class="form-control col-sm-2" id="perspective" name="perspective">
+                    <option value="characters"<?php if ($filtr['perspective']=='characters') echo ' selected="selected"'; ?>> charakter (z L4)</option>
+                    <option value="charactersill"<?php if ($filtr['perspective']=='charactersill') echo ' selected="selected"'; ?>> charakter - średnie L4 </option>
+                    <option value="charactersnoill"<?php if ($filtr['perspective']=='charactersnoill') echo ' selected="selected"'; ?>> charakter (bez L4) </option>
+                </select>
+ 
         </div>
-        <div class="col-sm-2">
-            <label for"technician">technik:</label> 
+        <div class="col-sm-5">
+            <label for"transposition">transpozycja:</label><br>
+            <input type="checkbox" name="transposition" value="transposition"<?php if ($filtr['transposition']=='transposition') echo 'checked="checked"'; ?>>
         </div>
-        <div class="col-sm-2">
-            <label for"instructor">instruktor:</label> 
-        </div>
-        <div class="col-sm-2">
-            <label for"subject">przedmiot:</label> 
-        </div>
-        <div class="col-sm-1">
-            <label for"room">sala:</label> 
+        <div class="col-sm-4">
+            &nbsp;
         </div>
         
         <div class="col-sm-1">
@@ -58,55 +60,149 @@
     </div>
 </form>
 
+
+
+
+
+
+
+@if (count($return_table)>0)
+@if ($filtr['transposition']<>'transposition')
 <table width="100%" class="table">
     <tr>
-        <th>Imię i nazwisko</th>
-        @foreach ($characters as $character)
-        <th>{{$character->character_short}}</th>
+        <th>poz.</th>
+        @foreach ($return_table['total']['technician'] as $row_one)
+        <th>{{$row_one['name']}}</th>
         @endforeach
+        <th>śred./raz.</th>
     </tr>
-
-    @foreach ($tabelka as $tab_one)
+    @foreach ($return_table['data'] as $row_one)
     <tr>
-        <td>{{$tab_one['name']}}</td>
-        @foreach ($tab_one['current'] as $tab_one_current)
+        <th>{{$row_one['info']['name']}}</th>
+        @foreach ($row_one['data'] as $row_two)
             <td>
-                {!!m2h_total($tab_one_current['count'],$tab_one_current['time'],$tab_one_current['type'],$total['current'],$total['technicians_count'])!!}
-                    @if (isset($tab_one_current['sick_average']))
-                        @if ($tab_one_current['sick_average']>0)
-                        {{$tab_one_current['type']}}
-                        <br>(L4: {{m2h($tab_one_current['sick_average'])}})
-                        @endif
-                    @endif
+                {!!m2h_total($row_two['count'],$row_two['time'],$row_two['name'],
+                    $row_one['perspective_total_time']
+                    ,$return_table['info']['technicians_count']
+                    )!!}
             </td>
         @endforeach
-    </tr>
-    @endforeach
-     
- 
-</table>
-<hr>
-<table class="table table-dark" style="background-color: #dfd">
-    @foreach ($total['current'] as $tab_one)
-        <tr>
             <td>
-               {{$tab_one['type']}}
-            </td>
-            <td>
-                {!!m2h_total($tab_one['count'],$tab_one['time'],$tab_one['type'],$total['current'],$total['technicians_count'])!!} / {{$total['technicians_count']}}
-                @if (isset($tab_one['sick_time']))
+                <strong>~ {!!m2h_total(round($row_one['perspective_total_count']/$return_table['info']['technicians_count'],1),
+                round($row_one['perspective_total_time']/$return_table['info']['technicians_count'],0)
+                ,$row_two['name'],
+                    $row_one['perspective_total_time']*0
+                    ,$return_table['info']['technicians_count']*0
+                    )!!}
+                </strong>
                 <br>
-                ( w tym L-4: <strong>{!!m2h($tab_one['sick_time'])!!}</strong>)
-                @endif
+                {!!m2h_total($row_one['perspective_total_count'],$row_one['perspective_total_time'],$row_two['name'],
+                    $row_one['perspective_total_time']*0
+                    ,$return_table['info']['technicians_count']*0
+                    )!!}
 
             </td>
-            <td>
-                <?php $tab_one['time']=$tab_one['time']/$total['technicians_count']; ?>
-                {!!m2h_total($tab_one['count'],$tab_one['time'],$tab_one['type'],$total['current'],$total['technicians_count'])!!}
-            </td>
-        </tr>
+
+    </tr>
     @endforeach
+
+    <tr>
+        <th>razem</th>
+        @foreach ($return_table['total']['technician'] as $row_one)
+        <td>
+        {!!m2h_total($row_one['count'],$row_one['time'],$row_two['name'],
+                    0
+                    ,0
+                    )!!}
+
+        </td>
+        @endforeach
+        <td>
+        tech: {{$return_table['info']['technicians_count']}}
+        </td>
+    </tr>
+
 </table>
+
+        <?php //($filtr['transposition']<>'transposition') ?>
+@else
+
+<h1> transpozycja</h1>
+
+<table width="100%" class="table">
+    <tr>
+        <th>
+            technik
+        </th>
+        @foreach ($return_table['heads'] as $perspective_row)
+        <th>
+            {{$perspective_row['name']}}
+        </th>
+        @endforeach
+        <th>
+            razem
+        </th>
+    </tr>
+
+    @foreach ($return_table['total']['technician'] as $technician_row)
+    <tr>
+        <th>
+            {{$technician_row['name']}}
+        </th>
+        @foreach ($return_table['heads'] as $perspective_row)
+        <td>
+            {!!m2h_total(
+                $return_table ['data'] [$perspective_row['perspective_id']] ['data'] [$technician_row['id']] ['count'],
+                $return_table ['data'] [$perspective_row['perspective_id']] ['data'] [$technician_row['id']] ['time'],
+                $return_table ['data'] [$perspective_row['perspective_id']] ['data'] [$technician_row['id']] ['name'],
+                $return_table ['data'] [$perspective_row['perspective_id']] ['perspective_total_time']
+                ,$return_table['info']['technicians_count']
+                )!!}
+        </td>
+        @endforeach
+        <td>
+        {!!m2h_total($technician_row['count'],$technician_row['time'],'nameRST',
+                    0
+                    ,0
+                    )!!}
+
+        </td>
+    </tr>
+    @endforeach
+    <tr>
+        <th>
+            śr./raz.
+        </th>
+        @foreach ($return_table['heads'] as $perspective_row)
+        <td>
+                <strong>~ {!!m2h_total(
+                    round( $return_table ['data'] [$perspective_row['perspective_id']] ['perspective_total_count']/$return_table['info']['technicians_count'],1),
+                    round( $return_table ['data'] [$perspective_row['perspective_id']] ['perspective_total_time']/$return_table['info']['technicians_count'],0),
+                    'nameX',
+                    0,
+                    0
+                    )!!}
+                </strong>
+                <br>
+                {!!m2h_total(
+                    $return_table ['data'] [$perspective_row['perspective_id']] ['perspective_total_count'],
+                    $return_table ['data'] [$perspective_row['perspective_id']] ['perspective_total_time'],
+                    'nameY',
+                    0,
+                    0
+                    )!!}
+
+        </td>
+        @endforeach
+        <td>
+        tech: {{$return_table['info']['technicians_count']}}
+        </td>
+    </tr>
+</table>
+
+
+@endif
+@endif
 
 @endsection
 

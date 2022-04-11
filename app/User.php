@@ -59,10 +59,10 @@ class User extends Authenticatable
         $role_id=Roles::select('id')->where('roles_code', $role_code)->first()->id;
         $roles_users=RolesHasUsers::select('roles_has_users_users_id')->where('roles_has_users_roles_id','=',$role_id)->get();
         $users = User::whereIn('id',$roles_users)
-                    ->where('user_status',$user_status)
-                    ->orderBy('lastname')
-                    ->orderBy('firstname')
-                    ->orderBy('id');
+                    ->where('user_status',$user_status);
+                    // ->orderBy('lastname')
+                    // ->orderBy('firstname')
+                    // ->orderBy('id');
         return $users;
         }
 

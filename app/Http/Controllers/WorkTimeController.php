@@ -86,7 +86,7 @@ class WorkTimeController extends Controller
         $total['times'] = m2h($total['minutes']);
 
         $total['work_characters_month'] = 
-        \App\WorkTime::get_worktime_characters()
+        \App\Simmed::get_technician_character_times()
             ->where('simmed_technician_id','=',$filtr['user'])
             ->where('simmed_date','>=',date('Y-m-d',$begin))
             ->where('simmed_date','<',date('Y-m-d',$end))
@@ -94,7 +94,7 @@ class WorkTimeController extends Controller
     
 
         $total['work_characters'] = 
-        \App\WorkTime::get_worktime_characters()
+        \App\Simmed::get_technician_character_times()
             ->where('simmed_technician_id','=',$filtr['user'])
             ->get();
 
@@ -244,7 +244,7 @@ class WorkTimeController extends Controller
 //        foreach \App\Users
 
         $total['work_characters_month'] = 
-        \App\WorkTime::get_worktime_characters()
+        \App\Simmed::get_technician_character_times()
             ->where('simmed_technician_id','=',$filtr['user'])
             ->where('simmed_date','>=',date('Y-m-d',$begin))
             ->where('simmed_date','<',date('Y-m-d',$end))
@@ -252,7 +252,7 @@ class WorkTimeController extends Controller
     
 
         $total['work_characters'] = 
-        \App\WorkTime::get_worktime_characters()
+        \App\Simmed::get_technician_character_times()
             ->where('simmed_technician_id','=',$filtr['user'])
             ->where('simmed_date','<',date('Y-m-d',$end))
             ->get();
@@ -354,7 +354,6 @@ class WorkTimeController extends Controller
         $nulik->lasttname='Wpisu';
 
         $technicians_list[]=$nulik;
-//        dump($technicians_list,$nulik);
 
         $technician_char=TechnicianCharacter::all();
 
@@ -372,7 +371,7 @@ class WorkTimeController extends Controller
             }
 
             $work_characters_month = 
-            \App\WorkTime::get_worktime_characters()
+            \App\Simmed::get_technician_character_times()
                 ->where('simmed_technician_id','=',$technician_one->id)
                 //->orWhereNull('simmed_technician_id')
                 ->where('simmed_date','>=',$filtr['start'])
@@ -399,7 +398,7 @@ class WorkTimeController extends Controller
 
 
         $work_total = 
-        \App\WorkTime::get_worktime_characters()
+        \App\Simmed::get_technician_character_times()
             ->where('simmed_date','>=',$filtr['start'])
             ->where('simmed_date','<=',$filtr['stop'])
             ->get();
@@ -425,24 +424,17 @@ class WorkTimeController extends Controller
         $extra_tab=null;
         if (!isset($request->start))
             {
-                //$filtr['start'] = date('Y-m').'-01';
                 $filtr['start'] = \App\Simmed::selectRaw('min(simmed_date) as minvalue')->get()->first()->minvalue;
                 $filtr['stop'] = date('Y-m-t');
-                $filtr['technician'] = 777;
-                $filtr['character'] = 1;
-                $filtr['room'] = 777;
-                $filtr['instructor'] = 777;
-                $filtr['subject'] = 777;
+                $filtr['perspective']="characters";
+                $filtr['transposition']='std';
             }
         else
             {
             $filtr['start'] = $request->start;
             $filtr['stop'] = $request->stop;
-            $filtr['technician'] = $request->technician;
-            $filtr['character'] = $request->character;
-            $filtr['room'] = $request->room;
-            $filtr['instructor'] = $request->instructor;
-            $filtr['subject'] = $request->subject;
+            $filtr['perspective']=$request->perspective;
+            $filtr['transposition']=$request->transposition;
             }
 
         function m2h($min)
@@ -451,111 +443,166 @@ class WorkTimeController extends Controller
             $min = abs($min);
             return $sign.floor($min/60).':'.str_pad($min%60, 2, '0', STR_PAD_LEFT);
         }
+        
+        $return_table=null;
+
+        $technicians_list=User::role_users('technicians', 1, 1)->orderBy('name')->get()->toArray();
+        
+        $return_table['info']['technicians_count']=count($technicians_list)-1;
+        $technicians_count=count($technicians_list)-1;
 
 
+        $technicians_null['id']=null;
+        $technicians_null['name']='brak wpisu';
+        $technicians_null['firstname']='techfirst null';
+        $technicians_null['lastname']='techlast null';
 
-        $technicians_list=User::role_users('technicians', 1, 1)->get();
-        $nulik=new User;
-        $nulik->id = null;
-        $nulik->name='brak wpisu';
-        $nulik->firstname='Brak';
-        $nulik->lasttname='Wpisu';
+        $technicians_list[]=$technicians_null;
 
-        $technicians_count=$technicians_list->count()-1;
-
-        $technicians_list[]=$nulik;
-        $sick_total=0;
-
-        $technician_char=TechnicianCharacter::all()->sortBy('character_short');
-
-        foreach ($technicians_list as $technician_one)
+        foreach ($technicians_list as $row_one)
         {
-            $tabelka=null;
-            $tabelka['name']=$technician_one->name;
-            $tabelka['firstname']=$technician_one->firstname;
-            $tabelka['lastname']=$technician_one->lastname;
-            
-            
-            foreach ($technician_char as $character_one)
-            {
-                $tabelka['current'][$character_one->character_short]['count']=0;
-                $tabelka['current'][$character_one->character_short]['time']=0;
-                $tabelka['current'][$character_one->character_short]['type']='';
-            }
-            $tabelka['current']['stay']['sick_average']=0;
-            
-            
-            $work_characters_month = 
-            \App\WorkTime::get_worktime_characters()
-                ->where('simmed_technician_id','=',$technician_one->id)
-                //->orWhereNull('simmed_technician_id')
-                ->where('simmed_date','>=',$filtr['start'])
-                ->where('simmed_date','<=',$filtr['stop'])
-                ->get();
-            foreach ($work_characters_month as $row_one)
-            {
-                $tabelka['current'][$row_one->worktime_type]['type']=$row_one->worktime_type;
-                $tabelka['current'][$row_one->worktime_type]['count']=$row_one->worktime_count;
-                $tabelka['current'][$row_one->worktime_type]['time']=$row_one->worktime_minutes;            
-            }
+            $technician_row[$row_one['id']]['id']=$row_one['id'];
+            $technician_row[$row_one['id']]['name']=$row_one['name'];
+            $technician_row[$row_one['id']]['count']=0;
+            $technician_row[$row_one['id']]['time']=0;
 
-            $stay_days=\App\Simmed::select('simmed_date')
-                ->where('simmed_date','>=',$filtr['start'])
-                ->where('simmed_date','<=',$filtr['stop'])
-                ->where('simmed_technician_id','=',$technician_one->id)
-                ->where('simmed_technician_character_id','=',5) //stay
-                ->get()
-                ->toArray();
+            $return_table['total']['technician'][$row_one['id']]['id']=$row_one['id'];
+            $return_table['total']['technician'][$row_one['id']]['name']=$row_one['name'];
+            $return_table['total']['technician'][$row_one['id']]['count']=0;
+            $return_table['total']['technician'][$row_one['id']]['time']=0;
+        }
 
-
-            $ill_days = 
-            \App\WorkTime::select('date')
-                ->where('date','>=',$filtr['start'])
-                ->where('date','<=',$filtr['stop'])
-                ->whereNotIn('date',$stay_days)
-                ->where('user_id','=',$technician_one->id)
-                ->where('work_time_types_id','=',5) //sick_time
-                ->get()
-                ->toArray();
-
-            foreach ($ill_days as $day_one)
-                {
+        switch ($filtr['perspective'])
+        {
+            case "characters":
+            case "charactersill":
+            case "charactersnoill":
                 
-                $sick_days=\App\Simmed::select(
-                    \DB::raw('sum(TIMESTAMPDIFF(MINUTE, simmed_time_begin, simmed_time_end)) as sim_stay_minutes')
-                    )
-                ->where('simmed_date','=',$day_one)
-                ->where('simmed_technician_character_id','=',5) //stay
-                ->get()
-                ->first()
-                ->sim_stay_minutes;
-                $tabelka['current']['stay']['sick_average']+=round($sick_days/$technicians_count);
-                $tabelka['current']['stay']['time']+=round($sick_days/$technicians_count);
-                $tabelka['current']['stay']['count']++;//bez tego przy zakresie dat obejmujących tyko chorobę na statystykach nie wyświetli się ilość godzin z przeliceniem na procenty
-                $tabelka['current']['stay']['type']='stay';//a to jest potrzebne, bo jeśli w danym okresie nie ma symulacji tylko "chorobowe", to wyświetli się błąd (skorelowany z poprzednią linijką)
-                $sick_total+=round($sick_days/$technicians_count);
+                //tworzę kolejną część pustej tabeli wynikowej 
+                //$return_table['heads'][0]=['perspective_id' => 0, 'name' =>'charakter'];
+                $perspective_list=TechnicianCharacter::select('id as perspective_id', 'character_short as perspective_name')->orderBy('character_short')->get();
+                foreach ($perspective_list as $row_one)
+                {
+                    $return_table['heads'][$row_one->perspective_id]=['perspective_id' => $row_one->perspective_id, 'name' =>$row_one->perspective_name];
+
+                    $return_table['data'][$row_one->perspective_id]['info']['id']=$row_one->perspective_id;
+                    $return_table['data'][$row_one->perspective_id]['info']['name']=$row_one->perspective_name;
+                    $return_table['data'][$row_one->perspective_id]['data']=$technician_row;
+                    $return_table['data'][$row_one->perspective_id]['perspective_total_count']=0;
+                    $return_table['data'][$row_one->perspective_id]['perspective_total_time']=0;                    
                 }
-           
-            $ret_table[]=$tabelka;
+
+
+                //wypelniam tabelę wynikową informacjami o symulacjach
+                if (
+                    ($filtr['perspective'] == "characters") ||
+                    ($filtr['perspective'] == "charactersnoill")
+                    )
+                    foreach ($technicians_list as $row_one)
+                    {
+                    $work_characters_month = 
+                    \App\Simmed::get_technician_character_times()
+                        ->where('simmed_technician_id','=',$row_one['id'])
+                        //->WhereNotNull('simmed_technician_id')
+                        ->where('simmed_date','>=',$filtr['start'])
+                        ->where('simmed_date','<=',$filtr['stop'])
+                        ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
+                        ->get();
+                        foreach ($work_characters_month as $row_two)
+                        {
+                            $return_table['data'][$row_two->character_id]['data'][$row_one['id']]['count']=$row_two->worktime_count;
+                            $return_table['data'][$row_two->character_id]['data'][$row_one['id']]['time']=$row_two->worktime_minutes;
+                
+                            $return_table['data'][$row_two->character_id]['perspective_total_count']+=$row_two->worktime_count;
+                            $return_table['data'][$row_two->character_id]['perspective_total_time']+=$row_two->worktime_minutes;
+
+                            $return_table['total']['technician'][$row_one['id']]['count']+=$row_two->worktime_count;
+                            $return_table['total']['technician'][$row_one['id']]['time']+=$row_two->worktime_minutes;
+                        }
+                    }
+
+                //uzupełniam tabele wynikową czasów symulacji średnim czasem symulacji dla osób, które były poza pracą (np. L4)
+                //i jest to czas, który ma mieć zaliczoną średnią symulacji - average_for_statistic  
+                if (
+                    ($filtr['perspective'] == "characters") ||
+                    ($filtr['perspective'] == "charactersill")
+                    )
+                    foreach ($technicians_list as $row_one)
+                    {   
+                        //tworzę wykaz dni, w których dana osoba miała czas pracy z grupy "average_for_statistic"
+                        $ill_days = 
+                        \App\WorkTime::select('date')
+                            ->leftjoin('work_time_types','work_time_types_id','=','work_time_types.id')
+                            ->where('date','>=',$filtr['start'])
+                            ->where('date','<=',$filtr['stop'])
+                            ->where('user_id','=',$row_one['id'])
+                            ->where('average_for_statistic','=',1) //work_time_type with average_for_statistic
+                            ->get()
+                            ->toArray();
+                        
+                        if (count($ill_days)>0)
+                        {
+                            foreach ($perspective_list as $row_two)
+                            {
+                                $return_table['sick_time'][$row_one['id']][$row_two['perspective_id']]['sick_time']=0;
+                                $return_table['sick_time'][$row_one['id']][$row_two['perspective_id']]['sick_count']=0;            
+                            }
+                            //obliczam czas, tworzę wykaz dni, w których dana osoba miała czas pracy z grupy "average_for_statistic"
+                            foreach ($ill_days as $day_one)
+                            {
+                                
+                                
+                                $sick_times=\App\Simmed::select(
+                                    'simmed_technician_character_id as perspective_id',
+                                    \DB::raw('sum(TIMESTAMPDIFF(MINUTE, simmed_time_begin, simmed_time_end)) as sim_add_minutes')
+                                    )
+                                ->where('simmed_date','=',$day_one['date'])
+                                ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
+                                ->WhereNotNull('simmed_technician_id')          // do średniej "chorobowego" nie wliczamy symulacji bez techników
+                                ->groupby('perspective_id')
+                                ->get()
+                                ;
+
+                                foreach ($sick_times as $row_sick)
+                                {
+                                    $sick_add_minutes=round($row_sick->sim_add_minutes/$return_table['info']['technicians_count'],0);
+                                    if ($sick_add_minutes>0)
+                                        $sick_add_count=round(1/$return_table['info']['technicians_count'],1);
+                                    else
+                                        $sick_add_count=0;
+                                    $return_table['sick_time'][$row_one['id']][$row_sick->perspective_id]['sick_time']+=$sick_add_minutes;
+                                    $return_table['sick_time'][$row_one['id']][$row_sick->perspective_id]['sick_count']+=$sick_add_count;
+                                    
+                                    $return_table['data'][$row_sick->perspective_id]['data'][$row_one['id']]['count']+=$sick_add_count;
+                                    $return_table['data'][$row_sick->perspective_id]['data'][$row_one['id']]['time']+=$sick_add_minutes;
+                                    
+                                    $return_table['data'][$row_sick->perspective_id]['perspective_total_count']+=$sick_add_count;
+                                    $return_table['data'][$row_sick->perspective_id]['perspective_total_time']+=$sick_add_minutes;
+            
+                                    $return_table['total']['technician'][$row_one['id']]['count']+=$sick_add_count;
+                                    $return_table['total']['technician'][$row_one['id']]['time']+=$sick_add_minutes;
+            
+                                }
+        
+
+                                //dump($row_one['id'].' '.$day_one['date'].' licz: '.$sick_times->count(),$sick_times->first()->perspective_id,$sick_times->first()->sim_add_minutes);    
+                            }
+                        //dump($return_table['sick_time']);
+                    }
+                }
+
+                break;
+            case "leaders":
+                break;
         }
 
 
-        $work_total = 
-        \App\WorkTime::get_worktime_characters()
-            ->where('simmed_date','>=',$filtr['start'])
-            ->where('simmed_date','<=',$filtr['stop'])
-            ->get();
-        foreach ($work_total as $row_one)
-        {
-            $total['current'][$row_one->worktime_type]['type']=$row_one->worktime_type;
-            $total['current'][$row_one->worktime_type]['count']=$row_one->worktime_count;
-            $total['current'][$row_one->worktime_type]['time']=$row_one->worktime_minutes;
-        }
-        $total['current']['stay']['sick_time']=$sick_total;
-        $total['current']['stay']['time']+=$sick_total;
-        $total['technicians_count']=$technicians_count;
 
-        return view('worktime/statpertech',['tabelka'=>$ret_table, 'total' => $total, 'characters' => $technician_char, 'filtr' => $filtr,  'extra_tab' => $extra_tab ]);
+
+
+        
+
+        return view('worktime/statpertech',['return_table' => $return_table, 'filtr' => $filtr ]);
 
     }
 

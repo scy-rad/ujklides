@@ -166,8 +166,7 @@ class Simmed extends Model
                 $ret_coma=',';
             }
         $ret_tab.="\n]";
-                        
-        //dump($ret_tab);
+
         return $ret_tab;
        
     }
@@ -228,5 +227,23 @@ class Simmed extends Model
         ;
         return $return;
     }
+
+
+    public static function get_technician_character_times()
+    {
+    return DB::table('simmeds')
+    ->select(
+        'simmed_technician_character_id as character_id',
+        'character_short as worktime_type',
+        \DB::raw('count(character_short) as worktime_count'),
+        \DB::raw('sum(TIMESTAMPDIFF(MINUTE, simmed_time_begin, simmed_time_end)) as worktime_minutes')
+        )
+    ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
+    ->where('simmed_status','<>',4)
+    ->orderBy('worktime_type')
+    ->groupBy('character_id')
+    ->groupBy('worktime_type');
+    }
+
 
 }

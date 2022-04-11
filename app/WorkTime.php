@@ -31,8 +31,6 @@ class WorkTime extends Model
         ->leftjoin('work_time_types','work_times.work_time_types_id','=','work_time_types.id')
         ->get();
 
-        //dump($workdays);
-
         // $simrooms=Room::where('room_xp_code','<>','')
         //         ->orderBy('room_number')->get();
         $technicians=User::role_users('technicians', 1, 1)
@@ -59,7 +57,7 @@ class WorkTime extends Model
         foreach ($workdays as $workday)
         {
             $work_one=[];
-            $work_one['id']=$workday->user_id;
+            $work_one['id']=$workday->id;
             if ($workday->simdescript=='')
                 $work_one['text']=$workday->long_name;
             else
@@ -73,29 +71,28 @@ class WorkTime extends Model
             $work_one['class']=$workday->colour;
             $work_one['character']=$workday->long_name;
             $work_one['simdescript']=$workday->description;
-            ;
+
             $tabela[$workday->user_id]['sim'][] = $work_one;
- //           dump($work_one);
         }
 
 
         foreach ($simdays->get() as $simone)
         {
             $work_one=[];
-            //dump($simone->leader()->title->user_title_short);
-           $work_one['id']=$simone->id;
-           $work_one['text']=$simone->room_number.': '.$simone->text;
-           $work_one['subtxt']=$simone->subtxt;
-           $work_one['date']=$simone->simmed_date;
-           $work_one['start']=$simone->start;
-           $work_one['end']=$simone->end;
-           $work_one['room_number']=$simone->room_number;
-           $work_one['status']=$simone->simmed_status;    
-           $work_one['class']=$simone->character_short;
-           $work_one['character']='symulacja: '.$simone->character_name;
-           $work_one['simdescript']=$simone->student_subject_name;//.' ['.$workday->student_group_name.', '.$workday->subgroup_name.']';
+    
+            $work_one['id']=$simone->id;
+            $work_one['text']=$simone->room_number.': '.$simone->text;
+            $work_one['subtxt']=$simone->subtxt;
+            $work_one['date']=$simone->simmed_date;
+            $work_one['start']=$simone->start;
+            $work_one['end']=$simone->end;
+            $work_one['room_number']=$simone->room_number;
+            $work_one['status']=$simone->simmed_status;    
+            $work_one['class']=$simone->character_short;
+            $work_one['character']='symulacja: '.$simone->character_name;
+            $work_one['simdescript']=$simone->student_subject_name;//.' ['.$workday->student_group_name.', '.$workday->subgroup_name.']';
 
-           $tabela[$simone->technician_id*1]['sim'][] = $work_one;
+            $tabela[$simone->technician_id*1]['sim'][] = $work_one;
         }
 
         $zwrocik='';
@@ -141,24 +138,8 @@ class WorkTime extends Model
                 $zwrocik.='}';
             
         }
-//        dump($zwrocik);
-        // dd('stay there');
 
         return $zwrocik;
-    }
-
-    public static function get_worktime_characters()
-    {
-    return DB::table('simmeds')
-    ->select(
-        'character_short as worktime_type',
-        \DB::raw('count(character_short) as worktime_count'),
-        \DB::raw('sum(TIMESTAMPDIFF(MINUTE, simmed_time_begin, simmed_time_end)) as worktime_minutes')
-        )
-    ->leftjoin('technician_characters','simmeds.simmed_technician_character_id','=','technician_characters.id')
-    ->where('simmed_status','<>',4)
-    ->orderBy('worktime_type')
-    ->groupBy('worktime_type');
     }
 
     public static function work_time_join($get_breake)
