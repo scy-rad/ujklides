@@ -42,6 +42,9 @@
                     <option value="characters"<?php if ($filtr['perspective']=='characters') echo ' selected="selected"'; ?>> charakter (z L4)</option>
                     <option value="charactersill"<?php if ($filtr['perspective']=='charactersill') echo ' selected="selected"'; ?>> charakter - średnie L4 </option>
                     <option value="charactersnoill"<?php if ($filtr['perspective']=='charactersnoill') echo ' selected="selected"'; ?>> charakter (bez L4) </option>
+                    <option value="rooms"<?php if ($filtr['perspective']=='rooms') echo ' selected="selected"'; ?>> sale </option>
+                    <option value="leaders"<?php if ($filtr['perspective']=='leaders') echo ' selected="selected"'; ?>> prowadzący </option>
+                
                 </select>
  
         </div>
@@ -59,7 +62,6 @@
         </div>
     </div>
 </form>
-
 
 
 
