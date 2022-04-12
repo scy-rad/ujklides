@@ -71,6 +71,13 @@
 @if (count($return_table)>0)
 @if ($filtr['transposition']<>'transposition')
 <table width="100%" class="table">
+    <colgroup>
+        <col>
+        @foreach ($return_table['total']['technician'] as $row_one)
+        <col style="background-color:{{$row_one['colour']}};">
+        @endforeach
+        <col>
+    </colgroup>
     <tr>
         <th>poz.</th>
         @foreach ($return_table['total']['technician'] as $row_one)
@@ -147,7 +154,8 @@
     </tr>
 
     @foreach ($return_table['total']['technician'] as $technician_row)
-    <tr>
+    <tr style="background-color:{{$technician_row['colour']}};">
+        
         <th>
             {{$technician_row['name']}}
         </th>

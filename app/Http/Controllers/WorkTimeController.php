@@ -444,6 +444,20 @@ class WorkTimeController extends Controller
             return $sign.floor($min/60).':'.str_pad($min%60, 2, '0', STR_PAD_LEFT);
         }
         
+        $colour[1]='#cfc';
+        $colour[2]='#fcc';
+        $colour[3]='#ccf';
+        $colour[4]='#9cf';
+        $colour[5]='#cf9';
+        $colour[6]='#f9c';
+        $colour[7]='#fcf';
+        $colour[8]='#cff';
+        $colour[9]='#ffc';
+        $colour[10]='#fda';
+        $colour[11]='#eee';
+        $i=1;
+
+
         $return_table=null;
 
         $technicians_list=User::role_users('technicians', 1, 1)->orderBy('name')->get()->toArray();
@@ -468,8 +482,10 @@ class WorkTimeController extends Controller
 
             $return_table['total']['technician'][$row_one['id']]['id']=$row_one['id'];
             $return_table['total']['technician'][$row_one['id']]['name']=$row_one['name'];
+            $return_table['total']['technician'][$row_one['id']]['colour']=$colour[$i++];
             $return_table['total']['technician'][$row_one['id']]['count']=0;
             $return_table['total']['technician'][$row_one['id']]['time']=0;
+            if ($i==11) $i=1;
         }
 
 
@@ -616,6 +632,7 @@ class WorkTimeController extends Controller
                         ->where('simmed_date','>=',$filtr['start'])
                         ->where('simmed_date','<=',$filtr['stop'])
                         ->WhereNotNull('simmed_leader_id')
+                        ->WhereNotNull('simmed_technician_id')
                         ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
                         ->groupBy('perspective_id', 'perspective_name')
                         //->pluck('perspective_id');
@@ -646,6 +663,7 @@ class WorkTimeController extends Controller
                         ->where('simmed_status','<>',4)
                         ->where('simmed_technician_id','=',$row_one['id'])
                         ->WhereNotNull('simmed_leader_id')
+                        ->WhereNotNull('simmed_technician_id')
                         ->where('simmed_date','>=',$filtr['start'])
                         ->where('simmed_date','<=',$filtr['stop'])
                         ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
@@ -656,7 +674,6 @@ class WorkTimeController extends Controller
 
                             foreach ($work_characters_month as $row_two)
                         {
-//                            dump($row_two->character_id);
                             $return_table['data'][$row_two->character_id]['data'][$row_one['id']]['count']=$row_two->worktime_count;
                             $return_table['data'][$row_two->character_id]['data'][$row_one['id']]['time']=$row_two->worktime_minutes;
                 
@@ -667,7 +684,7 @@ class WorkTimeController extends Controller
                             $return_table['total']['technician'][$row_one['id']]['time']+=$row_two->worktime_minutes;
                         }
                     }
-//                dd($return_table);
+                    //dd($return_table);
                 break;
 
 
@@ -681,16 +698,15 @@ class WorkTimeController extends Controller
 
 
                 case "rooms":
-                    dd('widok jeszcze nie stworzony');
                     //tworzę kolejną część pustej tabeli wynikowej 
                     //$return_table['heads'][0]=['perspective_id' => 0, 'name' =>'charakter'];
-                    $perspective_list=\App\Simmed::select('simmed_leader_id as perspective_id', 
-                            \DB::raw('concat(users.lastname," ",users.firstname) as perspective_name') 
-                            )
-                            ->leftjoin('users','simmeds.simmed_leader_id','=','users.id')
+                    $perspective_list=\App\Simmed::select('room_id as perspective_id', 
+                            'rooms.room_number as perspective_name') 
+                            ->leftjoin('rooms','simmeds.room_id','=','rooms.id')
                             ->where('simmed_date','>=',$filtr['start'])
                             ->where('simmed_date','<=',$filtr['stop'])
                             ->WhereNotNull('simmed_leader_id')
+                            ->WhereNotNull('simmed_technician_id')
                             ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
                             ->groupBy('perspective_id', 'perspective_name')
                             //->pluck('perspective_id');
@@ -714,13 +730,14 @@ class WorkTimeController extends Controller
                         $work_characters_month =
                         DB::table('simmeds')
                         ->select(
-                            'simmed_leader_id as character_id',
-                            \DB::raw('count(simmed_leader_id) as worktime_count'),
+                            'room_id as character_id',
+                            \DB::raw('count(room_id) as worktime_count'),
                             \DB::raw('sum(TIMESTAMPDIFF(MINUTE, simmed_time_begin, simmed_time_end)) as worktime_minutes')
                             )
                             ->where('simmed_status','<>',4)
                             ->where('simmed_technician_id','=',$row_one['id'])
                             ->WhereNotNull('simmed_leader_id')
+                            ->WhereNotNull('simmed_technician_id')
                             ->where('simmed_date','>=',$filtr['start'])
                             ->where('simmed_date','<=',$filtr['stop'])
                             ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
@@ -731,7 +748,6 @@ class WorkTimeController extends Controller
     
                                 foreach ($work_characters_month as $row_two)
                             {
-    //                            dump($row_two->character_id);
                                 $return_table['data'][$row_two->character_id]['data'][$row_one['id']]['count']=$row_two->worktime_count;
                                 $return_table['data'][$row_two->character_id]['data'][$row_one['id']]['time']=$row_two->worktime_minutes;
                     
@@ -742,8 +758,11 @@ class WorkTimeController extends Controller
                                 $return_table['total']['technician'][$row_one['id']]['time']+=$row_two->worktime_minutes;
                             }
                         }
-    //                dd($return_table);
+                        //dd($return_table);
                     break;
+
+                    default:
+                        dd('WorkTimeController Statistics per technicians - wrong perspective...');
     
     
 
