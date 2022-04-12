@@ -622,42 +622,93 @@ class WorkTimeController extends Controller
 
 
 
-            case "leaders":
-                //tworzę kolejną część pustej tabeli wynikowej 
-                //$return_table['heads'][0]=['perspective_id' => 0, 'name' =>'charakter'];
-                $perspective_list=\App\Simmed::select('simmed_leader_id as perspective_id', 
-                        \DB::raw('concat(users.lastname," ",users.firstname) as perspective_name') 
-                        )
-                        ->leftjoin('users','simmeds.simmed_leader_id','=','users.id')
-                        ->where('simmed_date','>=',$filtr['start'])
-                        ->where('simmed_date','<=',$filtr['stop'])
-                        ->WhereNotNull('simmed_leader_id')
-                        ->WhereNotNull('simmed_technician_id')
-                        ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
-                        ->groupBy('perspective_id', 'perspective_name')
-                        //->pluck('perspective_id');
-                        ->get();
-                
-                foreach ($perspective_list as $row_one)
-                {
-                    $return_table['heads'][$row_one->perspective_id]=['perspective_id' => $row_one->perspective_id, 'name' =>$row_one->perspective_name];
 
-                    $return_table['data'][$row_one->perspective_id]['info']['id']=$row_one->perspective_id;
-                    $return_table['data'][$row_one->perspective_id]['info']['name']=$row_one->perspective_name;
-                    $return_table['data'][$row_one->perspective_id]['data']=$technician_row;
-                    $return_table['data'][$row_one->perspective_id]['perspective_total_count']=0;
-                    $return_table['data'][$row_one->perspective_id]['perspective_total_time']=0;                    
-                }
+                case "leaders":
+                case "rooms":
+                case "subjects":
+
+                    switch ($filtr['perspective'])
+                        {
+                        case "leaders":
+                            $perspective_id     ='simmed_leader_id';
+                            $perspective_name   ='concat(users.lastname," ",users.firstname)';
+                            $perspective_name   ='users.name';
+                            $join_table         ='users';
+                            $join_simmed        ='simmeds.simmed_leader_id';
+                            $join_id            ='users.id';
+                            break;
+                        case "rooms":
+                            $perspective_id     ='room_id';
+                            $perspective_name   ='rooms.room_number';
+                            $join_table         ='rooms';
+                            $join_simmed        ='simmeds.room_id';
+                            $join_id            ='rooms.id';
+                            break;
+                        case "subjects":
+                            $perspective_id     ='student_subject_id';
+                            $perspective_name   ='student_subjects.student_subject_name';
+                            $join_table         ='student_subjects';
+                            $join_simmed        ='simmeds.student_subject_id';
+                            $join_id            ='student_subjects.id';
+                        }
 
 
-                //wypelniam tabelę wynikową informacjami o symulacjach
+
+                    //tworzę kolejną część pustej tabeli wynikowej 
+                    //$return_table['heads'][0]=['perspective_id' => 0, 'name' =>'charakter'];
+                    if ($filtr['perspective'] == "leaders")
+                    {
+                        $perspective_list=\App\Simmed::select($perspective_id.' as perspective_id', 
+                            \DB::raw('concat(users.lastname," ",users.firstname) as perspective_name') 
+                            )
+                            ->leftjoin($join_table,$join_simmed,'=',$join_id)
+                            ->where('simmed_date','>=',$filtr['start'])
+                            ->where('simmed_date','<=',$filtr['stop'])
+                            ->WhereNotNull('simmed_leader_id')
+                            ->WhereNotNull('simmed_technician_id')
+                            ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
+                            ->groupBy('perspective_id', 'perspective_name')
+                            ->orderBy('perspective_name')
+                            //->pluck('perspective_id');
+                            ->get();
+                    }
+                    else
+                    {
+                        $perspective_list=\App\Simmed::select($perspective_id.' as perspective_id', 
+                                $perspective_name.' as perspective_name') 
+                                ->leftjoin($join_table,$join_simmed,'=',$join_id)
+                                ->where('simmed_date','>=',$filtr['start'])
+                                ->where('simmed_date','<=',$filtr['stop'])
+                                ->WhereNotNull('simmed_leader_id')
+                                ->WhereNotNull('simmed_technician_id')
+                                ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
+                                ->groupBy('perspective_id', 'perspective_name')
+                                ->orderBy('perspective_name')
+                                //->pluck('perspective_id');
+                                ->get();
+                    }
+
+
+                    foreach ($perspective_list as $row_one)
+                    {
+                        $return_table['heads'][$row_one->perspective_id]=['perspective_id' => $row_one->perspective_id, 'name' =>$row_one->perspective_name];
+
+                        $return_table['data'][$row_one->perspective_id]['info']['id']=$row_one->perspective_id;
+                        $return_table['data'][$row_one->perspective_id]['info']['name']=$row_one->perspective_name;
+                        $return_table['data'][$row_one->perspective_id]['data']=$technician_row;
+                        $return_table['data'][$row_one->perspective_id]['perspective_total_count']=0;
+                        $return_table['data'][$row_one->perspective_id]['perspective_total_time']=0;
+                    }
+
+
+                    //wypelniam tabelę wynikową informacjami o symulacjach
                     foreach ($technicians_list as $row_one)
                     {
                     $work_characters_month =
                     DB::table('simmeds')
                     ->select(
-                        'simmed_leader_id as character_id',
-                        \DB::raw('count(simmed_leader_id) as worktime_count'),
+                        $perspective_id.' as character_id',
+                        \DB::raw('count('.$perspective_id.') as worktime_count'),
                         \DB::raw('sum(TIMESTAMPDIFF(MINUTE, simmed_time_begin, simmed_time_end)) as worktime_minutes')
                         )
                         ->where('simmed_status','<>',4)
@@ -688,150 +739,8 @@ class WorkTimeController extends Controller
                 break;
 
 
-
-
-
-
-
-
-
-
-
-                case "rooms":
-                    //tworzę kolejną część pustej tabeli wynikowej 
-                    //$return_table['heads'][0]=['perspective_id' => 0, 'name' =>'charakter'];
-                    $perspective_list=\App\Simmed::select('room_id as perspective_id', 
-                            'rooms.room_number as perspective_name') 
-                            ->leftjoin('rooms','simmeds.room_id','=','rooms.id')
-                            ->where('simmed_date','>=',$filtr['start'])
-                            ->where('simmed_date','<=',$filtr['stop'])
-                            ->WhereNotNull('simmed_leader_id')
-                            ->WhereNotNull('simmed_technician_id')
-                            ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
-                            ->groupBy('perspective_id', 'perspective_name')
-                            //->pluck('perspective_id');
-                            ->get();
-                    
-                    foreach ($perspective_list as $row_one)
-                    {
-                        $return_table['heads'][$row_one->perspective_id]=['perspective_id' => $row_one->perspective_id, 'name' =>$row_one->perspective_name];
-    
-                        $return_table['data'][$row_one->perspective_id]['info']['id']=$row_one->perspective_id;
-                        $return_table['data'][$row_one->perspective_id]['info']['name']=$row_one->perspective_name;
-                        $return_table['data'][$row_one->perspective_id]['data']=$technician_row;
-                        $return_table['data'][$row_one->perspective_id]['perspective_total_count']=0;
-                        $return_table['data'][$row_one->perspective_id]['perspective_total_time']=0;                    
-                    }
-    
-    
-                    //wypelniam tabelę wynikową informacjami o symulacjach
-                        foreach ($technicians_list as $row_one)
-                        {
-                        $work_characters_month =
-                        DB::table('simmeds')
-                        ->select(
-                            'room_id as character_id',
-                            \DB::raw('count(room_id) as worktime_count'),
-                            \DB::raw('sum(TIMESTAMPDIFF(MINUTE, simmed_time_begin, simmed_time_end)) as worktime_minutes')
-                            )
-                            ->where('simmed_status','<>',4)
-                            ->where('simmed_technician_id','=',$row_one['id'])
-                            ->WhereNotNull('simmed_leader_id')
-                            ->WhereNotNull('simmed_technician_id')
-                            ->where('simmed_date','>=',$filtr['start'])
-                            ->where('simmed_date','<=',$filtr['stop'])
-                            ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
-                            ->groupBy('character_id')
-                            //->groupBy('worktime_type')
-                            ->get();
-    
-    
-                                foreach ($work_characters_month as $row_two)
-                            {
-                                $return_table['data'][$row_two->character_id]['data'][$row_one['id']]['count']=$row_two->worktime_count;
-                                $return_table['data'][$row_two->character_id]['data'][$row_one['id']]['time']=$row_two->worktime_minutes;
-                    
-                                $return_table['data'][$row_two->character_id]['perspective_total_count']+=$row_two->worktime_count;
-                                $return_table['data'][$row_two->character_id]['perspective_total_time']+=$row_two->worktime_minutes;
-    
-                                $return_table['total']['technician'][$row_one['id']]['count']+=$row_two->worktime_count;
-                                $return_table['total']['technician'][$row_one['id']]['time']+=$row_two->worktime_minutes;
-                            }
-                        }
-                        //dd($return_table);
-                    break;
-
-
-
-
-
-                    case "subjects":
-                    //tworzę kolejną część pustej tabeli wynikowej 
-                    //$return_table['heads'][0]=['perspective_id' => 0, 'name' =>'charakter'];
-                    $perspective_list=\App\Simmed::select('student_subject_id as perspective_id', 
-                            'student_subjects.student_subject_name as perspective_name') 
-                            ->leftjoin('student_subjects','simmeds.student_subject_id','=','student_subjects.id')
-                            ->where('simmed_date','>=',$filtr['start'])
-                            ->where('simmed_date','<=',$filtr['stop'])
-                            ->WhereNotNull('simmed_leader_id')
-                            ->WhereNotNull('simmed_technician_id')
-                            ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
-                            ->groupBy('perspective_id', 'perspective_name')
-                            //->pluck('perspective_id');
-                            ->get();
-                    
-                    foreach ($perspective_list as $row_one)
-                    {
-                        $return_table['heads'][$row_one->perspective_id]=['perspective_id' => $row_one->perspective_id, 'name' =>$row_one->perspective_name];
-    
-                        $return_table['data'][$row_one->perspective_id]['info']['id']=$row_one->perspective_id;
-                        $return_table['data'][$row_one->perspective_id]['info']['name']=$row_one->perspective_name;
-                        $return_table['data'][$row_one->perspective_id]['data']=$technician_row;
-                        $return_table['data'][$row_one->perspective_id]['perspective_total_count']=0;
-                        $return_table['data'][$row_one->perspective_id]['perspective_total_time']=0;                    
-                    }
-    
-    
-                    //wypelniam tabelę wynikową informacjami o symulacjach
-                        foreach ($technicians_list as $row_one)
-                        {
-                        $work_characters_month =
-                        DB::table('simmeds')
-                        ->select(
-                            'student_subject_id as character_id',
-                            \DB::raw('count(student_subject_id) as worktime_count'),
-                            \DB::raw('sum(TIMESTAMPDIFF(MINUTE, simmed_time_begin, simmed_time_end)) as worktime_minutes')
-                            )
-                            ->where('simmed_status','<>',4)
-                            ->where('simmed_technician_id','=',$row_one['id'])
-                            ->WhereNotNull('simmed_leader_id')
-                            ->WhereNotNull('simmed_technician_id')
-                            ->where('simmed_date','>=',$filtr['start'])
-                            ->where('simmed_date','<=',$filtr['stop'])
-                            ->where('simmed_status','<>',4)                 // bez usuiętych symulacji
-                            ->groupBy('character_id')
-                            //->groupBy('worktime_type')
-                            ->get();
-    
-    
-                                foreach ($work_characters_month as $row_two)
-                            {
-                                $return_table['data'][$row_two->character_id]['data'][$row_one['id']]['count']=$row_two->worktime_count;
-                                $return_table['data'][$row_two->character_id]['data'][$row_one['id']]['time']=$row_two->worktime_minutes;
-                    
-                                $return_table['data'][$row_two->character_id]['perspective_total_count']+=$row_two->worktime_count;
-                                $return_table['data'][$row_two->character_id]['perspective_total_time']+=$row_two->worktime_minutes;
-    
-                                $return_table['total']['technician'][$row_one['id']]['count']+=$row_two->worktime_count;
-                                $return_table['total']['technician'][$row_one['id']]['time']+=$row_two->worktime_minutes;
-                            }
-                        }
-                        //dd($return_table);
-                    break;
-
-
-                    default:
-                        dd('WorkTimeController Statistics per technicians - wrong perspective...');
+                default:
+                    dd('WorkTimeController Statistics per technicians - wrong perspective...');
     
     
 
