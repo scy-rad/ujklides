@@ -13,9 +13,9 @@ class WorkTimesTableSeeder extends Seeder
     public function run()
     {
 
-		DB::statement('SET FOREIGN_KEY_CHECKS=0');
-		DB::table('work_times')->truncate();
-        DB::table('work_time_types')->truncate();
+		//DB::statement('SET FOREIGN_KEY_CHECKS=0');
+		//DB::table('work_times')->truncate();
+        //DB::table('work_time_types')->truncate();
 		
         function add_work_time_type($aF_code, $aF_time_character, $aF_colour, $aF_short_name, $aF_long_name, $aF_description)
 		{
