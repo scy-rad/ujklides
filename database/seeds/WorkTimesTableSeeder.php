@@ -63,38 +63,17 @@ class WorkTimesTableSeeder extends Seeder
         $out_work = 3;
         $no_work  = 4;
 
-        $ret_work_time  =add_work_time_type('work_time', $all_work, 'in_work', 'w pracy', 'czas pracy', 'czas, kiedy jest siÄ™ w pracy od godziny przyjĹ›cia, do godziny wyjĹ›cia - bez uwzglÄ™dnienia ewentualnych przerw');
-        $ret_work_break =add_work_time_type('work_break', $no_work, 'out_work', 'poza pracÄ…', 'wyjĹ›cie z pracy', 'czas, kiedy wychodzi siÄ™ z pracy (przerwa na wyjĹ›cie prywatne)');
-        $ret_work_busy  =add_work_time_type('work_busy', $in_work, 'busy_work', 'zadanie', 'wykonywanie zadania', 'czas, kiedy wykonuje siÄ™ absorbujÄ…ce zadania i nie chce siÄ™ byÄ‡ niepokojonym przez innych - wymaga krĂłtkiego opisu zadania');
-        $ret_free_time  =add_work_time_type('free_time', $out_work, 'out_work', 'wolne', 'wolne', 'wolny czas (np. urlop, opieka nad dzieckiem zdrowym)');
-        $ret_sick_time  =add_work_time_type('sick_time', $out_work, 'out_work', 'chorobowe', 'chorobowe', 'czas zwolnienia lekarskiego (np. L4, opieka nad dzieckiem chorym, kwarantanna)');
-        $ret_work_remote=add_work_time_type('work_remote', $out_work, 'home_work', 'praca zdalna', 'praca zdalna', 'praca wykonywana poza CSM (np. praca zdalna, delegacja)');
-        $ret_phone_duty =add_work_time_type('phone_duty', $in_work, 'phone_work', 'pod telefonem', 'dyĹĽur telefoniczny', 'czas, kiedy jest siÄ™ "pod telefonem" i jest siÄ™ gotowym do pomocy potrzebujÄ…cym technikom :)');
-
-
-        // $aF_date=date('Y-m-d');
-        // add_work_time('sebek', $ret_work_time, $aF_date, '07:30', '16:30', '');
-        // add_work_time('sebek', $ret_work_break, $aF_date, '14:30', '15:30', '');        
-        // add_work_time('sebek', $ret_work_busy, $aF_date, '13:30', '14:30', 'opracowanie grafiku');
-
-        // add_work_time('darek', $ret_work_time, $aF_date, '07:30', '15:30', '');
-        // add_work_time('darek', $ret_work_busy, $aF_date, '13:00', '14:00', 'kontrola paszportĂłw technicznych');
-
-        // add_work_time('wojtek', $ret_work_time, $aF_date, '07:30', '17:30', '');
-        // add_work_time('wojtek', $ret_phone_duty, $aF_date, '07:30', '10:00', '');
-        // add_work_time('wojtek', $ret_work_break, $aF_date, '10:00', '12:00', '');
-
-        // add_work_time('marcin', $ret_work_time, $aF_date, '07:30', '15:30', '');
-        // add_work_time('marcin', $ret_work_busy, $aF_date, '07:30', '09:30', 'obsĹ‚uga Instagrama');
-
-        // add_work_time('bartek', $ret_work_time, $aF_date, '12:30', '17:30', '');
-        // add_work_time('bartek', $ret_free_time, $aF_date, '09:30', '12:30', '');
+        // $ret_work_time  =add_work_time_type('work_time', $all_work, 'in_work', 'w pracy', 'czas pracy', 'czas, kiedy jest siÄ™ w pracy od godziny przyjĹ›cia, do godziny wyjĹ›cia - bez uwzglÄ™dnienia ewentualnych przerw');
+        // $ret_work_break =add_work_time_type('work_break', $no_work, 'out_work', 'poza pracÄ…', 'wyjĹ›cie z pracy', 'czas, kiedy wychodzi siÄ™ z pracy (przerwa na wyjĹ›cie prywatne)');
+        // $ret_work_busy  =add_work_time_type('work_busy', $in_work, 'busy_work', 'zadanie', 'wykonywanie zadania', 'czas, kiedy wykonuje siÄ™ absorbujÄ…ce zadania i nie chce siÄ™ byÄ‡ niepokojonym przez innych - wymaga krĂłtkiego opisu zadania');
+        // $ret_free_time  =add_work_time_type('free_time', $out_work, 'out_work', 'wolne', 'wolne', 'wolny czas (np. urlop, opieka nad dzieckiem zdrowym)');
+        // $ret_sick_time  =add_work_time_type('sick_time', $out_work, 'out_work', 'chorobowe', 'chorobowe', 'czas zwolnienia lekarskiego (np. L4, opieka nad dzieckiem chorym, kwarantanna)');
+        // $ret_work_remote=add_work_time_type('work_remote', $out_work, 'home_work', 'praca zdalna', 'praca zdalna', 'praca wykonywana poza CSM (np. praca zdalna, delegacja)');
+        // $ret_phone_duty =add_work_time_type('phone_duty', $in_work, 'phone_work', 'pod telefonem', 'dyĹĽur telefoniczny', 'czas, kiedy jest siÄ™ "pod telefonem" i jest siÄ™ gotowym do pomocy potrzebujÄ…cym technikom :)');
         
-        // add_work_time('paulina', $ret_sick_time, $aF_date, '07:30', '15:30', '');
-        // add_work_time('paulina', $ret_work_remote, $aF_date, '15:30', '17:30', 'reorganizacja scenariuszy symulacji');
-        
+        $ret_work_time=1;
 
-
+/*
             add_work_time('sebek',$ret_work_time,'2022-02-28','07:30','15:30','');			
             add_work_time('sebek',$ret_work_time,'2022-03-01','08:30','14:00','');			
             add_work_time('sebek',$ret_work_time,'2022-03-02','07:30','15:30','');			
@@ -597,7 +576,262 @@ class WorkTimesTableSeeder extends Seeder
             add_work_time('wojtek',$ret_work_time,'2022-04-28','07:30','15:30','');			
             add_work_time('wojtek',$ret_work_time,'2022-04-29','07:30','15:30','');			
                         
-                        
+*/
+
+add_work_time('angelika',$ret_work_time,'2022-05-02','07:30','15:30','');
+
+add_work_time('angelika',$ret_work_time,'2022-05-04','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-05','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-06','07:30','15:30','');
+
+
+add_work_time('angelika',$ret_work_time,'2022-05-09','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-10','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-11','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-12','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-13','07:30','15:30','');
+
+
+add_work_time('angelika',$ret_work_time,'2022-05-16','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-17','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-18','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-19','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-20','07:30','15:30','');
+
+
+add_work_time('angelika',$ret_work_time,'2022-05-23','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-24','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-25','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-26','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-27','07:30','15:30','');
+
+
+add_work_time('angelika',$ret_work_time,'2022-05-30','07:30','15:30','');
+add_work_time('angelika',$ret_work_time,'2022-05-31','07:30','15:30','');
+
+add_work_time('bartek',$ret_work_time,'2022-05-02','07:30','15:30','');
+
+add_work_time('bartek',$ret_work_time,'2022-05-04','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-05','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-06','07:30','15:30','');
+
+
+add_work_time('bartek',$ret_work_time,'2022-05-09','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-10','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-11','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-12','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-13','07:30','15:30','');
+
+
+add_work_time('bartek',$ret_work_time,'2022-05-16','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-17','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-18','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-19','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-20','07:30','15:30','');
+
+
+add_work_time('bartek',$ret_work_time,'2022-05-23','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-24','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-25','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-26','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-27','07:30','15:30','');
+
+
+add_work_time('bartek',$ret_work_time,'2022-05-30','07:30','15:30','');
+add_work_time('bartek',$ret_work_time,'2022-05-31','07:30','15:30','');
+
+
+add_work_time('darek',$ret_work_time,'2022-05-02','07:30','15:30','');
+
+add_work_time('darek',$ret_work_time,'2022-05-04','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-05','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-06','07:30','15:30','');
+
+
+add_work_time('darek',$ret_work_time,'2022-05-09','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-10','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-11','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-12','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-13','07:30','15:30','');
+
+
+add_work_time('darek',$ret_work_time,'2022-05-16','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-17','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-18','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-19','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-20','07:30','15:30','');
+
+
+add_work_time('darek',$ret_work_time,'2022-05-23','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-24','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-25','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-26','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-27','07:30','15:30','');
+
+
+add_work_time('darek',$ret_work_time,'2022-05-30','07:30','15:30','');
+add_work_time('darek',$ret_work_time,'2022-05-31','07:30','15:30','');
+
+
+add_work_time('sebek',$ret_work_time,'2022-05-02','07:30','15:30','');
+
+add_work_time('sebek',$ret_work_time,'2022-05-04','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-05','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-06','07:30','15:30','');
+
+
+add_work_time('sebek',$ret_work_time,'2022-05-09','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-10','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-11','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-12','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-13','07:30','15:30','');
+
+
+add_work_time('sebek',$ret_work_time,'2022-05-16','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-17','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-18','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-19','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-20','07:30','15:30','');
+
+
+add_work_time('sebek',$ret_work_time,'2022-05-23','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-24','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-25','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-26','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-27','07:30','15:30','');
+
+
+add_work_time('sebek',$ret_work_time,'2022-05-30','07:30','15:30','');
+add_work_time('sebek',$ret_work_time,'2022-05-31','07:30','15:30','');
+
+add_work_time('marcin',$ret_work_time,'2022-05-02','07:30','15:30','');
+
+add_work_time('marcin',$ret_work_time,'2022-05-04','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-05','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-06','07:30','15:30','');
+
+
+add_work_time('marcin',$ret_work_time,'2022-05-09','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-10','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-11','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-12','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-13','07:30','15:30','');
+
+
+add_work_time('marcin',$ret_work_time,'2022-05-16','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-17','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-18','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-19','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-20','07:30','15:30','');
+
+
+add_work_time('marcin',$ret_work_time,'2022-05-23','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-24','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-25','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-26','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-27','07:30','15:30','');
+
+
+add_work_time('marcin',$ret_work_time,'2022-05-30','07:30','15:30','');
+add_work_time('marcin',$ret_work_time,'2022-05-31','07:30','15:30','');
+
+
+add_work_time('mateusz',$ret_work_time,'2022-05-02','07:30','15:30','');
+
+add_work_time('mateusz',$ret_work_time,'2022-05-04','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-05','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-06','07:30','15:30','');
+
+
+add_work_time('mateusz',$ret_work_time,'2022-05-09','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-10','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-11','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-12','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-13','07:30','15:30','');
+
+
+add_work_time('mateusz',$ret_work_time,'2022-05-16','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-17','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-18','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-19','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-20','07:30','15:30','');
+
+
+add_work_time('mateusz',$ret_work_time,'2022-05-23','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-24','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-25','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-26','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-27','07:30','15:30','');
+
+
+add_work_time('mateusz',$ret_work_time,'2022-05-30','07:30','15:30','');
+add_work_time('mateusz',$ret_work_time,'2022-05-31','07:30','15:30','');
+
+
+
+add_work_time('paulina',$ret_work_time,'2022-05-02','07:30','15:30','');
+
+add_work_time('paulina',$ret_work_time,'2022-05-04','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-05','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-06','07:30','15:30','');
+
+
+add_work_time('paulina',$ret_work_time,'2022-05-09','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-10','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-11','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-12','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-13','07:30','15:30','');
+
+
+add_work_time('paulina',$ret_work_time,'2022-05-16','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-17','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-18','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-19','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-20','07:30','15:30','');
+
+
+add_work_time('paulina',$ret_work_time,'2022-05-23','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-24','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-25','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-26','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-27','07:30','15:30','');
+
+
+add_work_time('paulina',$ret_work_time,'2022-05-30','07:30','15:30','');
+add_work_time('paulina',$ret_work_time,'2022-05-31','07:30','15:30','');
+
+
+add_work_time('wojtek',$ret_work_time,'2022-05-02','07:30','15:30','');
+
+add_work_time('wojtek',$ret_work_time,'2022-05-04','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-05','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-06','07:30','15:30','');
+
+
+add_work_time('wojtek',$ret_work_time,'2022-05-09','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-10','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-11','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-12','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-13','07:30','15:30','');
+
+
+add_work_time('wojtek',$ret_work_time,'2022-05-16','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-17','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-18','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-19','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-20','07:30','15:30','');
+
+
+add_work_time('wojtek',$ret_work_time,'2022-05-23','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-24','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-25','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-26','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-27','07:30','15:30','');
+
+
+add_work_time('wojtek',$ret_work_time,'2022-05-30','07:30','15:30','');
+add_work_time('wojtek',$ret_work_time,'2022-05-31','07:30','15:30','');
+
             
 
     }
