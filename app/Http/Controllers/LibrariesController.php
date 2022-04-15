@@ -176,5 +176,57 @@ public function params_save(Request $request)
 
 
 
+public function list_rooms() //  metoda GET bez parametrów
+{
+    if (!Auth::user()->hasRole('Operator Symulacji'))
+    return view('error',['head'=>'błąd wywołania funkcji list_rooms kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+    return view('libraries.rooms')->with(['rooms' => \App\Room::select('*','rooms.id as id')->leftjoin('technician_characters','rooms.simmed_technician_character_propose_id','=','technician_characters.id')
+    ->get()]);
+}
+
+public function save_room(Request $request)
+{
+    if (!Auth::user()->hasRole('Operator Symulacji'))
+    return view('error',['head'=>'błąd wywołania funkcji save_room kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+    dd('ta opcja jeszcze nie została zaimplementowana');
+}
+
+
+public function list_student_groups() //  metoda GET bez parametrów
+{
+    if (!Auth::user()->hasRole('Operator Symulacji'))
+    return view('error',['head'=>'błąd wywołania funkcji list_student_groups kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+    return view('libraries.studentgroups')->with(['student_groups' => \App\StudentGroup::select('*','student_groups.id as id')->leftjoin('centers','student_groups.center_id','=','centers.id')
+    ->get()]);}
+
+public function save_student_group(Request $request)
+{
+    if (!Auth::user()->hasRole('Operator Symulacji'))
+    return view('error',['head'=>'błąd wywołania funkcji save_student_group kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+    dd('ta opcja jeszcze nie została zaimplementowana');
+}
+
+public function list_user_titles() //  metoda GET bez parametrów
+{
+    if (!Auth::user()->hasRole('Operator Symulacji'))
+    return view('error',['head'=>'błąd wywołania funkcji list_user_titles kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+    return view('libraries.usertitles')->with(['user_titles' => \App\UserTitle::all()]);
+}
+
+public function save_user_title(Request $request)
+{
+    if (!Auth::user()->hasRole('Operator Symulacji'))
+    return view('error',['head'=>'błąd wywołania funkcji save_user_title kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+    dd('ta opcja jeszcze nie została zaimplementowana');
+}
+
+
+
     
 }

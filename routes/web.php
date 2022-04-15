@@ -349,6 +349,33 @@ Route::post('libraries/params_save', [
     'as' => 'libraries.params_save'
 ]);
 
+Route::get('libraries/rooms', [
+    'uses' => 'LibrariesController@list_rooms',
+    'as' => 'libraries.rooms'
+]);
+Route::post('libraries/save_room', [
+    'uses' => 'LibrariesController@save_room',
+    'as' => 'libraries.save_room'
+]);
+
+Route::get('libraries/student_groups', [
+    'uses' => 'LibrariesController@list_student_groups',
+    'as' => 'libraries.student_groups'
+]);
+Route::post('libraries/save_student_group', [
+    'uses' => 'LibrariesController@save_student_group',
+    'as' => 'libraries.save_student_group'
+]);
+
+Route::get('libraries/user_titles', [
+    'uses' => 'LibrariesController@list_user_titles',
+    'as' => 'libraries.user_titles'
+]);
+Route::post('libraries/save_user_title', [
+    'uses' => 'LibrariesController@save_user_title',
+    'as' => 'libraries.save_user_title'
+]);
+
 
 /////////////////////////////////////////////////////////
 //   U S E R

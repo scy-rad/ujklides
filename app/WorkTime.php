@@ -35,6 +35,7 @@ class WorkTime extends Model
         //         ->orderBy('room_number')->get();
         $technicians=User::role_users('technicians', 1, 1)
         ->select('id', 'name as title', \DB::raw('"CSM tech" as subtitle'))
+        ->orderBy('name')
         ->get();
         
         $tabela=null;

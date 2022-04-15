@@ -166,7 +166,13 @@
                                 <ul class="dropdown-menu">
 
                                     @if (Auth::user()->hasRole('Operator Symulacji'))
+                                    <li><a href="{{ route('libraries.student_groups') }}"> Grupy studendckie </a></li>
                                     <li><a href="{{ route('libraries.subjects') }}"> Tematy </a></li>
+                                    <li><a href="{{ route('libraries.rooms') }}"> Sale </a></li>
+                                    @endif
+                                    @if (Auth::user()->hasRole('Operator Kadr'))
+                                    <li><a href="{{ route('libraries.user_titles') }}"> Tytuły naukowe </a></li>
+                                    <li><a href="{{ route('libraries.workmonths') }}"> Miesięczny czas pracy </a></li>
                                     @endif
                                     @if ( (Auth::user()->hasRole('Operator Symulacji'))
                                         || (Auth::user()->hasRole('Operator Kadr'))
