@@ -28,7 +28,7 @@ data-sort-priority='[{"sortName": "DaTe","sortOrder":"desc"},{"sortName":"FromTo
         </tr>
     </thead>
     <tbody>
-    
+
 @foreach ($simmeds as $simmed)
 <tr>
     <td><a href="/scheduler/{{$simmed->simmed_date}}">
@@ -45,13 +45,13 @@ data-sort-priority='[{"sortName": "DaTe","sortOrder":"desc"},{"sortName":"FromTo
             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
         </a>
     </td>
-    <td>{{ substr($simmed->simmed_time_begin,0,5) }} - {{ substr($simmed->simmed_time_end,0,5) }}</td>
-    <td>{{ $simmed->room()->room_number }}</td>
-    <td>{{ $simmed->name_of_leader() }}</td>
+    <td>{{ $simmed->time }}</td>
+    <td>{{ $simmed->room_number }}</td>
+    <td>{{ $simmed->leader }}</td>
     
-    <td>{{ $simmed->name_of_technician() }}</td>
-    <td>{{ $simmed->name_of_student_group() }} {{ $simmed->name_of_student_subgroup() }}</td>
-    <td>{{ $simmed->name_of_student_subject() }}</td>
+    <td>{{ $simmed->technician_name }}</td>
+    <td>{{ $simmed->student_group_code }} {{ $simmed->subgroup_name }}</td>
+    <td>{{ $simmed->student_subject_name }}</td>
     <td>{{ $simmed->simmed_alternative_title }}</td>
 </tr>
 @endforeach
@@ -83,9 +83,4 @@ data-sort-priority='[{"sortName": "DaTe","sortOrder":"desc"},{"sortName":"FromTo
   } );
   </script>
 
-
-
-
 @endsection
-
-
