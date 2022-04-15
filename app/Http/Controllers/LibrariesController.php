@@ -65,7 +65,8 @@ public function list_workmonths(Request $request) //  metoda GET bez parametrów
     else
         $filtr['month_selected'] = date('Y-m');
     
-    $WorkMonths = \App\WorkMonth::where('work_month',$filtr['month_selected'].'-01')
+    $WorkMonths = \App\WorkMonth::select('*','work_months.id as id')
+    ->where('work_month',$filtr['month_selected'].'-01')
     ->leftjoin('users','work_months.user_id','=','users.id')
     ->orderBy('name')
     ->get();
@@ -77,6 +78,7 @@ public function save_workmonth(Request $request)
 {
     if (!Auth::user()->hasRole('Operator Kadr'))
     return view('error',['head'=>'błąd wywołania funkcji save_workmonth kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
+
 
     if ( (isset($request->action)) && ($request->action=='generate') )
     {
@@ -147,7 +149,7 @@ public function params_save(Request $request)
         && (!Auth::user()->hasRole('Administrator'))
     )
     return view('error',['head'=>'błąd wywołania funkcji params_save kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem lub Administratorem']);
-      
+
     if ($request->id>0)
     {
         $Param=\App\Param::find($request->id);
