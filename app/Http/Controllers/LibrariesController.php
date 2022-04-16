@@ -225,7 +225,24 @@ public function save_user_title(Request $request)
     if (!Auth::user()->hasRole('Operator Symulacji'))
     return view('error',['head'=>'błąd wywołania funkcji save_user_title kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-    dd('ta opcja jeszcze nie została zaimplementowana');
+
+    if ($request->id>0)
+    {
+        $usertitle=\App\UserTitle::find($request->id);
+        $usertitle->user_title_short   = $request->modal_short;
+        $usertitle->user_title_sort    = $request->modal_sort;
+        $usertitle->save();
+        return back()->with('success',' Zapis zakończył się sukcesem.');
+    }
+    else
+    {
+        $usertitle=new \App\UserTitle;
+        $usertitle->user_title_short   = $request->modal_short;
+        $usertitle->user_title_sort    = $request->modal_sort;
+        $usertitle->save();
+        return back()->with('success','Dodano nową pozycję.');
+    }    
+
 }
 
 

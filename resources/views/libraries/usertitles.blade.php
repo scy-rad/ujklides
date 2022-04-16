@@ -83,7 +83,7 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
 </table>
 
 
-<?php /*
+ 
 <div id="exampleModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -94,17 +94,14 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{ route('libraries.save_subject') }}" method="post">
+        <form action="{{ route('libraries.save_user_title') }}" method="post">
     
         <div class="form-group">
-            <label for"modal_pl">temat PL:</label>
-            <input type="text" class="form-control" id="modal_pl" name="modal_pl">
+            <label for"modal_short">skrót:</label>
+            <input type="text" class="form-control" id="modal_short" name="modal_short">
 
-            <label for"modal_en">temat EN:</label>
-            <input type="text" class="form-control" id="modal_en" name="modal_en">
-
-            <label for"modal_st">status:</label>
-            <input type="text" class="form-control" id="modal_st" name="modal_st">
+            <label for"modal_sort">sortowanie:</label>
+            <input type="text" class="form-control" id="modal_sort" name="modal_sort">
 
         </div>
       </div>
@@ -127,16 +124,14 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
 function showMyModalForm(id) {
     if (id > 0)
     {
-        $('#modal_pl').val(document.getElementById('PL'+id).innerHTML);
-        $('#modal_en').val(document.getElementById('EN'+id).innerHTML);
-        $('#modal_st').val(document.getElementById('ST'+id).innerHTML);
+        $('#modal_sort').val(document.getElementById('SO'+id).innerHTML);
+        $('#modal_short').val(document.getElementById('SH'+id).innerHTML);
         $('#idid').val(id);
     }
     else
     {
-        $('#modal_pl').val('');  
-        $('#modal_en').val('');
-        $('#modal_st').val('');
+        $('#modal_sort').val('');  
+        $('#modal_short').val('');
         $('#idid').val(id);
     }
 
@@ -145,8 +140,6 @@ function showMyModalForm(id) {
 
 </script>
 
-
-*/ ?>
 
 
 @endsection
