@@ -75,7 +75,7 @@
         <td>
         <a href="/scheduler/{{$row_one['date']}}">
             {{$row_one['date']}}
-            <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon glyphicon-tasks text-success" aria-hidden="true"></span>
         </a>
             {{$row_one['day_name_short']}}
        </td>
@@ -90,7 +90,7 @@
             @foreach ($row_one['times'] as $time_one)
                 {{$time_one['start']}} - {{$time_one['end']}}<br>
             @endforeach
-            <span class="glyphicon glyphicon glyphicon-briefcase" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon glyphicon-briefcase text-success" aria-hidden="true"></span>
             
             </a>
         </td>

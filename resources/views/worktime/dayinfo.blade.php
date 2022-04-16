@@ -59,7 +59,7 @@
       <div class="col-sm-1">
         <a href="/scheduler/{{$row_one->simmed_date}}">
             {{ $row_one->simmed_date }}
-            <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon glyphicon-tasks text-success" aria-hidden="true"></span>
             </a>
             <br>
         <?php 
@@ -68,7 +68,7 @@
         echo $dni_tygodnia[ date('w',strtotime($row_one->simmed_date)) ];
         ?>
           <a href="{{route('simmeds.show', [$row_one->id, 0])}}"> pokaż
-              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+              <span class="glyphicon glyphicon-list-alt text-success" aria-hidden="true"></span>
           </a>
       </div>
       <div class="col-sm-1">
