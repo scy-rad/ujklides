@@ -52,11 +52,32 @@ $Scen_Table.='</ul>';
     {{ kafelek(12, 'scenariusze', $Scen_Table,NULL) }}
 </div-->
 
-    
-<p>{!! $simmed->opis !!}</p>
-@if ($show_edit_button==true)
-<div class="float-right"><a class="btn btn-info" href="{{route('simmeds.edit', $simmed)}}">Edytuj</a></div>
-@endif
+<div class="row">
+    <p>{!! $simmed->opis !!}</p>
+</div>
+<div class="row">
+    <div class="float-right col-sm-2">
+        <a class="btn btn-success" href="/scheduler/{{$simmed->simmed_date}}">
+        {{$simmed->simmed_date }}
+        <?php $table_date['date']=$simmed->simmed_date; ?>
+        <span class="glyphicon glyphicon glyphicon-tasks" aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="float-right col-sm-2">
+        <a class="btn btn-success" href="{{route('simmeds.plane',$table_date)}}"> planowanie
+            <span class="glyphicon glyphicon-blackboard" aria-hidden="true"></span>
+        </a>
+    </div>
+
+    @if ($show_edit_button==true)
+        
+        <div class="float-right col-sm-2"><a class="btn btn-info" href="{{route('simmeds.edit', $simmed)}}">Edytuj</a></div>
+        @if ( Auth::user()->hasRole('Operator Symulacji') )
+            <div class="float-left col-sm-2"><a class="btn btn-danger" href="{{route('simmeds.copy', $simmed)}}">Kopiuj (bez grupy)</a></div>
+        @endif
+    @endif
+</div>
+
 
 @if ($simulation_info->count()>0)
     <hr>

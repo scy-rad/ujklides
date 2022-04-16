@@ -333,6 +333,23 @@ class SimmedController extends Controller
         return view('simmeds.edit', compact('simmed'), $ret);
     }
 
+    public function copy(Simmed $simmed)
+    {
+        $simmed->id = 0;
+        $ret['technicians_list']=User::role_users('technicians', 1, 1)->orderBy('lastname')->get();
+        $ret['leaders_list']=User::role_users('instructors', 1, 1)->orderBy('lastname')->get();
+        $ret['subjects_list']=\App\StudentSubject::where('student_subject_status',1)->orderBy('student_subject_name')->get();
+        //$ret['rooms_list']=\App\Room::where('room_status',1)->orderBy('room_number')->get();
+        $ret['rooms_list']=\App\Room::where('room_xp_code','<>','')->orderBy('room_number')->get();
+        $ret['status_list']=Simmed::status_table();
+        $ret['technician_characters_list']=\App\TechnicianCharacter::orderBy('id')->orderBy('character_short')->get();
+        $simmed->simmed_status = 5; //dopisane
+        $simmed->simmed_group_id = 0; //brak grupy
+        $simmed->simmed_subgroup_id = 0; //brak podgrupy
+        return view('simmeds.edit', compact('simmed'), $ret);
+    }
+
+
     /**
      * Update the specified resource in storage.
      *
@@ -342,6 +359,7 @@ class SimmedController extends Controller
      */
     public function update(Request $request)
     {
+
         $date_back=\App\Param::select('*')->orderBy('id','desc')->get()->first()->simmed_days_edit_back;
 
         if ($date_back<0)
@@ -349,14 +367,34 @@ class SimmedController extends Controller
         else
             $date_back='-'.$date_back;
 
-        if (
-            (
-            DB::table('simmeds')->find($request->id)->simmed_date >= date('Y-m-d',strtotime('now '.$date_back.' days'))
-            && Auth::user()->hasRole('Technik')
-            )
-            || Auth::user()->hasRole('Operator Symulacji')
+
+        if ( ($request->id == 0)
+            && (!Auth::user()->hasRole('Operator Symulacji'))
            )
+           return back()->withErrors('brak uprawnień do kopiowania wpisów (update in SimmedController)');   
+
+        if ( $request->id > 0 )
+            if (
+                ( DB::table('simmeds')->find($request->id)->simmed_date >= date('Y-m-d',strtotime('now '.$date_back.' days'))
+                    && Auth::user()->hasRole('Technik') )
+                || Auth::user()->hasRole('Operator Symulacji')
+               )
+               {
+                
+               }
+            else
+               {
+                   return back()->withErrors('brak uprawnień do zapisu (update in SimmedController)');   
+               }
+                  
+
+        if ($request->id==0)
         {
+            $modified_row = new SiMmed;
+            $modified_row->user_id                          = Auth::user()->id;
+        }
+        else
+        { 
             $modified_row=SiMmed::find($request->id);
 
             if (($modified_row->simmed_technician_id*1) != ($request->simmed_technician_id*1))
@@ -389,50 +427,48 @@ class SimmedController extends Controller
             $arc_row->change_code                       = 20; //edycja ręczna
             $arc_row->simmed_id                         = $modified_row->id;
             $arc_row->user_id                           = $modified_row->user_id;
-            
+        }    
 
-            if (Auth::user()->hasRole('Operator Symulacji'))
-                {
-
-                $modified_row->simmed_date						= $request->simmed_date;
-                $modified_row->simmed_time_begin				= $request->simmed_time_begin;
-                $modified_row->simmed_time_end					= $request->simmed_time_end;
-                if ($request->student_subject_id==0)
-                    $modified_row->student_subject_id	        = null;
-                else
-                    $modified_row->student_subject_id	        = $request->student_subject_id;
-                $modified_row->room_id     					    = $request->room_id;
-                if ($request->simmed_leader_id==0)
-                    $modified_row->simmed_leader_id     		= null;
-                else
-                    $modified_row->simmed_leader_id     		= $request->simmed_leader_id;
-                $modified_row->simmed_technician_character_id   = $request->simmed_technician_character_id;
-                $modified_row->simmed_status 					= $request->simmed_status;
-                }
-            if ($request->simmed_technician_id==0)
-                $modified_row->simmed_technician_id    		= null;
-            else
-                $modified_row->simmed_technician_id    		= $request->simmed_technician_id;
-            $modified_row->simmed_alternative_title		    = substr($request->simmed_alternative_title,0,254);
-            
-            
-            $ret_save=$modified_row->save();
-
-            if (count($modified_row->getChanges())>0 )
-                {
-                $modified_row->user_id                          = Auth::user()->id;
-                $ret_save=$modified_row->save();
-                
-                $arc_row->save();
-                }
-            
-          return redirect()->route('simmeds.show',[$request->id, 0])->with('success', 'Dane zostały zmienione.');
-
-        }
-        else
+        if (Auth::user()->hasRole('Operator Symulacji'))
         {
-            return back()->withErrors('brak uprawnień do zapisu (update in SimmedController)');   
+
+            $modified_row->simmed_date						= $request->simmed_date;
+            $modified_row->simmed_time_begin				= $request->simmed_time_begin;
+            $modified_row->simmed_time_end					= $request->simmed_time_end;
+            if ($request->student_subject_id==0)
+                $modified_row->student_subject_id	        = null;
+            else
+                $modified_row->student_subject_id	        = $request->student_subject_id;
+            $modified_row->room_id     					    = $request->room_id;
+            if ($request->simmed_leader_id==0)
+                $modified_row->simmed_leader_id     		= null;
+            else
+                $modified_row->simmed_leader_id     		= $request->simmed_leader_id;
+            $modified_row->simmed_technician_character_id   = $request->simmed_technician_character_id;
+            $modified_row->simmed_status 					= $request->simmed_status;
         }
+        if ($request->simmed_technician_id==0)
+            $modified_row->simmed_technician_id    		= null;
+        else
+            $modified_row->simmed_technician_id    		= $request->simmed_technician_id;
+        $modified_row->simmed_alternative_title		    = substr($request->simmed_alternative_title,0,254);
+        
+        $ret_save=$modified_row->save();
+
+        if ( (count($modified_row->getChanges())>0 )
+                && ($request->id>0) )
+            {
+            $modified_row->user_id                          = Auth::user()->id;
+            $ret_save=$modified_row->save();
+            
+            $arc_row->save();
+            }
+            
+        if ($request->id==0)
+            $request->id=$modified_row->id;
+        
+        return redirect()->route('simmeds.show',[$request->id, 0])->with('success', 'Dane zostały zmienione.');
+
     }
 
 
