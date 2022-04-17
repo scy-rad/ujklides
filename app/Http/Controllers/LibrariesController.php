@@ -202,14 +202,48 @@ public function list_student_groups() //  metoda GET bez parametrów
     return view('error',['head'=>'błąd wywołania funkcji list_student_groups kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
     return view('libraries.studentgroups')->with(['student_groups' => \App\StudentGroup::select('*','student_groups.id as id')->leftjoin('centers','student_groups.center_id','=','centers.id')
-    ->get()]);}
+    ->get(), 'centers' => \App\Center::all() ]);}
 
 public function save_student_group(Request $request)
 {
     if (!Auth::user()->hasRole('Operator Symulacji'))
     return view('error',['head'=>'błąd wywołania funkcji save_student_group kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-    dd('ta opcja jeszcze nie została zaimplementowana');
+    if ($request->id>0)
+    {
+        $group=\App\StudentGroup::find($request->id);
+        $group->student_group_name      = $request->modal_name;
+        $group->student_group_code      = $request->modal_code;
+        $group->center_id               = $request->modal_center;
+        if ($request->modal_character=='on')
+            $group->write_technician_character_default    = 1;
+        else
+            $group->write_technician_character_default    = 0;
+        if ($request->modal_status=='on')
+            $group->student_group_status    = 1;
+        else
+            $group->student_group_status    = 0;
+        $group->save();
+        return back()->with('success',' Zapis zakończył się sukcesem.');
+    }
+    else
+    {
+        $group=new \App\StudentGroup;
+        $group->student_group_name      = $request->modal_name;
+        $group->student_group_code      = $request->modal_code;
+        $group->center_id               = $request->modal_center;
+        if ($request->modal_character=='on')
+            $group->write_technician_character_default    = 1;
+        else
+            $group->write_technician_character_default    = 0;
+        if ($request->modal_status=='on')
+            $group->student_group_status    = 1;
+        else
+            $group->student_group_status    = 0;
+        $group->save();
+        return back()->with('success','Dodano nową pozycję.');
+    }    
+
 }
 
 public function list_user_titles() //  metoda GET bez parametrów

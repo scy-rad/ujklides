@@ -42,8 +42,10 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
     <thead>
       <tr>
           <th scope="col">id</th>
-          <th scope="col" data-sortable="true">nazwa PL</th>
-          <th scope="col" data-sortable="true">nazwa EN</th>
+          <th scope="col" data-sortable="true">nazwa</th>
+          <th scope="col" data-sortable="true">kod</th>
+          <th scope="col">skrót</th>
+          <th scope="col">prop. char.</th>
           <th scope="col">status</th>
           <th scope="col">akcja</th>
       <tr>
@@ -56,19 +58,22 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         {{$one_row->id}}
         </td>
         <td>
-        <span id="PL{{$one_row->id}}">{{$one_row->student_group_name}}</span>
+        <span id="name{{$one_row->id}}">{{$one_row->student_group_name}}</span>
         </td>
         <td>
-        <span id="EN{{$one_row->id}}">{{$one_row->student_group_code}}</span>
+        <span id="code{{$one_row->id}}">{{$one_row->student_group_code}}</span>
         </td>
         <td>
-        <span id="ST{{$one_row->id}}">{{$one_row->center_short}}</span>
+        <span id="center{{$one_row->id}}">{{$one_row->center_short}}</span>
         </td>
         <td>
-        <span id="ST{{$one_row->id}}">{{$one_row->write_technician_character_default}}</span>
+        <span id="character{{$one_row->id}}">{{$one_row->write_technician_character_default}}</span>
         </td>
         <td>
-        <span onClick="javascript:showMyModalForm('{{$one_row->id}}')">Edycja</span>
+        <span id="status{{$one_row->id}}">{{$one_row->student_group_status}}</span>
+        </td>
+        <td>
+        <span onClick="javascript:showMyModalForm('{{$one_row->id}}','{{$one_row->center_id}}')">Edycja</span>
         </td>
     </tr>
     @endforeach
@@ -86,7 +91,7 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         
         </td>
         <td>
-        <span onClick="javascript:showMyModalForm('0')">Nowy</span>
+        <span onClick="javascript:showMyModalForm('0','0')">Nowy</span>
         </td>
     </tr>
     </tbody>
@@ -104,17 +109,27 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{ route('libraries.save_subject') }}" method="post">
+        <form action="{{ route('libraries.save_student_group') }}" method="post">
     
         <div class="form-group">
-            <label for"modal_pl">temat PL:</label>
-            <input type="text" class="form-control" id="modal_pl" name="modal_pl">
+            <label for"modal_name">nazwa:</label>
+            <input type="text" class="form-control" id="modal_name" name="modal_name">
 
-            <label for"modal_en">temat EN:</label>
-            <input type="text" class="form-control" id="modal_en" name="modal_en">
+            <label for"modal_code">kod:</label>
+            <input type="text" class="form-control" id="modal_code" name="modal_code">
 
-            <label for"modal_st">status:</label>
-            <input type="text" class="form-control" id="modal_st" name="modal_st">
+            <label for"modal_center">kierunek:</label>
+            <select class="form-control" id="modal_center" name="modal_center">
+                @foreach ($centers as $center_one)
+                <option value="{{$center_one->id}}">{{$center_one->center_name}}</option>
+                @endforeach
+            </select>
+
+            <label for"modal_character">proponuj charakter pracy technika przy imporcie:</label>
+            <input type="checkbox" class="form-control" id="modal_character" name="modal_character">
+
+            <label for"modal_status">status (aktywny):</label>
+            <input type="checkbox" class="form-control" id="modal_status" name="modal_status">
 
         </div>
       </div>
@@ -129,24 +144,35 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
   </div>
 </div>
 
-<?php /*
 
 <script>
 
 
-function showMyModalForm(id) {
+function showMyModalForm(id, center_id) {
     if (id > 0)
     {
-        $('#modal_pl').val(document.getElementById('PL'+id).innerHTML);
-        $('#modal_en').val(document.getElementById('EN'+id).innerHTML);
-        $('#modal_st').val(document.getElementById('ST'+id).innerHTML);
+
+        $('#modal_name').val(document.getElementById('name'+id).innerHTML);
+        $('#modal_code').val(document.getElementById('code'+id).innerHTML);
+        $('#modal_center').val(center_id);
+        if (document.getElementById('character'+id).innerHTML == 1)
+          $('#modal_character').prop("checked", true );
+        else
+          $('#modal_character').prop("checked", false );
+        if (document.getElementById('status'+id).innerHTML == 1)
+          $('#modal_status').prop("checked", true );
+        else
+          $('#modal_status').prop("checked", false );
         $('#idid').val(id);
     }
     else
     {
-        $('#modal_pl').val('');  
-        $('#modal_en').val('');
-        $('#modal_st').val('');
+        $('#modal_name').val('');  
+        $('#modal_code').val('');
+        $('#modal_center').val('');
+        $('#modal_center').val(center_id);
+        $('#modal_character').prop("checked", false );
+        $('#modal_status').prop("checked", true );
         $('#idid').val(id);
     }
 
@@ -154,8 +180,6 @@ function showMyModalForm(id) {
 }
 
 </script>
-
-*/ ?>
 
 
 
