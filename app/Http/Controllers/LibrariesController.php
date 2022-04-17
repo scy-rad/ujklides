@@ -189,8 +189,12 @@ public function list_rooms() //  metoda GET bez parametrów
     if (!Auth::user()->hasRole('Operator Symulacji'))
     return view('error',['head'=>'błąd wywołania funkcji list_rooms kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-    return view('libraries.rooms')->with(['rooms' => \App\Room::select('*','rooms.id as id')->leftjoin('technician_characters','rooms.simmed_technician_character_propose_id','=','technician_characters.id')
-    ->get()]);
+    return view('libraries.rooms')->with(
+        [
+        'rooms' => \App\Room::select('*','rooms.id as id')->leftjoin('technician_characters','rooms.simmed_technician_character_propose_id','=','technician_characters.id')->get(), 
+        'centers' => \App\Center::all(),
+        'characters' => \App\TechnicianCharacter::all()->sortBy('character_short')
+        ]);
 }
 
 public function save_room(Request $request)
@@ -198,7 +202,31 @@ public function save_room(Request $request)
     if (!Auth::user()->hasRole('Operator Symulacji'))
     return view('error',['head'=>'błąd wywołania funkcji save_room kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-    dd('ta opcja jeszcze nie została zaimplementowana');
+    if ($request->id>0)
+    {
+        $room=\App\Room::find($request->id);
+    }
+    else
+    {
+        $room=new \App\Room;
+    }
+        $room->room_type_id     = $request->modal_type;
+        $room->center_id        = $request->modal_center;
+        $room->room_photo       = $request->modal_photo;
+        $room->room_number	    = $request->modal_number;
+        $room->room_name	    = $request->modal_name;
+        $room->room_description	= $request->modal_description;
+        $room->room_xp_code	    = $request->modal_xp_code;
+        	
+        $room->simmed_technician_character_propose_id = $request->modal_character;
+
+        if ($request->modal_status=='on')
+            $room->room_status    = 1;
+        else
+            $room->room_status    = 0;
+        $room->save();
+        return back()->with('success',' Zapis zakończył się sukcesem.');
+
 }
 
 

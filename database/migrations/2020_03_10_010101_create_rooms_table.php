@@ -17,11 +17,11 @@ class CreateRoomsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('room_type_id')->default(3);
             $table->unsignedInteger('center_id')->default(1);
-            $table->string('room_photo')->default('_room.jpg');
+            $table->string('room_photo')->default('_room.jpg')->nullable();
             $table->string('room_number');
             $table->string('room_name');
             $table->text('room_description');
-            $table->string('room_xp_code');
+            $table->string('room_xp_code')->nullable();
             $table->smallInteger('room_status')->default(1);
             $table->timestamps();
         });
