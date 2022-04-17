@@ -110,8 +110,9 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
             <label for"modal_en">temat EN:</label>
             <input type="text" class="form-control" id="modal_en" name="modal_en">
 
-            <label for"modal_st">status:</label>
-            <input type="text" class="form-control" id="modal_st" name="modal_st">
+            <label for"modal_st">status (aktywny):</label>
+            <input type="checkbox" class="form-control" id="modal_st" name="modal_st">
+
 
         </div>
       </div>
@@ -136,14 +137,17 @@ function showMyModalForm(id) {
     {
         $('#modal_pl').val(document.getElementById('PL'+id).innerHTML);
         $('#modal_en').val(document.getElementById('EN'+id).innerHTML);
-        $('#modal_st').val(document.getElementById('ST'+id).innerHTML);
+        if (document.getElementById('ST'+id).innerHTML == 1)
+          $('#modal_st').prop("checked", true );
+        else
+          $('#modal_st').prop("checked", false );
         $('#idid').val(id);
     }
     else
     {
         $('#modal_pl').val('');  
         $('#modal_en').val('');
-        $('#modal_st').val('');
+        $('#modal_st').prop("checked", true );
         $('#idid').val(id);
     }
 

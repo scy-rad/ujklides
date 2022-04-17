@@ -28,7 +28,10 @@ public function save_subject(Request $request)
         $Subject=\App\StudentSubject::find($request->id);
         $Subject->student_subject_name      = $request->modal_pl;
         $Subject->student_subject_name_en   = $request->modal_en;
-        $Subject->student_subject_status    = $request->modal_st*1;
+        if ($request->modal_st=='on')
+            $Subject->student_subject_status    = 1;
+        else
+            $Subject->student_subject_status    = 0;
         $Subject->save();
         return back()->with('success',' Zapis zakończył się sukcesem.');
     }
@@ -37,7 +40,10 @@ public function save_subject(Request $request)
         $Subject=new \App\StudentSubject;
         $Subject->student_subject_name      = $request->modal_pl;
         $Subject->student_subject_name_en   = $request->modal_en;
-        $Subject->student_subject_status    = $request->modal_st*1;
+        if ($request->modal_st=='on')
+            $Subject->student_subject_status    = 1;
+        else
+            $Subject->student_subject_status    = 0;
         $Subject->save();
         return back()->with('success','Dodano nową pozycję.');
     }    
