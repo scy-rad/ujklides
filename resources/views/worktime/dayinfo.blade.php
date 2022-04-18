@@ -52,7 +52,11 @@
   </a>
 </div>
 
-<h2>zaplanowane zajęcia w CSM:</h2>
+<h2>zaplanowane zajęcia w CSM:         <a href="/scheduler/{{$date}}">
+{{$date}}
+            <span class="glyphicon glyphicon glyphicon-tasks text-success" aria-hidden="true"></span>
+            </a>
+</h2>
 <div>
 @foreach ($simmeds as $row_one)
     <div class="row">
