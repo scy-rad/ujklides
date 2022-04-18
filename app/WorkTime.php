@@ -58,7 +58,7 @@ class WorkTime extends Model
         foreach ($workdays as $workday)
         {
             $work_one=[];
-            $work_one['id']=$workday->id;
+            $work_one['id']=$workday->user_id;
             if ($workday->simdescript=='')
                 $work_one['text']=$workday->long_name;
             else
