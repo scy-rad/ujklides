@@ -20,7 +20,7 @@ class WorkTime extends Model
 
     public static function activity_for_scheduler($day) 
     {
-        $simdays=Simmed::simmeds_join('without_free','without_deleted')
+        $simdays=Simmed::simmeds_join('without_free','without_deleted','without_send')
         ->where('simmed_date','=',$day);
 
         $workdays=WorkTime::select('*','work_times.description as simdescript')
@@ -50,7 +50,7 @@ class WorkTime extends Model
             $tabela[$technician->id]['id']       = $row_no++;
             $tabela[$technician->id]['id_room']  = $technician->id;
             $tabela[$technician->id]['number']   = $technician->title;
-            $technician['schedule']              = Simmed::simmeds_join('without_free','without_deleted')
+            $technician['schedule']              = Simmed::simmeds_join('without_free','without_deleted','without_send')
                                                     ->where('simmed_date','=',$day)
                                                     ->where('simmeds.simmed_technician_id',$technician->id)->get();
         }

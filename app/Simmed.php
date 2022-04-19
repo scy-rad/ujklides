@@ -172,7 +172,7 @@ class Simmed extends Model
     }
 
 
-    public static function simmeds_join($without_free,$without_deleted) 
+    public static function simmeds_join($without_free,$without_deleted,$with_send) 
     {
         $return=Simmed::
         select('simmeds.id',
@@ -186,7 +186,7 @@ class Simmed extends Model
         \DB::raw('substr(simmed_time_begin,1,5) as start'),
         \DB::raw('substr(simmed_time_end,1,5) as end'),  
         'room_id',
-        'room_number',
+        'rooms.room_number',
         'leaders.id as leader_id',
         \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as text'),
         \DB::raw('concat(user_titles.user_title_short," ",leaders.lastname," ",leaders.firstname) as leader'),
@@ -194,8 +194,8 @@ class Simmed extends Model
         'technicians.name as subtxt',
         'technicians.name as technician_name',
         'simmed_technician_character_id',
-        'character_short',
-        'character_name',
+        'technician_characters.character_short',
+        'technician_characters.character_name',
         'student_subject_id',
         'student_subject_name',
         'simmeds.student_group_id',
@@ -203,10 +203,11 @@ class Simmed extends Model
         'student_group_name',
         'student_subgroup_id', 
         'subgroup_name',
+        'simmed_alternative_title',
         'simmed_type_id',
         'simmed_status',
         'simmed_status2'
-        )
+    )
 
         ->leftjoin('rooms','simmeds.room_id','=','rooms.id')
         ->leftjoin('users as leaders','simmeds.simmed_leader_id','=','leaders.id')
@@ -217,14 +218,44 @@ class Simmed extends Model
         ->leftjoin('student_groups','simmeds.student_group_id','=','student_groups.id')
         ->leftjoin('student_subgroups','simmeds.student_subgroup_id','=','student_subgroups.id')
         ->join('pl_days',\DB::raw('dayofweek(simmed_date)'),'=','pl_days.id');
-                    
+
+        
+
+
+        if ($with_send=="with_send")
+        $return=$return->addSelect(
+            'simmed_time_begin',
+            'simmed_time_end',
+            'send_simmed_date',
+            'send_simmed_time_begin',
+            'send_simmed_time_end',
+            'send_simmed_type_id',
+            'send_student_subject_id',
+            'send_student_group_id',
+            'send_student_subgroup_id',
+            'send_room_id',
+            'send_simmed_leader_id',
+            'send_simmed_technician_id',
+            'send_simmed_technician_character_id',
+            'send_simmed_status',
+            'send_simmed_status2',
+            \DB::raw('concat(send_user_titles.user_title_short," ",send_leaders.lastname," ",send_leaders.firstname) as send_leader'),
+            'send_technicians.name as send_technician_name',
+            'send_technician_characters.character_name as send_character_name',
+            'send_rooms.room_number as send_room_number'
+            )
+            ->leftjoin('rooms as send_rooms','simmeds.send_room_id','=','send_rooms.id')
+            ->leftjoin('users as send_technicians','simmeds.send_simmed_technician_id','=','send_technicians.id')
+            ->leftjoin('users as send_leaders','simmeds.send_simmed_leader_id','=','send_leaders.id')
+            ->leftjoin('user_titles as send_user_titles','send_leaders.user_title_id','=','send_user_titles.id')
+            ->leftjoin('technician_characters as send_technician_characters','simmeds.send_simmed_technician_character_id','=','send_technician_characters.id');
+    
+
         if ($without_deleted=='without_deleted')
             $return=$return->where('simmed_status','<>',4);
         if ($without_free=='without_free')
             $return=$return->where('simmed_technician_character_id','<>',TechnicianCharacter::where('character_short','free')->get()->first()->id);
 
-        //->get()
-        ;
         return $return;
     }
 

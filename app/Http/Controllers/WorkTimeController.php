@@ -67,7 +67,7 @@ class WorkTimeController extends Controller
 
 
             $ret_row=WorkTime::calculate_work_time($filtr['user'], $cur_date);
-            $ret_row['sims'] = \App\Simmed::simmeds_join('without_free','without_deleted')
+            $ret_row['sims'] = \App\Simmed::simmeds_join('without_free','without_deleted','without_send')
                 ->where('simmed_date','=',$cur_date)
                 ->where('simmed_technician_id','=',$filtr['user'])
                 ->orderBy('simmed_date')
@@ -116,7 +116,7 @@ class WorkTimeController extends Controller
         return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
 
         $simmeds =
-            \App\Simmed::simmeds_join('without_free','without_deleted')
+            \App\Simmed::simmeds_join('without_free','without_deleted','without_send')
                 ->where('simmed_date','=',$date)
                 ->where('simmeds.simmed_technician_id',$user_id)
                 ->orderBy('time')
@@ -268,8 +268,9 @@ class WorkTimeController extends Controller
         if (!isset($request->start))
             {
                 //$filtr['start'] = date('Y-m').'-01';
-                $filtr['start'] = \App\Simmed::selectRaw('min(simmed_date) as minvalue')->get()->first()->minvalue;
-                $filtr['stop'] = date('Y-m-t');
+                //$filtr['start'] = \App\Simmed::selectRaw('min(simmed_date) as minvalue')->get()->first()->minvalue;
+                $filtr['start'] = \App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_start;
+                $filtr['stop'] = \App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_stop;
                 $filtr['technician'] = 777;
                 $filtr['character'] = 777;
                 $filtr['room'] = 777;
@@ -293,7 +294,7 @@ class WorkTimeController extends Controller
                  
                  )
                 {
-                    $return=\App\Simmed::simmeds_join('with_free','without_deleted');
+                    $return=\App\Simmed::simmeds_join('with_free','without_deleted','without_send');
                     if ($filtr['technician']==0)
                         $return=$return->WhereNull('simmed_technician_id');
                     if ( ($filtr['technician']!=777) && ($filtr['technician']>0) )
@@ -424,8 +425,9 @@ class WorkTimeController extends Controller
         $extra_tab=null;
         if (!isset($request->start))
             {
-                $filtr['start'] = \App\Simmed::selectRaw('min(simmed_date) as minvalue')->get()->first()->minvalue;
-                $filtr['stop'] = date('Y-m-t');
+                //$filtr['start'] = \App\Simmed::selectRaw('min(simmed_date) as minvalue')->get()->first()->minvalue;
+                $filtr['start'] = \App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_start;
+                $filtr['stop'] = \App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_stop;
                 $filtr['perspective']="characters";
                 $filtr['transposition']='std';
             }

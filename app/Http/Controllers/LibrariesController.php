@@ -168,6 +168,7 @@ public function params_save(Request $request)
             $Param->leader_for_simmed       = $request->leader_for_simmed;
             $Param->technician_for_simmed   = $request->technician_for_simmed;
             $Param->statistics_start        = $request->statistics_start;
+            $Param->statistics_stop        = $request->statistics_stop;
             $Param->simmed_days_edit_back   = $request->simmed_days_edit_back;
         }
         if (Auth::user()->hasRole('Operator Kadr'))

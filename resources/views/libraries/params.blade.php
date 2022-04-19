@@ -60,6 +60,9 @@
         <label for"statistics_start">Początek statystyk (bieżącego semestru):</label>
         <input type="date" class="form-control" name="statistics_start" value="{{$params->statistics_start}}">
 
+        <label for"statistics_stop">koniec statystyk, miesiąc wysyłki e-maili:</label>
+        <input type="date" class="form-control" name="statistics_stop" value="{{$params->statistics_stop}}">
+
         <label for"simmed_days_edit_back">ile dni "wstecz" technik może edytować przypisanie technika do symulacji:</label>
         <input type="text" class="form-control" name="simmed_days_edit_back" value="{{$params->simmed_days_edit_back}}">
 

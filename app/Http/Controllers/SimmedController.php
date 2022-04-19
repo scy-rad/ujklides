@@ -23,13 +23,13 @@ class SimmedController extends Controller
         switch ($simtype)
         {
             case 'all':
-                $simmeds =  Simmed::simmeds_join('with_free','without_deleted')->orderBy('simmed_date')->orderBy('simmed_time_begin')->orderBy('room_number')->get();
+                $simmeds =  Simmed::simmeds_join('with_free','without_deleted','without_send')->orderBy('simmed_date')->orderBy('simmed_time_begin')->orderBy('room_number')->get();
             break;
             case 'now':
-                $simmeds =  Simmed::simmeds_join('with_free','without_deleted')->where('simmed_date','>=',date('Y-m-d'))->where('simmed_date','<=',date('Y-m-d',strtotime( date('Y-m-d') .' +7 day' )))->orderBy('simmed_date')->orderBy('simmed_time_begin')->orderBy('room_number')->get();
+                $simmeds =  Simmed::simmeds_join('with_free','without_deleted','without_send')->where('simmed_date','>=',date('Y-m-d'))->where('simmed_date','<=',date('Y-m-d',strtotime( date('Y-m-d') .' +7 day' )))->orderBy('simmed_date')->orderBy('simmed_time_begin')->orderBy('room_number')->get();
             break;
             case 'month':
-                $simmeds =  Simmed::simmeds_join('with_free','without_deleted')->where('simmed_date','>=',date('Y-m').'-01')->where('simmed_date','<=',date('Y-m-t'))->orderBy('simmed_date')->orderBy('simmed_time_begin')->orderBy('room_number')->get();
+                $simmeds =  Simmed::simmeds_join('with_free','without_deleted','without_send')->where('simmed_date','>=',date('Y-m').'-01')->where('simmed_date','<=',date('Y-m-t'))->orderBy('simmed_date')->orderBy('simmed_time_begin')->orderBy('room_number')->get();
             break;
         }
         return view('simmeds.index', compact('simmeds'));
