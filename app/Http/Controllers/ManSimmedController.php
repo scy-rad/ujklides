@@ -1456,8 +1456,10 @@ public function sendMail(Request $request)
                 $msgTitle['subject']='[SIMinfo] informacje o zmianach w symulacjach';
                 $mail_data_address['subject_email']='[SIMinfo] zmiany w symulacjach: '.date('Y-m-d H:i');
 
-                $user_simmeds_prepare_changes=clone $user_simmeds_prepare;
-                $user_simmeds_prepare_changes
+                $user_simmeds_prepare_changes=Simmed::simmeds_join('with_free','with_deleted','with_send')
+                ->orderBy('simmed_date')
+                ->orderBy('time')
+                ->orderBy('room_number')
                     ->where(function ($query) {
                         $query->where('simmed_date', '!=', DB::raw("`send_simmed_date`"))
                         ->orWhere('simmed_time_begin', '!=', DB::raw("`send_simmed_time_begin`"))
@@ -1764,7 +1766,7 @@ public function changes(Request $request)
     $date_between[]=\App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_start;
     $date_between[]=\App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_stop;
     
-    $user_simmeds_prepare=Simmed::simmeds_join('with_free','without_deleted','with_send')
+    $user_simmeds_prepare=Simmed::simmeds_join('with_free','with_deleted','with_send')
         ->whereBetween('simmed_date',$date_between)
         ->orderBy('simmed_date')
         ->orderBy('time')
