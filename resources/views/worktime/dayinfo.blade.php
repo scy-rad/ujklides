@@ -68,7 +68,6 @@
             <br>
         <?php 
         $dni_tygodnia = array( 'Ni', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb' );
-        $date = date( "w" );
         echo $dni_tygodnia[ date('w',strtotime($row_one->simmed_date)) ];
         ?>
           <a href="{{route('simmeds.show', [$row_one->id, 0])}}"> pokaż
