@@ -206,7 +206,8 @@ class Simmed extends Model
         'simmed_alternative_title',
         'simmed_type_id',
         'simmed_status',
-        'simmed_status2'
+        'simmed_status2',
+        'simmeds.updated_at'
     )
 
         ->leftjoin('rooms','simmeds.room_id','=','rooms.id')
