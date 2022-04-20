@@ -18,21 +18,117 @@ class SimmedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(string $simtype)
+    public function index(request $request)
     {
-        switch ($simtype)
+
+        if (!isset($request->start))
+        {
+            $filtr['start'] = date('Y-m-d');
+            $filtr['stop'] = date('Y-m-d',strtotime( date('Y-m-d') .' +7 day' ));
+            $filtr['csm']=0;
+            $filtr['route']= 'now';
+        }
+        else
+        {
+            $filtr['start'] = $request->start;
+            $filtr['stop'] = $request->stop;
+            $filtr['csm']= $request->csm;
+            $filtr['route']= $request->route;
+        }
+        switch ($filtr['route'])
         {
             case 'all':
-                $simmeds =  Simmed::simmeds_join('with_free','without_deleted','without_send')->orderBy('simmed_date')->orderBy('simmed_time_begin')->orderBy('room_number')->get();
+                $simmeds =  Simmed::simmeds_join('with_free','without_deleted','without_send')
+                ->orderBy('simmed_date')
+                ->orderBy('simmed_time_begin')
+                ->orderBy('room_number');
             break;
-            case 'now':
-                $simmeds =  Simmed::simmeds_join('with_free','without_deleted','without_send')->where('simmed_date','>=',date('Y-m-d'))->where('simmed_date','<=',date('Y-m-d',strtotime( date('Y-m-d') .' +7 day' )))->orderBy('simmed_date')->orderBy('simmed_time_begin')->orderBy('room_number')->get();
-            break;
+            
             case 'month':
-                $simmeds =  Simmed::simmeds_join('with_free','without_deleted','without_send')->where('simmed_date','>=',date('Y-m').'-01')->where('simmed_date','<=',date('Y-m-t'))->orderBy('simmed_date')->orderBy('simmed_time_begin')->orderBy('room_number')->get();
+                $simmeds =  Simmed::simmeds_join('with_free','without_deleted','without_send')
+                    ->where('simmed_date','>=',date('Y-m').'-01')
+                    ->where('simmed_date','<=',date('Y-m-t'))
+                    ->orderBy('simmed_date')
+                    ->orderBy('simmed_time_begin')
+                    ->orderBy('room_number');
             break;
+
+            default:
+            case 'now':
+                $simmeds =  Simmed::simmeds_join('with_free','without_deleted','without_send')
+                    ->where('simmed_date','>=',$filtr['start'])
+                    ->where('simmed_date','<=',$filtr['stop'])
+                    ->orderBy('simmed_date')
+                    ->orderBy('simmed_time_begin')
+                    ->orderBy('room_number');
+            break;
+
         }
-        return view('simmeds.index', compact('simmeds'));
+        $ret['center_list']=\App\Center::all();
+        $ret['filtr']=$filtr;
+
+        if ($filtr['csm']>0)
+        {
+            $simmeds=$simmeds->where('student_groups.center_id','=',$filtr['csm']);
+        }
+        $simmeds = $simmeds->get();
+
+
+
+
+        if (isset($request->csv))
+        {
+
+            $filename="lista_symulacji.csv";
+            $fp = fopen($filename, 'w');
+            fwrite($fp, pack("CCC", 0xef, 0xbb, 0xbf));
+    
+            $to_csv[]='data';
+            $to_csv[]='dz.tyg.';
+            $to_csv[]='godz.';
+            $to_csv[]='sala';
+            $to_csv[]='instr';
+            $to_csv[]='przedmiot';
+            $to_csv[]='grupa';
+            $to_csv[]='podgr.';
+            $to_csv[]='technik';
+            $to_csv[]='char.';
+            fputcsv($fp,$to_csv,';');
+    
+        
+                foreach ($simmeds as $row_one)
+                {
+                    $to_csv=null;
+                $to_csv[]=$row_one->simmed_date;
+                $to_csv[]=$row_one->DayOfWeek;
+                $to_csv[]=$row_one->time;
+                $to_csv[]=$row_one->room_number;
+                $to_csv[]=$row_one->leader;
+                $to_csv[]=$row_one->student_subject_name;
+                $to_csv[]=$row_one->student_group_name;
+                $to_csv[]=$row_one->subgroup_name;
+                $to_csv[]=$row_one->technician_name;
+                $to_csv[]=$row_one->character_short;
+                
+                fputcsv($fp,$to_csv,';');
+                }
+                fputcsv($fp,['koniec'],';');
+                fputcsv($fp,[''],';');
+                fclose($fp);
+                      
+            header('Content-type: text/csv');
+            header('Content-disposition:attachment; filename="'.$filename.'"');
+            readfile($filename);
+    
+            exit;
+    //        dump(serialize($alltmps));
+        }
+
+        $ret['filtr']['csv']='csv';
+
+
+
+        return view('simmeds.index', compact('simmeds'), $ret );
     }
 
 

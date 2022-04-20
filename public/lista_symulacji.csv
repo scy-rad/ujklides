@@ -1,0 +1,66 @@
+﻿data;dz.tyg.;godz.;sala;instr;przedmiot;grupa;podgr.;technik;char.
+2022-04-20;Środa;07:30-12:45;"A 1.05";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 08";;free
+2022-04-20;Środa;07:30-12:45;"A 1.06";"mgr Kozłowska Ewa";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 05";;free
+2022-04-20;Środa;07:30-12:45;"A 1.07";"dr-ek Cieślik Aleksandra";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 07";;free
+2022-04-20;Środa;07:30-12:45;"A 1.09";"dr-ek Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 06";;free
+2022-04-20;Środa;08:00-14:00;"B 1.01";"mgr Sikorska Julia";"Pielęgniarstwo pediatryczne";P/Ist./S/2020/2021;"sym 12";paulina;stay
+2022-04-20;Środa;08:00-11:00;"B 1.15";"dr-ek Kamusińska Elżbieta";"Pielęgniarstwo geriatryczne";P/Ist./S/2020/2021;"sym 09";bartek;stay
+2022-04-20;Środa;11:00-14:00;"B 1.15";"dr-ek Kamusińska Elżbieta";"Pielęgniarstwo geriatryczne";P/Ist./S/2020/2021;"sym 10";marcin;stay
+2022-04-20;Środa;12:45-18:00;"A 1.05";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 04";;free
+2022-04-20;Środa;12:45-18:00;"A 1.06";"mgr Kozłowska Ewa";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 01";;free
+2022-04-20;Środa;12:45-18:00;"A 1.07";"dr-ek Cieślik Aleksandra";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 03";;free
+2022-04-20;Środa;12:45-18:00;"A 1.09";"dr-ek Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 02";;free
+2022-04-20;Środa;14:45-20:45;"B 1.01";"mgr Zaworska-Winiarska Agnieszka";"Pielęgniarstwo pediatryczne";P/Ist./S/2020/2021;"sym 04";mateusz;stay
+2022-04-20;Środa;15:00-18:00;"B 1.05";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";Po/Ist./S/2020/2021;"sym 03";angelika;stay
+2022-04-21;Czwartek;07:30-12:45;"A 1.05";"mgr Kaleta Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 11";;free
+2022-04-21;Czwartek;07:30-12:45;"A 1.06";"mgr Rutkowska Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 09";;free
+2022-04-21;Czwartek;07:30-12:45;"A 1.07";"mgr Saługa Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 12";;free
+2022-04-21;Czwartek;07:30-12:45;"A 1.09";"dr-ek Lelonek Barbara";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 10";;free
+2022-04-21;Czwartek;08:00-11:00;"B 1.05";"mgr Bedla Katarzyna";"Opieka neonatologiczna";Po/Ist./S/2020/2021;"sym 06";angelika;stay
+2022-04-21;Czwartek;08:00-12:30;"B 1.15";"mgr Dudek Małgorzata";"Podstawowa opieka zdrowotna";P/Ist./S/2020/2021;"sym 06";mateusz;stay
+2022-04-21;Czwartek;11:00-14:00;"B 1.05";"mgr Bedla Katarzyna";"Opieka neonatologiczna";Po/Ist./S/2020/2021;"sym 02";angelika;stay
+2022-04-21;Czwartek;12:45-18:00;"A 1.05";"mgr Kaleta Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 15";;free
+2022-04-21;Czwartek;12:45-18:00;"A 1.06";"mgr Rutkowska Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 13";;free
+2022-04-21;Czwartek;12:45-18:00;"A 1.07";"mgr Saługa Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 16";;free
+2022-04-21;Czwartek;12:45-18:00;"A 1.09";"dr-ek Lelonek Barbara";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 14";;free
+2022-04-22;Piątek;08:00-12:30;"B 1.01";"dr-ek Głowala Sylwia";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 08";mateusz;stay
+2022-04-22;Piątek;08:00-11:00;"B 1.15";"dr-ek Kamusińska Elżbieta";"Pielęgniarstwo geriatryczne";P/Ist./S/2020/2021;"sym 09";sebek;stay
+2022-04-22;Piątek;11:00-14:00;"B 1.15";"dr-ek Kamusińska Elżbieta";"Pielęgniarstwo geriatryczne";P/Ist./S/2020/2021;"sym 10";sebek;stay
+2022-04-22;Piątek;14:00-17:00;"B 1.15";"mgr Kaleta Agnieszka";"Pielęgniarstwo geriatryczne";P/Ist./S/2020/2021;"sym 01";bartek;stay
+2022-04-22;Piątek;16:00-19:45;"A 1.05";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";POŁ/Ist./S/2021/2022;"ćwp 07";;free
+2022-04-22;Piątek;16:00-19:45;"A 1.09";"dr-ek Wencel-Wawrzeńczyk Agnieszka";"Techniki położnicze i prowadzenie porodu";POŁ/Ist./S/2021/2022;"ćwp 09";;free
+2022-04-22;Piątek;16:00-19:45;"B 1.05";"mgr Wiąk Krystyna";"Techniki położnicze i prowadzenie porodu";POŁ/Ist./S/2021/2022;"ćwp 08";darek;stay
+2022-04-22;Piątek;17:00-20:00;"B 1.15";"mgr Kaleta Agnieszka";"Pielęgniarstwo geriatryczne";P/Ist./S/2020/2021;"sym 03";bartek;stay
+2022-04-25;Poniedziałek;07:30-12:45;"A 1.05";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 01";;free
+2022-04-25;Poniedziałek;07:30-12:45;"A 1.06";"mgr Kozłowska Ewa";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 02";;free
+2022-04-25;Poniedziałek;07:30-12:45;"A 1.07";"dr-ek Cieślik Aleksandra";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 04";;free
+2022-04-25;Poniedziałek;07:30-12:45;"A 1.09";"dr-ek Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 03";;free
+2022-04-25;Poniedziałek;08:00-14:00;"B 1.01";"mgr Sikorska Julia";"Pielęgniarstwo pediatryczne";P/Ist./S/2020/2021;"sym 10";mateusz;stay
+2022-04-25;Poniedziałek;12:45-18:00;"A 1.05";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 05";;free
+2022-04-25;Poniedziałek;12:45-18:00;"A 1.06";"mgr Kozłowska Ewa";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 06";;free
+2022-04-25;Poniedziałek;12:45-18:00;"A 1.07";"dr-ek Cieślik Aleksandra";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 08";;free
+2022-04-25;Poniedziałek;12:45-18:00;"A 1.09";"dr-ek Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 07";;free
+2022-04-25;Poniedziałek;14:45-20:45;"B 1.05";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";POŁ/Ist./S/2021/2022;sym02;angelika;stay
+2022-04-26;Wtorek;07:30-12:45;"A 1.05";"mgr Kaleta Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 04";;free
+2022-04-26;Wtorek;07:30-12:45;"A 1.06";"mgr Rutkowska Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 02";;free
+2022-04-26;Wtorek;07:30-12:45;"A 1.07";"mgr Saługa Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 01";;free
+2022-04-26;Wtorek;07:30-12:45;"A 1.09";"dr-ek Lelonek Barbara";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 03";;free
+2022-04-26;Wtorek;12:45-18:00;"A 1.05";"mgr Kaleta Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 08";;free
+2022-04-26;Wtorek;12:45-18:00;"A 1.06";"mgr Rutkowska Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 06";;free
+2022-04-26;Wtorek;12:45-18:00;"A 1.07";"mgr Saługa Agnieszka";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 05";;free
+2022-04-26;Wtorek;12:45-18:00;"A 1.09";"dr-ek Lelonek Barbara";"Podstawy pielęgniarstwa";PIEL/Ist./S/2021/2022;"ćwp 07";;free
+2022-04-26;Wtorek;13:45-20:30;"B 3.34";"lek. med. Kozubal Katarzyna";"Specjalność wybrana przez studenta";LEK/Eng-Div-6/16/17;"ćwpk 02";;stay
+2022-04-26;Wtorek;14:45-20:45;"B 1.01";"mgr Zaworska-Winiarska Agnieszka";"Pielęgniarstwo pediatryczne";P/Ist./S/2020/2021;"sym 05";mateusz;stay
+2022-04-26;Wtorek;15:00-19:30;"B 1.05";"mgr Siczek Ewelina";"Opieka położnicza";Po/Ist./S/2020/2021;"sym 03";angelika;stay
+2022-04-26;Wtorek;15:00-18:00;"B 1.15";"mgr Dunkowska Anna";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 07";;stay
+2022-04-27;Środa;07:30-12:45;"A 1.05";"mgr Bedla Katarzyna";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 09";;free
+2022-04-27;Środa;07:30-12:45;"A 1.06";"mgr Kozłowska Ewa";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 10";;free
+2022-04-27;Środa;07:30-12:45;"A 1.07";"dr-ek Cieślik Aleksandra";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 12";;free
+2022-04-27;Środa;07:30-12:45;"A 1.09";"dr-ek Krawczyńska Jadwiga";"Podstawy opieki położniczej";POŁ/Ist./S/2021/2022;"ćwp 11";;free
+2022-04-27;Środa;14:30-19:00;"B 1.01";"dr-ek Głowala Sylwia";"Pielęgniarstwo chirurgiczne";P/Ist./S/2020/2021;"sym 05";mateusz;stay
+2022-04-27;Środa;15:00-18:00;"B 1.15";"mgr Dunkowska Anna";"Pielęgniarstwo psychiatryczne";P/Ist./S/2020/2021;"sym 09";angelika;stay
+2022-04-27;Środa;16:00-19:45;"A 1.05";"mgr Siczek Ewelina";"Techniki położnicze i prowadzenie porodu";POŁ/Ist./S/2021/2022;"ćwp 08";;free
+2022-04-27;Środa;16:00-19:45;"A 1.09";"dr-ek Wencel-Wawrzeńczyk Agnieszka";"Techniki położnicze i prowadzenie porodu";POŁ/Ist./S/2021/2022;"ćwp 07";;free
+2022-04-27;Środa;16:00-19:45;"B 1.05";"mgr Wiąk Krystyna";"Techniki położnicze i prowadzenie porodu";POŁ/Ist./S/2021/2022;"ćwp 09";;stay
+koniec
+

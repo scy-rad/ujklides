@@ -9,6 +9,41 @@
 
 
 <h1>Wykaz zajęć na pracowniach</h1>
+<form action="{{ route('simmeds.index',['route' => 'now']) }}" method="get">
+    <div class="row">
+        <div class="col-sm-3">
+            <label for"start">od-do:</label><br>
+            <input type="date" name="start" value="{{$filtr['start']}}">
+            <input type="date" name="stop" value="{{$filtr['stop']}}">
+        </div>        
+        <div class="col-sm-3">
+            <label for"csm">grupa stud.:</label><br>
+            <select class="form-control" name="csm">
+                <option value="0" @if (0 == $filtr['csm']) selected="selected" @endif>wszystko</option>
+                <option value="-1" @if (-1 == $filtr['csm']) selected="selected" @endif>nieokreślone</option>
+                @foreach ($center_list as $center_one)
+                <option value="{{$center_one->id}}" @if ($center_one->id == $filtr['csm']) selected="selected" @endif>{{$center_one->center_direct}}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-sm-1">
+            <br>
+            <input class="btn btn-primary btn-sm" type="submit" value="pokaż">
+        </div>
+
+        <div class="col-sm-3">
+            &nbsp;
+        </div>
+    </form>
+        <div class="col-sm-1">
+            <br>
+            <a href="{{ route('simmeds.index', $filtr) }}" target="_blank">
+                <input class="btn btn-success btn-sm" type="submit" value="pobierz CSV">
+            </a>
+        </div>
+    </div>
+
 <hr>
 
 <!--table class="table table-hover"-->

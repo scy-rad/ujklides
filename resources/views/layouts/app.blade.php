@@ -91,7 +91,7 @@
                             <li class="dropdown">
                                 <a data-toggle="dropdown" href="#" class="dropdown-toggle">Symulacje <b class="caret"></b></a>   
                                 <ul class="dropdown-menu">
-                                    <li><a href="{{ route('simmeds.index',['route' => 'now']) }}">Bieżące (+7d)</a></li>
+                                    <li><a href="{{ route('simmeds.index') }}">Bieżące (+7d)</a></li>
                                     <!--li><a href="{{ route('simmeds.index',['route' => 'month']) }}">Bieżący miesiąc</a></li-->
                                     @if ( (Auth::user()->hasRole('Technik')) || (Auth::user()->hasRole('koordynator'))|| (Auth::user()->hasRole('Operator Kadr')) || (Auth::user()->hasRole('Operator Symulacji')) )
                                     <!--li><a href="{{ route('simmeds.index',['route' => 'all']) }}">Wszystkie</a></li-->

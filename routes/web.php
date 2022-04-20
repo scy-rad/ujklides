@@ -536,7 +536,7 @@ Route::delete('scenario/{scenario}', [
 /////////////////////////////////////////////////////////
 
 
-Route::get('simmeds/{simmed}', [
+Route::get('simmeds', [
     'uses' => 'SimmedController@index',
     'as' => 'simmeds.index'
 ]);
