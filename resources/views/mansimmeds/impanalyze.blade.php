@@ -256,6 +256,11 @@ if (!Auth::user()->hasRole('Operator Symulacji'))
             char_array[13] = "usuń";
             next_array[13] = "3";
 
+            char_array[9] = "nie przywracaj";
+            next_array[9] = "19";
+            char_array[19] = "przywróć";
+            next_array[19] = "9";
+
             char_array[0] = "dodaj";
             next_array[0] = "1";
             char_array[11] = "dodaj";
