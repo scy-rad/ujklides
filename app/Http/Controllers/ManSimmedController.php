@@ -1612,11 +1612,10 @@ public function sendMail(Request $request)
                 $tmp_table=$tmp_table
                         ->addSelect('technician_characters.working_character')
                         ->where('technician_characters.working_character',1)
+                        ->whereNull('simmed_technician_id')
                         ->whereBetween('simmed_date',$date_between)
                         ->where('simmed_status','<>',4)
                         ->get();
-                        print_r($tmp_table);
-                        dd($tmp_table);
                 if ($tmp_table->count()>0)
                 {
                     $BigTable[2]['head']='Symulacje, które nie mają przypisanego technika, a powinny...:';
@@ -1694,7 +1693,6 @@ public function sendMail(Request $request)
 
                 break;
         }
-dd('dwa');
 
         $data['message_body']='wysłano maile do <ul>';
         foreach ($zwrot as $zwrot_one)
@@ -1821,6 +1819,7 @@ public function changes(Request $request)
                         //     })
                             ->addSelect('technician_characters.working_character')
                             ->where('technician_characters.working_character',1)
+                            ->whereNull('simmed_technician_id')
                             ->where('simmed_status','<>',4)  
                         ->get();
                 if ($tmp_table->count()>0)
