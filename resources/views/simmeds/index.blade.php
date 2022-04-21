@@ -11,20 +11,34 @@
 <h1>Wykaz zajęć na pracowniach</h1>
 <form action="{{ route('simmeds.index',['route' => 'now']) }}" method="get">
     <div class="row">
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <label for"start">od-do:</label><br>
             <input type="date" name="start" value="{{$filtr['start']}}">
             <input type="date" name="stop" value="{{$filtr['stop']}}">
         </div>        
-        <div class="col-sm-3">
-            <label for"csm">grupa stud.:</label><br>
-            <select class="form-control" name="csm">
-                <option value="0" @if (0 == $filtr['csm']) selected="selected" @endif>wszystko</option>
-                <option value="-1" @if (-1 == $filtr['csm']) selected="selected" @endif>nieokreślone</option>
+        <div class="col-sm-1">
+            <label for"gcsm">grupy stud.:</label><br>
+            <select class="form-control" name="gcsm">
+                <option value="0" @if (0 == $filtr['gcsm']) selected="selected" @endif>wszystko</option>
+                <option value="-1" @if (-1 == $filtr['gcsm']) selected="selected" @endif>nieokreślone</option>
                 @foreach ($center_list as $center_one)
-                <option value="{{$center_one->id}}" @if ($center_one->id == $filtr['csm']) selected="selected" @endif>{{$center_one->center_direct}}</option>
+                <option value="{{$center_one->id}}" @if ($center_one->id == $filtr['gcsm']) selected="selected" @endif>{{$center_one->center_direct}}</option>
                 @endforeach
             </select>
+        </div>
+        <div class="col-sm-1">
+            <label for"rcsm">sale:</label><br>
+            <select class="form-control" name="rcsm">
+                <option value="0" @if (0 == $filtr['rcsm']) selected="selected" @endif>wszystko</option>
+                <option value="-1" @if (-1 == $filtr['rcsm']) selected="selected" @endif>nieokreślone</option>
+                @foreach ($center_list as $center_one)
+                <option value="{{$center_one->id}}" @if ($center_one->id == $filtr['rcsm']) selected="selected" @endif>{{$center_one->center_direct}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <label for"nofree">tylko obsł.:</label><br>
+            <input class="form-control" type="checkbox" name="nofree" value="nofree"@if ($filtr['nofree']=='nofree') checked="checked" @endif>
         </div>
 
         <div class="col-sm-1">

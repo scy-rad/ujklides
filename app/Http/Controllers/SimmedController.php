@@ -25,15 +25,19 @@ class SimmedController extends Controller
         {
             $filtr['start'] = date('Y-m-d');
             $filtr['stop'] = date('Y-m-d',strtotime( date('Y-m-d') .' +7 day' ));
-            $filtr['csm']=0;
+            $filtr['gcsm']=0;
+            $filtr['rcsm']=0;
             $filtr['route']= 'now';
+            $filtr['nofree'] = '';
         }
         else
         {
             $filtr['start'] = $request->start;
             $filtr['stop'] = $request->stop;
-            $filtr['csm']= $request->csm;
+            $filtr['gcsm']= $request->gcsm;
+            $filtr['rcsm']= $request->rcsm;
             $filtr['route']= $request->route;
+            $filtr['nofree']= $request->nofree;
         }
         switch ($filtr['route'])
         {
@@ -67,9 +71,25 @@ class SimmedController extends Controller
         $ret['center_list']=\App\Center::all();
         $ret['filtr']=$filtr;
 
-        if ($filtr['csm']>0)
+        if ($filtr['gcsm']>0)
         {
-            $simmeds=$simmeds->where('student_groups.center_id','=',$filtr['csm']);
+            $simmeds=$simmeds->where('student_groups.center_id','=',$filtr['gcsm']);
+        }
+        elseif ($filtr['gcsm']==-1)
+        {
+            $simmeds=$simmeds->whereNull('student_groups.center_id');
+        }
+        if ($filtr['rcsm']>0)
+        {
+            $simmeds=$simmeds->where('rooms.center_id','=',$filtr['rcsm']);
+        }
+        elseif ($filtr['rcsm']==-1)
+        {
+            $simmeds=$simmeds->whereNull('rooms.center_id');
+        }
+        if ($filtr['nofree']=='nofree')
+        {
+            $simmeds=$simmeds->whereNull('student_groups.center_id');
         }
         $simmeds = $simmeds->get();
 
