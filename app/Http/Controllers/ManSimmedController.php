@@ -798,7 +798,7 @@ class ManSimmedController extends Controller
                     ->where('simmed_id',0)
                     ->update(['simmed_technician_character_id' => DB::raw("`simmed_technician_character_propose_id`")]);
 
-                $Character_free_code=TechnicianCharacter::where('character_short','=','free')
+                $Character_free_code=TechnicianCharacter::where('working_character',0)
                     ->get()->first()->id;
 
                 $Characters_to_free=SimmedTemp::where('simmed_technician_character_id',0)
@@ -1604,20 +1604,19 @@ public function sendMail(Request $request)
 
             case 'simchanges':
 
-                $look_characters=TechnicianCharacter::where('character_short','<>','free')
-                    ->pluck('id')
-                    ->toArray();
+                // $look_characters=TechnicianCharacter::where('character_short','<>','free')
+                //     ->pluck('id')
+                //     ->toArray();
 
                 $tmp_table=clone $user_simmeds_prepare;
                 $tmp_table=$tmp_table
-                        ->where(function ($query) use ($look_characters) {
-                            $query->whereNull('simmed_technician_id')
-                                ->whereIn('simmed_technician_character_id',$look_characters);
-                            })
+                        ->addSelect('technician_characters.working_character')
+                        ->where('technician_characters.working_character',1)
                         ->whereBetween('simmed_date',$date_between)
                         ->where('simmed_status','<>',4)
                         ->get();
-
+                        print_r($tmp_table);
+                        dd($tmp_table);
                 if ($tmp_table->count()>0)
                 {
                     $BigTable[2]['head']='Symulacje, które nie mają przypisanego technika, a powinny...:';
@@ -1695,7 +1694,7 @@ public function sendMail(Request $request)
 
                 break;
         }
-
+dd('dwa');
 
         $data['message_body']='wysłano maile do <ul>';
         foreach ($zwrot as $zwrot_one)
@@ -1810,16 +1809,18 @@ public function changes(Request $request)
 
 
 
-                $look_characters=TechnicianCharacter::where('character_short','<>','free')
-                    ->pluck('id')
-                    ->toArray();
+                // $look_characters=TechnicianCharacter::where('character_short','<>','free')
+                //     ->pluck('id')
+                //     ->toArray();
 
                 $tmp_table=clone $user_simmeds_prepare;
                 $tmp_table=$tmp_table
-                        ->where(function ($query) use ($look_characters) {
-                            $query->whereNull('simmed_technician_id')
-                                ->whereIn('simmed_technician_character_id',$look_characters);
-                            })
+                        // ->where(function ($query) use ($look_characters) {
+                        //     $query->whereNull('simmed_technician_id')
+                        //         ->whereIn('simmed_technician_character_id',$look_characters);
+                        //     })
+                            ->addSelect('technician_characters.working_character')
+                            ->where('technician_characters.working_character',1)
                             ->where('simmed_status','<>',4)  
                         ->get();
                 if ($tmp_table->count()>0)

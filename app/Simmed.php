@@ -255,7 +255,7 @@ class Simmed extends Model
         if ($without_deleted=='without_deleted')
             $return=$return->where('simmed_status','<>',4);
         if ($without_free=='without_free')
-            $return=$return->where('simmed_technician_character_id','<>',TechnicianCharacter::where('character_short','free')->get()->first()->id);
+            $return=$return->where('working_character',1);
 
         return $return;
     }

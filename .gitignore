@@ -18,3 +18,4 @@ composer
 .vscode/sftp.json
 !.vscode/something.json
 public/simmeds.csv
+public/*.csv

@@ -26,13 +26,9 @@ class WorkTime extends Model
         $workdays=WorkTime::select('*','work_times.description as simdescript')
         ->where('date','=',$day)
         ->where('work_times.status','=',1)
-        //->where('simmed_status','<',4)
-        //->where('simmed_technician_character_id','=',TechnicianCharacter::where('character_short','stay')->get()->first()->id)
         ->leftjoin('work_time_types','work_times.work_time_types_id','=','work_time_types.id')
         ->get();
 
-        // $simrooms=Room::where('room_xp_code','<>','')
-        //         ->orderBy('room_number')->get();
         $technicians=User::role_users('technicians', 1, 1)
         ->select('id', 'name as title', \DB::raw('"CSM tech" as subtitle'))
         ->orderBy('name')
