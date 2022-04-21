@@ -335,6 +335,8 @@ class WorkTimeController extends Controller
             ->get();
         $instructors_list=User::role_users('instructors', 1, 1)
             ->whereIn('id',$active_instructors)
+            ->orderBy('lastname')
+            ->orderBy('firstname')
             ->get();
 
         $active_subjects=\App\Simmed::select('student_subject_id')
@@ -344,10 +346,11 @@ class WorkTimeController extends Controller
             ->get();
         $subjects_list=\App\StudentSubject::select('*')
             ->whereIn('id',$active_subjects)
+            ->orderBy('student_subject_name')
             ->get();
 
 
-        $technicians_list=User::role_users('technicians', 1, 1)->get();
+        $technicians_list=User::role_users('technicians', 1, 1)->orderBy('name')->get();
         $nulik=new User;
         $nulik->id = null;
         $nulik->name='brak wpisu';

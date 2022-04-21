@@ -15,7 +15,7 @@ public function list_subjects() //  metoda GET bez parametrów
     if (!Auth::user()->hasRole('Operator Symulacji'))
     return view('error',['head'=>'błąd wywołania funkcji index kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-    return view('libraries.subjects')->with(['subjects' => \App\StudentSubject::all()]);
+    return view('libraries.subjects')->with(['subjects' => \App\StudentSubject::orderBy('student_subject_name')->get()]);
 }
 
 public function save_subject(Request $request)
@@ -142,8 +142,8 @@ public function params_show() //  metoda GET bez parametrów
 
 
     $params = \App\Param::select('*')->orderBy('id','desc')->first();
-    $technicians_list =\App\User::role_users('technicians', 1, 1)->orderBy('name')->get();
-    $leaders_list=\App\User::role_users('instructors', 1, 1)->get();
+    $technicians_list =\App\User::role_users('technicians', 1, 1)->orderBy('lastname')->orderBy('firstname')->get();
+    $leaders_list=\App\User::role_users('instructors', 1, 1)->orderBy('lastname')->orderBy('firstname')->get();
 
     return view('libraries.params')->with(['params' => $params, 'technicians_list' => $technicians_list, 'leaders_list' => $leaders_list]);
 }
@@ -236,7 +236,7 @@ public function list_student_groups() //  metoda GET bez parametrów
     if (!Auth::user()->hasRole('Operator Symulacji'))
     return view('error',['head'=>'błąd wywołania funkcji list_student_groups kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-    return view('libraries.studentgroups')->with(['student_groups' => \App\StudentGroup::select('*','student_groups.id as id')->leftjoin('centers','student_groups.center_id','=','centers.id')
+    return view('libraries.studentgroups')->with(['student_groups' => \App\StudentGroup::select('*','student_groups.id as id')->leftjoin('centers','student_groups.center_id','=','centers.id')->orderBy('center_id')->orderBy('student_group_code')->orderBy('student_group_name')
     ->get(), 'centers' => \App\Center::all() ]);}
 
 public function save_student_group(Request $request)
@@ -286,7 +286,7 @@ public function list_user_titles() //  metoda GET bez parametrów
     if (!Auth::user()->hasRole('Operator Symulacji'))
     return view('error',['head'=>'błąd wywołania funkcji list_user_titles kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
-    return view('libraries.usertitles')->with(['user_titles' => \App\UserTitle::all()]);
+    return view('libraries.usertitles')->with(['user_titles' => \App\UserTitle::orderBy('user_title_sort')->get()]);
 }
 
 public function save_user_title(Request $request)
