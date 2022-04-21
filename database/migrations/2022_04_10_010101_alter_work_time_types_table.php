@@ -27,7 +27,7 @@ class AlterWorkTimeTypesTable extends Migration
     public function down()
     {
         Schema::table('work_time_types', function($table) {
-            $table->dropColumn('staverage_for_statistic');
+            $table->dropColumn('average_for_statistic');
         });
     }
 }
