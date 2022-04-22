@@ -419,13 +419,30 @@ class SimmedController extends Controller
 
         $date_stat=\App\Param::select('statistics_start')->get()->first()->statistics_start;
 
-        $data['simulation_info'] = \App\Simmed::select('*')
+
+        $other_sims = \App\Simmed::select('*')
             ->where('id', '<>' ,$simmed->id)
-            ->where('simmed_alternative_title', '<>' ,'')
             ->where('student_subject_id', '=' ,$simmed->student_subject_id)
             ->where('simmed_leader_id', '=' ,$simmed->simmed_leader_id)
+            ->whereNotNull('student_subject_id')
+            ->whereNotNull('simmed_leader_id')
             ->where('simmed_date','>=',$date_stat)
-            ->get();
+            ->pluck('id');
+
+        $data['simulation_info'] = \App\SimmedDescript::select('*')->whereIn('simmed_id',$other_sims)->get();
+        
+        $data['simmed_descript'] = \App\SimmedDescript::select('*')
+        -> where('simmed_id',$simmed->id)
+        ->get();
+
+        if ($data['simmed_descript']->count() == 0)
+        {
+            $data['simmed_descript'] = new \App\SimmedDescript;
+        }
+        else
+        {
+            $data['simmed_descript']=$data['simmed_descript']->first();
+        }
 
         return view('simmeds.show', compact('simmed'), $data);
     }
@@ -584,6 +601,44 @@ class SimmedController extends Controller
             $request->id=$modified_row->id;
         
         return redirect()->route('simmeds.show',[$request->id, 0])->with('success', 'Dane zostały zmienione.');
+
+    }
+
+
+    public function descript_update(Request $request)
+    {
+
+        if (!Auth::user()->hasRole('Technik'))
+           return back()->withErrors('brak uprawnień do kopiowania wpisów (descript update in SimmedController). Tylko dla technika');   
+         
+        if ($request->id==0)
+        {
+            $modified_row = new \App\SimmedDescript;
+            $modified_row->user_id                          = Auth::user()->id;
+        }
+        else
+        { 
+
+            $modified_row=\App\SimmedDescript::find($request->id);
+
+            $arc_row=new \App\SimmedDescriptArc();
+            $arc_row=$modified_row;
+            unset($arc_row->id);
+        }    
+
+        if ( ($modified_row->simmed_secret == $request->simmed_secret)
+            && ($modified_row->simmed_descript == $request->simmed_descript) )
+            return back()->withErrors('Nie wykryto żadnych zmian...');
+
+        $modified_row->simmed_id        = $request->simmed_id;
+        $modified_row->simmed_secret    = $request->simmed_secret;
+        $modified_row->simmed_descript  = $request->simmed_descript;
+        
+        $ret_save=$modified_row->save();
+        if ($request->id>0)
+            $ret_save=$arc_row->save();
+        
+        return back()->with('success',' Zapis zakończył się sukcesem.');
 
     }
 

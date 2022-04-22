@@ -1,40 +1,57 @@
 @extends('layouts.app')
 <?php include(app_path().'/include/view_common.php'); ?>
 
-<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.css" />
-
-<!-- If you use the default popups, use this. -->
-<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.css" />
-<link rel="stylesheet" type="text/css" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.css" />
-<link href="{{ asset('css/_cards.css') }}" rel="stylesheet">
 
 @section('title', 'scenariusze '.$simmed->simmed_date.': ')
 
 @section('content')
+<link href="{{ asset('css/_cards.css') }}" rel="stylesheet">
 
 
-<?php //dump($simmed->simmed_date); ?>
+<div class="container">
+        <div class="row">
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>Tadaaaaaaaaaaa!!</strong><br>
+                    {{ $message }}
+                </div>
+            @endif
+
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <strong>Uuuups!</strong> Przecież to nie powinno się wydarzyć!<br><br>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
+    </div>
+
 
 <?php
 
-$Scen_Table='<ul>';
+    $Scen_Table='<ul>';
 
-foreach ($simmed->scenarios as $scenlist)
-{
-  $Scen_Table.='<li><a href="'.asset('scenario/'.$scenlist->id).'">';
-  $Scen_Table.=$scenlist->scenario_name;
-  $Scen_Table.='</a></li>';
-}
+    foreach ($simmed->scenarios as $scenlist)
+    {
+    $Scen_Table.='<li><a href="'.asset('scenario/'.$scenlist->id).'">';
+    $Scen_Table.=$scenlist->scenario_name;
+    $Scen_Table.='</a></li>';
+    }
 
-$Scen_Table.='</ul>';
+    $Scen_Table.='</ul>';
 ?>
 
 <div class="row">
     <div class="col-lg-2 mb-2">
     </div>
-{{ kafelek(2, 'sala', $simmed->room()->room_number,NULL) }}
-{{ kafelek(4, 'instruktor', $simmed->name_of_leader(),NULL) }}
-{{ kafelek(4, 'technik', $simmed->name_of_technician(),NULL) }}
+    {{ kafelek(2, 'sala', $simmed->room()->room_number,NULL) }}
+    {{ kafelek(4, 'instruktor', $simmed->name_of_leader(),NULL) }}
+    {{ kafelek(4, 'technik', $simmed->name_of_technician(),NULL) }}
 </div>
 
 <div class="row">
@@ -55,7 +72,49 @@ $Scen_Table.='</ul>';
 <div class="row">
     <p>{!! $simmed->opis !!}</p>
 </div>
-<div class="row">
+<div class="row" id="descript_show">
+    @if ($simmed_descript->id > 0) 
+        <h1>opis</h1>
+        @if ( Auth::user()->hasRole('Technik') )
+            <span class="text-danger"><strong>{{$simmed_descript->simmed_secret}}</strong></span><br>
+        @endif
+        {!!$simmed_descript->simmed_descript!!}
+    @endif
+</div>
+@if ( Auth::user()->hasRole('Technik') )
+<div class="row" id="descript_edit" style="display: none;">
+    <form method="POST" action="{{ route('simmeds.descript_update') }}">
+        {{ method_field('PUT') }}
+        <div class="form-group">
+
+            <label>poufna notatka </label>
+            <input type="text" class="form-control" name="simmed_secret" placeholder="dodaj dyskretną notatkę" value="{{$simmed_descript->simmed_secret}}">
+
+            <label>opis</label>
+            <textarea class="form-control tinymce-editor {{ $errors->has('simmed_descript') ? 'error' : '' }}" name="simmed_descript" id="simmed_descript"
+                            rows="4">
+                            {!!$simmed_descript->simmed_descript!!}
+                        </textarea>
+                        @if ($errors->has('simmed_descript'))
+                        <div class="error">
+                            {{ $errors->first('simmed_descript') }}
+                        </div>
+                        @endif
+
+            {{ csrf_field() }}
+
+            <input type="hidden" name="id" value="{{$simmed_descript->id}}">
+            <input type="hidden" name="simmed_id" value="{{$simmed->id}}">
+            <input class="btn btn-success col-sm-1" type="submit" name="send" value="Zapisz" class="btn btn-dark btn-block">
+            <div class="float-right col-sm-1">
+                <span class="btn btn-info" onclick="showhide()">anuluj</span>
+            </div>
+        </div>
+    </form>
+</div>
+@endif
+
+<div class="row" id="navigation" style="display: show;">
     <div class="float-right col-sm-2">
         <a class="btn btn-success" href="/scheduler/{{$simmed->simmed_date}}">
         {{$simmed->simmed_date }}
@@ -71,7 +130,12 @@ $Scen_Table.='</ul>';
 
     @if ($show_edit_button==true)
         
-        <div class="float-right col-sm-2"><a class="btn btn-info" href="{{route('simmeds.edit', $simmed)}}">Edytuj</a></div>
+        <div class="float-right col-sm-1"><a class="btn btn-info" href="{{route('simmeds.edit', $simmed)}}">Edytuj</a></div>
+        @if ( Auth::user()->hasRole('Technik') )
+            <div class="float-right col-sm-1"><span class="btn btn-info" onclick="showhide()">
+            @if ($simmed_descript->id == 0) Dodaj opis @else Edytuj opis @endif
+            </span></div>
+        @endif
         @if ( Auth::user()->hasRole('Operator Symulacji') )
             <div class="float-left col-sm-2"><a class="btn btn-danger" href="{{route('simmeds.copy', $simmed)}}">Kopiuj (bez grupy)</a></div>
         @endif
@@ -81,59 +145,92 @@ $Scen_Table.='</ul>';
 
 @if ($simulation_info->count()>0)
     <hr>
-    <ol><h2>informacje o zajęciach:</h2>
-    @foreach ($simulation_info as $simulation_row)
-        <li> {{$simulation_row->simmed_date}} 
-            <strong>{{$simulation_row->room()->room_number}}</strong> 
-            <br>
-            <div class="card-text" style="white-space: pre-line">{!! $simulation_row->simmed_alternative_title !!}</div>
-    @endforeach
-    </ol>
+    <div class="row bg-warning">
+        <ol><h2>zebrane informacje o zajęciach:</h2>
+            @foreach ($simulation_info as $simulation_row)
+                <h3><li> <strong>{{$simulation_row->simmed()->room()->room_number}}</strong> -
+                    {{$simulation_row->simmed()->simmed_date}}, godz. {{substr($simulation_row->simmed()->simmed_time_begin,0,5)}}-{{substr($simulation_row->simmed()->simmed_time_end,0,5)}}  
+                </h3>
+                @if ( Auth::user()->hasRole('Technik') )
+                <span class="text-danger"><strong>{{$simulation_row->simmed_secret}}</strong></span><br>
+                <br>
+                @endif
+                <div class="card-text" style="white-space: pre-line">{!! $simulation_row->simmed_descript !!}</div>
+            @endforeach
+        </ol>
+    </div>
     <hr>
 @endif
 
 
 @if ($technician_history->count()>0)
     <hr>
-    <ol><h2>historia zmian techników:</h2>
-    @foreach ($technician_history as $history_row)
-        <li>{{$history_row->updated_at}}:  <strong> {{$history_row->name_of_technician()}} </strong> (przez: {{$history_row->name_of_changer()}}) </li>
-    @endforeach
-    </ol>
+    <div class="row bg-warning">
+        <ol><h2>historia zmian techników:</h2>
+        @foreach ($technician_history as $history_row)
+            <li>{{$history_row->updated_at}}:  <strong> {{$history_row->name_of_technician()}} </strong> (przez: {{$history_row->name_of_changer()}}) </li>
+        @endforeach
+        </ol>
+    </div>
     <hr>
 @endif
 
 <hr>
-<ol><h2>historia edycji:</h2>
-@if ($simmed_history->count()>0)
-    @foreach ($simmed_history as $history_row)
-        <li><strong>{{$history_row->updated_at}}:</strong>  {{print_r($history_row->datas())}} (zmiana <strong>{{$history_row->change_code()}}</strong> przez: <strong>{{$history_row->name_of_changer()}}</strong>) </li>
-    @endforeach
-@endif
-    <li><strong>{{$simmed->updated_at}}:</strong> bieżacy wpis dokonany przez: <strong>{{$simmed->name_of_changer()}}</strong></li> 
-</ol>
-<hr>
+    <div class="row bg-warning">
+        <ol><h2>historia edycji:</h2>
+            @foreach ($simmed_history as $history_row)
+                <li><strong>{{$history_row->updated_at}}:</strong>  {{print_r($history_row->datas())}} (zmiana <strong>{{$history_row->change_code()}}</strong> przez: <strong>{{$history_row->name_of_changer()}}</strong>) </li>
+            @endforeach
+        <li><strong>{{$simmed->updated_at}}:</strong> bieżacy wpis dokonany przez: <strong>{{$simmed->name_of_changer()}}</strong></li> 
+        </ol>
+    </div>
+    <hr>
 
 
-
-<div id="calendar" style="height: 800px;"></div>
-@endsection
 <script>
-var Calendar = tui.Calendar;
-var Calendar = require('tui-calendar'); /* CommonJS */
-require("tui-calendar/dist/tui-calendar.css");
-
-// If you use the default popups, use this.
-require("tui-date-picker/dist/tui-date-picker.css");
-require("tui-time-picker/dist/tui-time-picker.css");
-import Calendar from 'tui-calendar'; /* ES6 */
-import "tui-calendar/dist/tui-calendar.css";
-
-// If you use the default popups, use this.
-import 'tui-date-picker/dist/tui-date-picker.css';
-import 'tui-time-picker/dist/tui-time-picker.css';
+function showhide() {
+  var x = document.getElementById("navigation");
+  var y = document.getElementById("descript_edit");
+  var z = document.getElementById("descript_show");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+    y.style.display = "none";
+    z.style.display = "block";
+  } else {
+    x.style.display = "none";
+    y.style.display = "block";
+    z.style.display = "none";
+  }
+}
 </script>
-<script src="https://uicdn.toast.com/tui.code-snippet/v1.5.2/tui-code-snippet.min.js"></script>
-<script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
-<script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
-<script src="https://uicdn.toast.com/tui-calendar/latest/tui-calendar.js"></script>
+
+
+@if ( Auth::user()->hasRole('Technik') )
+<!-- for txt editor -->
+<script src="https://cdn.tiny.cloud/1/6ylsotqai3tcowhx675l8ua28xj37zvsamtqvf4r94plg389/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script type="text/javascript">
+  tinymce.init({
+  selector: 'textarea.tinymce-editor',
+  height: 500,
+  menubar: true,
+  plugins: [
+    'advlist autolink lists link image charmap print preview anchor',
+    'searchreplace visualblocks code fullscreen',
+    'insertdatetime media table paste code help wordcount'
+  ],
+  toolbar: 'undo redo | formatselect | ' +
+  'bold italic backcolor | alignleft aligncenter ' +
+  'alignright alignjustify | bullist numlist outdent indent | ' +
+  'charmap subscript superscript | ' +
+  'removeformat | help',
+  content_css: '//www.tiny.cloud/css/codepen.min.css'
+});
+    </script>
+<!-- end txt editor -->
+@endif
+
+@endsection

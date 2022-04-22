@@ -601,6 +601,11 @@ Route::delete('simmed/{simmed}', [
     'as' => 'simmeds.delete'
 ]);
 
+Route::put('simmed_descript', [
+    'uses' => 'SimmedController@descript_update',
+    'as' => 'simmeds.descript_update'
+]);
+
 
 //Route::post('simmed/AjaxSavePlane', [
 //    'uses' => 'SimmedController@ajaxsaveplane',

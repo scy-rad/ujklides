@@ -120,6 +120,11 @@ class Simmed extends Model
         return $this->belongsToMany(Scenario::class, 'scenario_for_simmeds', 'simmed_id', 'scenario_id')->withTimestamps();
     }
    
+    function descript()
+    {
+        return $this->hasOne(SimmedDescript::class,'simmed_id','id')->get()->first();
+    }
+
 
     // public static function simmeds_for_plane($sch_date){
     //     $data=[];
