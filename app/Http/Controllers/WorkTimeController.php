@@ -83,6 +83,7 @@ class WorkTimeController extends Controller
             $total['minutes']+=$ret_row['minutes'];            
         }
 
+
         $total['times'] = m2h($total['minutes']);
 
         $total['work_characters_month'] = 
@@ -91,7 +92,6 @@ class WorkTimeController extends Controller
             ->where('simmed_date','>=',date('Y-m-d',$begin))
             ->where('simmed_date','<',date('Y-m-d',$end))
             ->get();
-    
 
         $total['work_characters'] = 
         \App\Simmed::get_technician_character_times()
@@ -104,6 +104,75 @@ class WorkTimeController extends Controller
             ->where('work_month','=',date('Y-m-d',$begin))
             ->get()
             ->first();
+
+        if (isset($request->csv))
+        {
+            $filename="czas_pracy.csv";
+            $fp = fopen($filename, 'w');
+            fputcsv($fp, [],';');
+            fputcsv($fp, [$user->lastname,$user->firstname],';');
+            fputcsv($fp, ['godziny do przepracowania: ',$total['month_data']['hours_to_work']],';');
+            fputcsv($fp, ['godziny przepracowane: ',$total['times'] ],';');
+    
+            $to_csv[]='data';
+            $to_csv[]='dz.tyg.';
+            $to_csv[]='od';
+            $to_csv[]='do';
+            $to_csv[]='godz.';
+            $to_csv[]='godz(+)';
+            $to_csv[]='godz(-)';
+            fputcsv($fp,$to_csv,';');
+    
+            $min_plus=0;
+            $min_minus=0;
+        
+                foreach ($ret as $row_one)
+                {
+                    $to_csv=null;
+                    $to_csv[]=$row_one['date'];
+                    $to_csv[]=$row_one['day_name'];
+                    $to_csv[]=$row_one['times'][0]['start'];
+                    $to_csv[]=$row_one['times'][0]['end'];
+                    $to_csv[]=m2h($row_one['minutes']);
+                    if ( ($row_one['times'][0]['start']<>'-') && ($row_one['minutes']>480) )
+                        {
+                        $to_csv[]=m2h($row_one['minutes']-480);
+                        $min_plus+=$row_one['minutes']-480;
+                        }
+                    else 
+                        $to_csv[]='';
+                        if ( ($row_one['times'][0]['start']<>'-') && ($row_one['minutes']<480) )
+                        {
+                        $to_csv[]=m2h(480-$row_one['minutes']);
+                        $min_minus+=480-$row_one['minutes'];
+                        }
+                    else 
+                        $to_csv[]='';
+                    fputcsv($fp,$to_csv,';');
+                }
+
+                    $to_csv=null;
+                    $to_csv[]='razem';
+                    $to_csv[]='';
+                    $to_csv[]='';
+                    $to_csv[]='';
+                    $to_csv[]=$total['times'];
+                    $to_csv[]=m2h($min_plus);
+                    $to_csv[]=m2h($min_minus);
+                
+                    fputcsv($fp,$to_csv,';');
+
+                fputcsv($fp,['koniec'],';');
+                fputcsv($fp,[''],';');
+                fclose($fp);
+                      
+            header('Content-type: text/csv');
+            header('Content-disposition:attachment; filename="'.$filename.'"');
+            readfile($filename);
+    
+            exit;
+            //        dump(serialize($alltmps));
+        }
 
         return view('worktime/month',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
 

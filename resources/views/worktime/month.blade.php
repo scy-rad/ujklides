@@ -14,19 +14,32 @@
 @section('content')
 
     <form action="{{ route('worktime.month') }}" method="get">
-        <select name="technician">
-        @foreach (app\user::role_users('technicians', 1, 0)->get() as $tech_one)
-            <option value="{{$tech_one->id}}"<?php if ($filtr['user']==$tech_one->id) echo ' selected'?>>{{$tech_one->name}} [{{$tech_one->full_name()}}]</option>
-        @endforeach
-        </select>
-
-        <select name="month">
-        @foreach ($months as $month_one)
-            <option value="{{$month_one}}" <?php if ($filtr['month']==$month_one) echo ' selected'?>>{{$month_one}}</option>
-        @endforeach
-        </select>
-
-        <input class="btn btn-primary btn-sm" type="submit" value="pokaż">
+        <div class="row">
+        <div class="col-sm-2">
+            <label for"technician">technik:</label><br>
+            <select class="form-control" name="technician">
+            @foreach (app\user::role_users('technicians', 1, 0)->orderBy('name')->get() as $tech_one)
+                <option value="{{$tech_one->id}}"<?php if ($filtr['user']==$tech_one->id) echo ' selected'?>>{{$tech_one->name}} [{{$tech_one->full_name()}}]</option>
+            @endforeach
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <label for"month">miesiąc:</label><br>
+            <select class="form-control" name="month">
+            @foreach ($months as $month_one)
+                <option value="{{$month_one}}" <?php if ($filtr['month']==$month_one) echo ' selected'?>>{{$month_one}}</option>
+            @endforeach
+            </select>
+        </div>
+        <div class="col-sm-1">
+            <label for"csv">csv.:</label><br>
+                <input class="form-control" type="checkbox" name="csv" value="csv">
+        </div>
+        <div>
+            <br>
+            <input class="btn btn-primary btn-sm" type="submit" value="pokaż">
+    </div>
+    </div>
     </form>
 
     <table class="table table-dark">
