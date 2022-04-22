@@ -37,12 +37,11 @@ class HomeController extends Controller
         ->where('simmed_status','<>',4)
         ->whereBetween('simmed_date', [date('Y-m-d'), date( 'Y-m-d', strtotime("+ 7 days") )])
         ->orderBy('simmed_date')->orderBy('simmed_time_begin')->get();
+        
+        $work_times=\App\WorkTime::calculate_work_time(Auth::user()->id, date('Y-m-d'));
 
-        $next_simulations=$simmeds =  Simmed::where('simmed_status','<>',4)
-        ->whereBetween('simmed_date', [date('Y-m-d'), date( 'Y-m-d', strtotime("+ $add_date days") )])
-        ->orderBy('simmed_date')->orderBy('simmed_time_begin')->get();
 
-        return view('home',compact('main_simulations'),compact('next_simulations'),['sch_date' => '$sch_date']);
+        return view('home',compact('main_simulations'),['sch_date' => '$sch_date', 'work_times' => $work_times]);
     }
 
 

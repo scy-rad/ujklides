@@ -182,7 +182,10 @@ class WorkTimeController extends Controller
     public function day_data($date, $user_id)
     {
         if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator') && !Auth::user()->hasRole('Technik'))
-        return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
+            return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
+
+        if (!User::find($user_id)->hasRole('Technik'))
+            return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'niewłaściwe pytanie','description'=>'czas pracy liczony jest tylko dla techników']);
 
         $simmeds =
             \App\Simmed::simmeds_join('without_free','without_deleted','without_send')
