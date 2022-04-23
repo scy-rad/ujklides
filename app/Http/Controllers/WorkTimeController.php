@@ -46,7 +46,10 @@ class WorkTimeController extends Controller
             if (Auth::user()->hasRole('Technik'))
                 $filtr['user'] = Auth::user()->id;
             else
-                $filtr['user'] = User::nobody()->id;
+                $filtr['user'] = \App\User::role_users('technicians', 1, 0)
+                ->where('id','<>',\App\Param::select('*')->orderBy('id','desc')->get()->first()->technician_for_simmed)
+                ->orderBy('name')->get()->first()->id; 
+                //User::nobody()->id;
             }
         else
             $filtr['user'] = $request->technician;
@@ -187,6 +190,9 @@ class WorkTimeController extends Controller
         if (!User::find($user_id)->hasRole('Technik'))
             return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'niewłaściwe pytanie','description'=>'czas pracy liczony jest tylko dla techników']);
 
+        if ( \App\WorkMonth::select('*')->where('work_month','=',date('Y-m-01',strtotime($date)))->where('user_id',$user_id)->get()->count() == 0 )
+            return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'niewłaściwa data','description'=>'dla podanego miesiąca nie wygenerowano jeszcze czasu pracy']);
+
         $simmeds =
             \App\Simmed::simmeds_join('without_free','without_deleted','without_send')
                 ->where('simmed_date','=',$date)
@@ -311,9 +317,6 @@ class WorkTimeController extends Controller
 
         $begin = strtotime($filtr['month'].'-01');
         $end   = strtotime($filtr['month'].'-01 + 1 month');
-        
-
-//        foreach \App\Users
 
         $total['work_characters_month'] = 
         \App\Simmed::get_technician_character_times()

@@ -20,7 +20,7 @@ class CreateWorkTimesTable extends Migration
             $table->date('date');
             $table->time('time_begin');
 			$table->time('time_end');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->smallInteger('status')->default(1); // 1 - active
             $table->timestamps();
         });

@@ -90,16 +90,45 @@ public function save_workmonth(Request $request)
     {
         if ( (is_null($request->gen_value)) ||  (!is_numeric($request->gen_value)) ||  ($request->gen_value<0) )
             return back()->withErrors('aby wygenerować czasy pracy musisz wcześniej je podać...');
+
+            
+        function dateRange( $first, $last, $step = '+1 day', $format = 'Y-m-d' ) 
+        {
+            $dates = [];
+            $current = strtotime( $first );
+            $last = strtotime( $last );
         
+            while( $current <= $last ) {
+        
+                $dates[] = ['data' => date( $format, $current ), 'dt' => date( 'N', $current ) ];
+                $current = strtotime( $step, $current );
+            }
+        
+            return $dates;
+        }
+
+
         $users = \App\WorkMonth::select("user_id")->where('work_month',$request->month_selected.'-01')->get()->toArray();    //->get();
+        $no_technician=\App\Param::select('*')->orderBy('id','desc')->get()->first()->technician_for_simmed;
 
         $users = \App\User::role_users('technicians', 1, 1)
         ->whereNotIn('id',$users)
+        ->where('id','<>',$no_technician)
         ->get();
         $reti='';
+
+
+        
+
+        // for($i=$request->month_selected.'-01'; $i++; $i==date('Y-m-t',strtotime($request->month_selected.'-01')))
+        // dump($i);
         
         if ($users->count()>0)
         {
+            $work_time_id=\App\WorkTimeType::select('id')->where('code','work_time')->get()->first()->id;
+            $time_begin = \App\Param::select('*')->orderBy('id','desc')->get()->first()->worktime_time_begin;
+            $time_end   = \App\Param::select('*')->orderBy('id','desc')->get()->first()->worktime_time_end;
+
             foreach ($users as $user_one)
             {
                 $new_row=new \App\WorkMonth;
@@ -108,6 +137,22 @@ public function save_workmonth(Request $request)
                 $new_row->hours_to_work = $request->gen_value;
                 $reti.=$user_one->name.': '.$request->gen_value.'<br>';
                 $new_row->save();
+
+                foreach (dateRange( $request->month_selected.'-01', date('Y-m-t',strtotime($request->month_selected.'-01')) ) as $row_data)
+                {
+                if ($row_data['dt']<6)
+                    {
+                        $new_wt=new \App\WorkTime;
+                        $new_wt->user_id = $user_one->id;
+                        $new_wt->work_time_types_id=$work_time_id;
+                        $new_wt->date = $row_data['data'];
+                        $new_wt->time_begin = $time_begin;
+                        $new_wt->time_end   = $time_end;
+                        // $new_wt->description = '';
+                        $new_wt->status = 1;
+                        $new_wt->save();
+                    }
+                }
             }
             return back()->with('success','wygenerowałem co mogłem, czyli:<br>'.$reti);
         }
