@@ -84,17 +84,17 @@ data-sort-priority='[{"sortName": "DaTe","sortOrder":"desc"},{"sortName":"FromTo
         {{ $simmed->simmed_date }}
         <span class="glyphicon glyphicon glyphicon-tasks text-success" aria-hidden="true"></span>
         </a>
-        <br>
     <?php 
     $dni_tygodnia = array( 'Niedziela', 'Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek', 'Sobota' );
     $date = date( "w" );
     echo $dni_tygodnia[ date('w',strtotime($simmed->simmed_date)) ];
      ?>
-        <a href="{{route('simmeds.show', [$simmed->id, 0])}}"> pokaż
+    </td>
+    <td>
+        <a href="{{route('simmeds.show', [$simmed->id, 0])}}"> {{ $simmed->time }}
             <span class="glyphicon glyphicon-list-alt text-success" aria-hidden="true"></span>
         </a>
     </td>
-    <td>{{ $simmed->time }}</td>
     <td>{{ $simmed->room_number }}</td>
     <td>{{ $simmed->leader }}</td>
     

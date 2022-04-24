@@ -121,11 +121,14 @@ if ( !(Auth::user()->hasRole('Technik') || Auth::user()->hasRole('Operator Symul
                 <span class="glyphicon glyphicon glyphicon-tasks text-success" aria-hidden="true"></span>
                 </a>
                 {{$dni_tygodnia[ date('w',strtotime($row_one->simmed_date)) ] }}
-                <a href="{{route('simmeds.show', [$row_one->id, 0])}}"> pokaż
+                
+            </td>
+            <td>
+                <a href="{{route('simmeds.show', [$row_one->id, 0])}}"> 
+                    {{substr($row_one->simmed_time_begin,0,5) }} - {{ substr($row_one->simmed_time_end,0,5) }}
                     <span class="glyphicon glyphicon-list-alt text-success" aria-hidden="true"></span>
                 </a>
             </td>
-            <td>{{substr($row_one->simmed_time_begin,0,5) }} - {{ substr($row_one->simmed_time_end,0,5) }}</td>
             <td>{{$row_one->room()->room_number }} {{$row_one->technician_id}}</td>
             @if (Auth::user()->hasRole('Operator Symulacji'))
             <td><div id="type{{$row_one->sim_id }}" onclick="ChangeSimType({{$row_one->sim_id }},{{$row_one->simmed_technician_character_id *1 }});"> {{$row_one->technician_character()->character_short }} </div></td>
