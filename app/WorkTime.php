@@ -203,6 +203,11 @@ class WorkTime extends Model
             ->orderBy('time_start')
             ->get()
             ;
+
+        $exist_work_types=[];
+        foreach ($qA->addSelect('short_name')->get() as $row_two)
+            $exist_work_types[$row_two->short_name]=$row_two->short_name;
+
         $time_table=[];
         $minutes=0;
         if ($all_day->count()>0)
@@ -212,6 +217,7 @@ class WorkTime extends Model
 
             foreach ($all_day as $row_one)
             {
+     
                 if ($row_one->time_start>$current['end'])
                     {
                         $time_table[]=$current;
@@ -234,9 +240,10 @@ class WorkTime extends Model
         {
             $current['start']='-';
             $current['end']='-';
+            $current['work_types']=null;
             $time_table[]=$current;
         }
-        return ['date' => $date, 'times' => $time_table, 'minutes' => $minutes];
+        return ['date' => $date, 'times' => $time_table, 'minutes' => $minutes, 'work_types' => $exist_work_types];
     }
 
 }

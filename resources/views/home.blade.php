@@ -6,7 +6,6 @@ $dni_tygodnia = array( 'Niedziela', 'Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek
 function rowek($simmed)
     {
     ?>
-        <li>
         <div class="row">
             <div class="col-sm-2">
                 <a href="{{route('simmeds.show', [$simmed->id, 0])}}"> 
@@ -34,7 +33,6 @@ function rowek($simmed)
                 {{$simmed->technician_character()->character_name}}
                 </div>
         </div>
-        </li>
     <?php
     }
 ?>
@@ -53,36 +51,30 @@ function rowek($simmed)
         @endif
 
         @if (Auth::user()->hasRole('Technik'))
+            @foreach ($home_data as $row_one)
+                <h3>
+                    <a href="/scheduler/{{$row_one['date']}}">
+                        {{$row_one['date']}} 
+                        <span class="glyphicon glyphicon glyphicon-tasks text-success" aria-hidden="true"></span>
+                        ({{$row_one['wdname'] }})
+                    </a>
+                    <span style="font-size: 1.25rem">
+                        @foreach ($row_one['work_times']['work_types'] as $row_time)
+                            [{{$row_time}}]
+                        @endforeach
+                    </span>
+                    <a href="{{route('worktime.day_data', [ $row_one['date'], Auth::user()->id ])}}">
+                        @foreach ($row_one['work_times']['times'] as $row_time)
+                            [{{$row_time['start']}} - {{$row_time['end']}}]
+                        @endforeach
+                        <span class="glyphicon glyphicon glyphicon-briefcase text-success" aria-hidden="true"></span>
+                    </a>
 
-        <h3>Czas pracy dziś ({{date('Y-m-d')}}): 
-            <a href="{{route('worktime.day_data', [ date('Y-m-d'), Auth::user()->id ])}}">
-                @foreach ($work_times['times'] as $row_one)
-                    {{$row_one['start']}} - {{$row_one['end']}},
+                </h3>
+                @foreach ($row_one['simmeds'] as $simmed)                 
+                    <?php rowek($simmed); ?>
                 @endforeach
-                <span class="glyphicon glyphicon glyphicon-briefcase text-success" aria-hidden="true"></span>            
-            </a>
-
-        </h3>
-
-        <h3>Plan zajęć (tygodniowy) użytkownika: {{Auth::user()->firstname}} {{Auth::user()->lastname}}:</h3>
-        <ol>
-        @foreach ($main_simulations as $simmed)
-                @if ($curr_date != $simmed->simmed_date)
-                </ol>
-                    <hr>
-                    <?php $curr_date = $simmed->simmed_date; ?>
-                <ol><h3>
-                <a href="/scheduler/{{$simmed->simmed_date}}">
-                    {{$simmed->simmed_date}} 
-                    <span class="glyphicon glyphicon glyphicon-tasks text-success" aria-hidden="true"></span>
-                    ({{$dni_tygodnia[ date('w',strtotime($simmed->simmed_date)) ] }})
-                    </a></h3>
-
-                 
-                @endif
-                <?php rowek($simmed); ?>
-        @endforeach
-        </ol>
+            @endforeach
         @endif
     </div>
 </div>
