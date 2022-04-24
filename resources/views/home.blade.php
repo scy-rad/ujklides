@@ -72,7 +72,7 @@ function rowek($simmed)
                     <hr>
                     <?php $curr_date = $simmed->simmed_date; ?>
                 <ol><h3>
-                <a href="/scheduler/{{date('Y-m-d')}}">
+                <a href="/scheduler/{{$simmed->simmed_date}}">
                     {{$simmed->simmed_date}} 
                     <span class="glyphicon glyphicon glyphicon-tasks text-success" aria-hidden="true"></span>
                     ({{$dni_tygodnia[ date('w',strtotime($simmed->simmed_date)) ] }})
