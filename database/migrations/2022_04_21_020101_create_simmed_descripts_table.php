@@ -16,7 +16,7 @@ class CreateSimmedDescriptsTable extends Migration
         Schema::create('simmed_descripts', function (Blueprint $table) {
             $table->increments('id');
             $table->Integer('simmed_id')->unsigned();
-            $table->text('simmed_descript');
+            $table->text('simmed_descript')->nullable();
             $table->string('simmed_secret')->nullable();
             $table->Integer('user_id')->unsigned();
             $table->timestamps();
