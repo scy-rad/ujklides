@@ -19,19 +19,19 @@ class PlDaysMonthsTableSeeder extends Seeder
 		DB::table('pl_months')->truncate();
 
         $status = DB::table('pl_days')
-        ->insert(['id' => 1, 'pl_day' => 'Niedziela', 'pl_day_short' => 'Ni']);
+        ->insert(['id' => 1, 'pl_day' => 'Niedziela', 'pl_day_short' => 'Ni', 'dateN' => 7]);
         $status = DB::table('pl_days')
-        ->insert(['id' => 2, 'pl_day' => 'Poniedziałek', 'pl_day_short' => 'Pn']);
+        ->insert(['id' => 2, 'pl_day' => 'Poniedziałek', 'pl_day_short' => 'Pn', 'dateN' => 1]);
         $status = DB::table('pl_days')
-        ->insert(['id' => 3, 'pl_day' => 'Wtorek', 'pl_day_short' => 'Wt']);
+        ->insert(['id' => 3, 'pl_day' => 'Wtorek', 'pl_day_short' => 'Wt', 'dateN' => 2]);
         $status = DB::table('pl_days')
-        ->insert(['id' => 4, 'pl_day' => 'Środa', 'pl_day_short' => 'Śr']);
+        ->insert(['id' => 4, 'pl_day' => 'Środa', 'pl_day_short' => 'Śr', 'dateN' => 3]);
         $status = DB::table('pl_days')
-        ->insert(['id' => 5, 'pl_day' => 'Czwartek', 'pl_day_short' => 'Cz']);
+        ->insert(['id' => 5, 'pl_day' => 'Czwartek', 'pl_day_short' => 'Cz', 'dateN' => 4]);
         $status = DB::table('pl_days')
-        ->insert(['id' => 6, 'pl_day' => 'Piątek', 'pl_day_short' => 'Pt']);
+        ->insert(['id' => 6, 'pl_day' => 'Piątek', 'pl_day_short' => 'Pt', 'dateN' => 5]);
         $status = DB::table('pl_days')
-        ->insert(['id' => 7, 'pl_day' => 'Sobota', 'pl_day_short' => 'Sb']);
+        ->insert(['id' => 7, 'pl_day' => 'Sobota', 'pl_day_short' => 'Sb', 'dateN' => 6]);
 
 
         $status = DB::table('pl_months')
