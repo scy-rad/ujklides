@@ -5,16 +5,18 @@ $dni_tygodnia = array( 'Niedziela', 'Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek
 
 function rowek($simmed)
     {
+        //dump($simmed);
+        $link=[$simmed->id, 0];
     ?>
-        <div class="row">
-            <div class="col-sm-2">
-                <a href="{{route('simmeds.show', [$simmed->id, 0])}}"> 
+        <div class="row border border-dark" style="border-bottom: 0.25rem solid green;">
+            <div class="col-xs-2">
+                <a href="{{route('simmeds.show', $link)}}"> 
                     {{ substr($simmed->simmed_time_begin,0,5) }} - {{ substr($simmed->simmed_time_end,0,5) }} 
                     <span class="glyphicon glyphicon-list-alt text-success" aria-hidden="true"></span>
                 </a>
                 <nobr><strong >{{ $simmed->room()->room_number }}</strong></nobr>
             </div>
-            <div class="col-sm-2"> 
+            <div class="col-xs-2"> 
                 {{ $simmed->name_of_leader() }}
             </div>
             <div class="col-md-2">
@@ -29,7 +31,7 @@ function rowek($simmed)
                 @endif
                 {!!$simmed->simmed_alternative_title!!}
             </div>
-            <div class="col-md-1 bg-primary">
+            <div class="col-sm-1 bg-primary">
                 {{$simmed->technician_character()->character_name}}
                 </div>
         </div>
@@ -52,12 +54,18 @@ function rowek($simmed)
 
         @if (Auth::user()->hasRole('Technik'))
             @foreach ($home_data as $row_one)
-                <h3>
+                <div class="row bg-warning">
+                    <div class="col-xs-6">
+                    <h3>
                     <a href="/scheduler/{{$row_one['date']}}">
                         {{$row_one['date']}} 
                         <span class="glyphicon glyphicon glyphicon-tasks text-success" aria-hidden="true"></span>
                         ({{$row_one['wdname'] }})
                     </a>
+                    </h3>
+                    </div>
+                    <div class="col-xs-6">
+                    <h3>
                     <span style="font-size: 1.25rem">
                         @foreach ($row_one['work_times']['work_types'] as $row_time)
                             [{{$row_time}}]
@@ -69,8 +77,9 @@ function rowek($simmed)
                         @endforeach
                         <span class="glyphicon glyphicon glyphicon-briefcase text-success" aria-hidden="true"></span>
                     </a>
-
-                </h3>
+                    </h3>
+                    </div>
+                </div>
                 @foreach ($row_one['simmeds'] as $simmed)                 
                     <?php rowek($simmed); ?>
                 @endforeach
