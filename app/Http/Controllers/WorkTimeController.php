@@ -91,7 +91,7 @@ class WorkTimeController extends Controller
             if ( ($request->workcard=='generate') && (Auth::user()->hasRole('Operator Kadr')) )
 
             {
-                    if ($ret_row['minutes']>0)  // jeśli jest zaplanowany czas pracy
+                    if (count($ret_row['work_types'])>0)  // jeśli jest zaplanowany czas pracy
                     {
                         if (is_null($ret_hr))
                             $ret_hr = new \App\WorkTimeToHr;
@@ -115,9 +115,9 @@ class WorkTimeController extends Controller
                             {
                                 $ret_hr->over_under = 2; //under time
                                 $ret_hr->o_minutes = 480-$ret_row['minutes'];
-                                $ret_hr->o_time_begin = date('H:i',strtotime($ret_row['all_times']['end'].' - '.$ret_hr->o_minutes.' minutes'));
-                                $ret_hr->o_time_end   = $ret_row['all_times']['end'];
-                            }
+                                $ret_hr->o_time_begin   = $ret_row['all_times']['end'];
+                                $ret_hr->o_time_end = date('H:i',strtotime($ret_row['all_times']['end'].' + '.$ret_hr->o_minutes.' minutes'));
+                                }
                         $ret_hr->status = 1;
                         $ret_hr->save();
                     }
@@ -147,6 +147,7 @@ class WorkTimeController extends Controller
                 if (is_null($ret[$cur_date]['hr_wt']['time_begin'])) $ret[$cur_date]['hr_wt']['time_begin']='-'; else $ret[$cur_date]['hr_wt']['time_begin']=substr($ret[$cur_date]['hr_wt']['time_begin'],0,5);
                 if (is_null($ret[$cur_date]['hr_wt']['time_end']))   $ret[$cur_date]['hr_wt']['time_end']  ='-'; else $ret[$cur_date]['hr_wt']['time_end']  =substr($ret[$cur_date]['hr_wt']['time_end'],  0,5);
                 $ret[$cur_date]['hr_wt']['hoursmin']=m2h($ret[$cur_date]['hr_wt']['minutes']);
+                $ret[$cur_date]['hr_wt']['o_hoursmin']=m2h($ret[$cur_date]['hr_wt']['o_minutes']);
                 }
             else 
             {
@@ -286,6 +287,19 @@ class WorkTimeController extends Controller
         }
         elseif ($request->workcard=='generate')
         {
+            $roles_OpKadr_id=\App\Roles::where('roles_name', 'Operator Kadr')
+                ->pluck('id')
+                ->toArray();
+            $roles_OpKadr=\App\RolesHasUsers::whereIn('roles_has_users_roles_id',$roles_OpKadr_id)
+                ->pluck('roles_has_users_users_id')
+                ->toArray();
+            $coordinator_OpKadr_users = User::whereIn('id',$roles_OpKadr)
+                ->orWhere('id',13)
+                ->orWhere('id',$user->id)
+                ->where('user_status','=',1)
+                ->where('simmed_notify','=',1)
+                ->get();
+
 
             $mail_data_address = [
                 'title'=>'[SIMinfo] wygenerowano kartę czasu pracy: '.$user->full_name(),
@@ -301,15 +315,20 @@ class WorkTimeController extends Controller
                 'from_email' => 'technicy@wcsm.pl',
                 'from_name' => 'Pegasus CSM UJK'
             ];
-
-            $zwrocik=Mail::send('worktime.month_cardwork',$mail_data_address,function($mail) use ($mail_data_address)
+            $ret_info='';
+            foreach ($coordinator_OpKadr_users as $sent_to)
+            {
+                $mail_data_address['email'] = $sent_to->email;
+                    $ret_info.='<li>'.$sent_to->full_name().'</li>';
+                $zwrocik=Mail::send('worktime.month_cardwork',$mail_data_address,function($mail) use ($mail_data_address)
                     {
                         $mail->from($mail_data_address['from_email'],$mail_data_address['from_name']);
                         $mail->to($mail_data_address['email'],$mail_data_address['name']);
                         $mail->subject($mail_data_address['subject_email']);
                     }
                 );
-                return back()->with('success','Wygenerowano i wysłano kartę czasu pracy.');    
+            }
+                return back()->with('success','Wygenerowano i wysłano kartę czasu pracy.<br><ol>'.$ret_info.'</ol>');    
         }
         else
             return view('worktime/month',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
@@ -382,7 +401,7 @@ class WorkTimeController extends Controller
             }
         if ($request->id>0)
         {
-            if ($request->modal_start < $request->modal_end)
+            if ($request->modal_start <= $request->modal_end)
             {
                 $TimeWork=\App\WorkTime::find($request->id);
                 $TimeWork->work_time_types_id   = $request->work_time_types_id;
@@ -397,7 +416,7 @@ class WorkTimeController extends Controller
                 $TimeWork->save();
                 return back()->with('success',' Zapis zakończył się sukcesem.');
             }
-            elseif (($request->modal_start == $request->modal_end))
+            elseif (Auth::user()->hasRole('Operator Kadr'))
             {
                 $TimeWork=\App\WorkTime::find($request->id);
                 $TimeWork->status=4;
@@ -406,7 +425,7 @@ class WorkTimeController extends Controller
             }
             else
             {
-                return back()->withErrors('zakończenie nie może być wcześniej niż początek...');
+                return back()->withErrors('Usuwać wpisy może TYLKO Operator Kadr...');
             }
         }
         elseif ($request->modal_start < $request->modal_end)

@@ -41,9 +41,12 @@
     </svg>
 
   </a>
+
   <div class="btn btn-info btn-lg">
+  <a href="{{ route('worktime.month',['technician' => $user->id, 'month' => substr($date,0,7) ] ) }}">
   {{$date}}<br>
   {{$dateT['dayname']}}
+  </a>
   </div>
   <a href="{{route('worktime.day_data', [ date('Y-m-d',strtotime("$date +1 day")), $user->id ])}}" class="btn btn-primary btn-lg">
   <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-arrow-right-square-fill" viewBox="0 0 16 16">

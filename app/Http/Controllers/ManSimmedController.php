@@ -1379,14 +1379,14 @@ public function sendMail(Request $request)
             ->where('simmed_notify','=',1)
             ->get();
 
-    $roles_coordinators_id=Roles::where('roles_code', 'coordinators')
+    $roles_coordinators_OpKadr_id=Roles::where('roles_code', 'coordinators')
         ->orWhere('roles_name', 'Operator Kadr')
         ->pluck('id')
         ->toArray();
-    $roles_coordinators=RolesHasUsers::whereIn('roles_has_users_roles_id',$roles_coordinators_id)
+    $roles_coordinators_OpKadr=RolesHasUsers::whereIn('roles_has_users_roles_id',$roles_coordinators_OpKadr_id)
         ->pluck('roles_has_users_users_id')
         ->toArray();
-    $coordinator_OpKadr_users = User::whereIn('id',$roles_coordinators)
+    $coordinator_OpKadr_users = User::whereIn('id',$roles_coordinators_OpKadr)
             ->where('user_status','=',1)
             ->where('simmed_notify','=',1)
             ->get();

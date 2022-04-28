@@ -1,12 +1,3 @@
-<?php
-        function m2h($min)
-        {
-            $sign = $min < 0 ? '-' : '';
-            $min = abs($min);
-            return $sign.floor($min/60).':'.str_pad($min%60, 2, '0', STR_PAD_LEFT);
-        }
-
-?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -47,7 +38,7 @@
             </tr>
         </thead>
     @foreach ($tabelka as $row_one)
-    @if ($row_one['day_week']>5)
+    @if ( ($row_one['day_week']>5) || (count($row_one['work_types'])==0) )
     <tr class="nowork">
     @else
     <tr>
@@ -61,7 +52,11 @@
         <td>
         </td>
         <td>
-       {{$row_one['hr_wt']['time_begin']}} - {{$row_one['hr_wt']['time_end']}}
+        @if ( $row_one['hr_wt']['time_begin'] == $row_one['hr_wt']['time_end'] )
+            -
+        @else
+            {{$row_one['hr_wt']['time_begin']}} - {{$row_one['hr_wt']['time_end']}}
+       @endif
        </td>
         <td>
             {{$row_one['hr_wt']['hoursmin']}}
@@ -86,7 +81,7 @@
 <ul>
      @foreach ($tabelka as $row_one)
         @if ($row_one['hr_wt']['over_under']==1)
-            <li> {{ $row_one['date'],8}} w godz. {{substr($row_one['hr_wt']['o_time_begin'],0,5)}} - {{substr($row_one['hr_wt']['o_time_end'],0,5)}} </li> 
+            <li> {{ $row_one['date'],8}} w godz. od {{substr($row_one['hr_wt']['o_time_begin'],0,5)}} do {{substr($row_one['hr_wt']['o_time_end'],0,5)}} : ({{$row_one['hr_wt']['o_hoursmin']}})</li> 
         @endif
      @endforeach
 </ul>
@@ -142,14 +137,13 @@
      @foreach ($tabelka as $row_one)
      <?php //dump($row_one['hr_wt']); ?>
      @if ($row_one['hr_wt']['over_under']==2)
-        <li> {{ $row_one['date'],8}} w godz. {{substr($row_one['hr_wt']['o_time_begin'],0,5)}} - {{substr($row_one['hr_wt']['o_time_end'],0,5)}} </li> 
+        <li> {{ $row_one['date'],8}} w godz. od {{substr($row_one['hr_wt']['o_time_begin'],0,5)}} do {{substr($row_one['hr_wt']['o_time_end'],0,5)}} : ({{$row_one['hr_wt']['o_hoursmin']}})</li> 
      @endif
      @endforeach
 </ul>     
 
-<p>w zamian za czas przepracowany w godzinach nadliczbowych w terminie 1 V - 31 V 2022<br>
+<p>w zamian za czas przepracowany w godzinach nadliczbowych w terminie {{date('d-m-Y',strtotime($filtr['month'].'-01'))}} &minus; {{date('t-m-Y',strtotime($filtr['month'].'-01'))}}<br>
 Zastępstwo pełnić będą wybrani pracownicy Centrum Symulacji Medycznej.</p>
-
 
 <div style="width: 100%;">
     <div style="border-top: 1px dotted black; width: 400px; margin-top: 60px; float:right; clear:both; ">
