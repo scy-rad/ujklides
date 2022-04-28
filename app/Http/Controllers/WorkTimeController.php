@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use App\WorkTime;
 use App\User;
 use App\TechnicianCharacter;
+use Illuminate\Support\Facades\Mail;
+
 
 class WorkTimeController extends Controller
 {
@@ -279,11 +281,38 @@ class WorkTimeController extends Controller
         }
 
         if ($request->workcard=='get')
-            {
-                return view('worktime/month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
-            }
+        {
+            return view('worktime/month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
+        }
+        elseif ($request->workcard=='generate')
+        {
+
+            $mail_data_address = [
+                'title'=>'[SIMinfo] wygenerowano kartę czasu pracy: '.$user->full_name(),
+                'name'=>$user->full_name(),
+                'user'=>$user, 
+                'months' => $months, 
+                'filtr' => $filtr, 
+                'tabelka' => $ret, 
+                'total' => $total,
+                
+                'email' => $user->email,
+                'subject_email'=>'[SIMinfo] wygenerowano kartę czasu pracy: '.$user->full_name(),
+                'from_email' => 'technicy@wcsm.pl',
+                'from_name' => 'Pegasus CSM UJK'
+            ];
+
+            $zwrocik=Mail::send('worktime.month_cardwork',$mail_data_address,function($mail) use ($mail_data_address)
+                    {
+                        $mail->from($mail_data_address['from_email'],$mail_data_address['from_name']);
+                        $mail->to($mail_data_address['email'],$mail_data_address['name']);
+                        $mail->subject($mail_data_address['subject_email']);
+                    }
+                );
+                return back()->with('success','Wygenerowano i wysłano kartę czasu pracy.');    
+        }
         else
-        return view('worktime/month',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
+            return view('worktime/month',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
 
     }
 
