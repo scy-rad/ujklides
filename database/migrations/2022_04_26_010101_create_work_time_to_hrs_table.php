@@ -18,8 +18,15 @@ class CreateWorkTimeToHrsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('work_time_types_id')->unsigned();
             $table->date('date');
-            $table->time('time_begin');
-			$table->time('time_end');
+            $table->time('time_begin')->nullable();
+			$table->time('time_end')->nullable();
+            $table->integer('minutes')->nullable();
+            $table->smallInteger('over_under')->default(0); // 0 - nothing, 1 - over, 2 - under
+            $table->time('o_time_begin')->nullable();
+			$table->time('o_time_end')->nullable();
+            $table->time('o_time_begin2')->nullable();
+			$table->time('o_time_end2')->nullable();
+            $table->integer('o_minutes')->nullable();
             $table->text('description')->nullable();
             $table->smallInteger('status')->default(1); // 1 - active
             $table->timestamps();

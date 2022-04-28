@@ -205,15 +205,17 @@ class WorkTime extends Model
             ;
 
         $exist_work_types=[];
-        foreach ($qA->addSelect('short_name')->get() as $row_two)
-            $exist_work_types[$row_two->short_name]=$row_two->short_name;
+        foreach ($qA->addSelect('short_name')->addSelect('work_time_types_id')->get() as $row_two)
+            $exist_work_types[$row_two->work_time_types_id]=$row_two->short_name;
 
         $time_table=[];
         $minutes=0;
+        $all_times['end']=$all_times['start']='-';
         if ($all_day->count()>0)
         {
             $current['start']=$all_day->first()->time_start;
             $current['end']=$all_day->first()->time_end;
+            $all_times['start']=$current['start'];
 
             foreach ($all_day as $row_one)
             {
@@ -230,6 +232,7 @@ class WorkTime extends Model
                     }
             }
             $time_table[]=$current;
+            $all_times['end']=$current['end'];
 
             foreach ($time_table as $row_one)
                 {
@@ -243,7 +246,7 @@ class WorkTime extends Model
             $current['work_types']=null;
             $time_table[]=$current;
         }
-        return ['date' => $date, 'times' => $time_table, 'minutes' => $minutes, 'work_types' => $exist_work_types];
+        return ['date' => $date, 'times' => $time_table, 'all_times' => $all_times, 'minutes' => $minutes, 'work_types' => $exist_work_types];
     }
 
 }

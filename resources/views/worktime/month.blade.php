@@ -71,6 +71,23 @@
         <h3>czas pracy: {{$total['times']}}</h3>
 
         <h3>planowo godzin: {{$total['month_data']->hours_to_work}}</h3>
+        @if (Auth::user()->hasRole('Operator Kadr'))
+        <form action="{{ route('worktime.month') }}" method="get">
+            <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
+            <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
+            <input class="form-control" type="hidden" name="workcard" value="generate">
+            <input class="btn btn-primary btn-big" type="submit" value="generuj kartę czasu pracy">
+        </form>
+        @endif
+
+        <form action="{{ route('worktime.month') }}" method="get">
+            <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
+            <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
+            <input class="form-control" type="hidden" name="workcard" value="get">
+            <input class="btn btn-primary btn-big" type="submit" value="pobierz kartę czasu pracy">
+        </form>
+
+
         </td>
     </tr>
     </thead>
@@ -80,6 +97,7 @@
         <thead>
             <tr>
             <th scope="col">data</th>
+            <th scope="col">plan</th>
             <th scope="col">symulacje</th>
             <th scope="col">czas pracy</th>
             <th scope="col">godz.</th>
@@ -93,6 +111,14 @@
             <span class="glyphicon glyphicon glyphicon-tasks text-success" aria-hidden="true"></span>
         </a>
             {{$row_one['day_name_short']}}
+       </td>
+        @if ($row_one['hr_diffrent']===false)
+        <td> <span class="text-danger" style="background-color: yellow"><span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
+        @else
+       <td> <span>
+        @endif
+       {{$row_one['hr_wt']['time_begin']}} - {{$row_one['hr_wt']['time_end']}}
+       </span>
        </td>
         <td>
         @foreach ($row_one['sims'] as $sim_one)
