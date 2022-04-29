@@ -111,13 +111,20 @@ class WorkTimeController extends Controller
                                 $ret_hr->o_time_begin = date('H:i',strtotime($ret_row['all_times']['start'].' + 8 hours'));
                                 $ret_hr->o_time_end   = $ret_row['all_times']['end'];
                             }
-                        if ($ret_row['minutes']<480)    //praca poniżej 8 godzin
+                        elseif ($ret_row['minutes']<480)    //praca poniżej 8 godzin
                             {
                                 $ret_hr->over_under = 2; //under time
                                 $ret_hr->o_minutes = 480-$ret_row['minutes'];
                                 $ret_hr->o_time_begin   = $ret_row['all_times']['end'];
                                 $ret_hr->o_time_end = date('H:i',strtotime($ret_row['all_times']['end'].' + '.$ret_hr->o_minutes.' minutes'));
-                                }
+                            }
+                        elseif ($ret_row['minutes']==480)    //praca w wyiarze 8 godzin
+                            {
+                                $ret_hr->over_under = 0; //under time
+                                $ret_hr->o_minutes = 0;
+                                $ret_hr->o_time_begin   = null;
+                                $ret_hr->o_time_end = null;
+                            }
                         $ret_hr->status = 1;
                         $ret_hr->save();
                     }
