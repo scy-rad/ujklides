@@ -66,6 +66,7 @@ class WorkTimeController extends Controller
         $total['hrminutes']=0;
         $total['hrminutes_over']=0;
         $total['hrminutes_under']=0;
+        $total['hr_minutes']=0;
         $y=1;
         $ret=[];
         for($i = $begin; $i < $end; $i = $i+86400 )
@@ -88,8 +89,8 @@ class WorkTimeController extends Controller
             ->where('date','=',$cur_date)
             ->where('user_id','=',$filtr['user'])
             ->first();
-            if ( ($request->workcard=='generate') && (Auth::user()->hasRole('Operator Kadr')) )
 
+            if ( ($request->workcard=='generate') && (Auth::user()->hasRole('Operator Kadr')) )
             {
                     if (count($ret_row['work_types'])>0)  // jeśli jest zaplanowany czas pracy
                     {
@@ -115,10 +116,25 @@ class WorkTimeController extends Controller
                             {
                                 $ret_hr->over_under = 2; //under time
                                 $ret_hr->o_minutes = 480-$ret_row['minutes'];
-                                $ret_hr->o_time_begin   = $ret_row['all_times']['end'];
-                                $ret_hr->o_time_end = date('H:i',strtotime($ret_row['all_times']['end'].' + '.$ret_hr->o_minutes.' minutes'));
+
+                                if (strtotime($ret_row['all_times']['start']) <= strtotime('7:30'))
+                                {
+                                    $ret_hr->o_time_begin   = $ret_row['all_times']['start'];
+                                    $ret_hr->o_time_end     = date('H:i',strtotime($ret_row['all_times']['start'].' + 8 hours'));
+                                }
+                                elseif (strtotime($ret_row['all_times']['start'].' - '.$ret_hr->o_minutes.' minutes') > strtotime('7:30') )
+                                {
+                                    $ret_hr->o_time_begin   = date('H:i',strtotime($ret_row['all_times']['start'].' - '.$ret_hr->o_minutes.' minutes'));
+                                    $ret_hr->o_time_end     = $ret_row['all_times']['end'];
+                                }
+                                
+                                else
+                                {
+                                    $ret_hr->o_time_begin   = date('H:i',strtotime('7:30'));
+                                    $ret_hr->o_time_end     = date('H:i',strtotime('15:30'));
+                                }
                             }
-                        elseif ($ret_row['minutes']==480)    //praca w wyiarze 8 godzin
+                        elseif ($ret_row['minutes']==480)    //praca w wymiarze 8 godzin
                             {
                                 $ret_hr->over_under = 0; //under time
                                 $ret_hr->o_minutes = 0;
@@ -145,16 +161,59 @@ class WorkTimeController extends Controller
             ->where('date',$cur_date)
             ->first()) ))
                 {
+                    $ret[$cur_date]['hr_wt'] = \App\WorkTimeToHr::where('user_id',$filtr['user'])
+                    ->where('date',$cur_date)
+                    ->first()
+                    ->toArray()
+                    ;
+                    $ret[$cur_date]['hr_wt']['o_time_end'] = substr($ret[$cur_date]['hr_wt']['o_time_end'],0,5);
+                    $ret[$cur_date]['hr_wt']['o_time_begin'] = substr($ret[$cur_date]['hr_wt']['o_time_begin'],0,5);
+                    $ret[$cur_date]['hr_wt']['time_end'] = substr($ret[$cur_date]['hr_wt']['time_end'],0,5);
+                    $ret[$cur_date]['hr_wt']['time_begin'] = substr($ret[$cur_date]['hr_wt']['time_begin'],0,5);
+                    
+                    if (is_null($ret[$cur_date]['hr_wt']['time_begin'])) $ret[$cur_date]['hr_wt']['time_begin']='-';
+                    if (is_null($ret[$cur_date]['hr_wt']['time_end']))   $ret[$cur_date]['hr_wt']['time_end']  ='-';
+                    $ret[$cur_date]['hr_wt']['hoursmin']=m2h($ret[$cur_date]['hr_wt']['minutes']);
+                    $ret[$cur_date]['hr_wt']['o_hoursmin']=m2h($ret[$cur_date]['hr_wt']['o_minutes']);
 
-                $ret[$cur_date]['hr_wt'] = \App\WorkTimeToHr::where('user_id',$filtr['user'])
-                ->where('date',$cur_date)
-                ->first()
-                ->toArray()
-                ;
-                if (is_null($ret[$cur_date]['hr_wt']['time_begin'])) $ret[$cur_date]['hr_wt']['time_begin']='-'; else $ret[$cur_date]['hr_wt']['time_begin']=substr($ret[$cur_date]['hr_wt']['time_begin'],0,5);
-                if (is_null($ret[$cur_date]['hr_wt']['time_end']))   $ret[$cur_date]['hr_wt']['time_end']  ='-'; else $ret[$cur_date]['hr_wt']['time_end']  =substr($ret[$cur_date]['hr_wt']['time_end'],  0,5);
-                $ret[$cur_date]['hr_wt']['hoursmin']=m2h($ret[$cur_date]['hr_wt']['minutes']);
-                $ret[$cur_date]['hr_wt']['o_hoursmin']=m2h($ret[$cur_date]['hr_wt']['o_minutes']);
+                    if ($ret[$cur_date]['hr_wt']['over_under']==2)  //jeśli ilośc godzin pracy jest poniżej normy - to ustal wprost tekst z godzinami poniżej normy 
+                    {
+                        $coma='';
+                        $ret[$cur_date]['hr_wt']['under_txt']='';
+                        if ( date('H:i',strtotime($ret[$cur_date]['hr_wt']['o_time_begin'])) < date('H:i',strtotime($ret[$cur_date]['hr_wt']['time_begin'])) )
+                            {
+                            $ret[$cur_date]['hr_wt']['under_txt']='od '.date('H:i',strtotime($ret[$cur_date]['hr_wt']['o_time_begin'])).' do '.date('H:i',strtotime($ret[$cur_date]['hr_wt']['time_begin']));
+                            $coma=' i ';
+                            }
+                        if ( date('H:i',strtotime($ret[$cur_date]['hr_wt']['o_time_end'])) > date('H:i',strtotime($ret[$cur_date]['hr_wt']['time_end'])) )
+                            {
+                            $ret[$cur_date]['hr_wt']['under_txt'].=$coma.'od '.date('H:i',strtotime($ret[$cur_date]['hr_wt']['time_end'])).' do '.date('H:i',strtotime($ret[$cur_date]['hr_wt']['o_time_end']));
+                            }
+                        //i określ wprot godziny pracy do grafiku (8h)
+                            $ret[$cur_date]['hr_wt']['hr_time_begin']=$ret[$cur_date]['hr_wt']['o_time_begin'];
+                            $ret[$cur_date]['hr_wt']['hr_time_end']=$ret[$cur_date]['hr_wt']['o_time_end'];
+                    }
+                    elseif ($ret[$cur_date]['hr_wt']['over_under']==1)  //jeśli ilośc godzin pracy jest powyżej normy
+                    {
+                        $ret[$cur_date]['hr_wt']['hr_time_begin']=$ret[$cur_date]['hr_wt']['time_begin'];
+                        $ret[$cur_date]['hr_wt']['hr_time_end']=$ret[$cur_date]['hr_wt']['o_time_begin'];
+                    }
+                    else
+                    {
+                        if ($ret[$cur_date]['hr_wt']['time_begin'] == $ret[$cur_date]['hr_wt']['time_end'])
+                        {
+                            $ret[$cur_date]['hr_wt']['hr_time_begin']='x';
+                            $ret[$cur_date]['hr_wt']['hr_time_end']='x';
+                        }
+                        else
+                        {
+                            $ret[$cur_date]['hr_wt']['hr_time_begin']=$ret[$cur_date]['hr_wt']['time_begin'];
+                            $ret[$cur_date]['hr_wt']['hr_time_end']=$ret[$cur_date]['hr_wt']['time_end'];
+                        }
+                    }
+                    $ret[$cur_date]['hr_wt']['hr_minutes']=8*60;
+                    $ret[$cur_date]['hr_wt']['hr_hoursmin']=m2h(8*60);
+                    
                 }
             else 
             {
@@ -163,7 +222,10 @@ class WorkTimeController extends Controller
                 $ret[$cur_date]['hr_wt']['minutes']=null;
                 $ret[$cur_date]['hr_wt']['hoursmin']=null;
                 $ret[$cur_date]['hr_wt']['over_under']=0;
-                
+                $ret[$cur_date]['hr_wt']['hr_time_begin']=$ret[$cur_date]['hr_wt']['time_begin'];
+                $ret[$cur_date]['hr_wt']['hr_time_end']=$ret[$cur_date]['hr_wt']['time_end'];
+                $ret[$cur_date]['hr_wt']['hr_minutes']=null;
+                $ret[$cur_date]['hr_wt']['hr_hoursmin']=null;
             }
 
             if ( ($ret[$cur_date]['hr_wt']['time_begin'] == $ret[$cur_date]['times'][0]['start']) &&
@@ -172,7 +234,8 @@ class WorkTimeController extends Controller
             else
                 $ret[$cur_date]['hr_diffrent']=false;
             
-            //     dump($ret);
+            // dump($ret[$cur_date]['hr_wt']);
+
             $ret[$cur_date]['day_name']= DB::table('pl_days')->find(date('w', strtotime($cur_date))+1)->pl_day;
             $ret[$cur_date]['day_week']= date('N', strtotime($cur_date));
             $ret[$cur_date]['day_name_short']= DB::table('pl_days')->find(date('w', strtotime($cur_date))+1)->pl_day_short;
@@ -183,7 +246,7 @@ class WorkTimeController extends Controller
                 $ret[$cur_date]['warning']='no';            //look there
 
             $total['minutes']+=$ret_row['minutes'];
-            $total['hrminutes']+=$ret[$cur_date]['hr_wt']['minutes'];
+            $total['hr_minutes']+=$ret[$cur_date]['hr_wt']['hr_minutes'];
             if ($ret[$cur_date]['hr_wt']['over_under']==1)
                 $total['hrminutes_over']+=$ret[$cur_date]['hr_wt']['o_minutes'];
             if ($ret[$cur_date]['hr_wt']['over_under']==2)
@@ -195,6 +258,8 @@ class WorkTimeController extends Controller
         $total['hrtimes'] = m2h($total['hrminutes']);
         $total['hrtimes_over'] = m2h($total['hrminutes_over']);
         $total['hrtimes_under'] = m2h($total['hrminutes_under']);
+        
+        $total['hr_times'] = m2h($total['hr_minutes']);
         
 
         $total['work_characters_month'] = 
@@ -218,6 +283,47 @@ class WorkTimeController extends Controller
         
         $total['month_name']=DB::table('pl_months')->find(date('m', $begin))->pl_month;
         $total['year']=date('Y', $begin);
+
+
+        if ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-03-31')) )
+        {
+            $total['quarter'] = 'I';
+            $total['quarter_start']=$total['year'].'-01-01';
+        }
+        elseif ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-06-30')) )
+        {
+            $total['quarter'] = 'II';
+            $total['quarter_start']=$total['year'].'-04-01';
+        }
+        elseif ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-09-31')) )
+        {
+            $total['quarter'] = 'III';
+            $total['quarter_start']=$total['year'].'-07-01';
+        }
+        else
+        {
+            $total['quarter'] = 'IV';
+            $total['quarter_start']=$total['year'].'-10-01';
+        }
+
+        $total['quarter_stop']=date('Y-m-t',strtotime($filtr['month'].'-01'));
+            
+        $quarter=\App\WorkTime::
+        select(\DB::raw('count(*) as quarter_count'),
+        \DB::raw('sum(TIMESTAMPDIFF(MINUTE, time_begin, time_end)) as quarter_minutes')
+        )
+        ->where('status','<>',4)
+        ->where('user_id','=',$filtr['user'])
+        ->where('date','>=',$total['quarter_start'])
+        ->where('date','<=',$total['quarter_stop'])
+        ->groupBy('user_id')
+        ->first();
+        $total['quarter_count']=$quarter->quarter_count;
+        $total['quarter_minutes']=$quarter->quarter_minutes*1;
+        $total['quarter_norm']=$quarter->quarter_count*8*60;
+
+        
+
 
         if (isset($request->csv))
         {
@@ -292,7 +398,7 @@ class WorkTimeController extends Controller
         {
             return view('worktime/month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
         }
-        elseif ($request->workcard=='generate')
+        elseif ($request->workcard=='generate') //sending e-mails
         {
             $roles_OpKadr_id=\App\Roles::where('roles_name', 'Operator Kadr')
                 ->pluck('id')
