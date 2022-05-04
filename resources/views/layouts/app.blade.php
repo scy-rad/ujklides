@@ -40,8 +40,13 @@
 </head>
 <body>
     <div id="app">
+        @if (Auth::user()->hasRole('Administrator'))
+        <nav class="navbar navbar-default navbar-static-top" style="background: red">
+            <div class="container" style="background: yellow">
+        @else
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
+        @endif
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->
