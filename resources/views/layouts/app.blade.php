@@ -40,6 +40,10 @@
 </head>
 <body>
     <div id="app">
+        @guest
+        <nav class="navbar navbar-default navbar-static-top">
+            <div class="container">
+        @else
         @if (Auth::user()->hasRole('Administrator'))
         <nav class="navbar navbar-default navbar-static-top" style="background: red">
             <div class="container" style="background: yellow">
@@ -47,6 +51,7 @@
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
         @endif
+        @endguest
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->
