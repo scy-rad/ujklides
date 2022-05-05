@@ -161,16 +161,16 @@ Zastępstwo pełnić będą wybrani pracownicy Centrum Symulacji Medycznych.</p>
     <p>ilość godzin w miesiącu <strong>{{$total['month_name']}} {{$total['year']}}</strong> przepracowanych poniżej normy: <strong>{{floor(($total['hrminutes_under']-$total['hrminutes_over'])/60).':'.str_pad(($total['hrminutes_under']-$total['hrminutes_over'])%60, 2, '0', STR_PAD_LEFT)}}</strong> (do odpracowania do końca kwartału)</p>
 @endif
 <!--div style="border: 2px solid black; display: inline-block; margin: 0 auto;">
-<div style="background: #ffc; text-align: center; font-weight: bold;">NARASTAJĄCO<br>ilość godzin w {{$total['quarter']}} kwartale<br>
-(od {{$total['quarter_start']}} do {{$total['quarter_stop']}}):</div>
+<div style="background: #ffc; text-align: center; font-weight: bold;">NARASTAJĄCO<br>ilość godzin w {_{$total['quarter']}} kwartale<br>
+(od {_{$total['quarter_start']}} do {_{$total['quarter_stop']}}):</div>
 <table style="text-align: right;">
-    <tr><td style="border: 0px;">do przepracowania ({{$total['quarter_count']}} d.): </td><td style="border: 0px;"><strong>{{floor($total['quarter_norm']/60).':'.str_pad($total['quarter_norm']%60, 2, '0', STR_PAD_LEFT) }}</strong></td></tr>
-    <tr><td style="border: 0px;">przepracowanych/zaplanowanych: </td><td style="border: 0px;"><strong>{{floor($total['quarter_minutes']/60).':'.str_pad($total['quarter_minutes']%60, 2, '0', STR_PAD_LEFT) }}</strong></td></tr>
-    @if ($total['quarter_norm']>$total['quarter_minutes'])
-    <tr><td style="border: 0px;">poniżej normy: </td><td style="border: 0px;"><strong>{{floor(($total['quarter_norm']-$total['quarter_minutes'])/60).':'.str_pad(($total['quarter_norm']-$total['quarter_minutes'])%60, 2, '0', STR_PAD_LEFT) }}</strong></td></tr>
-    @elseif ($total['quarter_minutes']>$total['quarter_norm'])
-    <tr><td style="border: 0px;">powyżej normy: </td><td style="border: 0px;"><strong>{{floor(($total['quarter_minutes']-$total['quarter_norm'])/60).':'.str_pad(($total['quarter_minutes']-$total['quarter_norm'])%60, 2, '0', STR_PAD_LEFT) }}</strong></td></tr>
-    @endif
+    <tr><td style="border: 0px;">do przepracowania ({_{$total['quarter_count']}} d.): </td><td style="border: 0px;"><strong>{_{floor($total['quarter_norm']/60).':'.str_pad($total['quarter_norm']%60, 2, '0', STR_PAD_LEFT) }}</strong></td></tr>
+    <tr><td style="border: 0px;">przepracowanych/zaplanowanych: </td><td style="border: 0px;"><strong>{_{floor($total['quarter_minutes']/60).':'.str_pad($total['quarter_minutes']%60, 2, '0', STR_PAD_LEFT) }}</strong></td></tr>
+    @_if ($total['quarter_norm']>$total['quarter_minutes'])
+    <tr><td style="border: 0px;">poniżej normy: </td><td style="border: 0px;"><strong>{_{floor(($total['quarter_norm']-$total['quarter_minutes'])/60).':'.str_pad(($total['quarter_norm']-$total['quarter_minutes'])%60, 2, '0', STR_PAD_LEFT) }}</strong></td></tr>
+    @_elseif ($total['quarter_minutes']>$total['quarter_norm'])
+    <tr><td style="border: 0px;">powyżej normy: </td><td style="border: 0px;"><strong>{_{floor(($total['quarter_minutes']-$total['quarter_norm'])/60).':'.str_pad(($total['quarter_minutes']-$total['quarter_norm'])%60, 2, '0', STR_PAD_LEFT) }}</strong></td></tr>
+    @_endif
 </table>
 </div-->
 <div style="width: 100%;">
