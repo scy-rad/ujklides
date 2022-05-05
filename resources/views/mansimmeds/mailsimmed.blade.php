@@ -29,6 +29,9 @@
             background-color: #04AA6D;
             color: white;
             }
+            h4 {
+            color: #04AA6D;
+            }
         </style>
     </head>
     <body>
@@ -73,7 +76,7 @@ else
     @foreach ($BigTable as $oneTable)
         <?php if (!(is_null($oneTable['table']))) { ?>
             <hr>
-            {!!$oneTable['head']!!}
+            <h4>{!!$oneTable['head']!!}</h4>
             <table id ="simlist">
                 <tr>
                     <th>Data</th>

@@ -1649,9 +1649,9 @@ public function sendMail(Request $request)
                 }
 
 
-                $BigTable=null;
+                //$BigTable=null;
                 $BigTable[1]['table']=null;
-                $BigTable[2]['table']=null;
+                //$BigTable[2]['table']=null;
 
                 $tmp_table=clone $user_simmeds_prepare_changes;
                 $tmp_table=$tmp_table
@@ -1671,8 +1671,8 @@ public function sendMail(Request $request)
                     ->get();
                 if ($tmp_table->count()>0)
                     {
-                        $BigTable[2]['head']='nowe symulacje';
-                        $BigTable[2]['table']=$tmp_table;
+                        $BigTable[3]['head']='nowe symulacje';
+                        $BigTable[3]['table']=$tmp_table;
                     }
     
     
