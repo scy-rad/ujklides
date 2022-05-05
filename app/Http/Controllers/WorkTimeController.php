@@ -308,20 +308,7 @@ class WorkTimeController extends Controller
 
         $total['quarter_stop']=date('Y-m-t',strtotime($filtr['month'].'-01'));
             
-        $quarter=\App\WorkTime::
-        select(\DB::raw('count(*) as quarter_count'),
-        \DB::raw('sum(TIMESTAMPDIFF(MINUTE, time_begin, time_end)) as quarter_minutes')
-        )
-        ->where('status','<>',4)
-        ->where('user_id','=',$filtr['user'])
-        ->where('date','>=',$total['quarter_start'])
-        ->where('date','<=',$total['quarter_stop'])
-        ->groupBy('user_id')
-        ->first();
-        $total['quarter_count']=$quarter->quarter_count;
-        $total['quarter_minutes']=$quarter->quarter_minutes*1;
-        $total['quarter_norm']=$quarter->quarter_count*8*60;
-
+        
         
 
 
@@ -396,6 +383,39 @@ class WorkTimeController extends Controller
 
         if ($request->workcard=='get')
         {
+            $quarter=\App\WorkTimeToHr::
+            select('over_under',
+            \DB::raw('count(*) as quarter_count'),
+            \DB::raw('sum(minutes) as quarter_minutes'),
+            \DB::raw('sum(o_minutes) as quarter_o_minutes')
+            )
+            ->where('status','<>',4)
+            ->where('user_id','=',$filtr['user'])
+            ->where('date','>=',$total['quarter_start'])
+            ->where('date','<=',$total['quarter_stop'])
+            ->groupBy('over_under')
+            ->get()
+            ->toArray();
+
+            if (count($quarter)<1)
+                return back()->withErrors('Zgłoś administratorowi, że pułapka blade month_cardwork 400 się uaktywniła :) ');
+
+            $total['quarter_count']=0;
+            $total['quarter_minutes']=0;
+            $total['quarter_norm']=0;
+
+            foreach ($quarter as $quarter_one)
+                {
+                    $total['quarter_count']+=$quarter_one['quarter_count'];
+                    $total['quarter_minutes']+=$quarter_one['quarter_minutes'];
+                    if ($quarter_one['over_under']==1)
+                        $total['quarter_norm']-=$quarter_one['quarter_o_minutes'];
+                    else
+                    $total['quarter_norm']+=$quarter_one['quarter_o_minutes'];
+                }
+            $total['quarter_norm']+=$total['quarter_minutes'];
+
+
             return view('worktime/month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
         }
         elseif ($request->workcard=='generate') //sending e-mails

@@ -143,7 +143,9 @@
      @endif
      @endforeach
 </ul>     
-<?php if  ( ($total['hrminutes_over']>0) && ($total['hrminutes_over']>$total['hrminutes_under']) )
+<?php
+    $tekstA='...';
+    if  ( ($total['hrminutes_over']>0) && ($total['hrminutes_over']>=$total['hrminutes_under']) )
         $tekstA='w terminie '.date('d-m-Y',strtotime($filtr['month'].'-01')).' &minus; '.date('t-m-Y',strtotime($filtr['month'].'-01'));
       if  ( ($total['hrminutes_over']>0) && ($total['hrminutes_over']<$total['hrminutes_under']) )
         $tekstA='w terminie '.date('d-m-Y',strtotime($filtr['month'].'-01')).' &minus; '.date('t-m-Y',strtotime($filtr['month'].'-01')).' oraz na rzecz godzin przepracowanych w kolejnym miesiącu';
@@ -151,14 +153,14 @@
         $tekstA=' w kolejnym miesiącu';
 ?>
 <p>w zamian za czas przepracowany w godzinach nadliczbowych {{$tekstA}}.<br>
-Zastępstwo pełnić będą wybrani pracownicy Centrum Symulacji Medycznej.</p>
+Zastępstwo pełnić będą wybrani pracownicy Centrum Symulacji Medycznych.</p>
 <hr>
 @if ($total['hrminutes_over'] > $total['hrminutes_under'])
     <p>ilość godzin w miesiącu <strong>{{$total['month_name']}} {{$total['year']}}</strong> przepracowanych powyżej normy: <strong>{{floor(($total['hrminutes_over']-$total['hrminutes_under'])/60).':'.str_pad(($total['hrminutes_over']-$total['hrminutes_under'])%60, 2, '0', STR_PAD_LEFT)}}</strong> (do odbioru do końca kwartału)</p>
 @elseif ($total['hrminutes_over'] < $total['hrminutes_under'])
     <p>ilość godzin w miesiącu <strong>{{$total['month_name']}} {{$total['year']}}</strong> przepracowanych poniżej normy: <strong>{{floor(($total['hrminutes_under']-$total['hrminutes_over'])/60).':'.str_pad(($total['hrminutes_under']-$total['hrminutes_over'])%60, 2, '0', STR_PAD_LEFT)}}</strong> (do odpracowania do końca kwartału)</p>
 @endif
-<div style="border: 2px solid black; display: inline-block; margin: 0 auto;">
+<!--div style="border: 2px solid black; display: inline-block; margin: 0 auto;">
 <div style="background: #ffc; text-align: center; font-weight: bold;">NARASTAJĄCO<br>ilość godzin w {{$total['quarter']}} kwartale<br>
 (od {{$total['quarter_start']}} do {{$total['quarter_stop']}}):</div>
 <table style="text-align: right;">
@@ -170,7 +172,7 @@ Zastępstwo pełnić będą wybrani pracownicy Centrum Symulacji Medycznej.</p>
     <tr><td style="border: 0px;">powyżej normy: </td><td style="border: 0px;"><strong>{{floor(($total['quarter_minutes']-$total['quarter_norm'])/60).':'.str_pad(($total['quarter_minutes']-$total['quarter_norm'])%60, 2, '0', STR_PAD_LEFT) }}</strong></td></tr>
     @endif
 </table>
-</div>
+</div-->
 <div style="width: 100%;">
     <div style="border-top: 1px dotted black; width: 400px; margin-top: 60px; float:right; clear:both; ">
         <p class="mediumtxt acenter aitalic">data, podpis</p>
