@@ -139,7 +139,7 @@
 <ul>
      @foreach ($tabelka as $row_one)
      @if ($row_one['hr_wt']['over_under']==2)
-        <li> {{ $row_one['date'],8}} w godz. {{$row_one['hr_wt']['under_txt']}} : ({{$row_one['hr_wt']['o_hoursmin']}})</li> 
+        <li> {{ $row_one['date']}} w godz. {{$row_one['hr_wt']['under_txt']}} : ({{$row_one['hr_wt']['o_hoursmin']}})</li> 
      @endif
      @endforeach
 </ul>     
@@ -191,5 +191,89 @@ Zastępstwo pełnić będą wybrani pracownicy Centrum Symulacji Medycznych.</p>
 
 </div>
 @endif
+
+
+
+
+
+
+
+
+
+@if ($total['hrminutes_over']>0)
+<div style="all_page">
+
+<p class="smalltxt aright">Załącznik nr 6 do Regulaminu Pracy w Uniwersytecie Jana Kochanowskiego w Kielcach</small>
+<p class="aright">Kielce, dnia .................................</p>
+
+<p><strong>{{$user->full_name()}}</strong><br>
+<span class="mediumtxt aitalic">(imię i nazwisko)</span></p`>
+<br>
+<p><strong>Centrum Symulacji Medycznych</strong><br>
+<span class="mediumtxt aitalic">(jednostka organizacyjna)</span></p>
+<br>
+<br>
+
+<h1>WNIOSEK O UDZIELENIE CZASU WOLNEGO OD PRACY W ZAMIAN ZA CZAS PRZEPRACOWANY W GODZINACH NADLICZBOWYCH:</h1>
+
+
+@if ($total['hrminutes_under']>0)
+<p>Proszę o udzielenie czasu wolnego od pracy w miesiącu <strong>{{$total['month_name']}} {{$total['year']}}</strong> w liczbie <strong>{{$total['hrtimes_under']}}</strong> godzin w terminie: </p>
+
+<ul>
+     @foreach ($tabelka as $row_one)
+     @if ($row_one['hr_wt']['over_under']==2)
+        <li> {{ $row_one['date']}} w godz. {{$row_one['hr_wt']['under_txt']}} : ({{$row_one['hr_wt']['o_hoursmin']}})</li> 
+     @endif
+     @endforeach
+</ul>
+@endif
+
+@if ($total['hrminutes_over'] > $total['hrminutes_under'])
+<p>Proszę o udzielenie czasu wolnego od pracy w liczbie <strong>{{floor(($total['hrminutes_over']-$total['hrminutes_under'])/60).':'.str_pad(($total['hrminutes_over']-$total['hrminutes_under'])%60, 2, '0', STR_PAD_LEFT)}}</strong> godzin w terminie: </p>
+
+<ul>
+        <li> ................................ w godz. ........................ : (....................)</li> 
+        <li> ................................ w godz. ........................ : (....................)</li> 
+        <li> ................................ w godz. ........................ : (....................)</li> 
+        <li> ................................ w godz. ........................ : (....................)</li> 
+</ul>
+
+@elseif ($total['hrminutes_over'] < $total['hrminutes_under'])
+<p>Godziny ndmiarowe w liczbie <strong>{{floor(($total['hrminutes_under']-$total['hrminutes_over'])/60).':'.str_pad(($total['hrminutes_under']-$total['hrminutes_over'])%60, 2, '0', STR_PAD_LEFT)}}</strong> godzin zostaną odpracowane w terminie: </p>
+
+<ul>
+        <li> ................................ w godz. ........................ : (....................)</li> 
+        <li> ................................ w godz. ........................ : (....................)</li> 
+        <li> ................................ w godz. ........................ : (....................)</li> 
+        <li> ................................ w godz. ........................ : (....................)</li> 
+</ul>
+
+@endif
+<br>
+<p>w zamian za czas przepracowany w godzinach nadliczbowych w terminie {{date('d-m-Y',strtotime($filtr['month'].'-01'))}} &minus; {{date('t-m-Y',strtotime($filtr['month'].'-01'))}}.<br>
+Zastępstwo pełnić będą wybrani pracownicy Centrum Symulacji Medycznych.</p>
+<hr>
+<div style="width: 100%;">
+    <div style="border-top: 1px dotted black; width: 400px; margin-top: 60px; float:right; clear:both; ">
+        <p class="mediumtxt acenter aitalic">data, podpis</p>
+    </div>
+    <div style="width: 400px; margin-top: 10px; float:right; clear:both; ">
+        Wyrażam zgodę:
+    </div>
+    <div style="border-top: 1px dotted black; width: 400px; margin-top: 60px; float:right; clear:both; ">
+        <p class="mediumtxt acenter aitalic">data, podpis bezpośredniego przełożonego</p>
+    </div>
+</div>
+<div style="width: 100%; background: yellow; clear: both">
+</div>
+
+
+
+</div>
+@endif
+
+
+
 </body>
 </html>
