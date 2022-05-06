@@ -187,9 +187,9 @@ Zastępstwo pełnić będą wybrani pracownicy Centrum Symulacji Medycznych.</p>
 <div style="width: 100%; background: yellow; clear: both">
 </div>
 
-
-
 </div>
+<footer>[xD]</footer>
+
 @endif
 
 
