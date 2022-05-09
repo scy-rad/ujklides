@@ -201,6 +201,7 @@ class Simmed extends Model
         'simmed_technician_character_id',
         'technician_characters.character_short',
         'technician_characters.character_name',
+        'technician_characters.character_colour',
         'student_subject_id',
         'student_subject_name',
         'simmeds.student_group_id',

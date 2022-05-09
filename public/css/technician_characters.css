@@ -1,0 +1,18 @@
+.jq-schedule .stay {
+    color: #fff;
+    background: #003366;}
+  .jq-schedule .phone {
+    color: #003366;
+    background: #ffee55;}
+  .jq-schedule .ready {
+    color: #af1388;
+    background: #ffee55;}
+  .jq-schedule .prep {
+    color: #00f;
+    background: #77ddff;}
+  .jq-schedule .look {
+    color: #ffff00;
+    background: #ff0000;}
+    .jq-schedule .std {
+        color: #000;
+        background: #fff;}

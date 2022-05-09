@@ -85,7 +85,7 @@ class WorkTime extends Model
             $work_one['end']=$simone->end;
             $work_one['room_number']=$simone->room_number;
             $work_one['status']=$simone->simmed_status;    
-            $work_one['class']=$simone->character_short;
+            $work_one['class']=$simone->character_colour;
             $work_one['character']='symulacja: '.$simone->character_name;
             $work_one['simdescript']=$simone->student_subject_name;//.' ['.$workday->student_group_name.', '.$workday->subgroup_name.']';
 

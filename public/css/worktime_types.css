@@ -1,0 +1,20 @@
+
+    .jq-schedule .in_work {
+        color: #00f;
+        background: #0f0;}
+      .jq-schedule .out_work {
+        color: #ff0;
+        background: #000;}
+      .jq-schedule .home_work {
+        color: #ee0;
+        background: #008800;}
+      .jq-schedule .phone_work {
+        color: #f00;
+        background: #ff0;}
+      .jq-schedule .busy_work {
+        color: #ff0;
+        background: #ff0000;}
+      .jq-schedule .break {
+        color: #bbb;
+        background: #000;}
+    
