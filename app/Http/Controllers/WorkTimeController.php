@@ -633,41 +633,44 @@ class WorkTimeController extends Controller
                 //$filtr['start'] = \App\Simmed::selectRaw('min(simmed_date) as minvalue')->get()->first()->minvalue;
                 $filtr['start'] = \App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_start;
                 $filtr['stop'] = \App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_stop;
-                $filtr['technician'] = 777;
-                $filtr['character'] = 777;
-                $filtr['room'] = 777;
-                $filtr['instructor'] = 777;
-                $filtr['subject'] = 777;
+                $filtr['technician'] = 'ANON';
+                $filtr['character'] = 'ANON';
+                $filtr['room'] = 'ANON';
+                $filtr['instructor'] = 'ANON';
+                $filtr['subject'] = 'ANON';
             }
         else
             {
             $filtr['start'] = $request->start;
             $filtr['stop'] = $request->stop;
-            $filtr['technician'] = $request->technician;
+            if (isset($request->technician))
+                $filtr['technician'] = $request->technician;
+            else
+                $filtr['technician'] = null;
             $filtr['character'] = $request->character;
             $filtr['room'] = $request->room;
             $filtr['instructor'] = $request->instructor;
             $filtr['subject'] = $request->subject;
-            if ( ($filtr['technician'] != 777)  || 
-                 ($filtr['character'] != 777)  || 
-                 ($filtr['room'] != 777) ||
-                 ($filtr['instructor'] != 777) ||
-                 ($filtr['subject'] != 777)
+            if ( ($filtr['technician'] != 'ANON')  || 
+                 ($filtr['character'] != 'ANON')  || 
+                 ($filtr['room'] != 'ANON') ||
+                 ($filtr['instructor'] != 'ANON') ||
+                 ($filtr['subject'] != 'ANON')
                  
                  )
                 {
                     $return=\App\Simmed::simmeds_join('with_free','without_deleted','without_send');
-                    if ($filtr['technician']==0)
+                    if ($filtr['technician']===0)
                         $return=$return->WhereNull('simmed_technician_id');
-                    if ( ($filtr['technician']!=777) && ($filtr['technician']>0) )
+                    if ( ($filtr['technician']!='ANON') && ($filtr['technician']>0) )
                         $return=$return->where('simmed_technician_id',$filtr['technician']);
-                    if ( ($filtr['character']!=777) && ($filtr['character']>0) )
+                    if ( ($filtr['character']!='ANON') && ($filtr['character']>0) )
                         $return=$return->where('simmed_technician_character_id',$filtr['character']);
-                    if ( ($filtr['room']!=777) && ($filtr['room']>0) )
+                    if ( ($filtr['room']!='ANON') && ($filtr['room']>0) )
                         $return=$return->where('room_id',$filtr['room']);
-                    if ( ($filtr['instructor']!=777) && ($filtr['instructor']>0) )
+                    if ( ($filtr['instructor']!='ANON') && ($filtr['instructor']>0) )
                         $return=$return->where('simmed_leader_id',$filtr['instructor']);
-                    if ( ($filtr['subject']!=777) && ($filtr['subject']>0) )
+                    if ( ($filtr['subject']!='ANON') && ($filtr['subject']>0) )
                         $return=$return->where('student_subject_id',$filtr['subject']);
                 
                     $extra_tab=$return

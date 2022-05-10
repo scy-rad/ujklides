@@ -37,7 +37,7 @@
         <div class="col-sm-1">
             <label for"character">charakter:</label> 
                 <select class="form-control col-sm-2" id="character" name="character">
-                    <option value="777">      </option>
+                    <option value="ANON">      </option>
                    @foreach ($technician_char as $row_one)
                    <option value="{{$row_one->id}}"<?php if ($row_one->id==$filtr['character']) echo ' selected="selected"'; ?>>{{$row_one->character_short}}</option>
                     @endforeach
@@ -46,16 +46,16 @@
         <div class="col-sm-2">
             <label for"technician">technik:</label> 
                 <select class="form-control" id="technician" name="technician">
-                    <option value="777">      </option>
+                    <option value="ANON">      </option>
                     @foreach ($technicians_list as $row_one)
-                    <option value="{{$row_one->id*1}}"<?php if ($row_one->id*1==$filtr['technician']) echo ' selected="selected"'; ?>>{{$row_one->name}}</option>
+                    <option value="{{$row_one->id*1}}"<?php if ($row_one->id*1===   $filtr['technician']) echo ' selected="selected"'; ?>>{{$row_one->name}}</option>
                     @endforeach
                 </select>
         </div>
         <div class="col-sm-2">
             <label for"instructor">instruktor:</label> 
                 <select class="form-control" id="instructor" name="instructor">
-                    <option value="777">      </option>
+                    <option value="ANON">      </option>
                     @foreach ($instructors_list as $row_one)
                     <option value="{{$row_one->id*1}}"<?php if ($row_one->id*1==$filtr['instructor']) echo ' selected="selected"'; ?>>{{$row_one->lastname}} {{$row_one->firstname}}</option>
                     @endforeach
@@ -64,7 +64,7 @@
         <div class="col-sm-2">
             <label for"subject">przedmiot:</label> 
                 <select class="form-control" id="subject" name="subject">
-                    <option value="777">      </option>
+                    <option value="ANON">      </option>
                     @foreach ($subjects_list as $row_one)
                     <option value="{{$row_one->id*1}}"<?php if ($row_one->id*1==$filtr['subject']) echo ' selected="selected"'; ?>>{{$row_one->student_subject_name}}</option>
                     @endforeach
@@ -73,7 +73,7 @@
         <div class="col-sm-1">
             <label for"room">sala:</label> 
                 <select class="form-control col-sm-2" id="room" name="room">
-                    <option value="777">      </option>
+                    <option value="ANON">      </option>
                    @foreach ($room_list as $row_one)
                    <option value="{{$row_one->id}}"<?php if ($row_one->id==$filtr['room']) echo ' selected="selected"'; ?>>{{$row_one->room_number}}</option>
                     @endforeach
