@@ -8,26 +8,35 @@ function rowek($simmed)
         //dump($simmed);
         $link=[$simmed->id, 0];
     ?>
-        <div class="row border border-dark {{$simmed->character_colour}}" style="height: 100%;">
-            <div class="col-md-2 col-sm-12 col-xs-12 std" style="border-top: 0.2rem solid black;">
-                <a href="{{route('simmeds.show', $link)}}"> 
+        <div class="row border border-dark" style="height: 100%;">
+            <div class="col-md-1 col-sm-4 col-xs-8 {{$simmed->character_colour}}">
+                <a style="background: white; color: blue; font-weight: bold; padding: 0.2rem; border: solid 0.1rem black; border-radius: 3px;" href="{{route('simmeds.show', $link)}}"> 
                     {{ $simmed->time }}
                     <span class="glyphicon glyphicon-list-alt text-success" aria-hidden="true"></span>
                 </a>
-                <nobr><strong >{{ $simmed->room_number }}</strong></nobr>
             </div>
+            <div class="col-md-1 col-sm-2 col-xs-4 {{$simmed->character_colour}}">
+                <nobr><strong>
+                <a style="background: white; color: blue; font-weight: bold; padding: 0.2rem; border: solid 0.1rem black; border-radius: 3px;" href="{{route('worktime.statistics', [ 'start' => date('Y-m-d'), 'stop' => date('Y-m-d',strtotime(date('Y-m-d').' + 1 month')), 'room' => $simmed->room_id ])}}">
+                
+                {{ $simmed->room_number }}
+                </a>
+                </strong></nobr>
+            </div>
+            <div class="col-md-1 col-sm-4 col-xs-8 {{$simmed->character_colour}}">
+                {{$simmed->character_name}}
+                </div>
+            <div class="col-md-1 col-sm-2 col-xs-4 {{$simmed->character_colour}}" style="height: 100%;">
+                {{$simmed->student_group_code}}&nbsp;
+            </div>
+
+
             <div class="col-md-4 col-sm-4 col-xs-12"> 
                 {{ $simmed->leader }}
             </div>
             <div class="col-md-4 col-sm-5 col-xs-12">
                 {{ $simmed->student_subject_name }}
             </div>
-            <div class="col-md-1 col-sm-1 col-xs-6" style="height: 100%;">
-                {{$simmed->student_group_code}}
-            </div>
-            <div class="col-md-1 col-sm-2 col-xs-6">
-                {{$simmed->character_name}}
-                </div>
             <div class="col-md-12 col-sm-12 col-xs-12">
                 @if ( Auth::user()->hasRole('Technik') && ($simmed->descript()!=null))
                     <span class="text-danger"><strong>{{$simmed->descript()->simmed_secret}}</strong></span><br>
@@ -57,7 +66,7 @@ function rowek($simmed)
 
         @if (Auth::user()->hasRole('Technik'))
             @foreach ($home_data as $row_one)
-                <div class="row bg-warning">
+                <div class="row bg-warning" style="border-top: 0.2rem solid black;">
                     <div class="col-sm-6 col-xs-12">
                     <h3>
                     <a href="/scheduler/{{$row_one['date']}}">
