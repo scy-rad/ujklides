@@ -4,9 +4,10 @@
 @section('content')
 
 
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('js/jquery.schedule/dist/css/style.css')}}" />
 
-
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('js/jquery.schedule/dist/css/style.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/technician_characters.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/worktime_types.css')}}" />
 
 <?php
 $dayofweek[1]='poniedziałek';

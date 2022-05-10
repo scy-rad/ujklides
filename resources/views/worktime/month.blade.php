@@ -156,8 +156,10 @@
                 {{$time_one['start']}} - {{$time_one['end']}}<br>
             @endforeach
             <span class="glyphicon glyphicon glyphicon-briefcase text-success" aria-hidden="true"></span>
-            
             </a>
+            @if (count($row_one['work_types'])==1)
+            {{array_values($row_one['work_types'])[0]}}
+            @endif
         </td>
         <td>
             {{$row_one['hoursmin']}}

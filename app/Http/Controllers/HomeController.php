@@ -58,31 +58,26 @@ class HomeController extends Controller
                     ->first()
                     ->pl_day_short;
 
-            $ret[$row_data['date']]['simmeds'] = Simmed::where('simmed_technician_id',Auth::user()->id)
-                            ->where('simmed_status','<>',4)
-                            ->where('simmed_date', $row_data['date'])
-                            ->orderBy('simmed_time_begin')->get();
+            $ret[$row_data['date']]['simmeds'] = Simmed::simmeds_join('without_free','without_deleted','without_send')
+                    ->where('simmed_technician_id',Auth::user()->id)
+                    //->whereBetween('simmed_date', [date('Y-m-d'), date( 'Y-m-d', strtotime("+ 7 days") )])
+                    ->where('simmed_date', $row_data['date'])
+                    ->orderBy('simmed_date')
+                    ->orderBy('simmed_time_begin')
+                    ->orderBy('room_number')
+                    ->get();
             $ret[$row_data['date']]['work_times'] =\App\WorkTime::calculate_work_time(Auth::user()->id, $row_data['date']);;
             }
-        // dump($ret);
-
-
-
 
         if (date('N',strtotime(date('Y-m-d')))>4)
             $add_date=8-date('N',strtotime(date('Y-m-d')));
         else
             $add_date=1;
             $add_date=2;
-        $main_simulations=$simmeds =  Simmed::where('simmed_technician_id',Auth::user()->id)
-        ->where('simmed_status','<>',4)
-        ->whereBetween('simmed_date', [date('Y-m-d'), date( 'Y-m-d', strtotime("+ 7 days") )])
-        ->orderBy('simmed_date')->orderBy('simmed_time_begin')->get();
-        
+     
         $work_times=\App\WorkTime::calculate_work_time(Auth::user()->id, date('Y-m-d'));
 
-
-        return view('home',compact('main_simulations'),['home_data' => $ret, 'sch_date' => '$sch_date', 'work_times' => $work_times]);
+        return view('home',['home_data' => $ret, 'sch_date' => '$sch_date', 'work_times' => $work_times]);
     }
 
 

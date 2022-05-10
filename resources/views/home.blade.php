@@ -8,32 +8,32 @@ function rowek($simmed)
         //dump($simmed);
         $link=[$simmed->id, 0];
     ?>
-        <div class="row border border-dark" style="border-bottom: 0.25rem solid green;">
-            <div class="col-xs-2">
+        <div class="row border border-dark {{$simmed->character_colour}}" style="height: 100%;">
+            <div class="col-md-2 col-sm-12 col-xs-12 std" style="border-top: 0.2rem solid black;">
                 <a href="{{route('simmeds.show', $link)}}"> 
-                    {{ substr($simmed->simmed_time_begin,0,5) }} - {{ substr($simmed->simmed_time_end,0,5) }} 
+                    {{ $simmed->time }}
                     <span class="glyphicon glyphicon-list-alt text-success" aria-hidden="true"></span>
                 </a>
-                <nobr><strong >{{ $simmed->room()->room_number }}</strong></nobr>
+                <nobr><strong >{{ $simmed->room_number }}</strong></nobr>
             </div>
-            <div class="col-xs-2"> 
-                {{ $simmed->name_of_leader() }}
+            <div class="col-md-4 col-sm-4 col-xs-12"> 
+                {{ $simmed->leader }}
             </div>
-            <div class="col-md-2">
-                {{ $simmed->name_of_student_subject() }}
+            <div class="col-md-4 col-sm-5 col-xs-12">
+                {{ $simmed->student_subject_name }}
             </div>
-            <div class="col-md-1 text-light bg-dark">
-                {{$simmed->code_of_student_group()}}
+            <div class="col-md-1 col-sm-1 col-xs-6" style="height: 100%;">
+                {{$simmed->student_group_code}}
             </div>
-            <div class="col-md-4">
+            <div class="col-md-1 col-sm-2 col-xs-6">
+                {{$simmed->character_name}}
+                </div>
+            <div class="col-md-12 col-sm-12 col-xs-12">
                 @if ( Auth::user()->hasRole('Technik') && ($simmed->descript()!=null))
                     <span class="text-danger"><strong>{{$simmed->descript()->simmed_secret}}</strong></span><br>
                 @endif
                 {!!$simmed->simmed_alternative_title!!}
             </div>
-            <div class="col-sm-1 bg-primary">
-                {{$simmed->technician_character()->character_name}}
-                </div>
         </div>
     <?php
     }
@@ -42,10 +42,13 @@ function rowek($simmed)
 
 @section('content')
 
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/technician_characters.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/worktime_types.css')}}" />
+
 <div class="panel panel-default">
     <!--div class="panel-heading"><img src="{{ asset('img/cmscsm/csm_ujk.svg') }}" width="50%"></div-->
 
-    <div class="panel-body">
+    <div class="panel-body jq-schedule">
         @if (session('status'))
             <div class="alert alert-success">
                 {{ session('status') }}
@@ -55,7 +58,7 @@ function rowek($simmed)
         @if (Auth::user()->hasRole('Technik'))
             @foreach ($home_data as $row_one)
                 <div class="row bg-warning">
-                    <div class="col-xs-6">
+                    <div class="col-sm-6 col-xs-12">
                     <h3>
                     <a href="/scheduler/{{$row_one['date']}}">
                         {{$row_one['date']}} 
@@ -64,8 +67,8 @@ function rowek($simmed)
                     </a>
                     </h3>
                     </div>
-                    <div class="col-xs-6">
-                    <h3>
+                    <div class="col-sm-6 col-xs-12">
+                    <h3 class="text-right">
                     <span style="font-size: 1.25rem">
                         @foreach ($row_one['work_times']['work_types'] as $row_time)
                             [{{$row_time}}]
