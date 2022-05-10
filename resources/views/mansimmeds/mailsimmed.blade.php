@@ -88,6 +88,7 @@ else
                     <th>grp.</th>
                     <th>technik</th>
                     <th>char.</th>
+                    <th>ID</th>
                 </tr>
                 @foreach ($oneTable['table'] as $simRow)
                     @if ($simRow->simmed_alternative_title=='') 
@@ -130,9 +131,14 @@ else
                         <td>
                             <?php echo show_changes($simRow->character_name,$simRow->send_character_name); ?>
                         </td>
+                        <td>
+                            <a href="{{route('simmeds.show', [$simRow->id, 0])}}">
+                                {{$simRow->id}}
+                            </a>
+                        </td>
                         @if ($simRow->simmed_alternative_title!='') 
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 {!!$simRow->simmed_alternative_title!!}
                             </td>
                         </tr>
