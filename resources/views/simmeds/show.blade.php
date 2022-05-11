@@ -62,7 +62,7 @@
     {{ kafelek(2, 'grupa studencka', $simmed->name_of_student_group(),NULL) }}
     {{ kafelek(2, 'podgrupa ', $simmed->name_of_student_subgroup(),NULL) }}
 </div>
-<div class="row">
+<div class="row" id="simmed_show">
     {{ kafelek(12, 'informacje (max. 255 znaków)', $simmed->simmed_alternative_title,NULL) }}
 </div>
 <!--div class="row">
@@ -86,7 +86,12 @@
     <form method="POST" action="{{ route('simmeds.descript_update') }}">
         {{ method_field('PUT') }}
         <div class="form-group">
-
+        <h3>info:</h3>
+        <p><i>dostępne są dwa pola do edycji: <strong>poufna notatka</strong> oraz <strong>opis</strong>:<br>
+            <strong>opis</strong>: Służy do zapisywania informacji o przeprowadzonych zajęciach. Co się działo, jakie scenariusze były wykorzystywane, gdzie ich szukać, na co zwracać uwagę, jak sobie ułatwić zajęcia itp.
+            Jest pokazywana jako informacja historyczna przy przeglądaniu kolejnych, podobnych symulacji (taki sam przedmiot i prowadzący). Można ją zobaczyć tylko z poziomu szczegółów symulacji (konkretnej, lub podobnej z późniejszego okresu). Dostępna jest tylko dla techników.<br>
+            <strong>poufna notatka</strong>: Służy do zapisywania dodatkowych ważnych informacji, które jednak nie mają być przekazywane jako informacja historyczna. Pojawia się na pierwszej stronie wcsm.pl pod daną symulacją. 
+        </i></p>
             <label>poufna notatka </label>
             <input type="text" class="form-control" name="simmed_secret" placeholder="dodaj dyskretną notatkę" value="{{$simmed_descript->simmed_secret}}">
 
@@ -107,11 +112,43 @@
             <input type="hidden" name="simmed_id" value="{{$simmed->id}}">
             <input class="btn btn-success col-sm-1" type="submit" name="send" value="Zapisz" class="btn btn-dark btn-block">
             <div class="float-right col-sm-1">
-                <span class="btn btn-info" onclick="showhide()">anuluj</span>
+                <span class="btn btn-info" onclick="showhide('navigation','descript_edit','descript_show')">anuluj</span>
             </div>
         </div>
     </form>
 </div>
+<div class="row" id="simmed_edit" style="display: none;">
+<form method="POST" action="{{ route('simmeds.update') }}">
+    {{ method_field('PUT') }}
+     <div class="form-group">
+        <h3>info:</h3>
+        <p><i>edytowana poniżej informacja jest przypisana do tej symulacji. Widać ją w mailu ze zmianami w symulacjach (dla technika i koordynatora), wyświetla się na pierwszej stronie wcsm.pl pod daną symulacją, nie jest pokazywana jako informacja historyczna przy przeglądaniu kolejnych, podobnych symulacji (taki sam przedmiot i prowadzący)</i></p>
+        <label>informacje</label>
+        <textarea type="text" class="form-control" name="simmed_alternative_title" id="simmed_alternative_title" placeholder="dodatkowe informacje o zajęciach">{{$simmed->simmed_alternative_title}}</textarea>
+
+        <label for="simmed_technician_id">Technik:</label>
+        <select class="form-control" name="simmed_technician_id" id="simmed_technician_id">
+            <option value="0"<?php if (0 == $simmed->simmed_technician_id) echo 'selected="selected"'; ?>>!! brak wyboru !!</option>
+            @foreach ($technicians_list as $technician_one)
+            <option value="{{$technician_one->id}}"<?php if ($technician_one->id == $simmed->simmed_technician_id) echo 'selected="selected"'; ?>>{{$technician_one->lastname}} {{$technician_one->firstname}}</option>
+            @endforeach
+        </select>
+
+    {{ csrf_field() }}
+
+    <input type="hidden" name="id" value="{{$simmed->id}}">
+    <div class="float-right col-sm-2">
+        <input class="btn btn-success" type="submit" name="send" value="Zapisz" class="btn btn-dark btn-block">
+    </div>
+    <div class="float-right col-sm-2">
+        <span class="btn btn-info" onclick="showhide('navigation','simmed_edit','simmed_show')">anuluj</span>
+    </div>
+
+
+    </div>
+</form>
+</div>
+
 @endif
 
 <div class="row" id="navigation" style="display: show;">
@@ -129,11 +166,16 @@
     </div>
 
     @if ($show_edit_button==true)
-        
-        <div class="float-right col-sm-1"><a class="btn btn-info" href="{{route('simmeds.edit', $simmed)}}">Edytuj</a></div>
+        @if (Auth::user()->hasRole('Operator Symulacji'))
+        <div class="float-right col-sm-2"><a class="btn btn-danger" href="{{route('simmeds.edit', $simmed)}}">Edytuj dane symulacji</a></div>
+        @else
+        <div class="float-right col-sm-2"><span class="btn btn-info" onclick="showhide('navigation','simmed_edit','simmed_show')">
+            Edytuj dane symulacji
+            </span></div>
+        @endif
         @if ( Auth::user()->hasRole('Technik') )
-            <div class="float-right col-sm-1"><span class="btn btn-info" onclick="showhide()">
-            @if ($simmed_descript->id == 0) Dodaj opis @else Edytuj opis @endif
+            <div class="float-right col-sm-2"><span class="btn btn-info" onclick="showhide('navigation','descript_edit','descript_show')">
+            @if ($simmed_descript->id == 0) Dodaj opis dla technika @else Edytuj opis dla technika @endif
             </span></div>
         @endif
         @if ( Auth::user()->hasRole('Operator Symulacji') )
@@ -188,11 +230,11 @@
 
 
 <script>
-function showhide() {
-  var x = document.getElementById("navigation");
-  var y = document.getElementById("descript_edit");
-  var z = document.getElementById("descript_show");
-  if (x.style.display === "none") {
+function showhide(f_nav,f_edit,f_show) {
+  var x = document.getElementById(f_nav);
+  var y = document.getElementById(f_edit);
+  var z = document.getElementById(f_show);
+  if (z.style.display === "none") {
     x.style.display = "block";
     y.style.display = "none";
     z.style.display = "block";

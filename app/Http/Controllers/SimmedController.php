@@ -444,6 +444,8 @@ class SimmedController extends Controller
             $data['simmed_descript']=$data['simmed_descript']->first();
         }
 
+        $data['technicians_list']=User::role_users('technicians', 1, 1)->orderBy('lastname')->get();
+
         return view('simmeds.show', compact('simmed'), $data);
     }
 
@@ -600,7 +602,12 @@ class SimmedController extends Controller
         if ($request->id==0)
             $request->id=$modified_row->id;
         
-        return redirect()->route('simmeds.show',[$request->id, 0])->with('success', 'Dane zostały zmienione.');
+        if (strlen($request->simmed_alternative_title)>255)
+            return redirect()->route('simmeds.show',[$request->id, 0])->with('success', 'Dane zostały zmienione, aczkolwiek inforamcja została obcięta do 255 znaków');
+        else
+            return redirect()->route('simmeds.show',[$request->id, 0])->with('success', 'Dane zostały zmienione.');
+
+        
 
     }
 
@@ -631,14 +638,16 @@ class SimmedController extends Controller
             return back()->withErrors('Nie wykryto żadnych zmian...');
 
         $modified_row->simmed_id        = $request->simmed_id;
-        $modified_row->simmed_secret    = $request->simmed_secret;
+        $modified_row->simmed_secret    = substr($request->simmed_secret,0,255);
         $modified_row->simmed_descript  = $request->simmed_descript;
         
         $ret_save=$modified_row->save();
         if ($request->id>0)
             $ret_save=$arc_row->save();
-        
-        return back()->with('success',' Zapis zakończył się sukcesem.');
+        if (strlen($request->simmed_secret)>255)
+            return back()->with('success',' Zapis zakończył się sukcesem, aczkolwiek inforamcja została obcięta do 255 znaków');
+        else
+            return back()->with('success',' Zapis zakończył się sukcesem.');
 
     }
 
