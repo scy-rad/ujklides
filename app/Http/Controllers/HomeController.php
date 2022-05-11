@@ -51,12 +51,24 @@ class HomeController extends Controller
             {
             $ret[$row_data['date']]['date'] = $row_data['date'];
             $ret[$row_data['date']]['wd'] = $row_data['wd'];
-            $ret[$row_data['date']]['wdname'] = DB::table('pl_days')
+            $ret[$row_data['date']]['wdname_sm'] = DB::table('pl_days')
                     ->select('*')
                     ->where('dateN',$row_data['wd'])
                     ->get()
                     ->first()
                     ->pl_day_short;
+            $ret[$row_data['date']]['wdname'] = DB::table('pl_days')
+                ->select('*')
+                ->where('dateN',$row_data['wd'])
+                ->get()
+                ->first()
+                ->pl_day;
+            $ret[$row_data['date']]['monthname'] = DB::table('pl_months')
+                ->select('*')
+                ->where('id',date('m',strtotime($row_data['date'])))
+                ->get()
+                ->first()
+                ->pl_month;
 
             $ret[$row_data['date']]['simmeds'] = Simmed::simmeds_join('without_free','without_deleted','without_send')
                     ->where('simmed_technician_id',Auth::user()->id)

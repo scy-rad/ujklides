@@ -1,11 +1,7 @@
 @extends('layouts.app')
 <?php 
-$curr_date='';
-$dni_tygodnia = array( 'Niedziela', 'Poniedzialek', 'Wtorek', 'Sroda', 'Czwartek', 'Piatek', 'Sobota' );
-
 function rowek($simmed)
     {
-        //dump($simmed);
         $link=[$simmed->id, 0];
     ?>
         <div class="row border border-dark" style="height: 100%;">
@@ -26,7 +22,7 @@ function rowek($simmed)
             <div class="col-md-1 col-sm-4 col-xs-8 {{$simmed->character_colour}}">
                 {{$simmed->character_name}}
                 </div>
-            <div class="col-md-1 col-sm-2 col-xs-4 {{$simmed->character_colour}}" style="height: 100%;">
+            <div class="col-md-1 col-sm-2 col-xs-4 {{$simmed->character_colour}}" style="height: 100%; ">
                 {{$simmed->student_group_code}}&nbsp;
             </div>
 
@@ -53,6 +49,8 @@ function rowek($simmed)
 
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/technician_characters.css')}}" />
 <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/worktime_types.css')}}" />
+<link rel="stylesheet" type="text/css" href="{{ URL::asset('css/home.css')}}" />
+
 
 <div class="panel panel-default">
     <!--div class="panel-heading"><img src="{{ asset('img/cmscsm/csm_ujk.svg') }}" width="50%"></div-->
@@ -66,30 +64,31 @@ function rowek($simmed)
 
         @if (Auth::user()->hasRole('Technik'))
             @foreach ($home_data as $row_one)
-                <div class="row bg-warning" style="border-top: 0.2rem solid black;">
-                    <div class="col-sm-6 col-xs-12">
-                    <h3>
+                <div class="row" style="border-top: 0.2rem solid black;">
+                    <div class="col-sm-3 col-xs-4">
                     <a href="/scheduler/{{$row_one['date']}}">
-                        {{$row_one['date']}} 
-                        <span class="glyphicon glyphicon glyphicon-tasks text-success" aria-hidden="true"></span>
-                        ({{$row_one['wdname'] }})
+                        <div class="callendar_card">
+                            <div class="callendar_month">{{$row_one['wdname']}}</div>
+                            {{substr($row_one['date'],8,2)}}
+                            <div class="callendar_ico"><span class="glyphicon glyphicon glyphicon-tasks text-success" aria-hidden="true"></span></div>
+                            <div class="callendar_weekday">{{$row_one['monthname']}}</div>
+                        </div>
+
                     </a>
-                    </h3>
                     </div>
-                    <div class="col-sm-6 col-xs-12">
-                    <h3 class="text-right">
-                    <span style="font-size: 1.25rem">
+                    <div class="col-sm-3 col-xs-8 text-center">
                         @foreach ($row_one['work_times']['work_types'] as $row_time)
                             [{{$row_time}}]
                         @endforeach
-                    </span>
-                    <a href="{{route('worktime.day_data', [ $row_one['date'], Auth::user()->id ])}}">
+                        <hr style="margin:0rem;">
+                    <a class="time" href="{{route('worktime.day_data', [ $row_one['date'], Auth::user()->id ])}}">
                         @foreach ($row_one['work_times']['times'] as $row_time)
-                            [{{$row_time['start']}} - {{$row_time['end']}}]
+                            [{{$row_time['start']}}-{{$row_time['end']}}]
                         @endforeach
+                        <hr style="margin:0rem;">
                         <span class="glyphicon glyphicon glyphicon-briefcase text-success" aria-hidden="true"></span>
                     </a>
-                    </h3>
+
                     </div>
                 </div>
                 @foreach ($row_one['simmeds'] as $simmed)                 
