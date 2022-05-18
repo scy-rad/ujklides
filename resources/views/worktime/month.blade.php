@@ -95,7 +95,8 @@
         <h3>czas pracy: {{$total['times']}}</h3>
 
         <h3>planowo godzin: {{$total['month_data']->hours_to_work}}</h3>
-        @if (Auth::user()->hasRole('Operator Kadr'))
+        @if ( (Auth::user()->hasRole('Operator Kadr')) &&
+                (\App\WorkAttendance::where('date','=',$filtr['month'].'-01')->get()->first() === null) )
         <form action="{{ route('worktime.month') }}" method="get">
             <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
             <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">

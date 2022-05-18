@@ -315,6 +315,16 @@ Route::post('worktime/save', [
     'as' => 'worktime.save_data'
 ]);
 
+Route::get('worktime/attendance', [
+    'uses' => 'WorkTimeController@show_attendances',
+    'as' => 'worktime.show_attendances'
+]);
+
+Route::post('worktime/edit_attendance', [
+    'uses' => 'WorkTimeController@edit_attendance',
+    'as' => 'worktime.edit_attendance'
+]);
+
 
 /////////////////////////////////////////////////////////
 //   L I B R A R I E S

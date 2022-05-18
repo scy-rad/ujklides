@@ -21,6 +21,12 @@ class WorkTimeController extends Controller
         if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator') && !Auth::user()->hasRole('Technik'))
         return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
 
+
+        if ( ($request->workcard=='generate') && (\App\WorkAttendance::where('date','=',$request->month.'-01')->get()->first() != null) ) 
+        return back()->withErrors(['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'nie możesz generować karty czasu pracy','description'=>'Wygenerowana jest już lista obecności za '.$request->month]);
+
+        
+
         $ret_row=WorkTime::selectRaw(" MIN(date) AS StartDate, MAX(date) AS EndDate")->get()->first();
         
         $current=date('Y-m-01',strtotime($ret_row->StartDate));
@@ -1111,25 +1117,49 @@ class WorkTimeController extends Controller
 
                 default:
                     dd('WorkTimeController Statistics per technicians - wrong perspective...');
-    
-    
-
         }
-
-
-
-
-
-        
-
         return view('worktime/statpertech',['return_table' => $return_table, 'filtr' => $filtr ]);
-
     }
 
 
 
 
 
+    public function show_attendances(Request $request)
+    {
+
+        $attendances_tab=\App\WorkTimeToHr::select(\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m") as dateHR'), 'work_attendances.date as dateWA')
+        ->leftjoin('work_attendances',\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m")'),'=',\DB::raw('DATE_FORMAT(work_attendances.date,"%Y-%m")'))
+        ->distinct()->OrderBy('dateHR', "DESC")->get();
+
+        return view('worktime/attendances',['attendances_tab' => $attendances_tab]);
+    }
+
+    public function edit_attendance(Request $request)
+    {
+
+        if (!Auth::user()->hasRole('Operator Kadr'))
+        return view('error',['head'=>'błąd wywołania funkcji edit_attendance kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
+
+        switch ($request->action)
+        {
+        case 'remove':
+            $to_remove=\App\WorkAttendance::where('date','=',$request->dateHR)->get()->first()->delete();
+            break;
+        case 'add':
+            $to_add=new \App\WorkAttendance;
+            $to_add->date = $request->dateHR;
+            $to_add->save();
+            break;
+        }
+
+        $attendances_tab=\App\WorkTimeToHr::select(\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m") as dateHR'), 'work_attendances.date as dateWA')
+        ->leftjoin('work_attendances',\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m")'),'=',\DB::raw('DATE_FORMAT(work_attendances.date,"%Y-%m")'))
+        ->distinct()->OrderBy('dateHR', "DESC")->get();
+
+        return back()->with('success','usunięto lub stworzono listę obecności.');    
+        //return view('worktime/attendances',['attendances_tab' => $attendances_tab]);
+    }
 
 
     /**

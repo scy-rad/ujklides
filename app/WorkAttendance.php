@@ -1,0 +1,15 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+
+
+class WorkAttendance extends Model
+{
+    //
+    public $timestamps = true;
+
+
+}
