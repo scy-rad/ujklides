@@ -325,6 +325,11 @@ Route::post('worktime/edit_attendance', [
     'as' => 'worktime.edit_attendance'
 ]);
 
+Route::post('worktime/print_attendance', [
+    'uses' => 'WorkTimeController@print_attendance',
+    'as' => 'worktime.print_attendance'
+]);
+
 
 /////////////////////////////////////////////////////////
 //   L I B R A R I E S

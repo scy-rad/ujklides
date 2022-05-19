@@ -26,15 +26,22 @@
         </div>
         @else
         </div>
-        <div class="col-sm-3">
-        <form action="{{ route('worktime.edit_attendance') }}" method="post">
+        <div class="col-sm-2">
+        <form action="{{ route('worktime.print_attendance') }}" method="post">
             {{ csrf_field() }}
-            <input type="hidden" name="dateHR" value="{{$row_one->dateHR}}-01">
-            <input type="hidden" name="action" value="print">
+            <select class="form-select" size="3" name="users_table[]" multiple>
+                @foreach ($technicians as $technician_one)
+                <option value="{{$technician_one->id}}">{{$technician_one->id}} {{$technician_one->lastname}} {{$technician_one->firstname}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-sm-2">
+            <input type="hidden" name="dateHR" value="{{$row_one->dateHR}}">
+            <input type="hidden" name="action" value="print2">
             <input class="btn btn-primary btn-sm d-inline" type="submit" value="wydrukuj listę {{$row_one->dateHR}}">
         </form>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
         <form action="{{ route('worktime.edit_attendance') }}" method="post">
             {{ csrf_field() }}
             <input type="hidden" name="dateHR" value="{{$row_one->dateWA}}">

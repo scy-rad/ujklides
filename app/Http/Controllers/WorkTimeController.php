@@ -1128,12 +1128,18 @@ class WorkTimeController extends Controller
     public function show_attendances(Request $request)
     {
 
+        $technicians = \App\User::role_users('technicians', 1, 0)
+        ->where('id','<>',\App\Param::select('*')->orderBy('id','desc')->get()->first()->technician_for_simmed)
+        ->orderBy('lastname')->orderBy('firstname')->get(); 
+
+
         $attendances_tab=\App\WorkTimeToHr::select(\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m") as dateHR'), 'work_attendances.date as dateWA')
         ->leftjoin('work_attendances',\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m")'),'=',\DB::raw('DATE_FORMAT(work_attendances.date,"%Y-%m")'))
         ->distinct()->OrderBy('dateHR', "DESC")->get();
 
-        return view('worktime/attendances',['attendances_tab' => $attendances_tab]);
+        return view('worktime/attendances',['attendances_tab' => $attendances_tab, 'technicians' => $technicians]);
     }
+
 
     public function edit_attendance(Request $request)
     {
@@ -1161,6 +1167,53 @@ class WorkTimeController extends Controller
         //return view('worktime/attendances',['attendances_tab' => $attendances_tab]);
     }
 
+    public function print_attendance(Request $request)
+    {
+        $begin = strtotime($request->dateHR.'-01');
+        $end   = strtotime($request->dateHR.'-01 + 1 month');
+        $head['month_name']=DB::table('pl_months')->find(date('m', $begin))->pl_month;
+        $head['year']=date('Y',$begin);
+
+        for($i = $begin; $i < $end; $i = $i+86400 )
+        {
+            $tab_day[date('Y-m-d',$i)]=['AL_begin' => '','AL_end' => '', 'cell_class' => "free_day"];
+            $days_tab[date('Y-m-d',$i)]=['number'=>date('Y-m-d',$i), 'day'=>date('d',$i), 'year'=>date('Y',$i), 'day_of_week' => DB::table('pl_days')->find(date('w', $i)+1)->pl_day_short];
+        }
+
+        $technicians = \App\User::role_users('technicians', 1, 0)
+        ->wherein('id',$request->users_table)
+        ->orderBy('lastname')->orderBy('firstname')->get(); 
+
+        foreach($technicians as $technician_one)
+        {
+            $big_tab[$technician_one->id]=$tab_day;
+            $users_tab[$technician_one->id]=$technician_one;
+        }
+
+        $attendances_tab=\App\WorkTimeToHr::select(
+            'date',
+            'user_id',
+            DB::raw("(CASE WHEN over_under='2' THEN o_time_begin ELSE time_begin END) as AL_begin"),
+            DB::raw("(CASE WHEN over_under='2' THEN o_time_end WHEN over_under='1' THEN o_time_begin ELSE time_end END) as AL_end")
+        )
+        ->where(\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m")'),'=',$request->dateHR)
+        ->orderBy('date')
+        ->orderBy('user_id')
+        ->get();
+        
+ 
+    foreach ($attendances_tab as $row_one)  
+    {
+        if (!(is_null($row_one->AL_begin)))
+        $big_tab[$row_one->user_id][$row_one->date]['cell_class']="";
+        $big_tab[$row_one->user_id][$row_one->date]['AL_begin']=substr($row_one->AL_begin,0,5);
+        $big_tab[$row_one->user_id][$row_one->date]['AL_end']=substr($row_one->AL_end,0,5);
+    }
+
+    return view('worktime/print_attendance_list', [ 'big_tab' => $big_tab, 'users_tab' => $users_tab, 'days_tab' => $days_tab, 'head' => $head ]);
+
+
+    }
 
     /**
      * Display a listing of the resource.
