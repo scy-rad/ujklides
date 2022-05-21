@@ -44,7 +44,7 @@
         <nav class="navbar navbar-default navbar-static-top">
             <div class="container">
         @else
-        @if (Auth::user()->hasRole('Administrator'))
+        @if (Auth::user()->hasRoleCode('administrators'))
         <nav class="navbar navbar-default navbar-static-top" style="background: red">
             <div class="container" style="background: yellow">
         @else
@@ -90,7 +90,7 @@
                                         <li><a href="/items/wszystko">wszystko</a></li>
                                     */ ?>
                                     <?php /* @if (Auth::user()->CenterRole('Operator Zasobów','CSM-Lek')) */ ?>
-                                    @if (Auth::user()->hasRole('Operator Zasobów'))
+                                    @if (Auth::user()->hasRoleCode('itemoperators'))
                                         <br>
                                         <li style="background-color: #FF0;"><a href="/ManItem">zarządzanie</a></li>
                                     @endif
@@ -103,15 +103,15 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ route('simmeds.index') }}">Bieżące (+7d)</a></li>
                                     <!--li><a href="{{ route('simmeds.index',['route' => 'month']) }}">Bieżący miesiąc</a></li-->
-                                    @if ( (Auth::user()->hasRole('Technik')) || (Auth::user()->hasRole('koordynator'))|| (Auth::user()->hasRole('Operator Kadr')) || (Auth::user()->hasRole('Operator Symulacji')) )
+                                    @if ( (Auth::user()->hasRoleCode('technicians')) || (Auth::user()->hasRoleCode('coordinators'))|| (Auth::user()->hasRoleCode('hroperators')) || (Auth::user()->hasRoleCode('simoperators')) )
                                     <!--li><a href="{{ route('simmeds.index',['route' => 'all']) }}">Wszystkie</a></li-->
                                     <li><a href="{{ route('simmeds.scheduler',date('Y-m-d')) }}">Dziś (no free)</a></li>
                                     <!--li><a href="{{ route('simmeds.timetable') }}">Terminarz</a></li-->
                                     @endif
-                                    @if ( (Auth::user()->hasRole('Technik')) || (Auth::user()->hasRole('Operator Symulacji')) )
+                                    @if ( (Auth::user()->hasRoleCode('technicians')) || (Auth::user()->hasRoleCode('simoperators')) )
                                     <li><a href="{{ route('simmeds.plane') }}">Planowanie</a></li>
                                     @endif
-                                    @if ( (Auth::user()->hasRole('Technik')) || (Auth::user()->hasRole('Operator Kadr'))  || (Auth::user()->hasRole('Koordynator')) )
+                                    @if ( (Auth::user()->hasRoleCode('technicians')) || (Auth::user()->hasRoleCode('hroperators'))  || (Auth::user()->hasRoleCode('coordinators')) )
                                     <br>
                                     <li><a href="{{ route('worktime.month') }}">Czas pracy</a></li>
                                     <li><a href="{{ route('worktime.statistics') }}">Statystyki</a></li>
@@ -121,7 +121,7 @@
 
 
                                     <?php /* @if (Auth::user()->CenterRole('Operator Symulacji','CSM-Piel')) */ ?>
-                                    @if (Auth::user()->hasRole('Operator Symulacji'))
+                                    @if (Auth::user()->hasRoleCode('simoperators'))
                                     <br>
                                     <li style="background-color: #FF0;"><a href="{{ route('mansimmeds.index') }}">zarządzanie</a></li>
                                     @endif
@@ -137,11 +137,13 @@
                                     <li><a href="/users/{{$row->roles_code}}">{{$row->roles_names}}</a></li>
                                     @endif
                                     @endforeach
-                                    @if (Auth::user()->hasRole('Operator Kadr'))
+                                    @if (Auth::user()->hasRoleCode('hroperators'))
                                     <br>
                                     <div style="background-color: #FF0;">
                                     <li><a href="/users/everybody">Wszyscy</a></li>
-                                    <li><a href="{{ route('libraries.workmonths') }}">ustal czas pracy </a></li>
+                                    <li><a href="{{ route('libraries.user_titles') }}"> Tytuły naukowe </a></li>
+                                    <li><a href="{{ route('libraries.workmonths') }}"> Miesięczny czas pracy </a></li>
+                                    <li><a href="{{ route('worktime.show_attendances') }}"> Listy obecności </a></li>
                                     <li><a href="#">zarządzanie</a></li>
                                     </div>
                                     @endif
@@ -175,20 +177,15 @@
                                 <a data-toggle="dropdown" href="#" class="dropdown-toggle">Administracja <b class="caret"></b></a>   
                                 <ul class="dropdown-menu">
 
-                                    @if (Auth::user()->hasRole('Operator Symulacji'))
+                                    @if (Auth::user()->hasRoleCode('simoperators'))
                                     <li><a href="{{ route('libraries.student_groups') }}"> Grupy studendckie </a></li>
                                     <li><a href="{{ route('libraries.subjects') }}"> Tematy </a></li>
                                     <li><a href="{{ route('libraries.rooms') }}"> Sale </a></li>
                                     @endif
-                                    @if (Auth::user()->hasRole('Operator Kadr'))
-                                    <li><a href="{{ route('libraries.user_titles') }}"> Tytuły naukowe </a></li>
-                                    <li><a href="{{ route('libraries.workmonths') }}"> Miesięczny czas pracy </a></li>
-                                    <li><a href="{{ route('worktime.show_attendances') }}"> Listy obecności </a></li>
-                                    
-                                    @endif
-                                    @if ( (Auth::user()->hasRole('Operator Symulacji'))
-                                        || (Auth::user()->hasRole('Operator Kadr'))
-                                        || (Auth::user()->hasRole('Administrator'))
+
+                                    @if ( (Auth::user()->hasRoleCode('simoperators'))
+                                        || (Auth::user()->hasRoleCode('hroperators'))
+                                        || (Auth::user()->hasRoleCode('administrators'))
                                     )
                                     <li><a href="{{ route('libraries.params_show') }}"> Parametry </a></li>
                                     @endif
