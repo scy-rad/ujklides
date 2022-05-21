@@ -25,7 +25,8 @@
   <?php //function m2hcard($timeX) { return floor($timeX/60).':'.str_pad($timeX%60, 2, '0', STR_PAD_LEFT); } ?>
 
 <p class="smalltxt aright">Załącznik nr 8 do Regulaminu Pracy w Uniwersytecie Jana Kochanowskiego w Kielcach</small>
-<h1>LISTA OBECNOŚCI PRACOWNIKÓW CENTRUM SYMULACJI MEDYCZNYCH</h1> 
+<h1>LISTA OBECNOŚCI PRACOWNIKÓW {{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name_wersal}}</h1>
+ 
 <h2>harmonogram pracy {{$total['month_name']}} {{$total['year']}}</h2>
         <!--h3>planowo godzin: {{$total['month_data']->hours_to_work}}</h3-->
 <div style="width: 90%; margin: auto">
@@ -94,7 +95,7 @@
 <p>razem: <strong>{{$total['hrtimes_over']}}</strong> godzin.</b>
 
 <h2>uzasadnienie</h2>
-<p>Nadgodziny wynikają ze specyfiki pracy personelu technicznego w Centrum Symulacji Medycznych.</p>
+<p>Nadgodziny wynikają ze specyfiki pracy personelu technicznego w {{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name}}.</p>
 <p>.........................................................................................................................................................<br><br>
 .........................................................................................................................................................<br><br>
 .........................................................................................................................................................<br><br>
@@ -126,7 +127,7 @@
 <p><strong>{{$user->full_name()}}</strong><br>
 <span class="mediumtxt aitalic">(imię i nazwisko)</span></p`>
 <br>
-<p><strong>Centrum Symulacji Medycznych</strong><br>
+<p><strong>{{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name_wersal}}</strong><br>
 <span class="mediumtxt aitalic">(jednostka organizacyjna)</span></p>
 <br>
 <br>
@@ -153,7 +154,7 @@
         $tekstA=' w kolejnym miesiącu';
 ?>
 <p>w zamian za czas przepracowany w godzinach nadliczbowych {{$tekstA}}.<br>
-Zastępstwo pełnić będą wybrani pracownicy Centrum Symulacji Medycznych.</p>
+Zastępstwo pełnić będą wybrani pracownicy {{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name}}.</p>
 <hr>
 @if ($total['hrminutes_over'] > $total['hrminutes_under'])
     <p>ilość godzin w miesiącu <strong>{{$total['month_name']}} {{$total['year']}}</strong> przepracowanych powyżej normy: <strong>{{floor(($total['hrminutes_over']-$total['hrminutes_under'])/60).':'.str_pad(($total['hrminutes_over']-$total['hrminutes_under'])%60, 2, '0', STR_PAD_LEFT)}}</strong> (do odbioru do końca kwartału)</p>
@@ -209,7 +210,7 @@ Zastępstwo pełnić będą wybrani pracownicy Centrum Symulacji Medycznych.</p>
 <p><strong>{{$user->full_name()}}</strong><br>
 <span class="mediumtxt aitalic">(imię i nazwisko)</span></p`>
 <br>
-<p><strong>Centrum Symulacji Medycznych</strong><br>
+<p><strong>{{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name_wersal}}</strong><br>
 <span class="mediumtxt aitalic">(jednostka organizacyjna)</span></p>
 <br>
 <br>
@@ -252,7 +253,7 @@ Zastępstwo pełnić będą wybrani pracownicy Centrum Symulacji Medycznych.</p>
 @endif
 <br>
 <p>w zamian za czas przepracowany w godzinach nadliczbowych w terminie {{date('d-m-Y',strtotime($filtr['month'].'-01'))}} &minus; {{date('t-m-Y',strtotime($filtr['month'].'-01'))}}.<br>
-Zastępstwo pełnić będą wybrani pracownicy Centrum Symulacji Medycznych.</p>
+Zastępstwo pełnić będą wybrani pracownicy {{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name}}.</p>
 <hr>
 <div style="width: 100%;">
     <div style="border-top: 1px dotted black; width: 400px; margin-top: 60px; float:right; clear:both; ">

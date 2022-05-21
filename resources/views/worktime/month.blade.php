@@ -40,10 +40,9 @@
     <form action="{{ route('worktime.month') }}" method="get">
         <div class="row">
         <div class="col-sm-2">
-            <label for"technician">technik:</label><br>
+            <label for"technician">pracownik:</label><br>
             <select class="form-control" name="technician">
-            @foreach (app\user::role_users('technicians', 1, 0)
-               ->where('id','<>',\App\Param::select('*')->orderBy('id','desc')->get()->first()->technician_for_simmed)
+            @foreach (app\user::role_users('workers', 1, 0)
                ->orderBy('name')->get() as $tech_one)
                 <option value="{{$tech_one->id}}"<?php if ($filtr['user']==$tech_one->id) echo ' selected'?>>{{$tech_one->name}} [{{$tech_one->full_name()}}]</option>
             @endforeach

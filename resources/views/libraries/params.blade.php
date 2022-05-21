@@ -43,6 +43,11 @@
 <form action="{{ route('libraries.params_save') }}" method="post">
     
     <div class="form-group">
+        <label for"unit_name">nazwa jednostki:</label>
+        <input type="text" class="form-control" name="unit_name" value="{{$params->unit_name}}">
+        <label for"unit_name">nazwa jednostki (wersaliki):</label>
+        <input type="text" class="form-control" name="unit_name_wersal" value="{{$params->unit_name_wersal}}">
+    
         <label for"leader_for_simmed">leader_for_simmed:</label>
           <select class="form-control" name="leader_for_simmed">
               @foreach ($leaders_list as $leader_one)

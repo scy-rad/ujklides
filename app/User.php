@@ -218,7 +218,7 @@ class User extends Authenticatable
     public function remove_roles($role_id, $center_id) {
         return RolesHasUsers::where('roles_has_users_users_id', '=', $this->id)
         ->where('roles_has_users_roles_id','=',$role_id)
-        ->where('roles_has_users_center_id','=',$center_id)
+        //->where('roles_has_users_center_id','=',$center_id)
         ->delete();
     }
 
@@ -242,6 +242,13 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         if ($this->roles()->where('roles_name', $role)->first()) {
+            return true;
+        }
+        return false;
+    }
+    public function hasRoleCode($role)
+    {
+        if ($this->roles()->where('roles_code', $role)->first()) {
             return true;
         }
         return false;

@@ -31,14 +31,14 @@
   <body>
 
 <p class="smalltxt aright">Załącznik nr 8 do Regulaminu Pracy w Uniwersytecie Jana Kochanowskiego w Kielcach</small>
-<h1>LISTA OBECNOŚCI PRACOWNIKÓW CENTRUM SYMULACJI MEDYCZNYCH</h1> 
+<h1>LISTA OBECNOŚCI PRACOWNIKÓW {{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name_wersal}}</h1> 
 <br>
 <h2>COLLEGIUM MEDICUM</h2>
 <br>
 <table>
     <tr>
         <th>
-            {{$head['month_name']}}
+            {{$head['month_name']}}<br>
             {{$head['year']}}
         </th>
         @foreach ($users_tab as $user_one)

@@ -51,13 +51,11 @@ class WorkTimeController extends Controller
             $filtr['month'] = date('Y-m');
         if ($request->technician==0)
             {
-            if (Auth::user()->hasRole('Technik'))
+            if (Auth::user()->hasRoleCode('workers'))
                 $filtr['user'] = Auth::user()->id;
             else
-                $filtr['user'] = \App\User::role_users('technicians', 1, 0)
-                ->where('id','<>',\App\Param::select('*')->orderBy('id','desc')->get()->first()->technician_for_simmed)
+                $filtr['user'] = \App\User::role_users('workers', 1, 0)
                 ->orderBy('name')->get()->first()->id; 
-                //User::nobody()->id;
             }
         else
             $filtr['user'] = $request->technician;
@@ -286,6 +284,10 @@ class WorkTimeController extends Controller
             ->where('work_month','=',date('Y-m-d',$begin))
             ->get()
             ->first();
+
+        if ($total['month_data']==null)
+            return back()->withErrors(['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'nie ustalono miesięcznego czasu pracy','description'=>'Określ pracownkowi MIESIĘCZNY CZAS PRACY (Administracja)']);
+
         
         $total['month_name']=DB::table('pl_months')->find(date('m', $begin))->pl_month;
         $total['year']=date('Y', $begin);
@@ -313,10 +315,6 @@ class WorkTimeController extends Controller
         }
 
         $total['quarter_stop']=date('Y-m-t',strtotime($filtr['month'].'-01'));
-            
-        
-        
-
 
         if (isset($request->csv))
         {
@@ -426,12 +424,15 @@ class WorkTimeController extends Controller
         }
         elseif ($request->workcard=='generate') //sending e-mails
         {
-            $roles_OpKadr_id=\App\Roles::where('roles_name', 'Operator Kadr')
+            $roles_OpKadr_id=\App\Roles::where('roles_code', 'hroperators')
                 ->pluck('id')
                 ->toArray();
             $roles_OpKadr=\App\RolesHasUsers::whereIn('roles_has_users_roles_id',$roles_OpKadr_id)
                 ->pluck('roles_has_users_users_id')
                 ->toArray();
+
+            dump('In line 437 user model temporary added happy user 13 :)');
+
             $coordinator_OpKadr_users = User::whereIn('id',$roles_OpKadr)
                 ->orWhere('id',13)
                 ->orWhere('id',$user->id)
@@ -477,11 +478,11 @@ class WorkTimeController extends Controller
 
     public function day_data($date, $user_id)
     {
-        if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator') && !Auth::user()->hasRole('Technik'))
+        if (!Auth::user()->hasRoleCode('hroperators') && !Auth::user()->hasRoleCode('administrators') && !Auth::user()->hasRoleCode('technicians'))
             return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
 
-        if (!User::find($user_id)->hasRole('Technik'))
-            return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'niewłaściwe pytanie','description'=>'czas pracy liczony jest tylko dla techników']);
+        if (!User::find($user_id)->hasRoleCode('workers'))
+            return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'niewłaściwe pytanie','description'=>'czas pracy liczony jest tylko dla pracowników']);
 
         if ( \App\WorkMonth::select('*')->where('work_month','=',date('Y-m-01',strtotime($date)))->where('user_id',$user_id)->get()->count() == 0 )
             return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'niewłaściwa data','description'=>'dla podanego miesiąca nie wygenerowano jeszcze czasu pracy']);
@@ -1128,23 +1129,32 @@ class WorkTimeController extends Controller
     public function show_attendances(Request $request)
     {
 
-        $technicians = \App\User::role_users('technicians', 1, 0)
-        ->where('id','<>',\App\Param::select('*')->orderBy('id','desc')->get()->first()->technician_for_simmed)
-        ->orderBy('lastname')->orderBy('firstname')->get(); 
 
 
         $attendances_tab=\App\WorkTimeToHr::select(\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m") as dateHR'), 'work_attendances.date as dateWA')
         ->leftjoin('work_attendances',\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m")'),'=',\DB::raw('DATE_FORMAT(work_attendances.date,"%Y-%m")'))
         ->distinct()->OrderBy('dateHR', "DESC")->get();
 
-        return view('worktime/attendances',['attendances_tab' => $attendances_tab, 'technicians' => $technicians]);
+    foreach ($attendances_tab as $attendance_one)
+        {
+
+            $attendances_users_ids=\App\WorkTimeToHr::where(\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m")'),'=',$attendance_one->dateHR)
+            ->distinct()
+            ->pluck('user_id')
+            ->toArray();
+
+            $technicians = \App\User::whereIn('id', $attendances_users_ids)
+            ->orderBy('lastname')->orderBy('firstname')->get(); 
+        $ret_table[]=['list' => $attendance_one, 'users' => $technicians];
+        }
+        return view('worktime/attendances',['big_table' => $ret_table]);
     }
 
 
     public function edit_attendance(Request $request)
     {
 
-        if (!Auth::user()->hasRole('Operator Kadr'))
+        if (!Auth::user()->hasRoleCode('hroperators'))
         return view('error',['head'=>'błąd wywołania funkcji edit_attendance kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
 
         switch ($request->action)
@@ -1169,10 +1179,17 @@ class WorkTimeController extends Controller
 
     public function print_attendance(Request $request)
     {
+        if ($request->users_table==null)
+            return back()->withErrors(['head'=>'Nie można stworzyć listy obecności','title'=>'...','description'=>'Nie wybrano pracowników do listy']);
+
+
         $begin = strtotime($request->dateHR.'-01');
         $end   = strtotime($request->dateHR.'-01 + 1 month');
         $head['month_name']=DB::table('pl_months')->find(date('m', $begin))->pl_month;
         $head['year']=date('Y',$begin);
+
+        $technicians = \App\User::wherein('id',$request->users_table)
+        ->orderBy('lastname')->orderBy('firstname')->get(); 
 
         for($i = $begin; $i < $end; $i = $i+86400 )
         {
@@ -1180,9 +1197,6 @@ class WorkTimeController extends Controller
             $days_tab[date('Y-m-d',$i)]=['number'=>date('Y-m-d',$i), 'day'=>date('d',$i), 'year'=>date('Y',$i), 'day_of_week' => DB::table('pl_days')->find(date('w', $i)+1)->pl_day_short];
         }
 
-        $technicians = \App\User::role_users('technicians', 1, 0)
-        ->wherein('id',$request->users_table)
-        ->orderBy('lastname')->orderBy('firstname')->get(); 
 
         foreach($technicians as $technician_one)
         {
@@ -1200,15 +1214,14 @@ class WorkTimeController extends Controller
         ->orderBy('date')
         ->orderBy('user_id')
         ->get();
-        
- 
-    foreach ($attendances_tab as $row_one)  
-    {
-        if (!(is_null($row_one->AL_begin)))
-        $big_tab[$row_one->user_id][$row_one->date]['cell_class']="";
-        $big_tab[$row_one->user_id][$row_one->date]['AL_begin']=substr($row_one->AL_begin,0,5);
-        $big_tab[$row_one->user_id][$row_one->date]['AL_end']=substr($row_one->AL_end,0,5);
-    }
+
+        foreach ($attendances_tab as $row_one)  
+        {
+            if (!(is_null($row_one->AL_begin)))
+            $big_tab[$row_one->user_id][$row_one->date]['cell_class']="";
+            $big_tab[$row_one->user_id][$row_one->date]['AL_begin']=substr($row_one->AL_begin,0,5);
+            $big_tab[$row_one->user_id][$row_one->date]['AL_end']=substr($row_one->AL_end,0,5);
+        }
 
     return view('worktime/print_attendance_list', [ 'big_tab' => $big_tab, 'users_tab' => $users_tab, 'days_tab' => $days_tab, 'head' => $head ]);
 

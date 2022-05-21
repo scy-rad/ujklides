@@ -109,19 +109,11 @@ public function save_workmonth(Request $request)
 
 
         $users = \App\WorkMonth::select("user_id")->where('work_month',$request->month_selected.'-01')->get()->toArray();    //->get();
-        $no_technician=\App\Param::select('*')->orderBy('id','desc')->get()->first()->technician_for_simmed;
 
-        $users = \App\User::role_users('technicians', 1, 1)
+        $users = \App\User::role_users('workers', 1, 1)
         ->whereNotIn('id',$users)
-        ->where('id','<>',$no_technician)
         ->get();
         $reti='';
-
-
-        
-
-        // for($i=$request->month_selected.'-01'; $i++; $i==date('Y-m-t',strtotime($request->month_selected.'-01')))
-        // dump($i);
         
         if ($users->count()>0)
         {
@@ -220,7 +212,8 @@ public function params_save(Request $request)
         {
             if ( (is_null($request->worktime_days_edit_back)) ||  (!is_numeric($request->worktime_days_edit_back)) )
                 return back()->withErrors('worktime_days_edit_back musi być liczbą... ['.$request->worktime_days_edit_back.']');
-
+                $Param->unit_name               = $request->unit_name;
+                $Param->unit_name_wersal        = $request->unit_name_wersal;
                 $Param->worktime_days_edit_back = $request->worktime_days_edit_back;
         }
         $Param->save();

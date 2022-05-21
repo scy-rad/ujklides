@@ -63,7 +63,7 @@ if (!Auth::user()->hasRole('Operator Kadr'))
       <tr>
           <th scope="col">id</th>
           <th scope="col" data-sortable="true">miesiąc</th>
-          <th scope="col" data-sortable="true">technik</th>
+          <th scope="col" data-sortable="true">pracownik</th>
           <th scope="col">godz.do przepracowania</th>
           <th scope="col" data-sortable="true">godz. przepracowane</th>
           <th scope="col">przeliczone</th>
