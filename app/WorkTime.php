@@ -20,20 +20,24 @@ class WorkTime extends Model
 
     public static function activity_for_scheduler($day) 
     {
-        $simdays=Simmed::simmeds_join('without_free','without_deleted','without_send')
-        ->where('simmed_date','=',$day);
-
-        $workdays=WorkTime::select('*','work_times.description as simdescript')
-        ->where('date','=',$day)
-        ->where('work_times.status','=',1)
-        ->leftjoin('work_time_types','work_times.work_time_types_id','=','work_time_types.id')
-        ->get();
-
         $technicians=User::role_users('technicians', 1, 1)
         ->select('id', 'name as title', \DB::raw('"CSM tech" as subtitle'))
         ->orderBy('name')
         ->get();
-        
+        $tech_array=$technicians->pluck('id')->toArray();
+  
+        $simdays=Simmed::simmeds_join('without_free','without_deleted','without_send')
+        ->where('simmed_date','=',$day)
+        //->WhereIn('simmeds.simmed_technician_id',$technicians->pluck('id')->toArray())
+        ;
+      
+        $workdays=WorkTime::select('*','work_times.description as simdescript')
+        ->where('date','=',$day)
+        ->where('work_times.status','=',1)
+        ->whereIn('work_times.user_id',$technicians->pluck('id')->toArray())
+        ->leftjoin('work_time_types','work_times.work_time_types_id','=','work_time_types.id')
+        ->get();
+
         $tabela=null;
         $row_no=0;
 
@@ -89,7 +93,10 @@ class WorkTime extends Model
             $work_one['character']='symulacja: '.$simone->character_name;
             $work_one['simdescript']=$simone->student_subject_name;//.' ['.$workday->student_group_name.', '.$workday->subgroup_name.']';
 
-            $tabela[$simone->technician_id*1]['sim'][] = $work_one;
+            if ( ($simone->technician_id*1==0) || in_array($simone->technician_id,$tech_array,TRUE) )
+                $tabela[$simone->technician_id*1]['sim'][] = $work_one;
+            else
+                dump('ERROR. Jeśli to widzisz - prześlij poniższe dane Administratorowi systemu',$work_one);
         }
 
         $zwrocik='';
