@@ -21,11 +21,8 @@ class WorkTimeController extends Controller
         if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator') && !Auth::user()->hasRole('Technik'))
         return view('error',['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr lub Administratorem']);
 
-
         if ( ($request->workcard=='generate') && (\App\WorkAttendance::where('date','=',$request->month.'-01')->get()->first() != null) ) 
         return back()->withErrors(['head'=>'błąd wywołania funkcji month_data kontrolera WorkTime','title'=>'nie możesz generować karty czasu pracy','description'=>'Wygenerowana jest już lista obecności za '.$request->month]);
-
-        
 
         $ret_row=WorkTime::selectRaw(" MIN(date) AS StartDate, MAX(date) AS EndDate")->get()->first();
         
@@ -73,6 +70,75 @@ class WorkTimeController extends Controller
         $total['hr_minutes']=0;
         $y=1;
         $ret=[];
+
+        $total['changes_minutes_over']=0;
+        $total['changes_minutes_under']=0;
+
+
+
+
+
+        function recalculate_hr_wt($hr_object)
+                    {
+                        //$hr_object==$ret[$cur_date]['hr_wt']
+                        $hr_object['o_time_end'] = substr($hr_object['o_time_end'],0,5);
+                        $hr_object['o_time_begin'] = substr($hr_object['o_time_begin'],0,5);
+                        $hr_object['time_end'] = substr($hr_object['time_end'],0,5);
+                        $hr_object['time_begin'] = substr($hr_object['time_begin'],0,5);
+
+                        if (is_null($hr_object['time_begin'])) $hr_object['time_begin']='-';
+                        if (is_null($hr_object['time_end']))   $hr_object['time_end']  ='-';
+                        $hr_object['hoursmin']=m2h($hr_object['minutes']);
+                        $hr_object['o_hoursmin']=m2h($hr_object['o_minutes']);
+
+                        $hr_object['under_txt']='';
+                        $hr_object['over_txt']='';
+
+                        if ($hr_object['over_under']==2)  //jeśli ilośc godzin pracy jest poniżej normy - to ustal wprost tekst z godzinami poniżej normy 
+                        {
+                            $coma='';
+                            $hr_object['under_txt']='';
+                            if ( date('H:i',strtotime($hr_object['o_time_begin'])) < date('H:i',strtotime($hr_object['time_begin'])) )
+                                {
+                                $hr_object['under_txt']='od '.date('H:i',strtotime($hr_object['o_time_begin'])).' do '.date('H:i',strtotime($hr_object['time_begin']));
+                                $coma=' i ';
+                                }
+                            if ( date('H:i',strtotime($hr_object['o_time_end'])) > date('H:i',strtotime($hr_object['time_end'])) )
+                                {
+                                $hr_object['under_txt'].=$coma.'od '.date('H:i',strtotime($hr_object['time_end'])).' do '.date('H:i',strtotime($hr_object['o_time_end']));
+                                }
+                            //i określ wprot godziny pracy do grafiku (8h)
+                                $hr_object['hr_time_begin']=$hr_object['o_time_begin'];
+                                $hr_object['hr_time_end']=$hr_object['o_time_end'];
+                        }
+                        elseif ($hr_object['over_under']==1)  //jeśli ilośc godzin pracy jest powyżej normy
+                        {
+                            $hr_object['hr_time_begin']=$hr_object['time_begin'];
+                            $hr_object['hr_time_end']=$hr_object['o_time_begin'];
+                            $hr_object['over_txt']='od '.$hr_object['o_time_begin'].' do '.$hr_object['o_time_end'];
+                        }
+                        else
+                        {
+                            if ($hr_object['time_begin'] == $hr_object['time_end'])
+                            {
+                                $hr_object['hr_time_begin']='x';
+                                $hr_object['hr_time_end']='x';
+                            }
+                            else
+                            {
+                                $hr_object['hr_time_begin']=$hr_object['time_begin'];
+                                $hr_object['hr_time_end']=$hr_object['time_end'];
+                            }
+                        }
+                        $hr_object['hr_minutes']=8*60;
+                        $hr_object['hr_hoursmin']=m2h(8*60);
+                        
+                        return $hr_object;
+                    }
+
+
+
+
         for($i = $begin; $i < $end; $i = $i+86400 )
         {
             $cur_date=date('Y-m-d',$i);
@@ -93,8 +159,10 @@ class WorkTimeController extends Controller
             ->where('date','=',$cur_date)
             ->where('user_id','=',$filtr['user'])
             ->first();
+            
 
-            if ( ($request->workcard=='generate') && (Auth::user()->hasRole('Operator Kadr')) )
+            if ( ( ($request->workcard=='generate') && (Auth::user()->hasRole('Operator Kadr')) )
+            || ($request->workcard=='changes') )
             {
                     if (count($ret_row['work_types'])>0)  // jeśli jest zaplanowany czas pracy
                     {
@@ -146,7 +214,17 @@ class WorkTimeController extends Controller
                                 $ret_hr->o_time_end = null;
                             }
                         $ret_hr->status = 1;
-                        $ret_hr->save();
+                        if ( ($request->workcard=='generate') && (Auth::user()->hasRole('Operator Kadr')) )
+                            $ret_hr->save();
+                        else
+                            {
+                            $ret[$cur_date]['changes']=$ret_hr->toArray();
+                            $ret[$cur_date]['changes']=recalculate_hr_wt($ret[$cur_date]['changes']);
+                            if ($ret_hr->over_under == 2)
+                                $total['changes_minutes_under']+=$ret_hr->o_minutes;
+                            if ($ret_hr->over_under == 1)
+                                $total['changes_minutes_over']+=$ret_hr->o_minutes;
+                            }
                     }
             
                     elseif (!(is_null($ret_hr)) )   // jeśli nie ma zaplanowanego czasu pracy, a istnieje wpis przekazany do kadr:
@@ -156,69 +234,33 @@ class WorkTimeController extends Controller
                         $ret_hr->minutes   = null;
                         $ret_hr->over_under   = 0;
                         //$ret_hr->description = 'usunięte';
-                        $ret_hr->save();
+                        if ( ($request->workcard=='generate') && (Auth::user()->hasRole('Operator Kadr')) )
+                            $ret_hr->save();
+                        else
+                            {
+                            $ret[$cur_date]['changes']=$ret_hr->toArray();
+                            $ret[$cur_date]['changes']=recalculate_hr_wt($ret[$cur_date]['changes']);
+                            }
                     }
+
                     // else - jak nie ma wpisu dla kadr i czasu pracy - to nas to nie obchodzi :)
-            }
+                    
+            } // if generate...
 
             if (!(is_null(\App\WorkTimeToHr::where('user_id',$filtr['user'])
             ->where('date',$cur_date)
             ->first()) ))
-                {
+            {
                     $ret[$cur_date]['hr_wt'] = \App\WorkTimeToHr::where('user_id',$filtr['user'])
                     ->where('date',$cur_date)
                     ->first()
                     ->toArray()
                     ;
-                    $ret[$cur_date]['hr_wt']['o_time_end'] = substr($ret[$cur_date]['hr_wt']['o_time_end'],0,5);
-                    $ret[$cur_date]['hr_wt']['o_time_begin'] = substr($ret[$cur_date]['hr_wt']['o_time_begin'],0,5);
-                    $ret[$cur_date]['hr_wt']['time_end'] = substr($ret[$cur_date]['hr_wt']['time_end'],0,5);
-                    $ret[$cur_date]['hr_wt']['time_begin'] = substr($ret[$cur_date]['hr_wt']['time_begin'],0,5);
-                    
-                    if (is_null($ret[$cur_date]['hr_wt']['time_begin'])) $ret[$cur_date]['hr_wt']['time_begin']='-';
-                    if (is_null($ret[$cur_date]['hr_wt']['time_end']))   $ret[$cur_date]['hr_wt']['time_end']  ='-';
-                    $ret[$cur_date]['hr_wt']['hoursmin']=m2h($ret[$cur_date]['hr_wt']['minutes']);
-                    $ret[$cur_date]['hr_wt']['o_hoursmin']=m2h($ret[$cur_date]['hr_wt']['o_minutes']);
 
-                    if ($ret[$cur_date]['hr_wt']['over_under']==2)  //jeśli ilośc godzin pracy jest poniżej normy - to ustal wprost tekst z godzinami poniżej normy 
-                    {
-                        $coma='';
-                        $ret[$cur_date]['hr_wt']['under_txt']='';
-                        if ( date('H:i',strtotime($ret[$cur_date]['hr_wt']['o_time_begin'])) < date('H:i',strtotime($ret[$cur_date]['hr_wt']['time_begin'])) )
-                            {
-                            $ret[$cur_date]['hr_wt']['under_txt']='od '.date('H:i',strtotime($ret[$cur_date]['hr_wt']['o_time_begin'])).' do '.date('H:i',strtotime($ret[$cur_date]['hr_wt']['time_begin']));
-                            $coma=' i ';
-                            }
-                        if ( date('H:i',strtotime($ret[$cur_date]['hr_wt']['o_time_end'])) > date('H:i',strtotime($ret[$cur_date]['hr_wt']['time_end'])) )
-                            {
-                            $ret[$cur_date]['hr_wt']['under_txt'].=$coma.'od '.date('H:i',strtotime($ret[$cur_date]['hr_wt']['time_end'])).' do '.date('H:i',strtotime($ret[$cur_date]['hr_wt']['o_time_end']));
-                            }
-                        //i określ wprot godziny pracy do grafiku (8h)
-                            $ret[$cur_date]['hr_wt']['hr_time_begin']=$ret[$cur_date]['hr_wt']['o_time_begin'];
-                            $ret[$cur_date]['hr_wt']['hr_time_end']=$ret[$cur_date]['hr_wt']['o_time_end'];
-                    }
-                    elseif ($ret[$cur_date]['hr_wt']['over_under']==1)  //jeśli ilośc godzin pracy jest powyżej normy
-                    {
-                        $ret[$cur_date]['hr_wt']['hr_time_begin']=$ret[$cur_date]['hr_wt']['time_begin'];
-                        $ret[$cur_date]['hr_wt']['hr_time_end']=$ret[$cur_date]['hr_wt']['o_time_begin'];
-                    }
-                    else
-                    {
-                        if ($ret[$cur_date]['hr_wt']['time_begin'] == $ret[$cur_date]['hr_wt']['time_end'])
-                        {
-                            $ret[$cur_date]['hr_wt']['hr_time_begin']='x';
-                            $ret[$cur_date]['hr_wt']['hr_time_end']='x';
-                        }
-                        else
-                        {
-                            $ret[$cur_date]['hr_wt']['hr_time_begin']=$ret[$cur_date]['hr_wt']['time_begin'];
-                            $ret[$cur_date]['hr_wt']['hr_time_end']=$ret[$cur_date]['hr_wt']['time_end'];
-                        }
-                    }
-                    $ret[$cur_date]['hr_wt']['hr_minutes']=8*60;
-                    $ret[$cur_date]['hr_wt']['hr_hoursmin']=m2h(8*60);
+                    $ret[$cur_date]['hr_wt']=recalculate_hr_wt($ret[$cur_date]['hr_wt']);
                     
-                }
+
+            }
             else 
             {
                 $ret[$cur_date]['hr_wt']['time_begin']='-';
@@ -230,6 +272,8 @@ class WorkTimeController extends Controller
                 $ret[$cur_date]['hr_wt']['hr_time_end']=$ret[$cur_date]['hr_wt']['time_end'];
                 $ret[$cur_date]['hr_wt']['hr_minutes']=null;
                 $ret[$cur_date]['hr_wt']['hr_hoursmin']=null;
+                if (!isset($ret[$cur_date]['changes']))
+                    $ret[$cur_date]['changes']=$ret[$cur_date]['hr_wt'];    //for changes action only
             }
 
             if ( ($ret[$cur_date]['hr_wt']['time_begin'] == $ret[$cur_date]['times'][0]['start']) &&
@@ -385,94 +429,114 @@ class WorkTimeController extends Controller
             //        dump(serialize($alltmps));
         }
 
-        if ($request->workcard=='get')
+        switch ($request->workcard)
         {
-            $quarter=\App\WorkTimeToHr::
-            select('over_under',
-            \DB::raw('count(*) as quarter_count'),
-            \DB::raw('sum(minutes) as quarter_minutes'),
-            \DB::raw('sum(o_minutes) as quarter_o_minutes')
-            )
-            ->where('status','<>',4)
-            ->where('user_id','=',$filtr['user'])
-            ->where('date','>=',$total['quarter_start'])
-            ->where('date','<=',$total['quarter_stop'])
-            ->groupBy('over_under')
-            ->get()
-            ->toArray();
-
-            if (count($quarter)<1)
-                return back()->withErrors('Zgłoś administratorowi, że pułapka blade month_cardwork 400 się uaktywniła :) ');
-
-            $total['quarter_count']=0;
-            $total['quarter_minutes']=0;
-            $total['quarter_norm']=0;
-
-            foreach ($quarter as $quarter_one)
-                {
-                    $total['quarter_count']+=$quarter_one['quarter_count'];
-                    $total['quarter_minutes']+=$quarter_one['quarter_minutes'];
-                    if ($quarter_one['over_under']==1)
-                        $total['quarter_norm']-=$quarter_one['quarter_o_minutes'];
-                    else
-                    $total['quarter_norm']+=$quarter_one['quarter_o_minutes'];
-                }
-            $total['quarter_norm']+=$total['quarter_minutes'];
-
-
-            return view('worktime/month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
-        }
-        elseif ($request->workcard=='generate') //sending e-mails
-        {
-            $roles_OpKadr_id=\App\Roles::where('roles_code', 'hroperators')
-                ->pluck('id')
-                ->toArray();
-            $roles_OpKadr=\App\RolesHasUsers::whereIn('roles_has_users_roles_id',$roles_OpKadr_id)
-                ->pluck('roles_has_users_users_id')
-                ->toArray();
-
-            dump('In line 437 user model temporary added happy user 13 :)');
-
-            $coordinator_OpKadr_users = User::whereIn('id',$roles_OpKadr)
-                ->orWhere('id',13)
-                ->orWhere('id',$user->id)
-                ->where('user_status','=',1)
-                ->where('simmed_notify','=',1)
-                ->get();
-
-
-            $mail_data_address = [
-                'title'=>'[SIMinfo] wygenerowano kartę czasu pracy: '.$user->full_name(),
-                'name'=>$user->full_name(),
-                'user'=>$user, 
-                'months' => $months, 
-                'filtr' => $filtr, 
-                'tabelka' => $ret, 
-                'total' => $total,
-                
-                'email' => $user->email,
-                'subject_email'=>'[SIMinfo] wygenerowano kartę czasu pracy: '.$user->full_name(),
-                'from_email' => 'technicy@wcsm.pl',
-                'from_name' => 'Pegasus CSM UJK'
-            ];
-            $ret_info='';
-            foreach ($coordinator_OpKadr_users as $sent_to)
+            /*-------------------\
+            |   GET              |
+            \-------------------*/
+            case 'get':
             {
-                $mail_data_address['email'] = $sent_to->email;
-                    $ret_info.='<li>'.$sent_to->full_name().'</li>';
-                $zwrocik=Mail::send('worktime.month_cardwork',$mail_data_address,function($mail) use ($mail_data_address)
-                    {
-                        $mail->from($mail_data_address['from_email'],$mail_data_address['from_name']);
-                        $mail->to($mail_data_address['email'],$mail_data_address['name']);
-                        $mail->subject($mail_data_address['subject_email']);
-                    }
-                );
-            }
-                return back()->with('success','Wygenerowano i wysłano kartę czasu pracy.<br><ol>'.$ret_info.'</ol>');    
-        }
-        else
-            return view('worktime/month',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
+                $quarter=\App\WorkTimeToHr::
+                select('over_under',
+                \DB::raw('count(*) as quarter_count'),
+                \DB::raw('sum(minutes) as quarter_minutes'),
+                \DB::raw('sum(o_minutes) as quarter_o_minutes')
+                )
+                ->where('status','<>',4)
+                ->where('user_id','=',$filtr['user'])
+                ->where('date','>=',$total['quarter_start'])
+                ->where('date','<=',$total['quarter_stop'])
+                ->groupBy('over_under')
+                ->get()
+                ->toArray();
 
+                if (count($quarter)<1)
+                    return back()->withErrors('Zgłoś administratorowi, że pułapka blade month_cardwork 400 się uaktywniła :) ');
+
+                $total['quarter_count']=0;
+                $total['quarter_minutes']=0;
+                $total['quarter_norm']=0;
+
+                foreach ($quarter as $quarter_one)
+                    {
+                        $total['quarter_count']+=$quarter_one['quarter_count'];
+                        $total['quarter_minutes']+=$quarter_one['quarter_minutes'];
+                        if ($quarter_one['over_under']==1)
+                            $total['quarter_norm']-=$quarter_one['quarter_o_minutes'];
+                        else
+                        $total['quarter_norm']+=$quarter_one['quarter_o_minutes'];
+                    }
+                $total['quarter_norm']+=$total['quarter_minutes'];
+
+                return view('worktime/month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
+                break;
+            }
+            /*-------------------\
+            |   GENERATE         |
+            \-------------------*/
+            case 'generate': //sending e-mails
+            {
+                $roles_OpKadr_id=\App\Roles::where('roles_code', 'hroperators')
+                    ->pluck('id')
+                    ->toArray();
+                $roles_OpKadr=\App\RolesHasUsers::whereIn('roles_has_users_roles_id',$roles_OpKadr_id)
+                    ->pluck('roles_has_users_users_id')
+                    ->toArray();
+
+                dump('In line 437 user model temporary added happy user 13 :)');
+
+                $coordinator_OpKadr_users = User::whereIn('id',$roles_OpKadr)
+                    ->orWhere('id',13)
+                    ->orWhere('id',$user->id)
+                    ->where('user_status','=',1)
+                    ->where('simmed_notify','=',1)
+                    ->get();
+
+
+                $mail_data_address = [
+                    'title'=>'[SIMinfo] wygenerowano kartę czasu pracy: '.$user->full_name(),
+                    'name'=>$user->full_name(),
+                    'user'=>$user, 
+                    'months' => $months, 
+                    'filtr' => $filtr, 
+                    'tabelka' => $ret, 
+                    'total' => $total,
+                    
+                    'email' => $user->email,
+                    'subject_email'=>'[SIMinfo] wygenerowano kartę czasu pracy: '.$user->full_name(),
+                    'from_email' => 'technicy@wcsm.pl',
+                    'from_name' => 'Pegasus CSM UJK'
+                ];
+                $ret_info='';
+                foreach ($coordinator_OpKadr_users as $sent_to)
+                {
+                    $mail_data_address['email'] = $sent_to->email;
+                        $ret_info.='<li>'.$sent_to->full_name().'</li>';
+                    $zwrocik=Mail::send('worktime.month_cardwork',$mail_data_address,function($mail) use ($mail_data_address)
+                        {
+                            $mail->from($mail_data_address['from_email'],$mail_data_address['from_name']);
+                            $mail->to($mail_data_address['email'],$mail_data_address['name']);
+                            $mail->subject($mail_data_address['subject_email']);
+                        }
+                    );
+                }
+                    return back()->with('success','Wygenerowano i wysłano kartę czasu pracy.<br><ol>'.$ret_info.'</ol>');
+                break;    
+            }
+            /*-------------------\
+            |   CHANGES          |
+            \-------------------*/
+            case 'changes': //sending e-mails
+            {
+                return view('worktime/print_changes_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
+            }
+
+            /*-------------------\
+            |   DEFAULT          |
+            \-------------------*/
+            default:
+                return view('worktime/month',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
+        }//switch
     }
 
 

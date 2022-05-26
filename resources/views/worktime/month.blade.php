@@ -67,11 +67,9 @@
     </div>
     </form>
 
-    <table class="table table-dark">
-    <thead>
-    <tr>
-        <td><h3>{{$user->full_name()}}</h3></td>
-        <td>
+    <div class="row">
+        <div class="col-sm-4"><h3>{{$user->full_name()}}</h3></div>
+        <div class="col-sm-5">
             <table class="table table-dark">
                 <thead>
                     <tr>
@@ -89,33 +87,38 @@
                 
             @endforeach
             </table>
-        </td>
-        <td class="text-right">
-        <h3>czas pracy: {{$total['times']}}</h3>
+        </div>
+        <div class="col-sm-3 text-right">
+            <h3>czas pracy: {{$total['times']}}</h3>
 
-        <h3>planowo godzin: {{$total['month_data']->hours_to_work}}</h3>
-        @if ( (Auth::user()->hasRole('Operator Kadr')) &&
-                (\App\WorkAttendance::where('date','=',$filtr['month'].'-01')->get()->first() === null) )
-        <form action="{{ route('worktime.month') }}" method="get">
-            <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
-            <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
-            <input class="form-control" type="hidden" name="workcard" value="generate">
-            <input class="btn btn-primary btn-big" type="submit" value="generuj kartę czasu pracy">
-        </form>
-        @endif
+            <h3>planowo godzin: {{$total['month_data']->hours_to_work}}</h3>
+            @if ( (Auth::user()->hasRole('Operator Kadr')) &&
+                    (\App\WorkAttendance::where('date','=',$filtr['month'].'-01')->get()->first() === null) )
+            <form action="{{ route('worktime.month') }}" method="get">
+                <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
+                <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
+                <input class="form-control" type="hidden" name="workcard" value="generate">
+                <input class="btn btn-primary btn-big col-sm-12" type="submit" value="generuj kartę czasu pracy">
+            </form>
+            <br><br>
+            @endif
 
-        <form action="{{ route('worktime.month') }}" method="get">
-            <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
-            <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
-            <input class="form-control" type="hidden" name="workcard" value="get">
-            <input class="btn btn-primary btn-big" type="submit" value="pobierz kartę czasu pracy">
-        </form>
+            <form action="{{ route('worktime.month') }}" method="get">
+                <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
+                <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
+                <input class="form-control" type="hidden" name="workcard" value="get">
+                <input class="btn btn-primary btn-big col-sm-12" type="submit" value="wydruk dokumentacji czasu pracy">
+            </form>
+            <br><br>
+            <form action="{{ route('worktime.month') }}" method="get">
+                <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
+                <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
+                <input class="form-control" type="hidden" name="workcard" value="changes">
+                <input class="btn btn-warning btn-big col-sm-12" type="submit" value="pokaż różnice">
+            </form>
+        </div>
+    </div>
 
-
-        </td>
-    </tr>
-    </thead>
-    </table>
 
     <table class="table table-striped thead-dark">
         <thead>
