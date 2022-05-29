@@ -68,7 +68,18 @@
     </form>
 
     <div class="row">
-        <div class="col-sm-4"><h3>{{$user->full_name()}}</h3></div>
+        <div class="col-sm-4"><h3>{{$user->full_name()}}</h3>
+        <h4>czas pracy: {{$total['times']}}</h4>
+        <h4>planowo godzin: {{$total['month_data']->hours_to_work}}</h4>
+        @if ($total['month_data']['minutes_worked']!=$total['minutes'])
+            <form action="{{ route('worktime.month') }}" method="get">
+                <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
+                <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
+                <input class="form-control" type="hidden" name="workcard" value="calculate">
+                <input class="btn btn-danger btn-big col-sm-12" type="submit" value="PRZELICZ CZAS PRACY ({{$total['month_data']['minutes_worked']}}!={{$total['minutes']}})">
+            </form>
+        @endif
+        </div>
         <div class="col-sm-5">
             <table class="table table-dark">
                 <thead>
@@ -89,9 +100,6 @@
             </table>
         </div>
         <div class="col-sm-3 text-right">
-            <h3>czas pracy: {{$total['times']}}</h3>
-
-            <h3>planowo godzin: {{$total['month_data']->hours_to_work}}</h3>
             @if ( (Auth::user()->hasRole('Operator Kadr')) &&
                     (\App\WorkAttendance::where('date','=',$filtr['month'].'-01')->get()->first() === null) )
             <form action="{{ route('worktime.month') }}" method="get">
