@@ -560,13 +560,13 @@ class WorkTimeController extends Controller
             case 'calculate':
                 {
                     $calculate_month_data = 
-                    \App\WorkMonth::find($total['month_data']['id'])
-                        ->first();
+                    \App\WorkMonth::where('id',$total['month_data']['id'])
+                        ->get()->first();
 
                     $calculate_month_data->minutes_to_work = $total['month_data']->hours_to_work*60;
                     $calculate_month_data->minutes_worked = $total['minutes'];
                     $calculate_month_data->save();
-                    
+                    $total['month_data']->minutes_worked = $total['minutes'];
                 }
     
             /*-------------------\
@@ -575,7 +575,7 @@ class WorkTimeController extends Controller
             default:
 
                 $total['month_data']['minutes_to_work'] = $total['month_data']->hours_to_work*60;
-                $total['month_data']['minutes_worked'] = $total['minutes'];
+                $total['month_data']['minutes_worked'] = $total['month_data']->minutes_worked;
 
                 return view('worktime/month',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
         }//switch
