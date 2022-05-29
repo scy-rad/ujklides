@@ -127,6 +127,7 @@ public function save_workmonth(Request $request)
                 $new_row->user_id       = $user_one->id;
                 $new_row->work_month    = $request->month_selected.'-01';
                 $new_row->hours_to_work = $request->gen_value;
+                $new_row->minutes_to_work = $request->gen_value*60;
                 $reti.=$user_one->name.': '.$request->gen_value.'<br>';
                 $new_row->save();
 
@@ -158,6 +159,8 @@ public function save_workmonth(Request $request)
         
         $row_edit=\App\WorkMonth::find($request->id);
         $row_edit->hours_to_work      = $request->modal_hr;
+        $row_edit->minutes_to_work    = $request->modal_hr*60;
+                
         $row_edit->save();
         return back()->with('success',' Zapis zakończył się sukcesem.');
     }

@@ -68,6 +68,15 @@ class WorkTimeController extends Controller
         $total['hrminutes_over']=0;
         $total['hrminutes_under']=0;
         $total['hr_minutes']=0;
+        $total['hr_changes']=false;
+        $total['changes_over']=false;
+        $total['changes_under']=false;
+
+        $total['quarter_count']=0;
+        $total['quarter_minutes']=0;
+        $total['quarter_norm']=0;
+        $total['total_over']=0;
+        
         $y=1;
         $ret=[];
 
@@ -221,7 +230,9 @@ class WorkTimeController extends Controller
                             $ret[$cur_date]['changes']=$ret_hr->toArray();
                             $ret[$cur_date]['changes']=recalculate_hr_wt($ret[$cur_date]['changes']);
                             if ($ret_hr->over_under == 2)
+                                {
                                 $total['changes_minutes_under']+=$ret_hr->o_minutes;
+                                }
                             if ($ret_hr->over_under == 1)
                                 $total['changes_minutes_over']+=$ret_hr->o_minutes;
                             }
@@ -278,10 +289,15 @@ class WorkTimeController extends Controller
 
             if ( ($ret[$cur_date]['hr_wt']['time_begin'] == $ret[$cur_date]['times'][0]['start']) &&
                  ($ret[$cur_date]['hr_wt']['time_end'] == $ret[$cur_date]['times'][0]['end']))
+            {
                 $ret[$cur_date]['hr_diffrent']=true;
+            }
             else
+            {
                 $ret[$cur_date]['hr_diffrent']=false;
-            
+                $total['hr_changes']=true;
+            }
+
             // dump($ret[$cur_date]['hr_wt']);
 
             $ret[$cur_date]['day_name']= DB::table('pl_days')->find(date('w', strtotime($cur_date))+1)->pl_day;
@@ -358,7 +374,7 @@ class WorkTimeController extends Controller
             $total['quarter_start']=$total['year'].'-10-01';
         }
 
-        $total['quarter_stop']=date('Y-m-t',strtotime($filtr['month'].'-01'));
+        $total['quarter_stop']=date('Y-m-t',strtotime($filtr['month'].'-01 - 1 month'));
 
         if (isset($request->csv))
         {
@@ -450,12 +466,8 @@ class WorkTimeController extends Controller
                 ->get()
                 ->toArray();
 
-                if (count($quarter)<1)
-                    return back()->withErrors('Zgłoś administratorowi, że pułapka blade month_cardwork 400 się uaktywniła :) ');
-
-                $total['quarter_count']=0;
-                $total['quarter_minutes']=0;
-                $total['quarter_norm']=0;
+                // if (count($quarter)<1)
+                //     dump('Zgłoś administratorowi, że pułapka blade month_cardwork 400 się uaktywniła :) ');
 
                 foreach ($quarter as $quarter_one)
                     {
@@ -468,6 +480,8 @@ class WorkTimeController extends Controller
                     }
                 $total['quarter_norm']+=$total['quarter_minutes'];
 
+                $total['total_over']=$total['quarter_minutes'] - $total['quarter_norm'] + $total['hrminutes_over'] - $total['hrminutes_under'];
+                
                 return view('worktime/month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
                 break;
             }
@@ -526,15 +540,43 @@ class WorkTimeController extends Controller
             /*-------------------\
             |   CHANGES          |
             \-------------------*/
-            case 'changes': //sending e-mails
+            case 'changes':
             {
+                foreach ($ret as $ret_one)
+                    {
+                    if ( ($ret_one['hr_wt']['over_under']==1) || ($ret_one['changes']['over_under']==1) )   //jeśli była lub jest praca w godzinach nadliczbowych
+                        if ( $ret_one['hr_wt']['over_txt'] != $ret_one['changes']['over_txt'] )   //i są różne wpisy "godziny pracy w godzinach nadliczbowych"
+                            $total['changes_over']=true;
+                    if ( ($ret_one['hr_wt']['over_under']==2) || ($ret_one['changes']['over_under']==2) )   //jeśli była lub jest praca poniżej normy
+                        if ( $ret_one['hr_wt']['under_txt'] != $ret_one['changes']['under_txt'] )   //i są różne wpisy "praca poniżej normy w godzinach"
+                            $total['changes_under']=true;
+                    }
+
                 return view('worktime/print_changes_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
             }
+            /*-------------------\
+            |   CALCULATE          |
+            \-------------------*/
+            case 'calculate':
+                {
+                    $calculate_month_data = 
+                    \App\WorkMonth::find($total['month_data']['id'])
+                        ->first();
 
+                    $calculate_month_data->minutes_to_work = $total['month_data']->hours_to_work*60;
+                    $calculate_month_data->minutes_worked = $total['minutes'];
+                    $calculate_month_data->save();
+                    
+                }
+    
             /*-------------------\
             |   DEFAULT          |
             \-------------------*/
             default:
+
+                $total['month_data']['minutes_to_work'] = $total['month_data']->hours_to_work*60;
+                $total['month_data']['minutes_worked'] = $total['minutes'];
+
                 return view('worktime/month',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
         }//switch
     }
