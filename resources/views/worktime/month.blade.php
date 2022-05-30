@@ -76,7 +76,7 @@
                 <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
                 <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
                 <input class="form-control" type="hidden" name="workcard" value="calculate">
-                <input class="btn btn-danger btn-big col-sm-12" type="submit" value="PRZELICZ CZAS PRACY ({{$total['month_data']['minutes_worked']}}!={{$total['minutes']}})">
+                <input class="btn btn-danger btn-big col-sm-12" type="submit" value="PRZELICZ CZAS PRACY ({{$total['month_data']['minutes_worked']-$total['minutes']}})">
             </form>
         @endif
         </div>

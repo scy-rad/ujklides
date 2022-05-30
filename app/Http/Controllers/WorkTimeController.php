@@ -75,7 +75,7 @@ class WorkTimeController extends Controller
         $total['quarter_count']=0;
         $total['quarter_minutes']=0;
         $total['quarter_norm']=0;
-        $total['total_over']=0;
+        $total['total_quarter_over']=0;
         
         $y=1;
         $ret=[];
@@ -295,8 +295,14 @@ class WorkTimeController extends Controller
             else
             {
                 $ret[$cur_date]['hr_diffrent']=false;
-                $total['hr_changes']=true;
             }
+
+            if (isset($ret[$cur_date]['changes']))
+                if ( ($ret[$cur_date]['hr_wt']['hr_time_begin'] != $ret[$cur_date]['changes']['hr_time_begin']) ||
+                    ($ret[$cur_date]['hr_wt']['hr_time_end'] != $ret[$cur_date]['changes']['hr_time_end']))
+                {
+                    $total['hr_changes']=true;
+                }
 
             // dump($ret[$cur_date]['hr_wt']);
 
@@ -389,10 +395,10 @@ class WorkTimeController extends Controller
                 $total['quarter_norm']+=($quarter_one->minutes_to_work);
             }
 
-        $total['total_over']=$total['quarter_minutes'] - $total['quarter_norm'];
+        $total['total_quarter_over']=$total['quarter_minutes'] - $total['quarter_norm'];
 
 
-        
+
 
         if (isset($request->csv))
         {

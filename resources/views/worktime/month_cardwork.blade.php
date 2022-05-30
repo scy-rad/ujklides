@@ -19,10 +19,37 @@
   footer {margin-bottom: 100px; font-size: 0.3rem; text-align: right}
   @media print {
   footer {page-break-after: always;}
+  no-print {display: none !important;}
 }
   </style>
   <body>
 
+  <no-print>
+    <form action="{{ route('worktime.month') }}" method="get">
+    <div style="width: 100%; clear: both; background: gray; ">
+        <div style="width: 30%; float: left">
+            <label for"technician">pracownik:</label>
+            <select class="form-control" name="technician">
+            @foreach (app\user::role_users('workers', 1, 0)
+               ->orderBy('name')->get() as $tech_one)
+                <option value="{{$tech_one->id}}"<?php if ($filtr['user']==$tech_one->id) echo ' selected'?>>{{$tech_one->name}} [{{$tech_one->full_name()}}]</option>
+            @endforeach
+            </select>
+        </div>
+        <div style="width: 30%; float: left">
+            <label for"month">miesiąc:</label>
+            <select class="form-control" name="month">
+            @foreach ($months as $month_one)
+                <option value="{{$month_one}}" <?php if ($filtr['month']==$month_one) echo ' selected'?>>{{$month_one}}</option>
+            @endforeach
+            </select>
+        </div>
+                <input class="form-control" type="hidden" name="workcard" value="get">
+                <input class="btn btn-primary btn-big col-sm-12" type="submit" value="podgląd dokumentacji czasu pracy">
+    </div>    
+    </form>
+
+  </no-print>
   <?php //function m2hcard($timeX) { return floor($timeX/60).':'.str_pad($timeX%60, 2, '0', STR_PAD_LEFT); } ?>
 
 
@@ -126,7 +153,7 @@
 
 
 
-@if ($total['hrminutes_under']>0)
+@if ( ($total['hrminutes_under']>0) || ($total['total_quarter_over']>0) )
 <div style="all_page">
 
 <p class="smalltxt aright">Załącznik nr 6 do Regulaminu Pracy w Uniwersytecie Jana Kochanowskiego w Kielcach</small>
@@ -163,16 +190,16 @@
     @endif
 </ul>
 
-@if ($total['total_over'] > 0)
-    <p>Udzielenie czasu wolnego od pracy w liczbie <strong>{{floor(($total['total_over'])/60).':'.str_pad(($total['total_over'])%60, 2, '0', STR_PAD_LEFT)}}</strong> godzin planuję w następujących terminach: </p>
+@if ( ($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) > 0)
+    <p>Udzielenie czasu wolnego od pracy w liczbie <strong>{{floor(( ($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) )/60).':'.str_pad(( ($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) )%60, 2, '0', STR_PAD_LEFT)}}</strong> godzin planuję w następujących terminach: </p>
     <ul>
             <li> ................................ w godz. ........................ : (....................)</li> 
             <li> ................................ w godz. ........................ : (....................)</li> 
             <li> ................................ w godz. ........................ : (....................)</li> 
             <li> ................................ w godz. ........................ : (....................)</li> 
     </ul>
-@elseif ($total['total_over'] < 0)
-    <p>Godziny nadmiarowe w liczbie <strong>{{floor((-$total['total_over'])/60).':'.str_pad((-$total['total_over'])%60, 2, '0', STR_PAD_LEFT)}}</strong> godzin zostaną odpracowane w terminie: </p>
+@elseif ( ($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) < 0)
+    <p>Godziny nadmiarowe w liczbie <strong>{{floor(( -($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) )/60).':'.str_pad(( -($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) )%60, 2, '0', STR_PAD_LEFT)}}</strong> godzin zostaną odpracowane w terminie: </p>
     <ul>
             <li> ................................ w godz. ........................ : (....................)</li> 
             <li> ................................ w godz. ........................ : (....................)</li> 
