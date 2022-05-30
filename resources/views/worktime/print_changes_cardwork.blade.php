@@ -146,42 +146,50 @@
 </ul>
 <p>razem było: <strong>{{$total['hrtimes_under']}}</strong> godzin, a po zmianach jest: <strong>{{m2hcard($total['changes_minutes_under'])}}</strong> godzin udzielonego czasu wolnego.</p>
 
-
-
-<div style="width: 50%; border: 2px solid blue; background: #ffd; padding: 12px">
-<p>całkowite podliczenie czasu przepracowanego w godzinach nadliczbowych i udzielonego czasu wolnego: <strong>{{$total['month_name']}} {{$total['year']}}</strong></p>
-
-<p>
-@if ($total['hrminutes_under']>$total['hrminutes_over'])
-    razem było: <strong>{{m2hcard($total['hrminutes_under']-$total['hrminutes_over'])}}</strong> godzin udzielonego czasu wolnego 
 @endif
 
-@if ($total['hrminutes_under']<$total['hrminutes_over'])
-    razem było: <strong>{{m2hcard($total['hrminutes_over']-$total['hrminutes_under'])}}</strong> godzin przepracowanych w godzinach nadliczbowych 
-@endif
+<div style="width: 50%; border: 2px solid blue; background: #ffd; padding: 12px; font-size: 0.75rem">
+<div style="width: 100%; border: 2px solid blue; background: blue; color: #ffd; font-weight: bold; margin: -13px; margin-right: -23px; ; margin-bottom: 12px; padding: 12px; ">INFORMACJA</div>
+    <p>całkowite podliczenie czasu przepracowanego w godzinach nadliczbowych i udzielonego czasu wolnego: <strong>{{$total['month_name']}} {{$total['year']}}</strong></p>
+    <p>
+    @if ($total['hrminutes_under']>$total['hrminutes_over'])
+        razem było: <strong>{{m2hcard($total['hrminutes_under']-$total['hrminutes_over'])}}</strong> godzin udzielonego czasu wolnego 
+    @endif
 
-@if ($total['hrminutes_under']==$total['hrminutes_over'])
-    razem norma czasu pracy została zrealizowana 
-@endif
+    @if ($total['hrminutes_under']<$total['hrminutes_over'])
+        razem było: <strong>{{m2hcard($total['hrminutes_over']-$total['hrminutes_under'])}}</strong> godzin przepracowanych w godzinach nadliczbowych 
+    @endif
 
-<br>
-a po zmianach:
-<br>
-
-@if ($total['changes_minutes_under']>$total['changes_minutes_over'])
-    razem jest: <strong>{{m2hcard($total['changes_minutes_under']-$total['changes_minutes_over'])}}</strong> godzin udzielonego czasu wolnego 
-@endif
-
-@if ($total['changes_minutes_under']<$total['changes_minutes_over'])
-    razem jest: <strong>{{m2hcard($total['changes_minutes_over']-$total['changes_minutes_under'])}}</strong> godzin przepracowanych w godzinach nadliczbowych 
-@endif
-
-@if ($total['changes_minutes_under']==$total['changes_minutes_over'])
-    razem norma czasu pracy została zrealizowana 
-@endif
-</p>
+    @if ($total['hrminutes_under']==$total['hrminutes_over'])
+        razem norma czasu pracy została zrealizowana 
+    @endif
+    <br>
+    a po zmianach:
+    <br>
+    @if ($total['changes_minutes_under']>$total['changes_minutes_over'])
+        razem jest: <strong>{{m2hcard($total['changes_minutes_under']-$total['changes_minutes_over'])}}</strong> godzin udzielonego czasu wolnego 
+    @endif
+    @if ($total['changes_minutes_under']<$total['changes_minutes_over'])
+        razem jest: <strong>{{m2hcard($total['changes_minutes_over']-$total['changes_minutes_under'])}}</strong> godzin przepracowanych w godzinach nadliczbowych 
+    @endif
+    @if ($total['changes_minutes_under']==$total['changes_minutes_over'])
+        razem norma czasu pracy została zrealizowana 
+    @endif
+    </p>
+    @if ($total['quarter_stop']>$total['quarter_start'])
+        <hr>
+        okres poprzedzający od <strong>{{$total['quarter_start']}}</strong> do <strong>{{$total['quarter_stop']}}</strong>:<br>
+        @if ($total['quarter_minutes']>$total['quarter_norm'])
+            ilośc godzin przepracowanych w godzinach nadliczbowych: <strong>{{m2hcard($total['quarter_minutes']-$total['quarter_norm'])}}</strong> godzin. 
+        @elseif ($total['quarter_minutes']<$total['quarter_norm'])
+            ilość godzin udzielonego czasu wolnego: <strong>{{m2hcard($total['quarter_norm']-$total['quarter_minutes'])}}</strong> godzin.
+        @else
+            przepracowany zgodnie z normą czasu pracy. 
+        @endif
+    @endif
 </div>
 
+@if ($total['changes_under'])
 <div style="width: 100%;">
     <div style="border-top: 1px dotted black; width: 400px; margin-top: 60px; float:right; clear:both; ">
         <p class="mediumtxt acenter aitalic">data, podpis</p>

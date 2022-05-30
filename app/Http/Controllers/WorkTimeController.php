@@ -376,6 +376,24 @@ class WorkTimeController extends Controller
 
         $total['quarter_stop']=date('Y-m-t',strtotime($filtr['month'].'-01 - 1 month'));
 
+        $quarter=\App\WorkMonth::select('*')
+        ->where('user_id','=',$filtr['user'])
+        ->where('work_month','>=',$total['quarter_start'])
+        ->where('work_month','<=',$total['quarter_stop'])
+        ->get();
+
+        foreach ($quarter as $quarter_one)
+            {
+                $total['quarter_count']++;
+                $total['quarter_minutes']+=($quarter_one->minutes_worked);
+                $total['quarter_norm']+=($quarter_one->minutes_to_work);
+            }
+
+        $total['total_over']=$total['quarter_minutes'] - $total['quarter_norm'];
+
+
+        
+
         if (isset($request->csv))
         {
             $filename="czas_pracy.csv";
@@ -452,21 +470,6 @@ class WorkTimeController extends Controller
             \-------------------*/
             case 'get':
             {
-
-                $quarter=\App\WorkMonth::select('*')
-                ->where('user_id','=',$filtr['user'])
-                ->where('work_month','>=',$total['quarter_start'])
-                ->where('work_month','<=',$total['quarter_stop'])
-                ->get();
-
-                foreach ($quarter as $quarter_one)
-                    {
-                        $total['quarter_count']++;
-                        $total['quarter_minutes']+=($quarter_one->minutes_worked);
-                        $total['quarter_norm']+=($quarter_one->minutes_to_work);
-                    }
-
-                $total['total_over']=$total['quarter_minutes'] - $total['quarter_norm'];
 
                 return view('worktime/month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
                 break;
