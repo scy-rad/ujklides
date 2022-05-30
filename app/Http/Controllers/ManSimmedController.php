@@ -874,14 +874,15 @@ class ManSimmedController extends Controller
                     ->leftjoin('student_subgroups','simmed_temps.student_subgroup_id','=','student_subgroups.id')
                     ->leftjoin('technician_characters','simmed_temps.simmed_technician_character_id','=','technician_characters.id')
             
-                    ->orderByDesc('tmp_status')
+                    ->orderBy('simmed_date')
+                    ->orderBy('time')
                     ->orderBy('simmed_merge')
+                    ->orderByDesc('tmp_status')
                     ->orderByDesc('simmed_id')
                     ->orderBy('student_group_name')
                     ->orderBy('subgroup_name')
                     ->orderBy('student_subject_name')
-                    ->orderBy('simmed_date')
-                    ->orderBy('time')
+                    
                     
                     ->where('tmp_status',-1)
                     ;
