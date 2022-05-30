@@ -452,36 +452,22 @@ class WorkTimeController extends Controller
             \-------------------*/
             case 'get':
             {
-                $quarter=\App\WorkTimeToHr::
-                select('over_under',
-                \DB::raw('count(*) as quarter_count'),
-                \DB::raw('sum(minutes) as quarter_minutes'),
-                \DB::raw('sum(o_minutes) as quarter_o_minutes')
-                )
-                ->where('status','<>',4)
-                ->where('user_id','=',$filtr['user'])
-                ->where('date','>=',$total['quarter_start'])
-                ->where('date','<=',$total['quarter_stop'])
-                ->groupBy('over_under')
-                ->get()
-                ->toArray();
 
-                // if (count($quarter)<1)
-                //     dump('Zgłoś administratorowi, że pułapka blade month_cardwork 400 się uaktywniła :) ');
+                $quarter=\App\WorkMonth::select('*')
+                ->where('user_id','=',$filtr['user'])
+                ->where('work_month','>=',$total['quarter_start'])
+                ->where('work_month','<=',$total['quarter_stop'])
+                ->get();
 
                 foreach ($quarter as $quarter_one)
                     {
-                        $total['quarter_count']+=$quarter_one['quarter_count'];
-                        $total['quarter_minutes']+=$quarter_one['quarter_minutes'];
-                        if ($quarter_one['over_under']==1)
-                            $total['quarter_norm']-=$quarter_one['quarter_o_minutes'];
-                        else
-                        $total['quarter_norm']+=$quarter_one['quarter_o_minutes'];
+                        $total['quarter_count']++;
+                        $total['quarter_minutes']+=($quarter_one->minutes_worked);
+                        $total['quarter_norm']+=($quarter_one->minutes_to_work);
                     }
-                $total['quarter_norm']+=$total['quarter_minutes'];
 
-                $total['total_over']=$total['quarter_minutes'] - $total['quarter_norm'] + $total['hrminutes_over'] - $total['hrminutes_under'];
-                
+                $total['total_over']=$total['quarter_minutes'] - $total['quarter_norm'];
+
                 return view('worktime/month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
                 break;
             }
