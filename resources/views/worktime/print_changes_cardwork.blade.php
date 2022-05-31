@@ -191,7 +191,7 @@ podliczenie czasu przepracowanego w godzinach nadliczbowych i udzielonego czasu 
 
         <hr>
         <strong>RAZEM:</strong><br>
-        @if ($$total['changes_minutes_under']-$total['changes_minutes_over']+$total['quarter_minutes']-$total['quarter_norm'] > 0)
+        @if ($total['changes_minutes_under']-$total['changes_minutes_over']+$total['quarter_minutes']-$total['quarter_norm'] > 0)
             ilość godzin przepracowanych w godzinach nadliczbowych: <strong>{{m2hcard($total['changes_minutes_under']-$total['changes_minutes_over']+$total['quarter_minutes']-$total['quarter_norm'])}}</strong> godzin. 
         @elseif ($total['changes_minutes_under']-$total['changes_minutes_over']+$total['quarter_minutes']-$total['quarter_norm'] < 0)
             ilość godzin przepracowanych w godzinach nadliczbowych: <strong>{{m2hcard(-($total['changes_minutes_under']-$total['changes_minutes_over']+$total['quarter_minutes']-$total['quarter_norm']))}}</strong> godzin.
