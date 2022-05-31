@@ -106,7 +106,7 @@
 </div>
 <div style="width: 100%; background: yellow; clear: both">
 </div>
-<footer>[xD]</footer>
+<footer>[{{date('Hidm')}}]</footer>
 
 
 @if ($total['hrminutes_over']>0)
@@ -146,7 +146,7 @@
 </div>
 <div style="width: 100%; background: yellow; clear: both">
 </div>
-<footer>[xD]</footer>
+<footer>[{{date('Hidm')}}]</footer>
 @endif
 
 

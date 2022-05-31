@@ -107,7 +107,7 @@
     </div>
     <div style="width: 100%; background: yellow; clear: both">
     </div>
-    <footer>[xD]</footer>
+    <footer>[{{date('Hidm')}}]</footer>
 </div>
 @endif
 
@@ -216,7 +216,7 @@ podliczenie czasu przepracowanego w godzinach nadliczbowych i udzielonego czasu 
 <div style="width: 100%; background: yellow; clear: both">
 </div>
 
-<footer>[xD]</footer>
+<footer>[{{date('Hidm')}}]</footer>
 @endif
 
 

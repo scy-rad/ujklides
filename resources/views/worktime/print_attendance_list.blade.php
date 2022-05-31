@@ -63,7 +63,7 @@
 
 <div style="width: 100%; background: yellow; clear: both">
 </div>
-<footer>[xD]</footer>
+<footer>[{{date('Hidm')}}]</footer>
 
 </body>
 </html>
