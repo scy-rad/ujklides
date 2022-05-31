@@ -188,6 +188,12 @@ class User extends Authenticatable
         $this->about=$user_about;
         return $this->save();
     }
+    
+    public function update_view($request) {
+        $this->home_own_days=$request->home_own_days;
+        $this->home_second_module=$request->home_second_module;
+        return $this->save();
+    }
 
     public function update_personal($user_data) {
         $this->user_title_id=$user_data->user_title_id;

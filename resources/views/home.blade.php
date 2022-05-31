@@ -81,9 +81,13 @@ function rowek($simmed)
                             [{{$row_time}}]
                         @endforeach
                         <hr style="margin:0rem;">
-                    <a class="time" href="{{route('worktime.day_data', [ $row_one['date'], Auth::user()->id ])}}">
+                    <a class="home_time" href="{{route('worktime.day_data', [ $row_one['date'], Auth::user()->id ])}}">
                         @foreach ($row_one['work_times']['times'] as $row_time)
-                            [{{$row_time['start']}}-{{$row_time['end']}}]
+                            @if ($row_time['start'] == $row_time['end'])
+                                wolne
+                            @else
+                                [{{$row_time['start']}}-{{$row_time['end']}}]
+                            @endif
                         @endforeach
                         <hr style="margin:0rem;">
                         <span class="glyphicon glyphicon glyphicon-briefcase text-success" aria-hidden="true"></span>
@@ -98,5 +102,7 @@ function rowek($simmed)
         @endif
     </div>
 </div>
-
+@if (Auth::user()->home_second_module==1)
+    @include('simmeds.scheduler_body') 
+@endif
 @endsection

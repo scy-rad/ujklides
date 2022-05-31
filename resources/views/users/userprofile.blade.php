@@ -108,6 +108,34 @@ else
                         </div>
 
                     </form>
+
+                    <h2>widok startowy</h2>
+                    <form action="{{ route('user.change_home_view') }}" method="post" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <label for="sel1">ilość dni pracy:</label><br>
+                            <select class="form-control" name="home_own_days">
+                            @for ($i = 0; $i <= 7; $i++)
+                                <option value="{{ $i }}" <?php if ($user->home_own_days==$i) echo ' selected="selected"'; ?>>{{ $i }}</option>
+                            @endfor
+                            </select>
+                        </div>
+                        <div class="col-sm-8">
+                            <label for="sel1">II moduł:</label><br>
+                            <select class="form-control" name="home_second_module">
+                            
+                                <option value="0" <?php if ($user->home_second_module==0) echo ' selected="selected"'; ?>>brak modułu</option>
+                                <option value="1" <?php if ($user->home_second_module==1) echo ' selected="selected"'; ?>>bieżący dzień (scheduler)</option>
+                            
+                            </select>
+                        </div>
+                        <input type="hidden" name="user_id" value="{{$user->id}}">
+                        <hr>
+                        <button type="submit" class="col-sm-12 btn btn-primary">Zmień widok</button>
+                    </div>
+                </form>
+
                 </div>
                 @endif
             </div>

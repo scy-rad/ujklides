@@ -37,7 +37,7 @@ class HomeController extends Controller
             $current = strtotime( $first );
             $last = strtotime( $last );
         
-            while( $current <= $last ) {
+            while( $current < $last ) {
         
                 $dates[] = ['date' => date( $format, $current ), 'wd' => date( 'N', $current ) ];
                 $current = strtotime( $step, $current );
@@ -47,7 +47,7 @@ class HomeController extends Controller
         }
 
         $ret=[];
-        foreach (dateRange( date('Y-m-d'), date( 'Y-m-d', strtotime("+ 7 days") ) ) as $row_data)
+        foreach (dateRange( date('Y-m-d'), date( 'Y-m-d', strtotime("+ ".Auth::user()->home_own_days." days") ) ) as $row_data)
             {
             $ret[$row_data['date']]['date'] = $row_data['date'];
             $ret[$row_data['date']]['wd'] = $row_data['wd'];
@@ -89,7 +89,18 @@ class HomeController extends Controller
      
         $work_times=\App\WorkTime::calculate_work_time(Auth::user()->id, date('Y-m-d'));
 
-        return view('home',['home_data' => $ret, 'sch_date' => '$sch_date', 'work_times' => $work_times]);
+
+
+        switch (Auth::user()->home_second_module)
+        {
+        case 0:
+            return view('home',['home_data' => $ret, 'sch_date' => '$sch_date', 'work_times' => $work_times]);
+            break;
+         case 1:
+            $rows_scheduler=\App\WorkTime::activity_for_scheduler(date('Y-m-d'));
+            //return view('simmeds.scheduler', ['rows_scheduler' => $rows_scheduler,'sch_date' => date('Y-m-d')]);
+            return view('home',['home_data' => $ret, 'sch_date' => '$sch_date', 'work_times' => $work_times, 'rows_scheduler' => $rows_scheduler,'sch_date' => date('Y-m-d')]);
+        }
     }
 
 

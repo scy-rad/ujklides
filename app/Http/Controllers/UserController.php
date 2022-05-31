@@ -253,6 +253,20 @@ class UserController extends Controller
                 return back()->withErrors('Zmiana informacji niestety nie powiodła się...');
     }
 
+    public function change_home_view(Request $request)
+    {
+    if (!(Auth::user()->hasRole('Operator Kadr') || Auth::user()->hasRole('Administrator') || (User::find($request->user_id)->id==Auth::user()->id) ))
+        return view('error',['head'=>'błąd wywołania funkcji change_home_view kontrolera userprofile','title'=>'brak uprawnień ','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
+
+            $user = User::where('id',$request->user_id)->first();
+
+            if ($user->update_view($request))
+                return back()->with('success','Zmiana widoku powiodła się.');
+            else
+                return back()->withErrors('Zmiana widoku niestety nie powiodła się...');
+    }
+    
+
     public function update_personal(Request $request)
     {
     if (!Auth::user()->hasRole('Operator Kadr') && !Auth::user()->hasRole('Administrator'))

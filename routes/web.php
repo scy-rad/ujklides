@@ -433,6 +433,11 @@ Route::post('user/changestatus', [
     'uses' => 'UserController@change_status',
     'as' => 'user.change_status'
 ]);
+Route::post('user/changehomeview', [
+    'uses' => 'UserController@change_home_view',
+    'as' => 'user.change_home_view'
+]);
+
 
 Route::put('user/changeabout', [
     'uses' => 'UserController@change_about',
