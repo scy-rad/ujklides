@@ -32,7 +32,7 @@
 <?php $nofirst=false; ?>
 @foreach ($extra_tab as $big_tab)
 @if ($nofirst)
-<footer2>&nbsp</footer2>
+<div class="footer2">&nbsp</div>
 @else
 <?php $nofirst=true; ?>
 @endif

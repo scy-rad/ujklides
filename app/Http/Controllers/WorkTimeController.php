@@ -1295,9 +1295,7 @@ class WorkTimeController extends Controller
         }
 
 
-
-
-        $user_count=4;
+        $user_count=$request->users_count;
 
         $workers = \App\User::wherein('id',$request->users_table)
         ->orderBy('lastname')->orderBy('firstname')->get(); 
