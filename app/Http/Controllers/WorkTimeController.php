@@ -1283,14 +1283,10 @@ class WorkTimeController extends Controller
         if ($request->users_table==null)
             return back()->withErrors(['head'=>'Nie można stworzyć listy obecności','title'=>'...','description'=>'Nie wybrano pracowników do listy']);
 
-
         $begin = strtotime($request->dateHR.'-01');
         $end   = strtotime($request->dateHR.'-01 + 1 month');
         $head['month_name']=DB::table('pl_months')->find(date('m', $begin))->pl_month;
         $head['year']=date('Y',$begin);
-
-        $technicians = \App\User::wherein('id',$request->users_table)
-        ->orderBy('lastname')->orderBy('firstname')->get(); 
 
         for($i = $begin; $i < $end; $i = $i+86400 )
         {
@@ -1299,41 +1295,12 @@ class WorkTimeController extends Controller
         }
 
 
-        foreach($technicians as $technician_one)
-        {
-            $big_tab[$technician_one->id]=$tab_day;
-            $users_tab[$technician_one->id]=$technician_one;
-        }
-
-        $attendances_tab=\App\WorkTimeToHr::select(
-            'date',
-            'user_id',
-            DB::raw("(CASE WHEN over_under='2' THEN o_time_begin ELSE time_begin END) as AL_begin"),
-            DB::raw("(CASE WHEN over_under='2' THEN o_time_end WHEN over_under='1' THEN o_time_begin ELSE time_end END) as AL_end")
-        )
-        ->where(\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m")'),'=',$request->dateHR)
-        ->orderBy('date')
-        ->orderBy('user_id')
-        ->get();
-
-        foreach ($attendances_tab as $row_one)  
-        {
-            if (!(is_null($row_one->AL_begin)))
-            $big_tab[$row_one->user_id][$row_one->date]['cell_class']="";
-            $big_tab[$row_one->user_id][$row_one->date]['AL_begin']=substr($row_one->AL_begin,0,5);
-            $big_tab[$row_one->user_id][$row_one->date]['AL_end']=substr($row_one->AL_end,0,5);
-        }
 
 
+        $user_count=4;
 
-
-
-
-
-
-
-        $workers=\App\User::role_users('workers', 1, 0)
-                ->orderBy('name')->get();
+        $workers = \App\User::wherein('id',$request->users_table)
+        ->orderBy('lastname')->orderBy('firstname')->get(); 
 
         foreach($workers as $worker_one)
         {
@@ -1348,6 +1315,7 @@ class WorkTimeController extends Controller
             DB::raw("(CASE WHEN over_under='2' THEN o_time_end WHEN over_under='1' THEN o_time_begin ELSE time_end END) as AL_end")
         )
         ->where(\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m")'),'=',$request->dateHR)
+        ->wherein('user_id',$request->users_table)
         ->orderBy('date')
         ->orderBy('user_id')
         ->get();
@@ -1360,7 +1328,6 @@ class WorkTimeController extends Controller
             $big_tab[$row_one->user_id][$row_one->date]['AL_end']=substr($row_one->AL_end,0,5);
         }
 
-        $user_count=3;
         $i=0;
         $extra_tab=[];
         // foreach
@@ -1370,8 +1337,9 @@ class WorkTimeController extends Controller
             $extra_tab[$current_id]['table'][$key]=$value;
             $extra_tab[$current_id]['user_id'][]=$key;
         }
+
 //'big_tab' => $big_tab,
-    return view('worktime/print_attendance_list', [  'extra_tab' => $extra_tab, 'users_tab' => $users_tab, 'days_tab' => $days_tab, 'head' => $head ]);
+    return view('worktime/print_attendance_list', [  'extra_tab' => $extra_tab, 'users_tab' => $users_tab, 'days_tab' => $days_tab, 'user_count' => $user_count, 'head' => $head ]);
 
 
     }

@@ -33,7 +33,7 @@
 <ol>
 @foreach ($big_table as $row_one)
 <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-2">
     {{$row_one['list']->dateHR}}
     </div>
     <div class="col-sm-3">
@@ -56,8 +56,15 @@
             <select  class="selectpicker" name="users_table[]" multiple="multiple">
                 <option value="" selected disabled>Wybierz pracowników:</option>
                 @foreach ($row_one['users'] as $technician_one)
-                <option value="{{$technician_one->id}}">{{$technician_one->lastname}} {{$technician_one->firstname}}</option>
+                <option value="{{$technician_one->id}}" selected="selected">{{$technician_one->lastname}} {{$technician_one->firstname}}</option>
                 @endforeach
+            </select>
+        </div>
+        <div class="col-sm-1">
+            <select  name="users_count">
+                @for ($i=1; $i <= 6; $i++)
+                <option value="{{$i}}"@if ($i==4) selected="selected" @endif>{{$i}}</option>
+                @endfor
             </select>
         </div>
         <div class="col-sm-2">

@@ -23,14 +23,19 @@
   .time {width: 50px; font-size: 0.75rem; border-right: 1px solid #ddd; border-left: 3px double black;}
   .date {width: 100px;}
   .free_day {background: #ccc}
-  footer {margin-bottom: 100px; font-size: 0.3rem; text-align: right}
+  footer {margin-bottom: 100px; font-size: 0.3rem; text-align: right; width: 100%; clear: both}
   @media print {
-  footer {page-break-after: always;}
+  .footer2 {page-break-after: always;}
 }
   </style>
   <body>
-
+<?php $nofirst=false; ?>
 @foreach ($extra_tab as $big_tab)
+@if ($nofirst)
+<footer2>&nbsp</footer2>
+@else
+<?php $nofirst=true; ?>
+@endif
 <p class="smalltxt aright">Załącznik nr 8 do Regulaminu Pracy w Uniwersytecie Jana Kochanowskiego w Kielcach</small>
 <h1>LISTA OBECNOŚCI PRACOWNIKÓW {{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name_wersal}}</h1> 
 <br>
@@ -42,29 +47,45 @@
             {{$head['month_name']}}<br>
             {{$head['year']}}
         </th>
-        @foreach ($users_tab as $user_one)
+          <?php $counter=0; ?>
+        @foreach ($big_tab['user_id'] as $user_one)
+            <?php $counter++; ?>
             <th class="time">
                 godz. pracy
             </th>
             <th class="name">
-            {{$user_one->firstname}} <br> {{$user_one->lastname}}
+            {{$users_tab[$user_one]->firstname}} <br> {{$users_tab[$user_one]->lastname}}
             </th>
+
         @endforeach
+        @for($i = $counter; $i < $user_count; $i++ )
+            <th class="time">
+                godz. pracy
+            </th>
+            <th class="name">
+            &nbsp;
+            </th>
+        @endfor
+ 
     </tr>
     @foreach ($days_tab as $day_one)
         <tr>
         <th class="date"> {{$day_one['day']}}  &nbsp; <span style="font-weight: normal">{{$day_one['day_of_week']}}</span> </th>
+        <?php $counter=0; ?>
         @foreach ($big_tab['user_id'] as $user_one)
-        <td> </td>
-        <td>{{$user_one}}</td>
-     @endforeach
+          <?php $counter++; ?>
+          <td class="time {{$big_tab['table'][$user_one][$day_one['number']]['cell_class']}}"> {{$big_tab['table'][$user_one][$day_one['number']]['AL_begin']}}-<br>{{$big_tab['table'][$user_one][$day_one['number']]['AL_end']}}&nbsp;</td>
+          <td class="sign {{$big_tab['table'][$user_one][$day_one['number']]['cell_class']}}"> </td>
+        @endforeach
+        @for($i = $counter; $i < $user_count; $i++ )
+          <td class="time {{$big_tab['table'][$user_one][$day_one['number']]['cell_class']}}"> &nbsp;</td>
+          <td class="sign {{$big_tab['table'][$user_one][$day_one['number']]['cell_class']}}"> </td>
+        @endfor
         </tr>
     @endforeach
 </table>
-
-<div style="width: 100%; background: yellow; clear: both">
-</div>
 <footer>[{{date('Hidm')}}]</footer>
+
 @endforeach;
 </body>
 </html>
