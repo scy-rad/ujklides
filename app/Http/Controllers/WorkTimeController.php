@@ -1324,7 +1324,54 @@ class WorkTimeController extends Controller
             $big_tab[$row_one->user_id][$row_one->date]['AL_end']=substr($row_one->AL_end,0,5);
         }
 
-    return view('worktime/print_attendance_list', [ 'big_tab' => $big_tab, 'users_tab' => $users_tab, 'days_tab' => $days_tab, 'head' => $head ]);
+
+
+
+
+
+
+
+
+        $workers=\App\User::role_users('workers', 1, 0)
+                ->orderBy('name')->get();
+
+        foreach($workers as $worker_one)
+        {
+            $big_tab[$worker_one->id]=$tab_day;
+            $users_tab[$worker_one->id]=$worker_one;
+        }
+
+        $attendances_tab=\App\WorkTimeToHr::select(
+            'date',
+            'user_id',
+            DB::raw("(CASE WHEN over_under='2' THEN o_time_begin ELSE time_begin END) as AL_begin"),
+            DB::raw("(CASE WHEN over_under='2' THEN o_time_end WHEN over_under='1' THEN o_time_begin ELSE time_end END) as AL_end")
+        )
+        ->where(\DB::raw('DATE_FORMAT(work_time_to_hrs.date,"%Y-%m")'),'=',$request->dateHR)
+        ->orderBy('date')
+        ->orderBy('user_id')
+        ->get();
+
+        foreach ($attendances_tab as $row_one)  
+        {
+            if (!(is_null($row_one->AL_begin)))
+            $big_tab[$row_one->user_id][$row_one->date]['cell_class']="";
+            $big_tab[$row_one->user_id][$row_one->date]['AL_begin']=substr($row_one->AL_begin,0,5);
+            $big_tab[$row_one->user_id][$row_one->date]['AL_end']=substr($row_one->AL_end,0,5);
+        }
+
+        $user_count=3;
+        $i=0;
+        $extra_tab=[];
+        // foreach
+        foreach ($big_tab as $key => $value)
+        {   
+            $current_id=$i++/$user_count;
+            $extra_tab[$current_id]['table'][$key]=$value;
+            $extra_tab[$current_id]['user_id'][]=$key;
+        }
+//'big_tab' => $big_tab,
+    return view('worktime/print_attendance_list', [  'extra_tab' => $extra_tab, 'users_tab' => $users_tab, 'days_tab' => $days_tab, 'head' => $head ]);
 
 
     }

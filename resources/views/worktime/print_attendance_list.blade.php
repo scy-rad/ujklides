@@ -30,6 +30,7 @@
   </style>
   <body>
 
+@foreach ($extra_tab as $big_tab)
 <p class="smalltxt aright">Załącznik nr 8 do Regulaminu Pracy w Uniwersytecie Jana Kochanowskiego w Kielcach</small>
 <h1>LISTA OBECNOŚCI PRACOWNIKÓW {{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name_wersal}}</h1> 
 <br>
@@ -53,10 +54,10 @@
     @foreach ($days_tab as $day_one)
         <tr>
         <th class="date"> {{$day_one['day']}}  &nbsp; <span style="font-weight: normal">{{$day_one['day_of_week']}}</span> </th>
-        @foreach ($users_tab as $user_one)
-            <td class="time {{$big_tab[$user_one->id][$day_one['number']]['cell_class']}}"> {{$big_tab[$user_one->id][$day_one['number']]['AL_begin']}}-<br>{{$big_tab[$user_one->id][$day_one['number']]['AL_end']}}&nbsp;</td>
-            <td class="sign {{$big_tab[$user_one->id][$day_one['number']]['cell_class']}}"> </td>
-        @endforeach
+        @foreach ($big_tab['user_id'] as $user_one)
+        <td> </td>
+        <td>{{$user_one}}</td>
+     @endforeach
         </tr>
     @endforeach
 </table>
@@ -64,6 +65,6 @@
 <div style="width: 100%; background: yellow; clear: both">
 </div>
 <footer>[{{date('Hidm')}}]</footer>
-
+@endforeach;
 </body>
 </html>
