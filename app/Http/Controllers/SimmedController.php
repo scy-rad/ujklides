@@ -179,7 +179,7 @@ class SimmedController extends Controller
 
             //$rows_plane=Simmed::simmeds_for_plane($ret_sch_date); -  ta funkcja będzie do wywalenia, bo zmieniłem skrypt datatable
             $rows_plane=Simmed::select('*','simmeds.id as sim_id')->where('simmed_date','>=',$ret_sch_date)->where('simmed_date','<=',$ret['sch_date_to'])
-                ->where('simmed_status','<',4);
+                ->where('simmed_status','<>',4);
             if ($ret['sch_csm']<0)
                 $rows_plane=$rows_plane->whereNull('student_group_id');
             if ($ret['sch_csm']>0)

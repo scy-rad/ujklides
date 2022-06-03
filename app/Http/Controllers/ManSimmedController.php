@@ -822,7 +822,7 @@ class ManSimmedController extends Controller
                     break;
             case '14':
                 $IDSy=SimmedTemp::pluck('simmed_id')->toArray();
-                $for_delete=Simmed::where('simmed_status','<',4)->whereNotIn('id',$IDSy)->whereBetween('simmed_date',$date_anal)->get();
+                $for_delete=Simmed::where('simmed_status','<>',4)->whereNotIn('id',$IDSy)->whereBetween('simmed_date',$date_anal)->get();
 
                 if ($for_delete->count()>0)
                 {

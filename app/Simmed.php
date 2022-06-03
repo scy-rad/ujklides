@@ -135,7 +135,7 @@ class Simmed extends Model
     public static function simmeds_for_timetable($what_type,$what_no,$date_from,$date_to) {
         $simday = Simmed::where('simmed_date','>=',$date_from)
                         ->where('simmed_date','<=',$date_to)
-                        ->where('simmed_status','<',4)
+                        ->where('simmed_status','<>',4)
                         ->orderBy('simmed_date')
                         ->orderBy('simmed_time_begin');
         switch ($what_type)
