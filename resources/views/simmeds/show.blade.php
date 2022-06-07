@@ -165,7 +165,6 @@
         </a>
     </div>
 
-    @if ($show_edit_button==true)
         @if (Auth::user()->hasRole('Operator Symulacji'))
         <div class="float-right col-sm-2"><a class="btn btn-danger" href="{{route('simmeds.edit', $simmed)}}">Edytuj dane symulacji</a></div>
         @else
@@ -181,7 +180,6 @@
         @if ( Auth::user()->hasRole('Operator Symulacji') )
             <div class="float-left col-sm-2"><a class="btn btn-danger" href="{{route('simmeds.copy', $simmed)}}">Kopiuj (bez grupy)</a></div>
         @endif
-    @endif
 </div>
 
 

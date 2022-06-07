@@ -394,31 +394,12 @@ class SimmedController extends Controller
      */
     public function show(Simmed $simmed, Int $filtr)
     {
-        $date_back=\App\Param::select('*')->orderBy('id','desc')->get()->first()->simmed_days_edit_back;
-
-        if ($date_back<0)
-            $date_back='+'.$date_back*(-1);
-        else
-            $date_back='-'.$date_back;
-        if (
-            (
-            $simmed->simmed_date >= date('Y-m-d',strtotime('now '.$date_back.' days'))
-            && Auth::user()->hasRole('Technik')
-            )
-            || Auth::user()->hasRole('Operator Symulacji')
-           )
-           $data['show_edit_button']=true;
-        else
-           $data['show_edit_button']=false;
-
-
         $data['technician_history'] = SimmedArcTechnician::where('simmed_id', $simmed->id)
         ->get();
         $data['simmed_history'] = \App\SimmedArc::where('simmed_id', $simmed->id)
         ->get();
 
         $date_stat=\App\Param::select('statistics_start')->get()->first()->statistics_start;
-
 
         $other_sims = \App\Simmed::select('*')
             ->where('id', '<>' ,$simmed->id)
