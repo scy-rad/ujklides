@@ -1,0 +1,1 @@
+mklink /D storage "..\..\..\OneDrive - ujk.edu.pl\SimMedLek\UJKlides\Fotki\lekarski"

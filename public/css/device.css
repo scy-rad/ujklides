@@ -9,3 +9,14 @@
     white-space: nowrap;
   }
 
+.device_photo {
+  width: 100%;
+  max-width: 300px;
+  max-height: 200px;
+  overflow: hidden;
+  margin: 0px;
+}
+
+.device_yellow{
+  background: yellow;
+}

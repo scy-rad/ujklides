@@ -41,6 +41,24 @@
             <button type="submit" class="btn btn-primary">zapisz</button>
       </div>
         </form>
+
+
+
+
+        <form action="select.php" id="formularz" action="post">
+	<fieldset>
+		<legend>Kategorie</legend>
+		<select id="kategorie">
+			<option value="1">Kategoria 1</option>
+			<option value="2">Kategoria 2</option>
+			<option value="3">Kategoria 3</option>
+			<option value="4">Kategoria 4</option>
+		</select>
+	</fieldset>
+</form>
+
+
+
     </div>  <!-- /modal-content -->
   </div>    <!-- /modal-dialog -->
 </div>      <!-- /modal fade -->

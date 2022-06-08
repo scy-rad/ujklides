@@ -9,6 +9,12 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
+
+GET     : index, create, show, edit
+POST    : store
+PUT     : update all object
+PATCH   : modify some fields
+
 */
 
 use Illuminate\Http\Request;
@@ -113,6 +119,27 @@ Route::put('item/{item}', [
     'uses' => 'ItemController@update',
     'as' => 'item.update'
 ]);
+
+Route::post('item/inv/{item}', [
+    'uses' => 'ItemController@save_inv',
+    'as' => 'item.save_inv'
+]);
+
+Route::post('item/loc/{item}', [
+    'uses' => 'ItemController@save_loc',
+    'as' => 'item.save_loc'
+]);
+
+Route::post('item/sta/{item}', [
+    'uses' => 'ItemController@save_sta',
+    'as' => 'item.save_sta'
+]);
+
+Route::post('item/pho/{item}', [
+    'uses' => 'ItemController@save_pho',
+    'as' => 'item.save_pho'
+]);
+
 
 /*
 Route::get('item/fault/{item}/{id_what}', [

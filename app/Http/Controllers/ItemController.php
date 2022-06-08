@@ -133,4 +133,39 @@ class ItemController extends Controller
         return view('items.show', compact('item'), ["do_what" => "nothing", "doc" => 0]);
     }
 
+
+    public function save_inv(Request $request, Item $item)
+    {
+        $item->item_serial_number = $request->item_serial_number;
+        $item->item_inventory_number = $request->item_inventory_number;
+        $item->item_purchase_date = $request->item_purchase_date;
+        $item->item_warranty_date = $request->item_warranty_date;
+        $item->item_description = $request->item_description;
+        $ret = $item->save();
+
+        return view('items.show', compact('item'), ["do_what" => "nothing", "doc" => 0]);
+    }
+
+    public function save_loc(Request $request, Item $item)
+    {
+        $item->room_storage_id = $request->room_storage_id;
+        $item->item_storage_shelf = $request->item_storage_shelf;
+        $ret = $item->save();
+
+        return view('items.show', compact('item'), ["do_what" => "nothing", "doc" => 0]);
+    }
+
+    public function save_sta(Request $request, Item $item)
+    {
+        dd('save_sta',$request);
+        return view('items.show', compact('item'), ["do_what" => "nothing", "doc" => 0]);
+    }
+
+    public function save_pho(Request $request, Item $item)
+    {
+        dd('save_pho',$request);
+        return view('items.show', compact('item'), ["do_what" => "nothing", "doc" => 0]);
+    }
+
+
 }

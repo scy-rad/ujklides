@@ -79,6 +79,17 @@ class Item extends Model
     return $retry;
     }
 
+    function show_status()
+    {
+        switch ($this->item_status)
+        {
+            case 1:
+                return 'aktywny';
+            default:
+                return 'błąd statusu';
+        }
+    }
+
 /*
 
     function get_type_id(String $type_name)

@@ -14,27 +14,29 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-3">
         <a href="{{route('items.show', $item->id)}}">
-        <div class="tile">
-            <img src="{{asset('/storage/'.$item->photo_OK()) }}" class="tile">
-            <!--div class="tiletitle">
-                {!! $item->group()->item_group_name !!}
-                {!! $item->group()->item_group_producent !!}
-                {!! $item->group()->item_group_model  !!}
-            </div-->
+        <div class="device_photo">
+            <img src="{{asset('/storage/'.$item->photo_OK()) }}" class="device_photo">
         </div>
         </a>
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-6">
         <h2>{!! $item->group()->item_group_name !!}</h2>
-        <p>producent: <strong>{!! $item->group()->item_group_producent !!}</strong>; 
-        model: <strong>{!! $item->group()->item_group_model  !!}</strong></p>
+        producent: <strong>{!! $item->group()->item_group_producent !!}</strong>; 
+        model: <strong>{!! $item->group()->item_group_model  !!}</strong>
         <br>
-        {!! $item->item_description !!}
+        opis: <strong>{!! $item->item_description !!}</strong>
+        
+    </div>
+    <div class="col-sm-3 device_yellow">
+    <strong>testowe dane:</strong><br>
+    item_group_name: <strong>{!! $item->group()->item_group_name !!}</strong><br>
+    item_group_producent: <strong>{!! $item->group()->item_group_producent !!}</strong><br>
+    item_group_model: <strong>{!! $item->group()->item_group_model  !!}</strong><br>
     </div>
 </div>
-6 maja godz. 10:00
+
 <div class="row">
     <div class="col-sm-2">
         <div>
@@ -67,7 +69,7 @@
         miejsce<br>
         <strong>{{ $item->storage()->room()->room_number }}</strong>
         {{ $item->storage()->room()->room_name }} <br>
-        {{ $item->storage()->room_storage_number }} 
+        {{ $item->storage()->room_storage_number }}
         <?php if ($item->storage()->room_storage_shelf_count>1) echo ".".$item->item_storage_shelf; 
         ?>:
         {{ $item->storage()->room_storage_name }}
@@ -90,12 +92,12 @@
     <div class="col-sm-2">
         <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
         status<br>
-        <strong>{{ $item->item_status }}</strong>    
+        <strong>{{ $item->show_status() }}</strong>    
     </div>
 
 
     <div class="col-sm-2">
-      @if ( (Auth::user()->hasRole('magazynier'))  || (Auth::user()->hasRole('technik')) )
+      @if ( (Auth::user()->hasRoleCode('serviceworkers'))  || (Auth::user()->hasRoleCode('technicians')) )
         <button type="button" class="btn btn-primary btn-outline-primary btn-lg btn-block" data-toggle="modal" data-target="#realocateModal">
         <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
             wypożycz
@@ -105,12 +107,32 @@
         <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
             zgłoś usterkę
         </button><br>
+        @if ( (Auth::user()->hasRoleCode('itemoperators')) )
+        <button type="button" class="btn btn-success btn-outline-primary btn btn-block" data-toggle="modal" data-target="#editModal">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            edytuj
+        </button><br>
+            @if ($item->room_storage_current_id != $item->room_storage_id)
+                <button type="button" class="btn btn-info btn-outline-primary btn btn-block" data-toggle="modal" data-target="#changeLocalizationModal">
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+                    zmień lokalizację
+                </button><br>
+            @endif
+        @endif
     </div>
 </div>
 
-@if ( (Auth::user()->hasRole('magazynier'))  || (Auth::user()->hasRole('technik')) )
+@if ( (Auth::user()->hasRoleCode('serviceworkers'))  || (Auth::user()->hasRoleCode('technicians')) )
     @include('items.modalrealocate')
 @endif
+@if ( (Auth::user()->hasRoleCode('itemoperators')) )
+    @include('items.modaledit')
+    @if ($item->room_storage_current_id != $item->room_storage_id)
+        @include('items.modalchangelocalization')
+    @endif
+@endif
+
+
 @include('items.modalfault')
 
 <hr>
