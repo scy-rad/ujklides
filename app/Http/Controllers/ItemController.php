@@ -163,7 +163,8 @@ class ItemController extends Controller
 
     public function save_pho(Request $request, Item $item)
     {
-        dd('save_pho',$request);
+        $item->item_photo=substr($request->picture_name,strlen($request->server('HTTP_ORIGIN').'/storage/image/')+1,100);
+        $ret = $item->save();
         return view('items.show', compact('item'), ["do_what" => "nothing", "doc" => 0]);
     }
 

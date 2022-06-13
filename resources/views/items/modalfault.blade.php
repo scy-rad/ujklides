@@ -1,4 +1,4 @@
-<!-- Modal realocate-->
+<!-- Modal fault-->
 <div class="modal fade" id="faultModal" tabindex="-1" role="dialog" aria-labelledby="faultModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -32,4 +32,4 @@
     </div>  <!-- /modal-content -->
   </div>    <!-- /modal-dialog -->
 </div>      <!-- /modal fade -->
-<!-- /Modal realocate-->
+<!-- /Modal fault-->
