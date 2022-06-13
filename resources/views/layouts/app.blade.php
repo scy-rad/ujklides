@@ -189,6 +189,13 @@
                                     )
                                     <li><a href="{{ route('libraries.params_show') }}"> Parametry </a></li>
                                     @endif
+
+                                    @if (Auth::user()->hasRoleCode('administrators')
+                                    )
+                                    <li><a href="{{ route('test') }}"> TESTY </a></li>
+                                    @endif
+
+                                    
                                 </ul>
                             </li>
 

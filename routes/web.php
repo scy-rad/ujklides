@@ -24,6 +24,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/test', 'TestController@index')->name('test');
+
+
 
 Route::group([
     'middleware' => 'roles',                        // uiruchom middlewara roles - nazwa zdefiniowana w Kernel.php
