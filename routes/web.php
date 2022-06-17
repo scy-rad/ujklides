@@ -24,8 +24,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test', 'TestController@index')->name('test');
 
+/*  FOR TEST ONLY BEGIN  */
+Route::get('/testuj', 'TestController@index')->name('testuj');
+
+Route::post('testuj/ajx_roomstorages', 'TestController@ajx_room_storages')->name('testuj.ajx_roomstorages');
+Route::post('testuj/ajx_shelf_count', 'TestController@ajx_shelf_count')->name('testuj.ajx_shelf_count');
+/*  FOR TEST ONLY END  */
 
 
 Route::group([

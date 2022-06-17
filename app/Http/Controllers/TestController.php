@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use App\ItemType;
+use App\Room;
+use App\RoomStorage;
 
 class TestController extends Controller
 {
@@ -12,14 +15,36 @@ class TestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+        public function index()
     {
-        //
-        // return view('items.index', compact('Items'), ['type_name' => $choice,'items_table' => $Items_table]);
+        // $categoris=ItemType::where('item_type_parent_id','=',0)->get();        
+        // return view('tests.cat',["categoris" => $categoris]);
 
-        return view('test');
-
+        $rooms=Room::all();
+        $roomstorages=RoomStorage::where('room_id',$rooms[0]->id)->get();
+        return view('tests.cat',["rooms" => $rooms, "roomstorages" => $roomstorages]);
     }
+
+    public function ajx_room_storages(Request $request)
+    {        
+        $roomstorages = RoomStorage::where('room_id',$request->room_id)
+                              ->orderBy('room_storage_sort')
+                              ->get();
+        return response()->json([
+            'roomstorages' => $roomstorages
+        ]);
+    }
+
+    
+    public function ajx_shelf_count(Request $request)
+    {
+        $shelf_count = RoomStorage::where('id',$request->room_storage_id)
+                              ->first()->room_storage_shelf_count;
+        return response()->json([
+            'shelf_count' => $shelf_count
+        ]);
+    }
+
 
     /**
      * Show the form for creating a new resource.

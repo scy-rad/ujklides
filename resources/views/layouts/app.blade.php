@@ -192,7 +192,7 @@
 
                                     @if (Auth::user()->hasRoleCode('administrators')
                                     )
-                                    <li><a href="{{ route('test') }}"> TESTY </a></li>
+                                    <li><a href="{{ route('testuj') }}"> TESTY </a></li>
                                     @endif
 
                                     
