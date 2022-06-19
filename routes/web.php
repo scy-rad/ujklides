@@ -128,25 +128,8 @@ Route::put('item/{item}', [
     'as' => 'item.update'
 ]);
 
-Route::post('item/inv/{item}', [
-    'uses' => 'ItemController@save_inv',
-    'as' => 'item.save_inv'
-]);
-
-Route::post('item/loc/{item}', [
-    'uses' => 'ItemController@save_loc',
-    'as' => 'item.save_loc'
-]);
-
-Route::post('item/sta/{item}', [
-    'uses' => 'ItemController@save_sta',
-    'as' => 'item.save_sta'
-]);
-
-Route::post('item/pho/{item}', [
-    'uses' => 'ItemController@save_pho',
-    'as' => 'item.save_pho'
-]);
+Route::post('item/ajx_roomstorages', 'ItemController@ajx_room_storages')->name('item.ajx_roomstorages');
+Route::post('item/ajx_shelf_count', 'ItemController@ajx_shelf_count')->name('item.ajx_shelf_count');
 
 
 /*

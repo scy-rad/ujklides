@@ -10,9 +10,10 @@
         </button>
       </div>    <!-- modal-header -->
       <div class="modal-body">
-        <form method="post" action="{{ route('item.save_inv', [$item->id]) }}">
+        <form method="post" action="{{ route('item.update', $item->id) }}">
+            <input type="hidden" name="_method" value="PUT">
+            <input type="hidden" name="update" value="invent_data">
             {{ csrf_field() }}
-            <input type="hidden" name="item_id" value="{{$item->id}}">
 
             <fieldset>
                 <label for="item_group_id">grupa (nieedytowalne):</label><br>

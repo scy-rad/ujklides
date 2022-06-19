@@ -9,9 +9,10 @@
         </button>
       </div>    <!-- modal-header -->
       <div class="modal-body">
-        <form method="post" action="{{ route('item.save_pho', [$item->id]) }}">
+      <form method="post" action="{{ route('item.update', $item->id) }}">
+            <input type="hidden" name="_method" value="PUT">
+            <input type="hidden" name="update" value="picture">
             {{ csrf_field() }}
-            <input type="hidden" name="item_id" value="{{$item->id}}">
             <input type="hidden" name="picture_name" id="picture_name" value="" >
 
             <div style="width:200px; float: left">

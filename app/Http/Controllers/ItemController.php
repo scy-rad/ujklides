@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Item;
 use App\ItemType;
 use App\ItemGroup;
+use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
@@ -75,7 +76,10 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        return view('items.show', compact('item'), ["do_what" => "nothing", "doc" => 0]);
+        $rooms=\App\Room::all();
+        $roomstorages=\App\RoomStorage::where('room_id',$item->current_storage()->room()->id)->get();
+
+        return view('items.show', compact('item'), ["do_what" => "basic_view", "doc" => 0, "rooms" => $rooms, "roomstorages" => $roomstorages]);
     }
 
     public function doc(Item $item, Int $id_what)
@@ -109,64 +113,65 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
+        if ( ! ( ( ( (Auth::user()->hasRoleCode('serviceworkers')) || (Auth::user()->hasRoleCode('technicians')) ) && $request->update=='relocate' )
+              ||  (Auth::user()->hasRoleCode('itemoperators')) ))
+              return back()->withErrors(['head'=>'błąd wywołania funkcji update kontrolera Item','title'=>'Brak uprawnień...','description'=>'Nie masz wystarczających uprawnień, aby wykonać tą operację...']);
 
-        switch ($request->input('action')) {
-            case 'loan':
-                //echo '<h1>wypożyczenie lub zwrot sprzętu</h1>';
-                //echo "<h2>$request->new_room_storage</h2>";
-                
-                //print_r($request->all());
-
-
-               // $item = Page::find($id);
-
-                // Make sure you've got the Page model
+        $rooms=\App\Room::all();
+        switch ($request->update)
+        {
+            case 'realocate':
                 if($item) {
                     $item->room_storage_current_id = $request->new_room_storage;
                     $item->save();
                 }
-        
+                break;
+            case "localization":
+                $item->room_storage_id = $request->roomstorage;
+                $item->room_storage_current_id = $request->roomstorage;
+                $item->item_storage_shelf = $request->item_storage_shelf;
+                $ret = $item->save();
+                break;
+            case "invent_data":
+                $item->item_serial_number = $request->item_serial_number;
+                $item->item_inventory_number = $request->item_inventory_number;
+                $item->item_purchase_date = $request->item_purchase_date;
+                $item->item_warranty_date = $request->item_warranty_date;
+                $item->item_description = $request->item_description;
+                $ret = $item->save();
+                break;
+            case "picture":
+                $item->item_photo=substr($request->picture_name,strlen($request->server('HTTP_ORIGIN').'/storage/image/')+1,100);
+                $ret = $item->save();
                 break;
             default:
-                echo '<h1> tu miał być pewnie jakiś update item - ale cóś nie wyszło...';
+                return back()->withErrors(['head'=>'błąd wywołania funkcji update kontrolera Item','title'=>'coś posszło nie tak...','description'=>'...']);
+
         }
-        return view('items.show', compact('item'), ["do_what" => "nothing", "doc" => 0]);
+
+        return back()->with('success',' Zapis zakończył się sukcesem.');
+
     }
 
 
-    public function save_inv(Request $request, Item $item)
+    public function ajx_room_storages(Request $request)
+    {        
+        $roomstorages = RoomStorage::where('room_id',$request->room_id)
+                              ->orderBy('room_storage_sort')
+                              ->get();
+        return response()->json([
+            'roomstorages' => $roomstorages
+        ]);
+    }
+
+    
+    public function ajx_shelf_count(Request $request)
     {
-        $item->item_serial_number = $request->item_serial_number;
-        $item->item_inventory_number = $request->item_inventory_number;
-        $item->item_purchase_date = $request->item_purchase_date;
-        $item->item_warranty_date = $request->item_warranty_date;
-        $item->item_description = $request->item_description;
-        $ret = $item->save();
-
-        return view('items.show', compact('item'), ["do_what" => "nothing", "doc" => 0]);
+        $shelf_count = RoomStorage::where('id',$request->room_storage_id)
+                              ->first()->room_storage_shelf_count;
+        return response()->json([
+            'shelf_count' => $shelf_count
+        ]);
     }
-
-    public function save_loc(Request $request, Item $item)
-    {
-        $item->room_storage_id = $request->room_storage_id;
-        $item->item_storage_shelf = $request->item_storage_shelf;
-        $ret = $item->save();
-
-        return view('items.show', compact('item'), ["do_what" => "nothing", "doc" => 0]);
-    }
-
-    public function save_sta(Request $request, Item $item)
-    {
-        dd('save_sta',$request);
-        return view('items.show', compact('item'), ["do_what" => "nothing", "doc" => 0]);
-    }
-
-    public function save_pho(Request $request, Item $item)
-    {
-        $item->item_photo=substr($request->picture_name,strlen($request->server('HTTP_ORIGIN').'/storage/image/')+1,100);
-        $ret = $item->save();
-        return view('items.show', compact('item'), ["do_what" => "nothing", "doc" => 0]);
-    }
-
 
 }

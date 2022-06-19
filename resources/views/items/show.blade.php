@@ -10,11 +10,34 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.pack.js"></script>
 
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 
 @section('title', $item->group()->item_group_name. " inv: ".$item->item_inventory_number )
 <script type="text/javascript" src="{{ URL::asset('js/jquery.schedule/dist/js/jq.schedule.js')}}"></script>
 
 @section('content')
+    <div class="container">
+        <div class="row">
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button>
+                    <strong>Tadaaaaaaaaaaa!!</strong><br>
+                    {{ $message }}
+                </div>
+            @endif
+
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <strong>Uuuups!</strong> Przecież to nie powinno się wydarzyć!<br><br>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
+    </div>
 <!--h1> { { $action }} item { { $subid }}</h1-->
 <div class="row">
     <div class="col-sm-12">
@@ -77,10 +100,11 @@
         miejsce<br>
         <strong>{{ $item->storage()->room()->room_number }}</strong>
         {{ $item->storage()->room()->room_name }} <br>
-        {{ $item->storage()->room_storage_number }}
-        <?php if ($item->storage()->room_storage_shelf_count>1) echo ".".$item->item_storage_shelf; 
-        ?>:
+        <!--{{ $item->storage()->room_storage_number }}-->
         {{ $item->storage()->room_storage_name }}
+        @if ($item->storage()->room_storage_shelf_count>1) , poziom: {{$item->item_storage_shelf}} @endif 
+        
+        
 
         
 
@@ -120,12 +144,12 @@
         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             edytuj
         </button><br>
-            @if ($item->room_storage_current_id != $item->room_storage_id)
-                <button type="button" class="btn btn-info btn-outline-primary btn btn-block" data-toggle="modal" data-target="#changeLocalizationModal">
+            <?php //@if ($item->room_storage_current_id != $item->room_storage_id) ?>
+                <button type="button" class="btn btn-info btn-outline-danger btn btn-block" data-toggle="modal" data-target="#changeLocalizationModal">
                 <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
                     zmień lokalizację
                 </button><br>
-            @endif
+            <?php //@endif ?>
         <button type="button" class="btn btn-success btn-outline-primary btn btn-block" data-toggle="modal" data-target="#pictureModal">
         <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
             zmień zdjęcie
@@ -140,9 +164,7 @@
 @if ( (Auth::user()->hasRoleCode('itemoperators')) )
     @include('items.modaledit')
     @include('items.modalpicture')
-    @if ($item->room_storage_current_id != $item->room_storage_id)
-        @include('items.modalchangelocalization')
-    @endif
+    @include('items.modalchangelocalization')
 @endif
 
 
@@ -295,7 +317,7 @@ echo '<pre>';
         @include('items.increviews')
     @break
 
-    @case("nothing")
+    @case("basic_view")
     @default
         <p>{!! $item->item_description !!}</p>
         <p>{!! $item->group()->item_group_description !!}</p>

@@ -18,7 +18,7 @@
         <hr>
         <form method="post" action="{{ route('item.update', $item->id) }}">
             <input type="hidden" name="_method" value="PUT">
-            <input type="hidden" name="action" value="loan">
+            <input type="hidden" name="update" value="realocate">
             {{ csrf_field() }}
             <fieldset>
             @if ($item->room_storage_current_id == $item->room_storage_id )
