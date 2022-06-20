@@ -179,7 +179,7 @@
    <ul>
     @foreach ($item->group()->docs as $doc)
         <li>
-        <a href="{{route('items.doc', [$item->id, $doc->id])}}">
+        <a href="{{route('items.show_something', [$item->id, 'docs', $doc->id])}}">       
         {{$doc->doc_title}}
         </a>
         </li>
@@ -192,8 +192,8 @@
    <ul>
     @foreach ($item->group()->files as $plik)
         <li>
-        <a href="{{route('items.fil', [$item->id, $plik->id])}}">
-        {{$plik->plik_title}}
+        <a href="{{route('items.show_something', [$item->id, 'fils', $plik->id])}}">       
+            {{$plik->plik_title}}
         </a>
         </li>
     @endforeach
@@ -206,7 +206,7 @@
         <ul>
         @foreach ($item->galleries as $galx)
             <li>
-            <a href="{{route('items.gal', [$item->id, $galx->id])}}">
+            <a href="{{route('items.show_something', [$item->id, 'gals', $galx->id])}}">       
             {{$galx->gallery_name}}
             </a>
             </li>
@@ -274,9 +274,10 @@ echo '<pre>';
 
 @switch($do_what)
     @case("docs")
-        <?php   $doc=App\Doc::where('id',$id_what)->get()->first(); ?>
+        <?php   $doc=App\Doc::where('id',$id_what)->get()->first(); 
+        ?>
         
-        @if (Auth::user()->hasRoleCode('serviceworkers'))
+        @if (Auth::user()->hasRoleCode('itemoperators'))
             <a href="{{route('docs.edit', ['doc' => $doc->id] )}}" alt="edytuj">
             <span class="glyphicon glyphicon-edit glyphiconbig pull-right"></span>
             </a>
@@ -288,8 +289,10 @@ echo '<pre>';
     @break
     
     @case("fils")
-    <?php   $plik=App\Plik::where('id',$id_what)->get()->first();   ?>
-    <iframe src="/storage/files{{$plik->plik_directory}}/{{$plik->plik_name}}" style="width: 100%; box-sizing: border-box;  height: calc(100% - 55px);border: 1px solid #000;">Wystąpił błąd</iframe>
+    <?php   $plik=App\Plik::where('id',$id_what)->get()->first();   
+    ?>
+    <h3>{{$plik->plik_name}}</h3>
+    <iframe src="{{asset('/storage/pliki/'.$plik->plik_directory.$plik->plik_name)}}" style="width: 100%; box-sizing: border-box;  height: calc(100% - 55px);border: 1px solid #000;">Wystąpił błąd</iframe>
     @break
 
     @case("gals")

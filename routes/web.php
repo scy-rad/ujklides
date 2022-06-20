@@ -108,20 +108,11 @@ Route::get('item/show/{item}', [
     'as' => 'items.show'
 ]);
 
-Route::get('item/doc/{item}/{doc}', [
-    'uses' => 'ItemController@doc',
-    'as' => 'items.doc'
+Route::get('itemx/{item}/{what}/{id_what}', [
+    'uses' => 'ItemController@show_something',
+    'as' => 'items.show_something'
 ]);
 
-Route::get('item/gal/{item}/{gal}', [
-    'uses' => 'ItemController@gal',
-    'as' => 'items.gal'
-]);
-
-Route::get('item/fil/{item}/{id_what}', [
-    'uses' => 'ItemController@fil',
-    'as' => 'items.fil'
-]);
 
 Route::put('item/{item}', [
     'uses' => 'ItemController@update',

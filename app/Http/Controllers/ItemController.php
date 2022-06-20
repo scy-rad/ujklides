@@ -82,24 +82,23 @@ class ItemController extends Controller
         return view('items.show', compact('item'), ["do_what" => "basic_view", "doc" => 0, "rooms" => $rooms, "roomstorages" => $roomstorages]);
     }
 
-    public function doc(Item $item, Int $id_what)
+    public function show_something(Item $item, String $do_what, Int $id_what)
     {
-        return view('items.show', compact('item'), ["do_what" => "docs", "id_what" => $id_what]);
-    }
-    
-    public function gal(Item $item, Int $id_what)
-    {
-        return view('items.show', compact('item'), ["do_what" => "gals", "id_what" => $id_what]);
+        $rooms=\App\Room::all();
+        $roomstorages=\App\RoomStorage::where('room_id',$item->current_storage()->room()->id)->get();
+
+        return view('items.show', compact('item'), ["do_what" => $do_what, "id_what" => $id_what, "rooms" => $rooms, "roomstorages" => $roomstorages]);
     }
 
-    public function fil(Item $item, Int $id_what)
-    {
-        return view('items.show', compact('item'), ["do_what" => "fils", "id_what" => $id_what]);
-    }
+    
 
     public function fault(Item $item, String $fault_action, String $id_what)
     {
-        return view('items.show', compact('item'), ["do_what" => "fault", "fault_action" => $fault_action, "id_what" => $id_what]);
+        $rooms=\App\Room::all();
+        dd($rooms);
+        $roomstorages=\App\RoomStorage::where('room_id',$item->current_storage()->room()->id)->get();
+        dump('try replace fault function by show_something in ItemController');
+        return view('items.show', compact('item'), ["do_what" => "fault", "id_what" => $id_what, "rooms" => $rooms, "roomstorages" => $roomstorages, "fault_action" => $fault_action]);
     }
 
      
