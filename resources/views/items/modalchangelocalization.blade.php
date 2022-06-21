@@ -87,7 +87,7 @@ $.ajaxSetup({
         var room_id = e.target.value;
             
             $.ajax({
-                    url:"{{ route('testuj.ajx_roomstorages') }}",
+                    url:"{{ route('item.ajx_roomstorages') }}",
                     type:"POST",
                     data: {
                         room_id: room_id
@@ -113,7 +113,7 @@ $.ajaxSetup({
         var room_storage_id = e.target.value;
 
             $.ajax({
-                    url:"{{ route('testuj.ajx_shelf_count') }}",
+                    url:"{{ route('item.ajx_shelf_count') }}",
                     type:"POST",
                     data: {
                         room_storage_id: room_storage_id

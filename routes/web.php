@@ -507,6 +507,16 @@ Route::get('plik/{plik_id}', [
     'as' => 'pliks.show'
 ]);
 
+Route::post('plik/ajx_rooms', 'PlikController@ajx_rooms')->name('plik.ajx_rooms');
+Route::post('plik/ajx_groups', 'PlikController@ajx_groups')->name('plik.ajx_groups');
+
+
+
+Route::put('plik/{plik_id}', [
+    'uses' => 'PlikController@update_for',
+    'as' => 'plikfor.update'
+]);
+
 
 /////////////////////////////////////////////////////////
 //   S C E N A R I O
