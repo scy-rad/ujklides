@@ -155,7 +155,7 @@ class ItemController extends Controller
 
     public function ajx_room_storages(Request $request)
     {        
-        $roomstorages = RoomStorage::where('room_id',$request->room_id)
+        $roomstorages = \App\RoomStorage::where('room_id',$request->room_id)
                               ->orderBy('room_storage_sort')
                               ->get();
         return response()->json([
@@ -166,7 +166,7 @@ class ItemController extends Controller
     
     public function ajx_shelf_count(Request $request)
     {
-        $shelf_count = RoomStorage::where('id',$request->room_storage_id)
+        $shelf_count = \App\RoomStorage::where('id',$request->room_storage_id)
                               ->first()->room_storage_shelf_count;
         return response()->json([
             'shelf_count' => $shelf_count
