@@ -72,7 +72,7 @@
 
 </div>
 <div class="col-sm-10">
-<iframe src="{{asset('/storage/pliki/'.$plik->plik_directory.$plik->plik_name)}}" style="width: 100%; box-sizing: border-box;  height: calc(100% - 55px);border: 1px solid #000;">Wystąpił błąd</iframe>  
+<iframe src="{{asset('/storage/pliki/'.$plik->plik_directory.$plik->plik_name)}}#view=fitH" style="width: 100%; box-sizing: border-box;  height: calc(100% - 55px);border: 1px solid #000;">Wystąpił błąd</iframe>  
 </div>
 </div>
 

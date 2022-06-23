@@ -39,12 +39,12 @@ class PlikController extends Controller
             case "groups":
                 if ($request->plik_for_id>0)
                     {
-                    $plik_group=\App\PlikForGroup::where('id',$request->plik_for_id)->first();
+                    $plik_group=\App\PlikForGroupitem::where('id',$request->plik_for_id)->first();
                     if ($plik_group->plik_id != $plik_id->id)
                         return back()->withErrors(['Błąd akcji update_for kontrolera Plik', 'Niezgodność ID pliku: '.$plik_group->plik_id.' != '.$plik_id->id]);
                     }
                 else
-                    $plik_group=new \App\PlikForGroup;
+                    $plik_group=new \App\PlikForGroupitem;
                 
                 if ($request->choose_id==0)
                     {
@@ -57,16 +57,17 @@ class PlikController extends Controller
                 else
                     {
                     $plik_group->plik_id = $plik_id->id;
+                    $plik_group->item_id = NULL;
                     $plik_group->item_group_id = $request->choose_id;
                     $plik_group->save();
                     }
                 break;
             case "rooms":
                 break;
-            case "iems":
+            case "items":
                 break;
             default:
-                return back()->withErrors(['Błąd akcji update_for kontrolera Plik', 'Powiadom admnistratora systemu']);
+                return back()->withErrors(['Błąd akcji w funkcji update_for kontrolera Plik', 'Powiadom admnistratora systemu']);
         }
         return back()->with('success','Zapis powiódł się.');
         //return back()->withErrors(['name.required', 'Usuwanie roli nie powiodło się']);
