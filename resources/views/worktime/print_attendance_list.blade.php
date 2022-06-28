@@ -70,7 +70,7 @@
     </tr>
     @foreach ($days_tab as $day_one)
         <tr>
-        <th class="date"> {{$day_one['day']}}  &nbsp; <span style="font-weight: normal">{{$day_one['day_of_week']}}</span> </th>
+        <th class="date"> {{$day_one['day']}}  <br> <span style="font-weight: normal">{{$day_one['day_of_week']}}</span> </th>
         <?php $counter=0; ?>
         @foreach ($big_tab['user_id'] as $user_one)
           <?php $counter++; ?>
