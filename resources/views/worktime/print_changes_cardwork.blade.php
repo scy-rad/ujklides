@@ -152,7 +152,7 @@
 <div style="width: 100%; border: 2px solid blue; background: blue; color: #ffd; font-weight: bold; margin: -13px; margin-right: -23px; ; margin-bottom: 12px; padding: 12px; ">
 podliczenie czasu przepracowanego w godzinach nadliczbowych i udzielonego czasu wolnego
 </div>
-    <p>bieżący okres: <strong>{{$total['month_name']}} {{$total['year']}}</strong></p>
+    <p>bieżący miesiąc: <strong>{{$total['month_name']}} {{$total['year']}}</strong>  (okres {{$total['quarter']}} od {{$total['quarter_start']}} do {{$total['quarter_end_date']}})</p>
     <p>
     @if ($total['hrminutes_under']>$total['hrminutes_over'])
         razem było: <strong>{{m2hcard($total['hrminutes_under']-$total['hrminutes_over'])}}</strong> godzin udzielonego czasu wolnego 
@@ -165,8 +165,8 @@ podliczenie czasu przepracowanego w godzinach nadliczbowych i udzielonego czasu 
     @if ($total['hrminutes_under']==$total['hrminutes_over'])
         razem norma czasu pracy została zrealizowana 
     @endif
-    <br>
-    a po zmianach:
+    </p>
+    <p>a po zmianach:
     <br>
     @if ($total['changes_minutes_under']>$total['changes_minutes_over'])
         razem jest: <strong>{{m2hcard($total['changes_minutes_under']-$total['changes_minutes_over'])}}</strong> godzin udzielonego czasu wolnego 
@@ -180,7 +180,7 @@ podliczenie czasu przepracowanego w godzinach nadliczbowych i udzielonego czasu 
     </p>
     @if ($total['quarter_stop']>$total['quarter_start'])
         <hr>
-        okres poprzedzający od <strong>{{$total['quarter_start']}}</strong> do <strong>{{$total['quarter_stop']}}</strong>:<br>
+        <p>okres poprzedzający od <strong>{{$total['quarter_start']}}</strong> do <strong>{{$total['quarter_stop']}}</strong>:<br>
         @if ($total['quarter_minutes']>$total['quarter_norm'])
             ilość godzin przepracowanych w godzinach nadliczbowych: <strong>{{m2hcard($total['quarter_minutes']-$total['quarter_norm'])}}</strong> godzin. 
         @elseif ($total['quarter_minutes']<$total['quarter_norm'])
@@ -188,9 +188,10 @@ podliczenie czasu przepracowanego w godzinach nadliczbowych i udzielonego czasu 
         @else
             przepracowany zgodnie z normą czasu pracy. 
         @endif
+        </p>
 
         <hr>
-        <strong>RAZEM:</strong><br>
+        <p><strong>RAZEM:</strong><br>
         @if ($total['changes_minutes_over']-$total['changes_minutes_under']+$total['quarter_minutes']-$total['quarter_norm'] > 0)
             ilość godzin przepracowanych w godzinach nadliczbowych: <strong>{{m2hcard($total['changes_minutes_over']-$total['changes_minutes_under']+$total['quarter_minutes']-$total['quarter_norm'])}}</strong> godzin. 
         @elseif ($total['changes_minutes_over']-$total['changes_minutes_under']+$total['quarter_minutes']-$total['quarter_norm'] < 0)
@@ -198,8 +199,18 @@ podliczenie czasu przepracowanego w godzinach nadliczbowych i udzielonego czasu 
         @else
             razem czas przepracowany zgodny z normą czasu pracy.
         @endif
+        </p>
     @endif
 </div>
+
+
+
+    @if ($total['changes_minutes_over']-$total['changes_minutes_under']+$total['quarter_minutes']-$total['quarter_norm'] > 0)
+        <p>Godziny przepracowane w godzinach nadliczbowych (<strong>{{m2hcard($total['changes_minutes_over']-$total['changes_minutes_under']+$total['quarter_minutes']-$total['quarter_norm'])}}</strong>) zostaną wykorzystane do końca bieżącego okresu rozliczeniowego ({{$total['quarter_end_date']}}).</p>
+    @elseif ($total['changes_minutes_over']-$total['changes_minutes_under']+$total['quarter_minutes']-$total['quarter_norm'] < 0)
+        <p>Nadmiarowe godziny udzielonego czasu wolnego (<strong>{{m2hcard(-($total['changes_minutes_over']-$total['changes_minutes_under']+$total['quarter_minutes']-$total['quarter_norm']))}}</strong>) zostaną odpracowane do końca bieżącego okresu rozliczeniowego ({{$total['quarter_end_date']}}).</p>
+    @endif
+
 
 @if ($total['changes_under'])
 <div style="width: 100%;">

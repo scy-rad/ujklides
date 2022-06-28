@@ -359,25 +359,28 @@ class WorkTimeController extends Controller
         $total['year']=date('Y', $begin);
 
 
-        if ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-03-31')) )
+        if ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-04-30')) )    //03-31
         {
             $total['quarter'] = 'I';
             $total['quarter_start']=$total['year'].'-01-01';
+            $total['quarter_end_date']=$total['year'].'-04-30';
         }
-        elseif ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-06-30')) )
+        elseif ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-08-31')) )    //06-30
         {
             $total['quarter'] = 'II';
-            $total['quarter_start']=$total['year'].'-04-01';
+            $total['quarter_start']=$total['year'].'-05-01';    //04-01
+            $total['quarter_end_date']=$total['year'].'-08-31';
         }
-        elseif ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-09-31')) )
-        {
-            $total['quarter'] = 'III';
-            $total['quarter_start']=$total['year'].'-07-01';
-        }
+        // elseif ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-09-31')) )    //09-31
+        // {
+        //     $total['quarter'] = 'III';
+        //     $total['quarter_start']=$total['year'].'-07-01';
+        // }
         else
         {
-            $total['quarter'] = 'IV';
-            $total['quarter_start']=$total['year'].'-10-01';
+            $total['quarter'] = 'III';  //III
+            $total['quarter_start']=$total['year'].'-09-01';    //10-01
+            $total['quarter_end_date']=$total['year'].'-12-31';
         }
 
         $total['quarter_stop']=date('Y-m-t',strtotime($filtr['month'].'-01 - 1 month'));
@@ -737,9 +740,8 @@ class WorkTimeController extends Controller
         $extra_tab=null;
         if (!isset($request->start))
             {
-                //$filtr['start'] = date('Y-m').'-01';
-                //$filtr['start'] = \App\Simmed::selectRaw('min(simmed_date) as minvalue')->get()->first()->minvalue;
-                $filtr['start'] = \App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_start;
+                //$filtr['start'] = \App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_start;
+                $filtr['start'] = date('Y-m-d');
                 $filtr['stop'] = \App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_stop;
                 $filtr['technician'] = 'ANON';
                 $filtr['character'] = 'ANON';
