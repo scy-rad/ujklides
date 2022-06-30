@@ -171,7 +171,7 @@ class WorkTimeController extends Controller
             
 
             if ( ( ($request->workcard=='generate') && (Auth::user()->hasRole('Operator Kadr')) )
-            || ($request->workcard=='changes') )
+            || ($request->workcard=='changes') || ($request->workcard=='current') )
             {
                     if (count($ret_row['work_types'])>0)  // jeśli jest zaplanowany czas pracy
                     {
@@ -479,10 +479,35 @@ class WorkTimeController extends Controller
             \-------------------*/
             case 'get':
             {
-
-                return view('worktime/month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
+                $total['action']='get'; //only for view current/get
+                return view('worktime/print_month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
                 break;
             }
+            /*-------------------\
+            |   CURRENT          |
+            \-------------------*/
+            case 'current':
+                {
+                    $total['action']='current'; //only for view current/get
+                    $total['hrminutes_over']=0;
+                    $total['hrminutes_under']=0;
+                    foreach ($ret as &$ret_one)
+                        {
+                            $ret_one['hr_wt']=$ret_one['changes'];
+                            if ($ret_one['hr_wt']['over_under']==1)     //jeśli jest praca w godzinach nadliczbowych
+                                $total['hrminutes_over']+=$ret_one['hr_wt']['o_minutes'];
+                            if ($ret_one['hr_wt']['over_under']==2)     //jeśli jest praca poniżej normy
+                                $total['hrminutes_under']+=$ret_one['hr_wt']['o_minutes'];
+                        }
+                        // $total['times'] = m2h($total['minutes']);
+                        // $total['hrtimes'] = m2h($total['hrminutes']);
+                        $total['hrtimes_over'] = m2h($total['hrminutes_over']);
+                        $total['hrtimes_under'] = m2h($total['hrminutes_under']);
+                        
+                        // $total['hr_times'] = m2h($total['hr_minutes']);
+                    return view('worktime/print_month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
+                    break;
+                }
             /*-------------------\
             |   GENERATE         |
             \-------------------*/
@@ -524,7 +549,7 @@ class WorkTimeController extends Controller
                 {
                     $mail_data_address['email'] = $sent_to->email;
                         $ret_info.='<li>'.$sent_to->full_name().'</li>';
-                    $zwrocik=Mail::send('worktime.month_cardwork',$mail_data_address,function($mail) use ($mail_data_address)
+                    $zwrocik=Mail::send('worktime.print_month_cardwork',$mail_data_address,function($mail) use ($mail_data_address)
                         {
                             $mail->from($mail_data_address['from_email'],$mail_data_address['from_name']);
                             $mail->to($mail_data_address['email'],$mail_data_address['name']);

@@ -102,28 +102,43 @@
         <div class="col-sm-3 text-right">
             @if ( (Auth::user()->hasRole('Operator Kadr')) &&
                     (\App\WorkAttendance::where('date','=',$filtr['month'].'-01')->get()->first() === null) )
+            <div class="col-sm-12" style="margin-bottom: 8px;">
             <form action="{{ route('worktime.month') }}" method="get">
                 <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
                 <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
                 <input class="form-control" type="hidden" name="workcard" value="generate">
-                <input class="btn btn-primary btn-big col-sm-12" type="submit" value="generuj kartę czasu pracy">
+                <input class="btn btn-info btn-big col-sm-12" type="submit" value="generuj kartę czasu pracy">
             </form>
-            <br><br>
+            </div>
             @endif
 
+            <div class="col-sm-12" style="margin-bottom: 8px;">
             <form action="{{ route('worktime.month') }}" method="get">
                 <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
                 <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
                 <input class="form-control" type="hidden" name="workcard" value="get">
-                <input class="btn btn-primary btn-big col-sm-12" type="submit" value="wydruk dokumentacji czasu pracy">
+                <input class="btn btn-primary btn-big col-sm-12 p-4 m-4" type="submit" value="wydruk planowej dokumentacji czasu pracy">
             </form>
-            <br><br>
-            <form action="{{ route('worktime.month') }}" method="get">
+            </div>
+            
+            <div class="col-sm-12" style="margin-bottom: 8px;">
+            <form action="{{ route('worktime.month') }}" method="get">    
                 <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
                 <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
                 <input class="form-control" type="hidden" name="workcard" value="changes">
                 <input class="btn btn-warning btn-big col-sm-12" type="submit" value="pokaż różnice">
             </form>
+            </div>
+
+            <div class="col-sm-12" style="margin-bottom: 8px;">
+            <form action="{{ route('worktime.month') }}" method="get">
+                <input class="form-control" type="hidden" name="technician" value="{{$filtr['user']}}">
+                <input class="form-control" type="hidden" name="month" value="{{$filtr['month']}}">
+                <input class="form-control" type="hidden" name="workcard" value="current">
+                <input class="btn btn-primary btn-big col-sm-12" type="submit" value="wydruk aktualnej dokumentacji czasu pracy">
+            </form>
+            </div>
+
         </div>
     </div>
 

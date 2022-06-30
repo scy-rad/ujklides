@@ -25,16 +25,15 @@
   <body>
   <?php function m2hcard($timeX) { return floor($timeX/60).':'.str_pad($timeX%60, 2, '0', STR_PAD_LEFT); } ?>
 
-<!--p class="smalltxt aright">Załącznik nr 4 do Regulaminu Pracy w Uniwersytecie Jana Kochanowskiego w Kielcach</small-->
-<p class="aright">Kielce, dnia .................................</p>
-
+<!--p class="aright">Kielce, dnia .................................</p-->
+<p><strong>{{$total['month_name']}} {{$total['year']}}</strong>, pracownik: <strong>{{$user->full_name()}}</strong></p>
 
 @if ($total['hr_changes'])
 
 <div style="margin: 10px auto;">
     <h1>Zmiana harmonogramu pracy</h1>
 
-    <p>Proszę o uwzględnienie następujących zmian w harmonogramie pracy w miesiącu <strong>{{$total['month_name']}} {{$total['year']}}</strong> dla pracownika <strong>{{$user->full_name()}}</strong> zgodnie z poniższym wykazem:</p>
+    <!--p>Proszę o uwzględnienie następujących zmian w harmonogramie pracy w miesiącu <strong>{{$total['month_name']}} {{$total['year']}}</strong> dla pracownika <strong>{{$user->full_name()}}</strong> zgodnie z poniższym wykazem:</p-->
     <ul>
     @foreach ($tabelka as $row_one)
         @if ( ($row_one['changes']['hr_time_begin'] != $row_one['hr_wt']['hr_time_begin']) || ($row_one['changes']['hr_time_end'] != $row_one['hr_wt']['hr_time_end']) )
@@ -43,13 +42,13 @@
         @endif
     @endforeach
     </ul>
-    <div class="row" style="margin-top: 60px; margin-bottom: 20px;">
+    <!--div class="row" style="margin-top: 60px; margin-bottom: 20px;">
         <div style="border-top: 1px dotted black; width: 400px;  float:right; ">
             <p class="mediumtxt acenter aitalic">data, podpis kierownika/bezpośredniego przełożonego</p>
         </div>
     </div>
     <div style="clear: both">
-</div>
+    </div-->
 </div>
 @endif
 
@@ -58,18 +57,17 @@
 <div style="">
     <h1>Zlecenie pracy w godzinach nadliczbowych</h1>
 
-    <p>Proszę o uwzględnienie następujących zmian w zleconym pracownikowi <strong>{{$user->full_name()}}</strong>  na podstawie art. 151 § 1 Kodeksu Pracy wykonaniu pracy w godzinach nadliczbowych: </p>
-
+    <!--p>Proszę o uwzględnienie następujących zmian w zleconym pracownikowi <strong>{{$user->full_name()}}</strong>  na podstawie art. 151 § 1 Kodeksu Pracy wykonaniu pracy w godzinach nadliczbowych: </p-->
 
     <ul>
         @foreach ($tabelka as $row_one)
             @if ($row_one['hr_wt']['over_under']==1)
                 @if ($row_one['hr_wt']['over_txt'] != $row_one['changes']['over_txt'])
                     @if ($row_one['changes']['over_under']==1)
-                        <li> {{$row_one['date']}} zmiana z <strong>{{$row_one['hr_wt']['over_txt']}}</strong> na <strong>{{$row_one['changes']['over_txt']}}</strong> 
+                        <li style="color:blue"> {{$row_one['date']}} zmiana z <strong>{{$row_one['hr_wt']['over_txt']}}</strong> na <strong>{{$row_one['changes']['over_txt']}}</strong> 
                         </li>
                     @else
-                        <li> {{$row_one['date']}} usunięcie godzin nadliczbowych: <strong>{{$row_one['hr_wt']['over_txt']}}</strong>
+                        <li style="color:red"> {{$row_one['date']}} usunięcie godzin nadliczbowych: <strong>{{$row_one['hr_wt']['over_txt']}}</strong>
                         </li>
                     @endif
                 @else
@@ -77,7 +75,7 @@
                 @endif
             @else
                 @if ($row_one['changes']['over_under']==1)
-                <li> {{$row_one['date']}} dodanie godzin  nadliczbowych <strong>{{$row_one['changes']['over_txt']}}</strong> </li>
+                <li style="color:green"> {{$row_one['date']}} dodanie godzin  nadliczbowych <strong>{{$row_one['changes']['over_txt']}}</strong> </li>
                 @endif
             @endif
         @endforeach
@@ -87,7 +85,7 @@
     </div>
     @endif 
     @if ($total['changes_over'] || $total['hr_changes'])
-    <div>
+    <!--div>
     <h2>uzasadnienie</h2>
     <p>Zmiany wynikają z koniczności dostosowania grafiku pracy do zmian w obsługiwanych zajęciach w {{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name}}.</p>
     <p>.........................................................................................................................................................<br><br>
@@ -107,39 +105,39 @@
     </div>
     <div style="width: 100%; background: yellow; clear: both">
     </div>
-    <footer>[{{date('Hidm')}}]</footer>
+    <footer>[{{date('Hidm')}}]</footer-->
 </div>
 @endif
 
 
 @if ($total['changes_under'])
-<p><strong>{{$user->full_name()}}</strong><br>
+<!--p><strong>{{$user->full_name()}}</strong><br>
 <span class="mediumtxt aitalic">(imię i nazwisko)</span></p`>
 <br>
 <p><strong>{{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name_wersal}}</strong><br>
 <span class="mediumtxt aitalic">(jednostka organizacyjna)</span></p>
 <br>
-<br>
+<br-->
 <h1>zmiany udzielenia czasu wolnego w zamian za czas przepracowany w godzinach nadliczbowych</h1>
 
 
-<p>Proszę o następujące zmiany udzielonego czasu wolnego za czas przepracowany w godzinach nadliczbowych: </p>
+<!--p>Proszę o następujące zmiany udzielonego czasu wolnego za czas przepracowany w godzinach nadliczbowych: </p-->
 
 <ul>
      @foreach ($tabelka as $row_one)
         @if ($row_one['hr_wt']['over_under']==2)
             @if ($row_one['hr_wt']['under_txt'] != $row_one['changes']['under_txt'])
                 @if ($row_one['changes']['over_under']==2)
-                    <li> {{$row_one['date']}} zmiana z <strong>{{$row_one['hr_wt']['under_txt']}}</strong> na <strong>{{$row_one['changes']['under_txt']}}</strong> </li>
+                    <li style="color:blue"> {{$row_one['date']}} zmiana z <strong>{{$row_one['hr_wt']['under_txt']}}</strong> na <strong>{{$row_one['changes']['under_txt']}}</strong> </li>
                 @else
-                    <li> {{$row_one['date']}} usunięcie udzielenia czasu wolnego: <strong>{{$row_one['hr_wt']['under_txt']}}</strong> </li>
+                    <li style="color:red"> {{$row_one['date']}} usunięcie udzielenia czasu wolnego: <strong>{{$row_one['hr_wt']['under_txt']}}</strong> </li>
                 @endif
             @else
-            <li> <s>{{$row_one['date']}} bez zmian: {{$row_one['hr_wt']['under_txt']}}</s></li>
+            <li><s>{{$row_one['date']}} bez zmian: {{$row_one['hr_wt']['under_txt']}}</s></span></li>
             @endif
         @else
             @if ($row_one['changes']['over_under']==2)
-            <li> {{$row_one['date']}} dodanie udzielenia czasu wolnego <strong>{{$row_one['changes']['under_txt']}}</strong> </li>
+            <li style="color:green"> {{$row_one['date']}} dodanie udzielenia czasu wolnego <strong>{{$row_one['changes']['under_txt']}}</strong> </li>
             @endif
         @endif
      @endforeach
@@ -148,7 +146,7 @@
 
 @endif
 
-<div style="width: 50%; border: 2px solid blue; background: #ffd; padding: 12px; font-size: 0.75rem">
+<div style="width: 50%; border: 2px solid blue; background: #ffd; padding: 12px; font-size: 0.75rem; width: 95%; font-size: 1rem">
 <div style="width: 100%; border: 2px solid blue; background: blue; color: #ffd; font-weight: bold; margin: -13px; margin-right: -23px; ; margin-bottom: 12px; padding: 12px; ">
 podliczenie czasu przepracowanego w godzinach nadliczbowych i udzielonego czasu wolnego
 </div>
@@ -203,7 +201,7 @@ podliczenie czasu przepracowanego w godzinach nadliczbowych i udzielonego czasu 
     @endif
 </div>
 
-
+<!--
 
     @if ($total['changes_minutes_over']-$total['changes_minutes_under']+$total['quarter_minutes']-$total['quarter_norm'] > 0)
         <p>Godziny przepracowane w godzinach nadliczbowych (<strong>{{m2hcard($total['changes_minutes_over']-$total['changes_minutes_under']+$total['quarter_minutes']-$total['quarter_norm'])}}</strong>) zostaną wykorzystane przeze mnie w formie udzielonego czasu wolnego do końca okresu rozliczeniowego ({{$total['quarter_end_date']}}).</p>
@@ -229,7 +227,7 @@ podliczenie czasu przepracowanego w godzinach nadliczbowych i udzielonego czasu 
 
 <footer>[{{date('Hidm')}}]</footer>
 @endif
-
+-->
 
 </body>
 </html>
