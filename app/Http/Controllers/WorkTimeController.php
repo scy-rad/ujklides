@@ -472,6 +472,7 @@ class WorkTimeController extends Controller
             //        dump(serialize($alltmps));
         }
 
+        $total['action']=$request->workcard; //only for view current/get
         switch ($request->workcard)
         {
             /*-------------------\
@@ -479,7 +480,6 @@ class WorkTimeController extends Controller
             \-------------------*/
             case 'get':
             {
-                $total['action']='get'; //only for view current/get
                 return view('worktime/print_month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
                 break;
             }
@@ -488,7 +488,6 @@ class WorkTimeController extends Controller
             \-------------------*/
             case 'current':
                 {
-                    $total['action']='current'; //only for view current/get
                     $total['hrminutes_over']=0;
                     $total['hrminutes_under']=0;
                     foreach ($ret as &$ret_one)
