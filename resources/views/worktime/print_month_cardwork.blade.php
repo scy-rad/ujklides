@@ -38,6 +38,8 @@
         <div style="width: 20%; float: left">
         AKTUALNE
   @endif
+        </div>
+    </div>
 
     <div style="width: 100%; clear: both; background: gray; ">
         <div style="width: 30%; float: left">
