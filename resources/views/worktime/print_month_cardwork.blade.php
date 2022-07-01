@@ -25,7 +25,20 @@
   <body>
 
   <no-print>
+  @if ($total['action']=='get')
     <form action="{{ route('worktime.month') }}" method="get">
+    <input class="form-control" type="hidden" name="workcard" value="get">
+    <div style="width: 100%; clear: both; background: gray; ">
+        <div style="width: 20%; float: left">
+        PLANOWE
+  @else
+    <form action="{{ route('worktime.month') }}" method="get">
+    <input class="form-control" type="hidden" name="workcard" value="current">
+    <div style="width: 100%; clear: both; background: gray; ">
+        <div style="width: 20%; float: left">
+        AKTUALNE
+  @endif
+
     <div style="width: 100%; clear: both; background: gray; ">
         <div style="width: 30%; float: left">
             <label for"technician">pracownik:</label>
@@ -44,7 +57,6 @@
             @endforeach
             </select>
         </div>
-                <input class="form-control" type="hidden" name="workcard" value="get">
                 <input class="btn btn-primary btn-big col-sm-12" type="submit" value="podgląd dokumentacji czasu pracy">
     </div>    
     </form>
