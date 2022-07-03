@@ -19,57 +19,93 @@ class PlikController extends Controller
      */
     public function index($type_code)
     {
-        $plik=Plik::where('id',1)->first();
-        return view('pliks.index', compact('plik'),['type_code' => $type_code]);
+        return view('pliks.index', ['type_code' => $type_code]);
     }
 
     public function show($plik_id)
     {
         $plik=Plik::where('id',$plik_id)->first();
-        return view('pliks.show', compact('plik'));
+        if (is_null($plik))
+            return back()->withErrors(['head'=>'błąd wywołania funkcji show kontrolera Plik','description'=>'Plik nie znaleziony...']);
+        else
+            return view('pliks.show', compact('plik'));
     }
 
-    public function update_for(Request $request, Plik $plik_id)
+    public function update_plik_for(Request $request, Plik $id)
     {
         if ( ! Auth::user()->hasRoleCode('itemoperators') )
-            return back()->withErrors(['head'=>'błąd wywołania funkcji update_for kontrolera Plik','description'=>'Nie masz wystarczających uprawnień, aby wykonać tą operację...']);
+            return back()->withErrors(['head'=>'błąd wywołania funkcji update_plik_for kontrolera Plik','description'=>'Nie masz wystarczających uprawnień, aby wykonać tą operację...']);
 
         switch ($request->update_action)
         {
-            case "groups":
-                if ($request->plik_for_id>0)
+            case "itemgroup":
+                if ($request->id>0)
                     {
-                    $plik_group=\App\PlikForGroupitem::where('id',$request->plik_for_id)->first();
-                    if ($plik_group->plik_id != $plik_id->id)
-                        return back()->withErrors(['Błąd akcji update_for kontrolera Plik', 'Niezgodność ID pliku: '.$plik_group->plik_id.' != '.$plik_id->id]);
+                    $plik_one=\App\PlikForGroupitem::find($request->id);
                     }
                 else
-                    $plik_group=new \App\PlikForGroupitem;
+                    $plik_one=new \App\PlikForGroupitem;
+// dd($request);
+                $slash_pos=strripos($request->plik_dir_name,'/')+1;
+                if ($request->item_id==0)
+                    $plik_one->item_id          = null;
+                else
+                    $plik_one->item_id          = $request->item_id;
+                if ($request->item_group_id==0)
+                    $plik_one->item_group_id    = null;
+                else
+                    $plik_one->item_group_id    = $request->item_group_id;
                 
-                if ($request->choose_id==0)
+                $plik_one->plik_type_id     = $request->plik_type_id;
+                $plik_one->plik_directory   = substr($request->plik_dir_name,0,$slash_pos);
+                if (!(strpos($plik_one->plik_directory,$request->server('HTTP_ORIGIN'))===false))
                     {
-                    if ($request->plik_for_id == 0)
-                        return back()->withErrors(['Błąd akcji update_for kontrolera Plik', 'Nie można usunąć wpisu, którego się nie zapisało']);
-                    else
-                        $plik_group->delete();
-                        return back()->with('success','Usunięcie zapisu powiodło się.');
+                        $plik_one->plik_directory=substr($plik_one->plik_directory,strlen($request->server('HTTP_ORIGIN')),strlen($plik_one->plik_directory));
                     }
-                else
-                    {
-                    $plik_group->plik_id = $plik_id->id;
-                    $plik_group->item_id = NULL;
-                    $plik_group->item_group_id = $request->choose_id;
-                    $plik_group->save();
-                    }
+                $plik_one->plik_name        = substr($request->plik_dir_name,$slash_pos,strlen($request->plik_dir_name)-$slash_pos);
+                $plik_one->plik_title       = $request->plik_title;
+                $plik_one->plik_description = $request->plik_description;
+                $plik_one->save();
+
+                
                 break;
             case "rooms":
                 break;
-            case "items":
-                break;
             default:
-                return back()->withErrors(['Błąd akcji w funkcji update_for kontrolera Plik', 'Powiadom admnistratora systemu']);
+                return back()->withErrors(['Błąd akcji w funkcji update_plik_for kontrolera Plik', 'Powiadom admnistratora systemu']);
         }
         return back()->with('success','Zapis powiódł się.');
+        //return back()->withErrors(['name.required', 'Usuwanie roli nie powiodło się']);
+    }
+
+
+    public function delete_plik_for(Request $request, Int $id)
+    {
+        if ( ! Auth::user()->hasRoleCode('itemoperators') )
+            return back()->withErrors(['head'=>'błąd wywołania funkcji delete_plik_for kontrolera Plik','description'=>'Nie masz wystarczających uprawnień, aby wykonać tą operację...']);
+
+            switch ($request->update_action)
+            {
+                case "itemgroup":
+                    if (isset($request->agree))
+                        if ($request->item_id>0)
+                        {
+                            $plik_one=\App\PlikForGroupitem::find($id);
+                            $plik_one->delete();
+                            return app('App\Http\Controllers\ItemController')->show(\App\Item::where('id',$request->item_id)->first());
+                        }
+                        else
+                            return back()->withErrors(['nie usunięto pliku', 'System nie znalazł wskazówki co do powrotu. Zgłoś to administratorowi...']);
+                    else
+                        return back()->withErrors(['nie usunięto pliku', 'Aby to zrobić musisz zaznaczyć dodatkowe pole...']);
+                
+                    break;
+                case "rooms":
+                    break;
+                default:
+                    return back()->withErrors(['Błąd akcji w funkcji delete_plik_for kontrolera Plik', 'Powiadom admnistratora systemu']);
+            }
+        return back()->with('success','Usunięcie pliku powiodło się.');
         //return back()->withErrors(['name.required', 'Usuwanie roli nie powiodło się']);
     }
 

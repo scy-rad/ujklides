@@ -21,7 +21,7 @@
             </div>
             <div style="width:45%; float: right">
                 <label for="picture_name_img">nowe zdjęcie:</label><br>
-                <a href="javascript:open_popup('/js/filemanager/filemanager/dialog.php?type=1&popup=1&field_id=picture_name')" class="btn btn-secondary" type="button" margin="0px">
+                <a href="javascript:open_popup('/js/filemanager/filemanager/dialog.php?type=1&popup=1&field_id=picture_name&fldr=images')" class="btn btn-secondary" type="button" margin="0px">
                     <img id="picture_name_img" width="200px" height="150px" src="">
                 </a>
             </div>

@@ -6,16 +6,21 @@
 
 <!--script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script-->
 
-
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.pack.js"></script>
 
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 @section('title', $item->group()->item_group_name. " inv: ".$item->item_inventory_number )
+
 <script type="text/javascript" src="{{ URL::asset('js/jquery.schedule/dist/js/jq.schedule.js')}}"></script>
 
 @section('content')
+<?php   /*
+        |
+        | HTML - SUCCESS OR ERROR INFO CONTAINER
+        +--------------------------------------------    
+        */ ?>
     <div class="container">
         <div class="row">
             @if ($message = Session::get('success'))
@@ -38,10 +43,17 @@
             @endif
         </div>
     </div>
-<!--h1> { { $action }} item { { $subid }}</h1-->
+
+<?php   /*
+        |
+        | HTML - INFO ABOUT ITEM
+        +--------------------------------------------    
+        */ ?>
 <div class="row">
     <div class="col-sm-12">
         {!!$item->group()->type_no_get->typepatch()!!}
+        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+        <a href="{{route('itemtypes.showgroups', $item->group()->id)}}">[{{$item->group()->item_group_name}}]</a>
     </div>
 </div>
 <div class="row">
@@ -60,11 +72,18 @@
         opis: <strong>{!! $item->item_description !!}</strong>
         
     </div>
-    <div class="col-sm-3 device_yellow">
-    <strong>testowe dane:</strong><br>
-    item_group_name: <strong>{!! $item->group()->item_group_name !!}</strong><br>
-    item_group_producent: <strong>{!! $item->group()->item_group_producent !!}</strong><br>
-    item_group_model: <strong>{!! $item->group()->item_group_model  !!}</strong><br>
+    <div class="col-sm-3">
+      @if ( (Auth::user()->hasRoleCode('serviceworkers'))  || (Auth::user()->hasRoleCode('technicians')) )
+        <button type="button" class="btn btn-primary btn-outline-primary btn-lg btn-block" data-toggle="modal" data-target="#realocateModal">
+        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+            wypożycz
+        </button><br>
+      @endif
+        <button type="button" class="btn btn-warning btn-outline-primary btn-lg btn-block" data-toggle="modal" data-target="#faultModal">
+        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+            zgłoś usterkę
+        </button><br>
+ 
     </div>
 </div>
 
@@ -104,21 +123,17 @@
         {{ $item->storage()->room_storage_name }}
         @if ($item->storage()->room_storage_shelf_count>1) , poziom: {{$item->item_storage_shelf}} @endif 
         
-        
-
-        
-
-    @if ($item->room_storage_current_id != $item->room_storage_id)
-        <div class="bg-primary">
-            <strong> wypożyczone do:</strong>
-        </div>
-        <div class="bg-info">
-            <strong>{{ $item->current_storage()->room()->room_number }}</strong>
-            {{ $item->current_storage()->room()->room_name }} <br>
-            {{ $item->current_storage()->room_storage_number }} 
-            {{ $item->current_storage()->room_storage_name }}
-        </div>
-    @endif
+        @if ($item->room_storage_current_id != $item->room_storage_id)
+            <div class="bg-primary">
+                <strong> wypożyczone do:</strong>
+            </div>
+            <div class="bg-info">
+                <strong>{{ $item->current_storage()->room()->room_number }}</strong>
+                {{ $item->current_storage()->room()->room_name }} <br>
+                {{ $item->current_storage()->room_storage_number }} 
+                {{ $item->current_storage()->room_storage_name }}
+            </div>
+        @endif
     </div>
 
     <div class="col-sm-2">
@@ -127,18 +142,12 @@
         <strong>{{ $item->show_status() }}</strong>    
     </div>
 
-
+<?php   /*
+        |
+        | HTML - BLOCK WITH EDITION BUTTONS
+        +--------------------------------------------    
+        */ ?>
     <div class="col-sm-2">
-      @if ( (Auth::user()->hasRoleCode('serviceworkers'))  || (Auth::user()->hasRoleCode('technicians')) )
-        <button type="button" class="btn btn-primary btn-outline-primary btn-lg btn-block" data-toggle="modal" data-target="#realocateModal">
-        <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-            wypożycz
-        </button><br>
-      @endif
-        <button type="button" class="btn btn-warning btn-outline-primary btn-lg btn-block" data-toggle="modal" data-target="#faultModal">
-        <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-            zgłoś usterkę
-        </button><br>
       @if ( (Auth::user()->hasRoleCode('itemoperators')) )
         <button type="button" class="btn btn-success btn-outline-primary btn btn-block" data-toggle="modal" data-target="#editModal">
         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -158,21 +167,14 @@
     </div>
 </div>
 
-@if ( (Auth::user()->hasRoleCode('serviceworkers'))  || (Auth::user()->hasRoleCode('technicians')) )
-    @include('items.modalrealocate')
-@endif
-@if ( (Auth::user()->hasRoleCode('itemoperators')) )
-    @include('items.modaledit')
-    @include('items.modalpicture')
-    @include('items.modalchangelocalization')
-@endif
-
-
-@include('items.modalfault')
-
 <hr>
 
 <div class="row">
+<?php   /*
+        |
+        | HTML - LEFT DOWN MENU BAR
+        +--------------------------------------------    
+        */ ?>
 <div class="col-sm-2">
     <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
     dokumenty<br>
@@ -190,14 +192,29 @@
     <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
     pliki<br>
    <ul>
-    @foreach ($item->group()->files as $plik)
+    @foreach ($item->group()->pliki as $plik_one)
         <li>
-        <a href="{{route('items.show_something', [$item->id, 'fils', $plik->id])}}">       
-            {{$plik->plik_title}}
+        <a href="{{route('items.show_something', [$item->id, 'fils', $plik_one->id])}}">       
+            {{$plik_one->plik_title}}
         </a>
         </li>
     @endforeach
     </ul>
+    <ul>
+    @foreach ($item->pliki as $plik_one)
+        <li>
+        <a href="{{route('items.show_something', [$item->id, 'fils', $plik_one->id])}}">       
+            {{$plik_one->plik_title}}
+        </a>
+        </li>
+    @endforeach
+    </ul>
+    @if ($do_what!='fils')
+        <button type="button" class="btn btn-success btn-outline-primary btn btn-block" data-toggle="modal" data-target="#fileModal">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            dodaj plik
+        </button>
+    @endif
 
     <hr>
     <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
@@ -251,193 +268,189 @@
 
 </div>
 
-<?php
-
-
-/*
-echo '<pre>';
-    
-    
-    echo '<hr>';
-    
-    echo '<hr>';
-    //echo ($action);
-    //print_r($request);
-    echo '</pre><hr>';
-*/
-
-?>
-
-<div class="col-sm-10">
-    <!--h1>{{$item->item_name}}</h1>
-    <h4>$item->get_items_by_type($item->id) </h4-->
-
-@switch($do_what)
-    @case("docs")
-        <?php   $doc=App\Doc::where('id',$id_what)->get()->first(); 
-        ?>
+<?php   /*
+        |
+        | HTML - SHOW SOMETHING CONTAINER
+        +--------------------------------------------    
+        */ ?>
+    <div class="col-sm-10">
+    @switch($do_what)
+        @case("docs")
+            <?php   $doc=App\Doc::where('id',$id_what)->get()->first(); 
+            ?>
+            
+            @if (Auth::user()->hasRoleCode('itemoperators'))
+                <a href="{{route('docs.edit', ['doc' => $doc->id] )}}" alt="edytuj">
+                <span class="glyphicon glyphicon-edit glyphiconbig pull-right"></span>
+                </a>
+            @endif
+            <hr>
+            <h1>{{ $doc->doc_title }}</h1>
+            <h3>{{ $doc->doc_subtitle }}</h3>
+            {!! $doc->doc_description !!}
+        @break
         
-        @if (Auth::user()->hasRoleCode('itemoperators'))
-            <a href="{{route('docs.edit', ['doc' => $doc->id] )}}" alt="edytuj">
-            <span class="glyphicon glyphicon-edit glyphiconbig pull-right"></span>
-            </a>
-        @endif
+        @case("fils")
+            <?php   $plik=App\PlikForGroupitem::where('id',$id_what)->get()->first(); ?>
+            @include('items.incfiles')
+        @break
+
+        @case("gals")
+        <?php   $gallery=App\Gallery::where('id',$id_what)->get()->first(); ?>
+        <h2>{{$gallery->gallery_name}}</h2>
+        <p>{{$gallery->gallery_description}}</p>
         <hr>
-        <h1>{{ $doc->doc_title }}</h1>
-        <h3>{{ $doc->doc_subtitle }}</h3>
-        {!! $doc->doc_description !!}
-    @break
-    
-    @case("fils")
-    <?php   $plik=App\Plik::where('id',$id_what)->get()->first();   
-    ?>
-    <h3>{{$plik->plik_name}}</h3>
-    <iframe src="{{asset('/storage/pliki/'.$plik->plik_directory.$plik->plik_name)}}" style="width: 100%; box-sizing: border-box;  height: calc(100% - 55px);border: 1px solid #000;">Wystąpił błąd</iframe>
-    @break
-
-    @case("gals")
-    <?php   $gallery=App\Gallery::where('id',$id_what)->get()->first(); ?>
-    <h2>{{$gallery->gallery_name}}</h2>
-    <p>{{$gallery->gallery_description}}</p>
-    <hr>
-    @foreach ($gallery->photos as $photo)
-    <a href="/storage/images/{{$gallery->gallery_folder}}/{{$photo->gallery_photo_name}}">
-    <div class="tile">
-        <img src="/storage/images/{{$gallery->gallery_folder}}/{{$photo->gallery_photo_name}}" class="tile">
-        <div class="tiletitle">
-            {{$photo->gallery_photo_title}}
+        @foreach ($gallery->photos as $photo)
+        <a href="/storage/images/{{$gallery->gallery_folder}}/{{$photo->gallery_photo_name}}">
+        <div class="tile">
+            <img src="/storage/images/{{$gallery->gallery_folder}}/{{$photo->gallery_photo_name}}" class="tile">
+            <div class="tiletitle">
+                {{$photo->gallery_photo_title}}
+            </div>
         </div>
+        </a>
+        @endforeach
+        @break
+        
+        @case("fault")
+            @include('items.incfaults')
+        @break
+
+        @case("review")
+            @include('items.increviews')
+        @break
+
+        @case("basic_view")
+        @default
+            <p>{!! $item->item_description !!}</p>
+            <p>{!! $item->group()->item_group_description !!}</p>
+    @endswitch
     </div>
-    </a>
-    @endforeach
-    @break
-    
-    @case("fault")
-        @include('items.incfaults')
-    @break
-
-    @case("review")
-        @include('items.increviews')
-    @break
-
-    @case("basic_view")
-    @default
-        <p>{!! $item->item_description !!}</p>
-        <p>{!! $item->group()->item_group_description !!}</p>
-@endswitch
-
-
-</div>
 
 </div>
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<?php   /*
+        |
+        | INCLUDE MODALS
+        +--------------------------------------------    
+        */ ?>
+@if ( (Auth::user()->hasRoleCode('serviceworkers'))  || (Auth::user()->hasRoleCode('technicians')) )
+    @include('items.modalrealocate')
+@endif
 @if ( (Auth::user()->hasRoleCode('itemoperators')) )
-<!-- javascript for Responsive FileManager
-    ================================================== --> 
-<!-- Placed at the end of the document so the pages load faster --> 
+    @include('items.modaledit')
+    @include('items.modalpicture')
+    @include('items.modalchangelocalization')
+    @include('items.modalfile')
+@endif
+
+@include('items.modalfault')
 
 
-<!-- VIDEO -->
-<script src="assets/js/jquery.fitvids.min.js" type="text/javascript"></script>
-	
-<script>
-	function responsive_filemanager_callback(field_id){
-		if(field_id){
-			console.log(field_id);
-			var url=jQuery('#'+field_id).val();
 
-            document.getElementById("picture_name_img").src=url;
-            document.getElementById("picture_name").src=url;
 
-			//alert('update '+field_id+" with "+url);
-			//your code
-		}
-	}
-</script>
 
-<script type="text/javascript">
 
-jQuery(document).ready(function ($) {
-	$('.iframe-btn').fancybox({
-		'width'	: 880,
-		'height'	: 570,
-		'type'	: 'iframe',
-		'autoScale'   : false
-	});
-	//
-	// Handles message from ResponsiveFilemanager
-	//
-	function OnMessage(e){
-	  var event = e.originalEvent;
-	   // Make sure the sender of the event is trusted
-	   if(event.data.sender === 'responsivefilemanager'){
-	      if(event.data.field_id){
-	      	var fieldID=event.data.field_id;
-	      	var url=event.data.url;
-					$('#'+fieldID).val(url).trigger('change');
-					$.fancybox.close();
 
-					// Delete handler of the message from ResponsiveFilemanager
-					$(window).off('message', OnMessage);
-	      }
-	   }
-	}
 
-  // Handler for a message from ResponsiveFilemanager
-	$('.iframe-btn').on('click',function(){
-	  $(window).on('message', OnMessage);
-	});
 
-      $('#download-button').on('click', function() {
-	    ga('send', 'event', 'button', 'click', 'download-buttons');      
-      });
-      $('.toggle').click(function(){
-	    var _this=$(this);
-	    $('#'+_this.data('ref')).toggle(200);
-	    var i=_this.find('i');
-	    if (i.hasClass('icon-plus')) {
-		  i.removeClass('icon-plus');
-		  i.addClass('icon-minus');
-	    }else{
-		  i.removeClass('icon-minus');
-		  i.addClass('icon-plus');
-	    }
-      });
-});
 
-function open_popup(url)
-{
-        var w = 880;
-        var h = 570;
-        var l = Math.floor((screen.width-w)/2);
-        var t = Math.floor((screen.height-h)/2);
-        var win = window.open(url, 'ResponsiveFilemanager', "scrollbars=1,width=" + w + ",height=" + h + ",top=" + t + ",left=" + l);
-}
 
-</script>
+
+
+
+<?php   /*
+        |
+        | INCLUDE JAVA SCRIPT FILES
+        +--------------------------------------------    
+        */ ?>
+@if ( (Auth::user()->hasRoleCode('itemoperators')) )
+    <!-- javascript for Responsive FileManager
+        ================================================== --> 
+    <!-- Placed at the end of the document so the pages load faster --> 
+
+
+    <!-- VIDEO -->
+    <script src="assets/js/jquery.fitvids.min.js" type="text/javascript"></script>
+        
+    <script>
+        function responsive_filemanager_callback(field_id){
+            if(field_id){
+                console.log(field_id);
+                var url=jQuery('#'+field_id).val();
+
+                document.getElementById("picture_name_img").src=url;
+                document.getElementById("picture_name").src=url;
+
+                //alert('update '+field_id+" with "+url);
+                //your code
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+
+    jQuery(document).ready(function ($) {
+        $('.iframe-btn').fancybox({
+            'width'	: 880,
+            'height'	: 570,
+            'type'	: 'iframe',
+            'autoScale'   : false
+        });
+        //
+        // Handles message from ResponsiveFilemanager
+        //
+        function OnMessage(e){
+            var event = e.originalEvent;
+            // Make sure the sender of the event is trusted
+            if(event.data.sender === 'responsivefilemanager'){
+                if(event.data.field_id){
+                    var fieldID=event.data.field_id;
+                    var url=event.data.url;
+                            $('#'+fieldID).val(url).trigger('change');
+                            $.fancybox.close();
+
+                            // Delete handler of the message from ResponsiveFilemanager
+                            $(window).off('message', OnMessage);
+                }
+            }
+        }
+
+        // Handler for a message from ResponsiveFilemanager
+        $('.iframe-btn').on('click',function(){
+            $(window).on('message', OnMessage);
+        });
+
+        $('#download-button').on('click', function() {
+            ga('send', 'event', 'button', 'click', 'download-buttons');      
+        });
+        $('.toggle').click(function(){
+            var _this=$(this);
+            $('#'+_this.data('ref')).toggle(200);
+            var i=_this.find('i');
+            if (i.hasClass('icon-plus')) {
+            i.removeClass('icon-plus');
+            i.addClass('icon-minus');
+            }else{
+            i.removeClass('icon-minus');
+            i.addClass('icon-plus');
+            }
+        });
+    });
+
+    function open_popup(url)
+    {
+            var w = 880;
+            var h = 570;
+            var l = Math.floor((screen.width-w)/2);
+            var t = Math.floor((screen.height-h)/2);
+            var win = window.open(url, 'ResponsiveFilemanager', "scrollbars=1,width=" + w + ",height=" + h + ",top=" + t + ",left=" + l);
+    }
+    </script>
 @endif
 
 
 @endsection
-

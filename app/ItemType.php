@@ -57,21 +57,26 @@ class ItemType extends Model
         return ItemType::all()->where('item_type_master_id','=',$this->id);
     }
     
-    public function typepatch() {
-/*
+    public function typepatch() 
+    {
         $check=TRUE;
         $obiekcik=$this;
-        $echo=$obiekcik->item_type_name;
+        $echo='<a href="'.route('itemtypes.index', $obiekcik->id).'">';
+        $echo.=$obiekcik->item_type_name;
+        $echo.='</a>';
         if ($obiekcik->item_type_parent_id>0)
-        do {
+        do 
+        {
             $obiekcik=ItemType::where('id','=',$obiekcik->item_type_parent_id)->get()->first();
-            $echo=$obiekcik->item_type_name.' <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> '.$echo;
+            $echo='<a href="'.route('itemtypes.index', $obiekcik->id).'">'.
+                $obiekcik->item_type_name.
+                '</a>'.
+                ' <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> '.
+                $echo;
             if ($obiekcik->item_type_parent_id==0) $check=FALSE;
         }
         while ($check);
-        
         return $echo;
-        */
     }
 
     public function photo_OK() {

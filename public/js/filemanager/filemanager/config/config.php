@@ -76,7 +76,7 @@ $config = array(
     | with start and final /
     |
     */
-    'upload_dir' => '/storage/images/',
+    'upload_dir' => '/storage/',
 //    'upload_dir' => '/source/',
     /*
     |--------------------------------------------------------------------------
@@ -86,7 +86,7 @@ $config = array(
     | with final /
     |
     */
-    'current_path' => '../../../storage/images/',
+    'current_path' => '../../../storage/',
 //    'current_path' => '../source/',
 
     /*

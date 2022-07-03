@@ -24,10 +24,13 @@ class ItemGroup extends Model
     public function count() {
         return count(Item::all()->where('item_group_id','=',$this->id));
     }
-    public function files() {
+    public function pliki() {
         //dump($this->id);
         //dump($this->belongsToMany(Gallery::class, 'gallery_for_items', 'items_id', 'galleries_id')->toSql());
-        return $this->belongsToMany(Plik::class, 'plik_for_groups', 'item_group_id', 'plik_id')->withTimestamps();//->get();
+        
+        //old version with PLIK table
+        // return $this->belongsToMany(Plik::class, 'plik_for_groups', 'item_group_id', 'plik_id')->withTimestamps();//->get();
+        return $this->hasMany(PlikForGroupitem::class,'item_group_id');//->get();
     }
 
     public function review_templates() {

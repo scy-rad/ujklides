@@ -513,8 +513,12 @@ Route::post('plik/ajx_groups', 'PlikController@ajx_groups')->name('plik.ajx_grou
 
 
 Route::put('plik/{plik_id}', [
-    'uses' => 'PlikController@update_for',
+    'uses' => 'PlikController@update_plik_for',
     'as' => 'plikfor.update'
+]);
+Route::delete('plik/{plik_id}', [
+    'uses' => 'PlikController@delete_plik_for',
+    'as' => 'plikfor.delete'
 ]);
 
 

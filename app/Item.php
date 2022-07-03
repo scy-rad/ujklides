@@ -33,6 +33,11 @@ class Item extends Model
             return "_no_photo.png";
     }
 
+    public function pliki() {
+        return $this->hasMany(PlikForGroupitem::class,'item_id');//->get();
+    }
+
+
     public function galleries() {
         //dump($this->id);
         //dump($this->belongsToMany(Gallery::class, 'gallery_for_items', 'items_id', 'galleries_id')->toSql());
