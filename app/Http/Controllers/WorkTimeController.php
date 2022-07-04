@@ -171,7 +171,7 @@ class WorkTimeController extends Controller
             
 
             if ( ( ($request->workcard=='generate') && (Auth::user()->hasRole('Operator Kadr')) )
-            || ($request->workcard=='changes') )
+            || ($request->workcard=='changes') || ($request->workcard=='current') )
             {
                     if (count($ret_row['work_types'])>0)  // jeśli jest zaplanowany czas pracy
                     {
@@ -359,25 +359,28 @@ class WorkTimeController extends Controller
         $total['year']=date('Y', $begin);
 
 
-        if ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-03-31')) )
+        if ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-04-30')) )    //03-31
         {
             $total['quarter'] = 'I';
             $total['quarter_start']=$total['year'].'-01-01';
+            $total['quarter_end_date']=$total['year'].'-04-30';
         }
-        elseif ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-06-30')) )
+        elseif ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-08-31')) )    //06-30
         {
             $total['quarter'] = 'II';
-            $total['quarter_start']=$total['year'].'-04-01';
+            $total['quarter_start']=$total['year'].'-05-01';    //04-01
+            $total['quarter_end_date']=$total['year'].'-08-31';
         }
-        elseif ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-09-31')) )
-        {
-            $total['quarter'] = 'III';
-            $total['quarter_start']=$total['year'].'-07-01';
-        }
+        // elseif ( date('Y-m-d',strtotime($filtr['month'].'-01')) < date('Y-m-d',strtotime($total['year'].'-09-31')) )    //09-31
+        // {
+        //     $total['quarter'] = 'III';
+        //     $total['quarter_start']=$total['year'].'-07-01';
+        // }
         else
         {
-            $total['quarter'] = 'IV';
-            $total['quarter_start']=$total['year'].'-10-01';
+            $total['quarter'] = 'III';  //III
+            $total['quarter_start']=$total['year'].'-09-01';    //10-01
+            $total['quarter_end_date']=$total['year'].'-12-31';
         }
 
         $total['quarter_stop']=date('Y-m-t',strtotime($filtr['month'].'-01 - 1 month'));
@@ -469,6 +472,7 @@ class WorkTimeController extends Controller
             //        dump(serialize($alltmps));
         }
 
+        $total['action']=$request->workcard; //only for view current/get
         switch ($request->workcard)
         {
             /*-------------------\
@@ -476,10 +480,33 @@ class WorkTimeController extends Controller
             \-------------------*/
             case 'get':
             {
-
-                return view('worktime/month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
+                return view('worktime/print_month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
                 break;
             }
+            /*-------------------\
+            |   CURRENT          |
+            \-------------------*/
+            case 'current':
+                {
+                    $total['hrminutes_over']=0;
+                    $total['hrminutes_under']=0;
+                    foreach ($ret as &$ret_one)
+                        {
+                            $ret_one['hr_wt']=$ret_one['changes'];
+                            if ($ret_one['hr_wt']['over_under']==1)     //jeśli jest praca w godzinach nadliczbowych
+                                $total['hrminutes_over']+=$ret_one['hr_wt']['o_minutes'];
+                            if ($ret_one['hr_wt']['over_under']==2)     //jeśli jest praca poniżej normy
+                                $total['hrminutes_under']+=$ret_one['hr_wt']['o_minutes'];
+                        }
+                        // $total['times'] = m2h($total['minutes']);
+                        // $total['hrtimes'] = m2h($total['hrminutes']);
+                        $total['hrtimes_over'] = m2h($total['hrminutes_over']);
+                        $total['hrtimes_under'] = m2h($total['hrminutes_under']);
+                        
+                        // $total['hr_times'] = m2h($total['hr_minutes']);
+                    return view('worktime/print_month_cardwork',['user'=>$user, 'months' => $months, 'filtr' => $filtr, 'tabelka' => $ret, 'total' => $total ]);
+                    break;
+                }
             /*-------------------\
             |   GENERATE         |
             \-------------------*/
@@ -521,7 +548,7 @@ class WorkTimeController extends Controller
                 {
                     $mail_data_address['email'] = $sent_to->email;
                         $ret_info.='<li>'.$sent_to->full_name().'</li>';
-                    $zwrocik=Mail::send('worktime.month_cardwork',$mail_data_address,function($mail) use ($mail_data_address)
+                    $zwrocik=Mail::send('worktime.print_month_cardwork',$mail_data_address,function($mail) use ($mail_data_address)
                         {
                             $mail->from($mail_data_address['from_email'],$mail_data_address['from_name']);
                             $mail->to($mail_data_address['email'],$mail_data_address['name']);
@@ -737,9 +764,8 @@ class WorkTimeController extends Controller
         $extra_tab=null;
         if (!isset($request->start))
             {
-                //$filtr['start'] = date('Y-m').'-01';
-                //$filtr['start'] = \App\Simmed::selectRaw('min(simmed_date) as minvalue')->get()->first()->minvalue;
-                $filtr['start'] = \App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_start;
+                //$filtr['start'] = \App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_start;
+                $filtr['start'] = date('Y-m-d');
                 $filtr['stop'] = \App\Param::select('*')->orderBy('id','desc')->get()->first()->statistics_stop;
                 $filtr['technician'] = 'ANON';
                 $filtr['character'] = 'ANON';

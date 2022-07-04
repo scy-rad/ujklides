@@ -5,7 +5,7 @@
     <title>wydruk z systemu UJKlides</title>
   </head>
   <style>
-  h1, h2 {text-align: center}
+  h1, h2, h3 {text-align: center}
   body { font-family: Verdana, Arial, Helvetica, sans-serif }
   table {border-collapse: collapse;}
   th {border: 1px solid black; background: #ff6}
@@ -25,7 +25,22 @@
   <body>
 
   <no-print>
+  @if ($total['action']=='get')
     <form action="{{ route('worktime.month') }}" method="get">
+    <input class="form-control" type="hidden" name="workcard" value="get">
+    <div style="width: 100%; clear: both; background: gray; ">
+        <div style="width: 20%; float: left">
+        PLANOWE
+  @else
+    <form action="{{ route('worktime.month') }}" method="get">
+    <input class="form-control" type="hidden" name="workcard" value="current">
+    <div style="width: 100%; clear: both; background: gray; ">
+        <div style="width: 20%; float: left">
+        AKTUALNE
+  @endif
+        </div>
+    </div>
+
     <div style="width: 100%; clear: both; background: gray; ">
         <div style="width: 30%; float: left">
             <label for"technician">pracownik:</label>
@@ -44,19 +59,18 @@
             @endforeach
             </select>
         </div>
-                <input class="form-control" type="hidden" name="workcard" value="get">
                 <input class="btn btn-primary btn-big col-sm-12" type="submit" value="podgląd dokumentacji czasu pracy">
     </div>    
     </form>
-
   </no-print>
   <?php //function m2hcard($timeX) { return floor($timeX/60).':'.str_pad($timeX%60, 2, '0', STR_PAD_LEFT); } ?>
 
-
+@if ($total['action']=='get')
 <p class="smalltxt aright">Załącznik nr 8 do Regulaminu Pracy w Uniwersytecie Jana Kochanowskiego w Kielcach</small>
-<h1>LISTA OBECNOŚCI PRACOWNIKÓW {{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name_wersal}}</h1>
+<h1>harmonogram pracy</h1>
+<h2>w {{\App\Param::select('*')->orderBy('id','desc')->get()->first()->unit_name_wersal}}</h2>
  
-<h2>harmonogram pracy {{$total['month_name']}} {{$total['year']}}</h2>
+<h3>pracownik: {{$user->full_name()}}, miesiąc: {{$total['month_name']}} {{$total['year']}}</h3>
         <!--h3>planowo godzin: {{$total['month_data']->hours_to_work}}</h3-->
 <div style="width: 90%; margin: auto">
     <table style="width:100%; border: 2px; text-align: center">
@@ -64,9 +78,10 @@
             <tr>
             <th scope="col">{{$total['month_name']}} {{$total['year']}}</th>
             <th scope="col">&nbsp;</th>
-            <th scope="col">{{$user->full_name()}}</th>
             <th scope="col">godziny pracy</th>
             <th scope="col">ilość godzin</th>
+            <th scope="col">zmiana godzin pracy</th>
+            <th scope="col">akceptacja</th>
             </tr>
         </thead>
     @foreach ($tabelka as $row_one)
@@ -82,19 +97,24 @@
             {{$row_one['day_name_short']}}
        </td>
         <td>
-        </td>
-        <td>
             {{$row_one['hr_wt']['hr_time_begin']}} - {{$row_one['hr_wt']['hr_time_end']}}
        </td>
         <td>
             {{$row_one['hr_wt']['hr_hoursmin']}}
         </td>
+        <td>
+            &nbsp;
+        </td>
+        <td>
+            &nbsp;
+        </td>
     </tr>
     @endforeach
     <tfoot>
             <tr>
-            <th colspan="4" style="text-align: right;"><strong>Razem: &nbsp; </strong> </th>
+            <th colspan="3" style="text-align: right;"><strong>Razem: &nbsp; </strong> </th>
             <th><strong>{{$total['hr_times']}}</strong></th>
+            <th colspan="2" style="text-align: right;"> &nbsp; </th>
             </tr>
         </tfoot>
     </table>
@@ -107,13 +127,13 @@
 <div style="width: 100%; background: yellow; clear: both">
 </div>
 <footer>[{{date('Hidm')}}]</footer>
-
+@endif
 
 @if ($total['hrminutes_over']>0)
 <p class="smalltxt aright">Załącznik nr 4 do Regulaminu Pracy w Uniwersytecie Jana Kochanowskiego w Kielcach</small>
 <p class="aright">Kielce, dnia .................................</p>
 
-<h1>Zlecenie pracy w godzinach nadliczbowych</h1>
+<h2>Zlecenie pracy w godzinach nadliczbowych</h2>
 
 <p>Na podstawie art. 151 § 1 Kodeksu Pracy zlecam pracownikowi <strong>{{$user->full_name()}}</strong> wykonanie pracy w godzinach nadliczbowych w dniach:</p>
 <ul>
@@ -167,7 +187,7 @@
 <br>
 <br>
 
-<h1>WNIOSEK O UDZIELENIE CZASU WOLNEGO OD PRACY W ZAMIAN ZA CZAS PRZEPRACOWANY W GODZINACH NADLICZBOWYCH:</h1>
+<h2>Wniosek o udzielenie czasu wolnego od pracy w zamian za czas przepracowany w godzinach nadliczbowych:</h2>
 
 
 @if ($total['hrminutes_under']>0)
@@ -191,21 +211,9 @@
 </ul>
 
 @if ( ($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) > 0)
-    <p>Udzielenie czasu wolnego od pracy w liczbie <strong>{{floor(( ($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) )/60).':'.str_pad(( ($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) )%60, 2, '0', STR_PAD_LEFT)}}</strong> godzin planuję w następujących terminach: </p>
-    <ul>
-            <li> ................................ w godz. ........................ : (....................)</li> 
-            <li> ................................ w godz. ........................ : (....................)</li> 
-            <li> ................................ w godz. ........................ : (....................)</li> 
-            <li> ................................ w godz. ........................ : (....................)</li> 
-    </ul>
+    <p>Pozostałe godziny przepracowane w godzinach nadliczbowych (<strong>{{floor(( ($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) )/60).':'.str_pad(( ($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) )%60, 2, '0', STR_PAD_LEFT)}}</strong>) zostaną wykorzystane w formie udzielonego czasu wolnego do końca okresu rozliczeniowego ({{$total['quarter_end_date']}}). </p>
 @elseif ( ($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) < 0)
-    <p>Godziny nadmiarowe w liczbie <strong>{{floor(( -($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) )/60).':'.str_pad(( -($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) )%60, 2, '0', STR_PAD_LEFT)}}</strong> godzin zostaną odpracowane w terminie: </p>
-    <ul>
-            <li> ................................ w godz. ........................ : (....................)</li> 
-            <li> ................................ w godz. ........................ : (....................)</li> 
-            <li> ................................ w godz. ........................ : (....................)</li> 
-            <li> ................................ w godz. ........................ : (....................)</li> 
-    </ul>
+    <p>Godziny udzielonego czasu wolnego obniżające miesiączny czas pracy (<strong>{{floor(( -($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) )/60).':'.str_pad(( -($total['total_quarter_over']+$total['hrminutes_over']-$total['hrminutes_under']) )%60, 2, '0', STR_PAD_LEFT)}}</strong>) zostaną odpracowane do końca okresu rozliczeniowego ({{$total['quarter_end_date']}}). </p>
 @endif
 
 
@@ -234,6 +242,7 @@
 
 
 </div>
+<footer>[{{date('Hidm')}}]</footer>
 @endif
 
 
