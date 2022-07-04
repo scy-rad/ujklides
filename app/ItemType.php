@@ -76,6 +76,11 @@ class ItemType extends Model
             if ($obiekcik->item_type_parent_id==0) $check=FALSE;
         }
         while ($check);
+        //add first elemet - "wszystko":
+        $echo='<a href="'.route('itemtypes.index', 0).'">wszystko</a>'.
+        ' <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> '.
+        $echo;
+
         return $echo;
     }
 

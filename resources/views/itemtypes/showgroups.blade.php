@@ -2,7 +2,7 @@
 
 <link href="{{ asset('css/device.css') }}" rel="stylesheet">
 
-@section('title', " zasoby - sssssss" )
+@section('title', " Zasoby - ".$ItemType->item_type_name )
 
 @section('content')
 <h1>zasoby typu: {{$ItemType->item_type_name}}</h1>

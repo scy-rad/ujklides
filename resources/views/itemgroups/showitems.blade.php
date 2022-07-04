@@ -2,22 +2,22 @@
 
 <link href="{{ asset('css/device.css') }}" rel="stylesheet">
 
-@section('title', " zasoby - sssssss" )
+@section('title', " zasoby - ".$ItemGroup->item_group_name )
 
 @section('content')
-<h1>egzemplarze: {{$ItemGroup->item_group_name}}</h1>
 
 
-@foreach (App\ItemType::typepatcharray($ItemGroup->type()->id) as $OneType)
-<a href="{{route('itemtypes.index', $OneType['id'])}}">
-    {{$OneType['name']}}
-</a>
-<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-@endforeach
+{!!$ItemGroup->type_no_get->typepatch()!!}
+
+
+<p>producent: <strong>{{$ItemGroup->item_group_producent}}</strong>, model: <strong>{{$ItemGroup->item_group_model}}</strong></p>
+
+<h2>nazwa: {{$ItemGroup->item_group_name}}</h2>
+
 
 <div class="row">
-
-        <ol>
+    <div class="col-sm-4">
+        <ol>egzemplarze
         <?php
         $Items=App\Item::where('item_group_id','=',$ItemGroup->id)->get();
         foreach ($Items as $Item)
@@ -36,12 +36,28 @@
             */ ?>
             <li>
             <a href="{{route('items.show', $Item->id)}}">
-                        {{ $Item->group()->item_group_name }}>
+                        {{ $Item->group()->item_group_name }}
             </a>
             </li>
             <?php
             }
             ?>
         </ol>
+    </div>
+    <div class="col-sm-4">
+    <ol>pliki
+        <?php
+        foreach ($Pliki as $Plik)
+            {
+            ?>
+            <li>
+                {{$Plik->plik_title}}
+            </li>
+            <?php
+            }
+            ?>
+        </ol>
+    </div>
+
 </div>
 @endsection

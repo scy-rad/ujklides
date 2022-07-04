@@ -53,7 +53,10 @@
     <div class="col-sm-12">
         {!!$item->group()->type_no_get->typepatch()!!}
         <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-        <a href="{{route('itemtypes.showgroups', $item->group()->id)}}">[{{$item->group()->item_group_name}}]</a>
+        <a href="{{route('itemgroups.showitems', $item->group()->id)}}">
+            {{ $item->group()->item_group_name }}
+        </a>
+
     </div>
 </div>
 <div class="row">

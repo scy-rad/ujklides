@@ -30,7 +30,8 @@ class ItemGroupController extends Controller
 
     public function showitem(ItemGroup $ItemGroup)
     {
-        return view('itemgroups.showitems', compact('ItemGroup'));
+        $pliki=\App\PlikForGroupitem::where('item_group_id',$ItemGroup->id)->get();
+        return view('itemgroups.showitems', compact('ItemGroup'),['Pliki' => $pliki]);
     }
 
 
