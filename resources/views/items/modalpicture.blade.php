@@ -17,7 +17,7 @@
 
             <div style="width:200px; float: left">
                 <label for="picture_old">aktualne zdjęcie:</label><br>
-                <img id="picture_old" width="200px" height="150px" src="{{asset('/storage/images/'.$item->item_photo) }}">
+                <img id="picture_old" width="200px" height="150px" src="{{asset($item->item_photo) }}">
             </div>
             <div style="width:45%; float: right">
                 <label for="picture_name_img">nowe zdjęcie:</label><br>

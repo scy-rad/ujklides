@@ -35,7 +35,7 @@
             <?php /* card-version
             <a href="{{route('items.show', $Item->id)}}">
                 <div class="tile">
-                    <img src="/storage/img/items/{{$Item->photo_OK()}}" class="tile">
+                    <img src="{{$Item->photo_OK()}}" class="tile">
 
                     <div class="tiletitle">
                         {{ $Item->group()->item_group_name }}

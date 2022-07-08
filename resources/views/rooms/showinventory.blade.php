@@ -15,7 +15,7 @@
 
 <div class="tile">
     <a href="{{route('rooms.show', $room->id)}}">
-        <img src="/storage/img/rooms/{{ $room->room_photo }}" class="tile">
+        <img src="{{ $room->room_photo }}" class="tile">
     </a>
     <div class="tiletitle">
         {{ $room->room_number }}.
@@ -113,7 +113,7 @@
             <div class="clearfix">
 
                 <div style="float:right;">
-                    <img src="/storage/img/{{ $item->item_photo }}" class="tile">
+                    <img src="{{ $item->item_photo }}" class="tile">
                 </div>
                 <?php
                 //@if ($item->active_inventory()->count()>0) ?>

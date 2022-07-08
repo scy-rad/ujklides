@@ -10,7 +10,7 @@
 <div class="col-sm-8">
     <h1>{{ $room->room_number }}<br>
     {{ $room->room_name  }}</h1>
-    <img src="/storage/img/rooms/{{ $room->room_photo }}" class="col-sm-12">
+    <img src="{{ $room->room_photo }}" class="col-sm-12">
     {!! $room->room_description  !!}
 </div>
 
@@ -18,7 +18,7 @@
 <div class="col-sm-4">
     <div class="tile" style="float:right">
         <a href="{{route('rooms.show', $room->id)}}">
-            <img src="/storage/img/rooms/{{ $room->room_photo }}" class="tile">
+            <img src="{{ $room->room_photo }}" class="tile">
         </a>
         <div class="tiletitle">
             {{ $room->room_number }}.

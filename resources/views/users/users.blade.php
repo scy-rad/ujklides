@@ -16,7 +16,7 @@
             </div>
           <div class="user-detail bg-{{$able}}">
                 <a href="{{route('user.profile', $user->id)}}">
-                  <img src="/storage/avatars/{{ $user->user_fotka }}" class="xrounded-circle ximg-thumbnail">
+                  <img src="{{ $user->user_fotka }}" class="xrounded-circle ximg-thumbnail">
                 </a>
                   <!--p><i class="fa fa-map-marker" aria-hidden="true"></i> UJK Kielce</p-->
                   <h2 class="text-{{$able}}"> {{$user->title->user_title_short}} {{$user->firstname}} {{$user->lastname}}</h5>

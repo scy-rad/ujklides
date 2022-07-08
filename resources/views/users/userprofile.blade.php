@@ -89,7 +89,7 @@ else
             <div class="col-sm-3">
                 <div class="profile-header-container">
                     <div class="profile-header-img">
-                        <img class="col-sm-12 rounded-circle userphoto" src="/storage/avatars/{{ $user->user_fotka }}" >
+                        <img class="col-sm-12 rounded-circle userphoto" src="{{ $user->user_fotka }}" >
                         <!-- badge -->
                         <!--div class="rank-label-container">
                             <span class="label label-default rank-label">{{$user->name}}</span>

@@ -6,7 +6,7 @@
 
     <div class="tile">
         <a href="{{route('rooms.show', $room->id)}}">
-            <img src="/storage/img/rooms/{{ $room->rooms_photo }}" class="tile">
+            <img src="{{ $room->rooms_photo }}" class="tile">
         </a>
         <div class="tiletitle">
             {{ $room->rooms_number }}.

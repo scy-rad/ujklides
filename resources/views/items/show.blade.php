@@ -65,7 +65,7 @@
     <div class="col-sm-3">
         <a href="{{route('items.show', $item->id)}}">
         <div class="device_photo">
-            <img src="{{asset('/storage/images/'.$item->photo_OK()) }}" class="device_photo">
+            <img src="{{asset($item->photo_OK()) }}" class="device_photo">
         </div>
         </a>
     </div>
@@ -309,9 +309,9 @@
         <p>{{$gallery->gallery_description}}</p>
         <hr>
         @foreach ($gallery->photos as $photo)
-        <a href="/storage/images/{{$gallery->gallery_folder}}/{{$photo->gallery_photo_name}}">
+        <a href="{{$gallery->gallery_folder}}/{{$photo->gallery_photo_name}}">
         <div class="tile">
-            <img src="/storage/images/{{$gallery->gallery_folder}}/{{$photo->gallery_photo_name}}" class="tile">
+            <img src="{{$gallery->gallery_folder}}/{{$photo->gallery_photo_name}}" class="tile">
             <div class="tiletitle">
                 {{$photo->gallery_photo_title}}
             </div>

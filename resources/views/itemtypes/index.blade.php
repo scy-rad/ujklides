@@ -36,7 +36,7 @@
      
         <a href="{{route('itemtypes.index', $ItemType->id)}}">
             <div class="tile">
-                <img src="/storage/img/items/{{$ItemType->photo_OK()}}" class="tile">
+                <img src="{{$ItemType->photo_OK()}}" class="tile">
                 
                 <div class="tiletitle">
                     {{ $ItemType->item_type_name }}

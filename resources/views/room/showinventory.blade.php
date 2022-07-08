@@ -16,7 +16,7 @@
 
 <div class="tile">
     <a href="{{route('rooms.show', $room->id)}}">
-        <img src="/storage/img/rooms/{{ $room->rooms_photo }}" class="tile">
+        <img src="{{ $room->rooms_photo }}" class="tile">
     </a>
     <div class="tiletitle">
         {{ $room->rooms_number }}.
@@ -125,7 +125,7 @@
             <div class="clearfix">
     
                 <div style="float:right;">
-                    <img src="/storage/img/items/{{ $row->item_photo }}" class="tile">
+                    <img src="{{ $row->item_photo }}" class="tile">
                     {{$row->inventory_item_status}}
                     
                 </div>

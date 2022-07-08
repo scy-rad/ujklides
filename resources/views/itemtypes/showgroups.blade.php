@@ -31,7 +31,7 @@ function show_groups($curr_id)
         <?php /* card-version
         <a href="{{route('itemgroups.showitems', $ItemGroup->id)}}">
             <div class="tile">
-                <img src="/storage/img/items/{{$ItemGroup->photo_OK()}}" class="tile">
+                <img src="{{$ItemGroup->photo_OK()}}" class="tile">
                 
                 <div class="tiletitle">
                     {{ $ItemGroup->item_group_name }}
