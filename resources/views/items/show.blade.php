@@ -350,8 +350,8 @@
 @endif
 @if ( (Auth::user()->hasRoleCode('itemoperators')) )
     @include('items.modaledit')
-    @include('items.modalpicture')
     @include('items.modalchangelocalization')
+    @include('pliks.modalpicture')
     @include('pliks.modalfile')
 @endif
 
