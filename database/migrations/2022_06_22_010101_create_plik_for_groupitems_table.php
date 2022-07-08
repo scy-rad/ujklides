@@ -69,6 +69,27 @@ class CreatePlikForGroupitemsTable extends Migration
     LEFT JOIN pliks on plik_for_groups.plik_id=pliks.id;
     */
 
+    /*
+    UPDATE `items` SET `item_photo` = concat('storage/images/',item_photo);
+    UPDATE `items` SET `item_photo` = ""  WHERE `item_photo` = 'storage/images/';
+
+    UPDATE `galleries` SET `gallery_folder` = concat('storage/images/',gallery_folder);
+    UPDATE `galleries` SET `gallery_folder` = ""  WHERE `gallery_folder` = 'storage/images/';
+
+    UPDATE `item_groups` SET `item_group_photo` = concat('storage/images/',item_group_photo);
+    UPDATE `item_groups` SET `item_group_photo` = ""  WHERE `item_group_photo` = 'storage/images/';
+
+    UPDATE `item_types` SET `item_type_photo` = concat('storage/images/',item_type_photo);
+    UPDATE `item_types` SET `item_type_photo` = ""  WHERE `item_type_photo` = 'storage/images/';
+
+    UPDATE `rooms` SET `room_photo` = concat('storage/images/',room_photo);
+    UPDATE `rooms` SET `room_photo` = ""  WHERE `room_photo` = 'storage/images/';
+
+    UPDATE `users` SET `user_fotka` = concat('storage/images/avatars/',user_fotka);
+    UPDATE `users` SET `user_fotka` = ""  WHERE `user_fotka` = 'storage/images/avatars/';
+    */
+    
+
     /**
      * Reverse the migrations.
      *
