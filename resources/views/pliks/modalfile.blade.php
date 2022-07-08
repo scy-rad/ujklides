@@ -1,11 +1,11 @@
 <?php
-     if ($do_what!='fils')
-    {
-        $plik = new \App\PlikForGroupitem;
-        $plik->id=0;
-    }
+// variables in modal:
+// $plik
+// $group_name
+// $item_id
+// $item_group_id
+// $all_items
 ?>
-
 <!-- Body Modal edit file -->
 <div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -23,15 +23,19 @@
                     <input type="hidden" name="_method" value="PUT">
                     <input type="hidden" name="update_action" value="itemgroup">
                     <input type="hidden" name="id" value="{{$plik->id}}">
-                    @if ($plik->id>0)
-                        <input type="hidden" name="item_id" value="{{$plik->item_id}}">
-                        <input type="hidden" name="item_group_id" value="{{$plik->item_group_id}}">
-                    @else
-                        <input type="hidden" name="item_id" value="{{$item->id}}">
-                        <input type="hidden" name="item_group_id" value="0">
-                    @endif
+                    <input type="hidden" name="item_group_id" value="{{$item_group_id}}">
                     {{ csrf_field() }}
             
+                    <h4>grupa {{$item_group_id}}:</h4>
+                    {{$group_name}}
+                    <h4>egzemplarz:</h4>
+                    <select class="form-control form-select" name="item_id">
+                        <option value="0" @if ($item_id==0) selected="selected" @endif>dla wszystkich egzemplarzy</option>
+                        @foreach ($all_items as $item_one)
+                            <option value="{{$item_one->id}}"@if ($item_one->id==$item_id) selected="selected" @endif>{{$item_one->id}}: {{$item_one->item_inventory_number}} (S/N: {{$item_one->item_serial_number}})</option>
+                        @endforeach
+                    </select>
+
                     <h4>ścieżka pliku:</h4>
                     <input type="text" class="form-control" name="plik_dir_name" id="plik_dir_name" value="{{$plik->plik_directory.$plik->plik_name}}" >
                     <a href="javascript:open_popup('/js/filemanager/filemanager/dialog.php?type=2&popup=1&field_id=plik_dir_name')" class="form-control btn btn-secondary" style="background:#ffd" role="button" margin="0px">
@@ -55,13 +59,14 @@
         </div>    <!-- modal-footer -->
       </form>
 
-
-      <form method="post" action="{{ route('plikfor.delete', $plik->id) }}">
+        @if ($plik->id>0)
+            <form method="post" action="{{ route('plikfor.delete', $plik->id) }}">
                 <fieldset>
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="update_action" value="itemgroup">
                     <input type="hidden" name="id" value="{{$plik->id}}">
-                    <input type="hidden" name="item_id" value="{{$item->id}}">
+                    <input type="hidden" name="item_id" value="{{$item_id}}">
+                    <input type="hidden" name="item_group_id" value="{{$item_group_id}}">
                     {{ csrf_field() }}
 
                 <div style="width:40%">
@@ -72,7 +77,8 @@
                 <button type="submit" class="btn btn-danger" style="display:inline-flex !important;">usuń</button>
                 </div>
                 </fieldset>
-        </form>
+            </form>
+        @endif
 
 
     </div>  <!-- /modal-content -->

@@ -76,18 +76,56 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        $rooms=\App\Room::all();
-        $roomstorages=\App\RoomStorage::where('room_id',$item->current_storage()->room()->id)->get();
+        $return_tab["do_what"]  = "show";
+        $return_tab["id_what"]  = 0;
+        $return_tab["rooms"]    = \App\Room::all();
+        $return_tab["roomstorages"] = \App\RoomStorage::where('room_id',$item->current_storage()->room()->id)->get();
+     
+        if (Auth::user()->hasRoleCode('itemoperators'))
+        {
+                $plik = new \App\PlikForGroupitem;
+                $plik->id=0;
 
-        return view('items.show', compact('item'), ["do_what" => "basic_view", "doc" => 0, "rooms" => $rooms, "roomstorages" => $roomstorages]);
+                $return_tab["item_id"]=$item->id;
+                $return_tab["item_group_id"]=$item->item_group_id;
+                $return_tab["group_name"]=$item->group()->item_group_name;
+                $return_tab["all_items"]=\App\Item::where('item_group_id',$item->item_group_id)->get();
+                $return_tab["plik"] = $plik;
+        }
+
+        return view('items.show', compact('item'), $return_tab);
+
+        // return view('items.show', compact('item'), ["do_what" => "basic_view", "doc" => 0, "rooms" => $rooms, "roomstorages" => $roomstorages]);
     }
 
     public function show_something(Item $item, String $do_what, Int $id_what)
     {
-        $rooms=\App\Room::all();
-        $roomstorages=\App\RoomStorage::where('room_id',$item->current_storage()->room()->id)->get();
+        $return_tab["do_what"]  = $do_what;
+        $return_tab["id_what"]  = $id_what;
+        $return_tab["rooms"]    = \App\Room::all();
+        $return_tab["roomstorages"] = \App\RoomStorage::where('room_id',$item->current_storage()->room()->id)->get();
+     
+        if (Auth::user()->hasRoleCode('itemoperators'))
+        {
+            if ($do_what=="fils")
+            {
+                $plik=\App\PlikForGroupitem::where('id',$id_what)->get()->first();
+                $return_tab["item_id"]=$plik->item_id;
+            }
+            else 
+            {
+                $plik = new \App\PlikForGroupitem;
+                $plik->id=0; 
+                $return_tab["item_id"]=$item->id;
+            }
 
-        return view('items.show', compact('item'), ["do_what" => $do_what, "id_what" => $id_what, "rooms" => $rooms, "roomstorages" => $roomstorages]);
+            $return_tab["item_group_id"]=$item->item_group_id;   
+            $return_tab["group_name"]=$item->group()->item_group_name;
+            $return_tab["all_items"]=\App\Item::where('item_group_id',$item->item_group_id)->get();
+            $return_tab["plik"] = $plik;
+        }
+
+        return view('items.show', compact('item'), $return_tab);
     }
 
     

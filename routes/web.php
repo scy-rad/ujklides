@@ -92,9 +92,9 @@ Route::get('itemtypes/items/{item_type}', [
     'as' => 'itemtypes.showitems'
 ]);
 
-Route::get('itemgroups/items/{item_group}', [
-    'uses' => 'ItemGroupController@showitem',
-    'as' => 'itemgroups.showitems'
+Route::get('itemgroup/{item_group}/{what}/{id_what}', [
+    'uses' => 'ItemGroupController@show_something',
+    'as' => 'itemgroups.show_something'
 ]);
 
 

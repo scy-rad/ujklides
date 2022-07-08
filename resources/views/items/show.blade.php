@@ -6,8 +6,10 @@
 
 <!--script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script-->
 
+<!-- scripts for FileManager -->
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.css" media="screen" />
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.pack.js"></script>
+<!-- /scripts for FileManager -->
 
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 
@@ -53,7 +55,7 @@
     <div class="col-sm-12">
         {!!$item->group()->type_no_get->typepatch()!!}
         <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-        <a href="{{route('itemgroups.showitems', $item->group()->id)}}">
+        <a href="{{route('itemgroups.show_something', [$item->group()->id, 'show', 0])}}">
             {{ $item->group()->item_group_name }}
         </a>
 
@@ -198,6 +200,8 @@
     @foreach ($item->group()->pliki as $plik_one)
         <li>
         <a href="{{route('items.show_something', [$item->id, 'fils', $plik_one->id])}}">       
+            @if ($plik_one->item_id>0) <span class="glyphicon glyphicon-file" aria-hidden="true"></span> @endif
+            @if ($plik_one->item_group_id>0) <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> @endif
             {{$plik_one->plik_title}}
         </a>
         </li>
@@ -206,7 +210,9 @@
     <ul>
     @foreach ($item->pliki as $plik_one)
         <li>
-        <a href="{{route('items.show_something', [$item->id, 'fils', $plik_one->id])}}">       
+        <a href="{{route('items.show_something', [$item->id, 'fils', $plik_one->id])}}">
+            @if ($plik_one->item_id>0) <span class="glyphicon glyphicon-file" aria-hidden="true"></span> @endif
+            @if ($plik_one->item_group_id>0) <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> @endif
             {{$plik_one->plik_title}}
         </a>
         </li>
@@ -294,7 +300,6 @@
         @break
         
         @case("fils")
-            <?php   $plik=App\PlikForGroupitem::where('id',$id_what)->get()->first(); ?>
             @include('items.incfiles')
         @break
 
@@ -323,7 +328,7 @@
             @include('items.increviews')
         @break
 
-        @case("basic_view")
+        @case("show")
         @default
             <p>{!! $item->item_description !!}</p>
             <p>{!! $item->group()->item_group_description !!}</p>
@@ -347,7 +352,7 @@
     @include('items.modaledit')
     @include('items.modalpicture')
     @include('items.modalchangelocalization')
-    @include('items.modalfile')
+    @include('pliks.modalfile')
 @endif
 
 @include('items.modalfault')

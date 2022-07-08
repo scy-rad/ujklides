@@ -40,9 +40,9 @@ function show_groups($curr_id)
         </a>
         */ ?>
         <li>
-        <a href="{{route('itemgroups.showitems', $ItemGroup->id)}}">
-                    {{ $ItemGroup->item_group_name }}
-        </a>
+        <a href="{{route('itemgroups.show_something', [$ItemGroup->id, 'show', 0])}}">       
+                    {{$ItemGroup->item_group_name}}
+                </a>
         </li>
         <?php
         }

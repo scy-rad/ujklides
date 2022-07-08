@@ -48,14 +48,16 @@ class PlikController extends Controller
 // dd($request);
                 $slash_pos=strripos($request->plik_dir_name,'/')+1;
                 if ($request->item_id==0)
+                    {
                     $plik_one->item_id          = null;
-                else
-                    $plik_one->item_id          = $request->item_id;
-                if ($request->item_group_id==0)
-                    $plik_one->item_group_id    = null;
-                else
                     $plik_one->item_group_id    = $request->item_group_id;
-                
+                    }
+                else
+                    {
+                    $plik_one->item_id          = $request->item_id;
+                    $plik_one->item_group_id    = null;
+                    }
+
                 $plik_one->plik_type_id     = $request->plik_type_id;
                 $plik_one->plik_directory   = substr($request->plik_dir_name,0,$slash_pos);
                 if (!(strpos($plik_one->plik_directory,$request->server('HTTP_ORIGIN'))===false))
@@ -92,10 +94,18 @@ class PlikController extends Controller
                         {
                             $plik_one=\App\PlikForGroupitem::find($id);
                             $plik_one->delete();
-                            return app('App\Http\Controllers\ItemController')->show(\App\Item::where('id',$request->item_id)->first());
+                            return app('App\Http\Controllers\ItemController')->show_something(\App\Item::where('id',$request->item_id)->first(),'show',0);
+                        }
+                        elseif ($request->item_group_id>0)
+                        {
+                            $plik_one=\App\PlikForGroupitem::find($id);
+                            $plik_one->delete();
+                            return app('App\Http\Controllers\ItemGroupController')->show_something(\App\ItemGroup::where('id',$request->item_group_id)->first(),'show',0);
                         }
                         else
+                        {
                             return back()->withErrors(['nie usunięto pliku', 'System nie znalazł wskazówki co do powrotu. Zgłoś to administratorowi...']);
+                        }
                     else
                         return back()->withErrors(['nie usunięto pliku', 'Aby to zrobić musisz zaznaczyć dodatkowe pole...']);
                 
