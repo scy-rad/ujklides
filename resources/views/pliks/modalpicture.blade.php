@@ -1,3 +1,8 @@
+<?php
+// variables in modal:
+// $action        = route('item.update', $item->id)
+// $photo_old = asset($item->item_photo)
+?>
 <!-- Body Modal change picture -->
 <div class="modal fade" id="pictureModal" tabindex="-1" role="dialog" aria-labelledby="pictureModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -9,7 +14,7 @@
         </button>
       </div>    <!-- modal-header -->
       <div class="modal-body">
-      <form method="post" action="{{ route('item.update', $item->id) }}">
+      <form method="post" action="{{$action}}">
             <input type="hidden" name="_method" value="PUT">
             <input type="hidden" name="update" value="picture">
             {{ csrf_field() }}
@@ -17,7 +22,7 @@
 
             <div style="width:200px; float: left">
                 <label for="picture_old">aktualne zdjęcie:</label><br>
-                <img id="picture_old" width="200px" height="150px" src="{{asset($item->item_photo) }}">
+                <img id="picture_old" width="200px" height="150px" src="{{$photo_old}}">
             </div>
             <div style="width:45%; float: right">
                 <label for="picture_name_img">nowe zdjęcie:</label><br>

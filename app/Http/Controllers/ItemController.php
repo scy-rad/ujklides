@@ -178,7 +178,7 @@ class ItemController extends Controller
                 $ret = $item->save();
                 break;
             case "picture":
-                $item->item_photo=substr($request->picture_name,strlen($request->server('HTTP_ORIGIN'))+1,256);
+                $item->item_photo=substr($request->picture_name,strlen($request->server('HTTP_ORIGIN'))+1,strlen($request->picture_name));
                 $ret = $item->save();
                 break;
             default:

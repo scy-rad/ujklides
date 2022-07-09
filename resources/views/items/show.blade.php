@@ -351,6 +351,10 @@
 @if ( (Auth::user()->hasRoleCode('itemoperators')) )
     @include('items.modaledit')
     @include('items.modalchangelocalization')
+    <?php   //zmienne do modalpicture 
+        $action    = route('item.update', $item->id);
+        $photo_old = asset($item->item_photo);
+    ?>
     @include('pliks.modalpicture')
     @include('pliks.modalfile')
 @endif
