@@ -68,14 +68,9 @@
                     <input type="hidden" name="item_id" value="{{$item_id}}">
                     <input type="hidden" name="item_group_id" value="{{$item_group_id}}">
                     {{ csrf_field() }}
-
-                <div style="width:40%">
-                <input type="checkbox" class="form-control" style="display:inline-flex !important;" name="agree">
-                </div>
-                <div style="width:40%">
+                <input type="checkbox" class="form-control form-check-inline" style="display:inline-flex !important;" name="agree">
                 
                 <button type="submit" class="btn btn-danger" style="display:inline-flex !important;">usuń</button>
-                </div>
                 </fieldset>
             </form>
         @endif

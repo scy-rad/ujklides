@@ -17,9 +17,9 @@
 
             <fieldset>
                 <label for="fault_title">tytuł:</label>
-                <input type="text" id="fault_title" name="fault_title" value=""><br><br>
+                <input type="text" class="form-control" id="fault_title" name="fault_title" value="">
                 <label for="notification_description">opis:</label>
-                <textarea id="notification_description" name="notification_description" rows="4" cols="75"></textarea>
+                <textarea class="form-control" id="notification_description" name="notification_description" rows="4" cols="75"></textarea>
             </fieldset>
       </div> <!-- modal-body -->
 

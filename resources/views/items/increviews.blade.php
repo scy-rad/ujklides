@@ -135,7 +135,7 @@ if (isset($review_id))
                     
                     <label for="review_template_id">wybierz kolejny przegląd do realizacji:</label>
                     <br>
-                    <select id="review_template_id" name="review_template_id" size="1">
+                    <select class="form-control form-select" id="review_template_id" name="review_template_id" size="1">
                     @foreach ($item->group()->review_choose($review->template->review_type) as $review_template)
                         <?php
                         $date_a=$review_template->next_start();
@@ -149,7 +149,7 @@ if (isset($review_id))
                     </select>
 
                     @if (!$review->template->is_userable())
-                    <select id="rev_status" name="rev_status" size="1">
+                    <select class="form-control form-select" id="rev_status" name="rev_status" size="1">
                         <option value="1">do zaplanowania</option>
                         <option value="2">zaplanowany</option>
                     </select>

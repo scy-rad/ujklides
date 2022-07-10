@@ -23,14 +23,14 @@
             <fieldset>
             @if ($item->room_storage_current_id == $item->room_storage_id )
                 <legend>miejsce wypożyczenia:</legend>
-                <select name="new_room_storage">
+                <select class="form-control form-select" name="new_room_storage">
                     @foreach (App\RoomStorage::all()->where('room_storage_sort',0)->where('room_id','<>',$item->storage()->room_id) as $stor_one)
                         <option value="{{ $stor_one->id }}">{{ $stor_one->room()->room_number.' '.$stor_one->room()->room_name }} ({{ $stor_one->room_storage_name }})</option>
                     @endforeach
                 </select>
             @else
                 <legend>zwrot do:</legend>
-                <select name="new_room_storage">
+                <select class="form-control form-select" name="new_room_storage">
                     <option value="{{$item->room_storage_id}}">{{$item->storage()->room()->room_number}} {{$item->storage()->room()->room_name}}</option>
                 </select>
             @endif
@@ -41,23 +41,6 @@
             <button type="submit" class="btn btn-primary">zapisz</button>
       </div>
         </form>
-
-
-
-
-        <form action="select.php" id="formularz" action="post">
-	<fieldset>
-		<legend>Kategorie</legend>
-		<select id="kategorie">
-			<option value="1">Kategoria 1</option>
-			<option value="2">Kategoria 2</option>
-			<option value="3">Kategoria 3</option>
-			<option value="4">Kategoria 4</option>
-		</select>
-	</fieldset>
-</form>
-
-
 
     </div>  <!-- /modal-content -->
   </div>    <!-- /modal-dialog -->

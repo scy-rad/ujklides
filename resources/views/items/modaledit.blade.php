@@ -16,18 +16,18 @@
             {{ csrf_field() }}
 
             <fieldset>
-                <label for="item_group_id">grupa (nieedytowalne):</label><br>
-                <input type="text" id="item_group_id" name="item_group_id" value="{{ $item->item_group_id }}" disabled="disabled"><br>
-                <label for="item_serial_number">numer seryjny:</label><br>
-                <input type="text" id="item_serial_number" name="item_serial_number" value="{{ $item->item_serial_number }}"><br>
-                <label for="item_inventory_number">numer inwentarzowy:</label><br>
-                <input type="text" id="item_inventory_number" name="item_inventory_number" value="{{ $item->item_inventory_number }}"><br>
-                <label for="item_purchase_date">data zakupu:</label><br>
-                <input type="date" id="item_purchase_date" name="item_purchase_date" value="{{ $item->item_purchase_date }}"><br>
-                <label for="item_warranty_date">opis:</label><br>
-                <input type="date" id="item_warranty_date" name="item_warranty_date" value="{{ $item->item_warranty_date }}"><br>
-                <label for="item_description">opis:</label><br>
-                <textarea id="item_description" name="item_description" rows="4" cols="75">{!! $item->item_description !!}</textarea>
+                <label for="item_group_id">grupa (nieedytowalne):</label>
+                <input type="text" class="form-control" id="item_group_id" name="item_group_id" value="{{ $item->item_group_id }}" disabled="disabled">
+                <label for="item_serial_number">numer seryjny:</label>
+                <input type="text" class="form-control" id="item_serial_number" name="item_serial_number" value="{{ $item->item_serial_number }}">
+                <label for="item_inventory_number">numer inwentarzowy:</label>
+                <input type="text" class="form-control" id="item_inventory_number" name="item_inventory_number" value="{{ $item->item_inventory_number }}">
+                <label for="item_purchase_date">data zakupu:</label>
+                <input type="date" class="form-control" id="item_purchase_date" name="item_purchase_date" value="{{ $item->item_purchase_date }}">
+                <label for="item_warranty_date">opis:</label>
+                <input type="date" class="form-control" id="item_warranty_date" name="item_warranty_date" value="{{ $item->item_warranty_date }}">
+                <label for="item_description">opis:</label>
+                <textarea class="form-control" id="item_description" name="item_description" rows="4" cols="75">{!! $item->item_description !!}</textarea>
             </fieldset>
       </div> <!-- modal-body -->
 

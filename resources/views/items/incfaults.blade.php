@@ -92,16 +92,16 @@ if (isset($fault_id))
     {{ csrf_field() }}
       <h2>edycja zgłoszenia [{{$fault->id}}]</h2>
       <fieldset>
-        <br><label for="fault_title">tytuł:</label><br>
-          <input type="text" id="fault_title" name="fault_title" value="{{$fault->fault_title}}">
-        <br><label for="notification_description">opis zgłoszenia:</label><br>
-          <textarea id="notification_description" name="notification_description" rows="4" cols="150">{!!$fault->notification_description!!}</textarea>
+        <label for="fault_title">tytuł:</label>
+          <input type="text" class="form-control" id="fault_title" name="fault_title" value="{{$fault->fault_title}}">
+        <label for="notification_description">opis zgłoszenia:</label>
+          <textarea class="form-control" id="notification_description" name="notification_description" rows="4" cols="150">{!!$fault->notification_description!!}</textarea>
 
-        <br><label for="repair_description">opis podjętych działań:</label><br>
-          <textarea id="repair_description" name="repair_description" rows="4" cols="150">{!!$fault->repair_description!!}</textarea>
+        <label for="repair_description">opis podjętych działań:</label>
+          <textarea class="form-control" id="repair_description" name="repair_description" rows="4" cols="150">{!!$fault->repair_description!!}</textarea>
 
-        <br><label for="action">działanie:</label><br>
-          <select name="action">
+        <label for="action">działanie:</label>
+          <select class="form-control form-select" name="action">
             <option value="edit">edytuj</option>
             <option value="close">zamknij</option>
           </select>
