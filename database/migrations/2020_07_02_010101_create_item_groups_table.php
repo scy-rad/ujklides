@@ -20,7 +20,7 @@ class CreateItemGroupsTable extends Migration
             $table->string('item_group_name');
             $table->string('item_group_producent');
             $table->string('item_group_model');
-            $table->text('item_group_description');
+            $table->text('item_group_description')->nullable();
             $table->smallInteger('item_group_status')->default(1);
             $table->timestamps();
         });

@@ -83,6 +83,16 @@
                 <div class="device_photo">
                     <img src="{{asset($ItemGroup->photo_OK())}}" class="device_photo">
                 </div>
+                @if ( (Auth::user()->hasRoleCode('itemoperators')) )
+                    <button type="button" class="btn btn-success btn-outline-primary btn btn-block" data-toggle="modal" data-target="#pictureModal">
+                        <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                        zmień zdjęcie
+                    </button>
+                    <button type="button" class="btn btn-success btn-outline-primary btn btn-block" data-toggle="modal" data-target="#editModal">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        edytuj
+                    </button>
+                @endif
                 <p>nazwa:<br>
                 <strong>{{$ItemGroup->item_group_name}}</strong></p>
                 <p>producent:<br>
@@ -102,6 +112,12 @@
 
 @if ( (Auth::user()->hasRoleCode('itemoperators')) )
     @include('pliks.modalfile')
+    <?php
+    $action    = route('itemgroups.update', $ItemGroup->id);
+    $photo_old = asset($ItemGroup->item_group_photo);
+    ?>
+    @include('pliks.modalpicture')
+    @include('itemgroups.modaledit')
 @endif
 
 
@@ -126,8 +142,8 @@
                 console.log(field_id);
                 var url=jQuery('#'+field_id).val();
 
-                // document.getElementById("picture_name_img").src=url;
-                // document.getElementById("picture_name").src=url;
+                document.getElementById("picture_name_img").src=url;        //adding new picture in modal picture img
+                document.getElementById("picture_name").src=url;            //adding new picture in modal picture img
 
                 // alert('update '+field_id+" with "+url);
                 //your code

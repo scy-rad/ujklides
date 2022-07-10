@@ -97,6 +97,11 @@ Route::get('itemgroup/{item_group}/{what}/{id_what}', [
     'as' => 'itemgroups.show_something'
 ]);
 
+Route::put('itemgroup/{item_group}', [
+    'uses' => 'ItemGroupController@update',
+    'as' => 'itemgroups.update'
+]);
+
 
 Route::get('items/{item_group}', [
     'uses' => 'ItemController@index',
