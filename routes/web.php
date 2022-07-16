@@ -404,6 +404,18 @@ Route::post('libraries/save_user_title', [
     'as' => 'libraries.save_user_title'
 ]);
 
+Route::get('libraries/item_types', [
+    'uses' => 'LibrariesController@list_item_types',
+    'as' => 'libraries.item_types'
+]);
+Route::put('libraries/save_item_type', [
+    'uses' => 'LibrariesController@save_item_type',
+    'as' => 'libraries.save_item_type'
+]);
+
+Route::post('ilibraries/ajx_item_types', 'LibrariesController@ajx_item_types')->name('libraries.ajx_item_types');
+
+
 
 /////////////////////////////////////////////////////////
 //   U S E R

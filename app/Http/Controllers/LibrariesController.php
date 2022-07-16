@@ -12,7 +12,7 @@ class LibrariesController extends Controller
 
 public function list_subjects() //  metoda GET bez parametrów
 {
-    if (!Auth::user()->hasRole('Operator Symulacji'))
+    if (!Auth::user()->hasRoleCode('simoperators'))
     return view('error',['head'=>'błąd wywołania funkcji index kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
     return view('libraries.subjects')->with(['subjects' => \App\StudentSubject::orderBy('student_subject_name')->get()]);
@@ -20,7 +20,7 @@ public function list_subjects() //  metoda GET bez parametrów
 
 public function save_subject(Request $request)
 {
-    if (!Auth::user()->hasRole('Operator Symulacji'))
+    if (!Auth::user()->hasRoleCode('simoperators'))
     return view('error',['head'=>'błąd wywołania funkcji save_subject kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
       
     if ($request->id>0)
@@ -51,7 +51,7 @@ public function save_subject(Request $request)
 
 public function list_workmonths(Request $request) //  metoda GET bez parametrów
 {
-    if (!Auth::user()->hasRole('Operator Kadr'))
+    if (!Auth::user()->hasRoleCode('hroperators'))
     return view('error',['head'=>'błąd wywołania funkcji list_workmonths kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
 
     $month_list = \App\WorkMonth::select('*')->get();
@@ -82,7 +82,7 @@ public function list_workmonths(Request $request) //  metoda GET bez parametrów
 
 public function save_workmonth(Request $request)
 {
-    if (!Auth::user()->hasRole('Operator Kadr'))
+    if (!Auth::user()->hasRoleCode('hroperators'))
     return view('error',['head'=>'błąd wywołania funkcji save_workmonth kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Kadr']);
 
 
@@ -174,9 +174,9 @@ public function save_workmonth(Request $request)
 
 public function params_show() //  metoda GET bez parametrów
 {
-    if ( (!Auth::user()->hasRole('Operator Symulacji'))
-        && (!Auth::user()->hasRole('Operator Kadr'))
-        && (!Auth::user()->hasRole('Administrator'))
+    if ( (!Auth::user()->hasRoleCode('simoperators'))
+        && (!Auth::user()->hasRoleCode('hroperators'))
+        && (!Auth::user()->hasRoleCode('administrators'))
     )
     return view('error',['head'=>'błąd wywołania funkcji params_show kontrolera ManSimmed','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem lub Aministratorem']);
 
@@ -190,16 +190,16 @@ public function params_show() //  metoda GET bez parametrów
 
 public function params_save(Request $request)
 {
-    if ( (!Auth::user()->hasRole('Operator Symulacji'))
-        && (!Auth::user()->hasRole('Operator Kadr'))
-        && (!Auth::user()->hasRole('Administrator'))
+    if ( (!Auth::user()->hasRoleCode('simoperators'))
+    && (!Auth::user()->hasRoleCode('hroperators'))
+    && (!Auth::user()->hasRoleCode('administrators'))
     )
     return view('error',['head'=>'błąd wywołania funkcji params_save kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem lub Administratorem']);
 
     if ($request->id>0)
     {
         $Param=\App\Param::find($request->id);
-        if (Auth::user()->hasRole('Operator Symulacji'))
+        if (Auth::user()->hasRoleCode('simoperators'))
         {
             if ( (is_null($request->simmed_days_edit_back)) ||  (!is_numeric($request->simmed_days_edit_back)) )
                 return back()->withErrors('simmed_days_edit_back musi być liczbą... ['.$request->simmed_days_edit_back.']');
@@ -211,7 +211,7 @@ public function params_save(Request $request)
             $Param->statistics_stop        = $request->statistics_stop;
             $Param->simmed_days_edit_back   = $request->simmed_days_edit_back;
         }
-        if (Auth::user()->hasRole('Operator Kadr'))
+        if (Auth::user()->hasRoleCode('hroperators'))
         {
             if ( (is_null($request->worktime_days_edit_back)) ||  (!is_numeric($request->worktime_days_edit_back)) )
                 return back()->withErrors('worktime_days_edit_back musi być liczbą... ['.$request->worktime_days_edit_back.']');
@@ -228,7 +228,7 @@ public function params_save(Request $request)
 
 public function list_rooms() //  metoda GET bez parametrów
 {
-    if (!Auth::user()->hasRole('Operator Symulacji'))
+    if (!Auth::user()->hasRoleCode('simoperators'))
     return view('error',['head'=>'błąd wywołania funkcji list_rooms kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
     return view('libraries.rooms')->with(
@@ -241,7 +241,7 @@ public function list_rooms() //  metoda GET bez parametrów
 
 public function save_room(Request $request)
 {
-    if (!Auth::user()->hasRole('Operator Symulacji'))
+    if (!Auth::user()->hasRoleCode('simoperators'))
     return view('error',['head'=>'błąd wywołania funkcji save_room kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
     if ($request->id>0)
@@ -274,7 +274,7 @@ public function save_room(Request $request)
 
 public function list_student_groups() //  metoda GET bez parametrów
 {
-    if (!Auth::user()->hasRole('Operator Symulacji'))
+    if (!Auth::user()->hasRoleCode('simoperators'))
     return view('error',['head'=>'błąd wywołania funkcji list_student_groups kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
     return view('libraries.studentgroups')->with(['student_groups' => \App\StudentGroup::select('*','student_groups.id as id')->leftjoin('centers','student_groups.center_id','=','centers.id')->orderBy('center_id')->orderBy('student_group_code')->orderBy('student_group_name')
@@ -282,7 +282,7 @@ public function list_student_groups() //  metoda GET bez parametrów
 
 public function save_student_group(Request $request)
 {
-    if (!Auth::user()->hasRole('Operator Symulacji'))
+    if (!Auth::user()->hasRoleCode('simoperators'))
     return view('error',['head'=>'błąd wywołania funkcji save_student_group kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
     if ($request->id>0)
@@ -324,7 +324,7 @@ public function save_student_group(Request $request)
 
 public function list_user_titles() //  metoda GET bez parametrów
 {
-    if (!Auth::user()->hasRole('Operator Symulacji'))
+    if (!Auth::user()->hasRoleCode('simoperators'))
     return view('error',['head'=>'błąd wywołania funkcji list_user_titles kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
     return view('libraries.usertitles')->with(['user_titles' => \App\UserTitle::orderBy('user_title_sort')->get()]);
@@ -332,7 +332,7 @@ public function list_user_titles() //  metoda GET bez parametrów
 
 public function save_user_title(Request $request)
 {
-    if (!Auth::user()->hasRole('Operator Symulacji'))
+    if (!Auth::user()->hasRoleCode('simoperators'))
     return view('error',['head'=>'błąd wywołania funkcji save_user_title kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
 
 
@@ -357,5 +357,168 @@ public function save_user_title(Request $request)
 
 
 
-    
+
+
+public function list_item_types()
+{   // zwraca widok wszystkich typów item_types 
+    if (!Auth::user()->hasRoleCode('itemoperators'))
+    return view('error',['head'=>'błąd wywołania funkcji list_user_titles kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+    global $max_level;                  // maksymalne zagnieżdżenie typów (poziom najmłodszego dziecka)
+
+    $max_level = 0;                     
+
+        function recursive_tab($id,$level)
+        {   // funkcja rekurencyjna do stworzenia tablicy typów
+            // $id - ID obecnie analizowanego rodzica
+            // $level - obecny poziom potomków (0 dla poziomu głównego)  
+            $level++;   //od razu zwiększamy poziom o 1 (CHECK IT - dlaczego od razu, a nie na koniec??)
+            
+            foreach (\App\ItemType::where('item_type_parent_id',$id)->orderBy('item_type_sort')->get() as $current_row)     //dla każdego item_type, którego rodzicem jest analizowane ID
+            {
+            if (!is_null($current_row->id))                                                                                 // jeżeli rodzic ma dzieci
+                {                                                                                                           // dodaj wpis do tablicy wyjściowej
+                $ret[] = ['info' => array('parent' => $current_row->item_type_parent_id, 'current' => $current_row->id, 'level' => $level, 'name' => $current_row->item_type_name), 'data' => recursive_tab($current_row->id,$level)];
+                }
+            }
+        
+        global $max_level;                                                                                                  // użyj zmiennej globalnej max_level (CHECK IT - ) 
+
+        if ($level>$max_level)                                                                                              // jeśli obecnie analizowany poziom zagnieżdżenia jest większy niż poziom maksymalny
+            $max_level=$level;                                                                                              // auktualnij poziom maksymalny do bieżącego poziomu
+
+        if (isset($ret))                                                                                                    // jeżeli zmienna wyjściowa jest określona
+            if (!is_null($ret))                                                                                             // i nie jest ona pusta
+                return $ret;                                                                                                // to ją zwróć
+        }
+
+    $item_types_tab= recursive_tab(0,0);                                                                                    // wywołaj funkcję rekurencyjną zaczynając od rodziców głównych i podając poziom 0
+
+    return view('libraries.itemtypes')->with([ 'item_types_tab' => $item_types_tab, 'max_level' => $max_level-1 ]);
+}
+
+public function ajx_item_types(Request $request)
+{      // Funkcja do pobierania tablicy item_types z podziałem na poszczególne poziomy zagnieżdżenia - zwrot w JSON
+
+    $item_types_table = \App\ItemType::select('id as id',
+    'item_type_name as name', 'item_type_name' )
+    ->where('item_type_parent_id', $request->item_type_id)
+    ->orderBy('item_type_name')
+    ->get()
+    ;                                                               // pobierz tablicę typów, dla wybranego ID typu
+
+    $current_id=$request->item_type_id;                             // zapamiętaj wybrane ID typu
+
+
+
+        //next level
+        // $table[] = \App\ItemType::select('id as id',
+        // 'item_type_name as name')
+        // ->where('item_type_parent_id', $current_id)
+        // ->orderBy('item_type_name')
+        // ->get();
+        
+        //current and previous levels
+        $next_id=$current_id;                                                   // zapisz wybrane ID typu do zmiennej przechowującej ID analizowanego typu CHECK IT
+        $licz=100;                                                              // zmienna dla zapewnienia wyświetlenia typów w odpowiedniej kolejności  
+        $table[$licz]['value'] = 0;                                             // przypisz do pierwszego wiersza tabeli wartość 0 (to będzie brak potomka-rodzica) CHECK IT
+
+        if ($current_id>0)                                                      // jeżeli analizowane ID nie jest równe 0
+        do                                                                      // rozpocznij pętlę:
+        {
+        $table[$licz]['table'] = \App\ItemType::select('id as id',              // przypisz do bieżącego wiersza tabeli tabelę typów
+        'item_type_name as name')                                               // dla których rodzicem jest analizowany typ
+        ->where('item_type_parent_id', $next_id)                                // CHECK IT
+        // ->where('id','<>',$current_id)                                          // CHECK IT - tu chyba trzeba dać jeszcze wykluczenie $current_id, żeby wywołujący typ nie figurował na wykazie rodziców
+        ->orderBy('item_type_name')
+        ->get()->toArray();
+        if (count($table[$licz]['table'])>0)                                        // jeśli bieżąca tabela typów nie jest pusta
+            array_unshift($table[$licz]['table'], ['id' => $next_id, 'name' => '---' ]);   // to dodaj na jej początku wpis o id=rodzica - jak ktoś wybierze tą opcję, to system wyliczy widok dla rodzica :)
+            // array_push($table[$licz]['table'], ['id' => $next_id, 'name' => '---' ]);   // lub można dodać to na końcu
+
+        $licz--;                                                                // zień zmienną kolejności
+        $table[$licz]['value'] = $next_id;                                      // przypisz do kolejnego wiersza tabeli wartość poprzednio analizowanego wpisu (to będzie brak potomka-rodzica) CHECK IT
+
+        $next_id= \App\ItemType::select('item_type_parent_id')                  // wybierz do nalizy koleny typ, dla którego aktualny typ jest dzieckiem
+        ->where('id', $next_id)
+        ->get()->first()->item_type_parent_id;
+        }
+        while ($next_id>0);                                                     // i rób tą pętle dopóki kolejny wybrany typ będzie większy od 0
+        
+        $table[$licz]['table'] = \App\ItemType::select('id as id',              // dopisz jeszcze do ostatniego wiersza tabeli tabelę typów, które są głównymi rodzicami
+        'item_type_name as name')
+        ->where('item_type_parent_id', 0)
+        ->orderBy('item_type_name')
+        ->get()->toArray();
+        
+        array_unshift($table[$licz]['table'], ['id' => 0, 'name' => '---' ]);   // i dopisz do tabeli typów wpis o id=0 dla braku rodzica
+        
+    return response()->json([                                                   // zwróć JSONa zawierającego elementy:
+        'current_id'    => $current_id,                                         // ID typu, który wywołał funkcję
+        'next_id'       => $next_id,                                            // ID ostatnio sprawdzanego typu - CHECK IT - chyba zawsze będzie to 0 
+        'select_tables' => $table,                                              // tworzona przez funkcję tabela z danymi
+        'item_types_table' => $item_types_table                                 // tabela dzieci wywoływanego typu 
+    ]);
+}
+
+public function save_item_type(Request $request)
+{
+    if (!Auth::user()->hasRoleCode('itemoperators'))
+        return view('error',['head'=>'błąd wywołania funkcji save_user_title kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+    $loop=1;
+    $item_type_parent=0;
+
+    do                                                                  // sprawdź w pętli jaki jest "najniższy" wybrany rodzic 
+    {
+        $item_type_parent_no = 'item_type_parent'.$loop++;              // stwórz nazwę pola select (zacnij od 1)
+        if (isset($request->$item_type_parent_no))                      // jeśli taka nazwa istnieje, to ją przeanalizuj
+            if ($request->$item_type_parent_no > 0)                     //      i jeśli jest tam wybrana wartość większa niż 0
+                $item_type_parent=$request->$item_type_parent_no;       //      to zapisz ją jako bieżącą wartość rodzica
+            else                                                        //      a jeśli wybrano 0 (czyli to pole nie jest rodzicem)
+                $loop=0;                                                //      zakończ wykonywanie pętli i pozostań przy ostatnio znalezionym rodzicu (lub jego braku, jeśli pierwszy select zawierał 0)
+        else
+            $loop=0;                                                    // to nigdy nie powinno się wydarzyć. Zawsze powinien być select z 1               
+    }
+    while ($loop>0);                                                    // koniec pętli
+
+    if ($request->id>0)                                                 // jeśli w wywoływanych zmiennych jest zminna id ozncza to, że będziemy modyfikowć istniejący wpis
+    {
+        $itemtype=\App\ItemType::find($request->id);                    // pobierz wpis do modyfikacji
+
+        if ($item_type_parent == $request->id)
+            return back()->withErrors('Nie można być swoim własnym rodzicem... :) '.$item_type_parent.' == '.$request->id);
+
+        $itemtype->item_type_parent_id      = $item_type_parent;
+        $itemtype->item_type_master_id      = $itemtype->GetMaster($item_type_parent);
+        $itemtype->item_type_name           = $request->item_type_name;
+        $itemtype->item_type_description    = $request->item_type_description;
+        $itemtype->item_type_sort           = $request->item_type_sort;
+        $itemtype->item_type_photo          = $request->item_type_photo;
+        $itemtype->item_type_code           = $request->item_type_code;
+        $itemtype->item_type_status         = $request->item_type_status;
+        // $itemtype->save();
+        // dump('save',$itemtype);
+        if ($itemtype->GetMaster($request->id) != $itemtype->GetMaster($item_type_parent))  // jeśli główny rodzic edytowanego elementu jest inny niż przed edycją 
+            \App\ItemType::recalculate_masters();                                           // pzelicz ponownie wszystkie wpisy głównych rodziców
+        return back()->with('success',' Zapis zakończył się sukcesem.');
+    }
+    else                                                                // a jeśłi nie ma id - to znaczy że jest to nowy wpis
+    {
+        dd('create - dodaj dodawanie rodzica',$itemtype);
+        $itemtype=new \App\ItemType;
+        $itemtype->item_type_parent_id      = $request->item_type_parent;
+        // $itemtype->item_type_master_id      = $itemtype->GetMaster($request->item_type_parent);
+        $itemtype->item_type_name           = $request->item_type_name;
+        $itemtype->item_type_description    = $request->item_type_description;
+        $itemtype->item_type_sort           = $request->item_type_sort;
+        $itemtype->item_type_photo          = $request->item_type_photo;
+        $itemtype->item_type_code           = $request->item_type_code;
+        $itemtype->item_type_status         = $request->item_type_status;
+        // $itemtype->save();
+        return back()->with('success','Dodano nową pozycję.');
+    }
+
+}
+
 }

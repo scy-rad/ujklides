@@ -189,6 +189,10 @@
                                     )
                                     <li><a href="{{ route('libraries.params_show') }}"> Parametry </a></li>
                                     @endif
+                                    
+                                    @if (Auth::user()->hasRoleCode('itemoperators'))
+                                    <li><a href="{{ route('libraries.item_types') }}"> Typy zasobów </a></li>
+                                    @endif
 
                                     @if (Auth::user()->hasRoleCode('administrators')
                                     )

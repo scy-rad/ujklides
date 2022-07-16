@@ -3,10 +3,27 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\DB;
 class ItemType extends Model
 {
 
+    public function GetMaster($id)
+    {   //funkcja zwraca głównego rodzica typu o podanym ID
+        $curr=ItemType::where('id',$id)->first()->item_type_parent_id;              //sprawdź, czy podane id ma rodzica
+        $return=$id;                                                                //domyślnie zwróć bieżące id (w przypadku jeśli bieżące id nie ma rodzica)
+        $a=false;                                                                   //ustaw zmienną a na false (dla pętli sprawdzającej)
+        if ($curr>0)                                                                //jeśli jest rodzic
+        {        
+            while ($a==false)                                                       //sprawdzaj w pętli
+            {
+                $return=$curr;                                                      //zapisz bieżące id jako zwracana
+                $curr=ItemType::where('id',$curr)->first()->item_type_parent_id;    //sprawdź czy bieąće id ma rodzica                
+                if ($curr==0)                                                       //jeśli nie ma rodzica
+                    $a=true;                                                        //ustaw zmienną a na true (dla wyjścia  pętli sprawdzającej)
+            }
+        }
+        return $return;
+    }
     public static function MasterTypes(){
         return  ItemType::where('item_type_parent_id',0)->where('item_type_sort','>',0)->OrderBy('item_type_sort')->get(); 
     }
@@ -102,13 +119,36 @@ class ItemType extends Model
     }
     
 
-    public function groupsmaster() {
-        echo "<h1>$this->id</h1>";
-        echo "<h1>".$this['item_type_master_id']."</h1>";
-        $ret= ItemGroup::where('item_group_type_id','=',$this->id)->toSql();
-        dump($ret);
-        return ItemGroup::where('item_group_type_id','=',$this->id);
-        //->where('item_type_sort','>',0)->OrderBy('item_type_sort')->get();class,'item_group_type_id','=','item_type_master_id');//->get();
+    // public function groupsmaster() {
+    //     echo "<h1>$this->id</h1>";
+    //     echo "<h1>".$this['item_type_master_id']."</h1>";
+    //     $ret= ItemGroup::where('item_group_type_id','=',$this->id)->toSql();
+    //     dump($ret);
+    //     return ItemGroup::where('item_group_type_id','=',$this->id);
+    //     //->where('item_type_sort','>',0)->OrderBy('item_type_sort')->get();class,'item_group_type_id','=','item_type_master_id');//->get();
+    // }
+
+    public static function recalculate_masters() 
+    {   // Funkcja ponownie przypisuje każdemu typowi jego głównego rodzica (item_type_master_id)
+
+        function recur($recur_id,$recur_table)
+        {   //funkcja rekurencyjna do przechodzenia w głąb dzieci
+            $next_recur=ItemType::whereIn('item_type_parent_id',$recur_table)->select('id')->get(); //pobierz tabelę dzieci dla podanej tabeli rodiców ($recur_table)
+
+            if ($next_recur->count() > 0)                                                           // jeżeli tabela dzieci nie jest pusta
+            {
+                // ItemType::whereIn('item_type_parent_id',$recur_table)->update(['item_type_master_id' => $recur_id]);     //ten zapis eloquenta nie zadziałał, ale jest tożsamy z poniższym
+                DB::table('item_types')
+                    ->whereIn('item_type_parent_id',$recur_table)
+                    ->update(['item_type_master_id' => $recur_id]);                                 // przypisz wszystkim dzieciom ID głównego rodzica: item_type_master_id = $recur_id 
+                recur($recur_id,$next_recur);                                                       // wywołaj ponownie funkcję, gdzie nowymi rodzicami będą obecne dzieci 
+            }
+        }
+
+        $matersy=ItemType::where('item_type_parent_id',0)->select('id')->get();             // pobierz wszystkie typy "główne" - nie posiadające rodziców
+
+        foreach($matersy as $maters_one)                                                    // dla każdego rodzica głównego
+            recur($maters_one->id,$maters_one);                                             // przypisz jego ID jako rodzica głównego wszystkim jego potomkom
     }
 
 }
