@@ -17,6 +17,8 @@ if (!Auth::user()->hasRoleCode('itemoperators'))
 
 <h1>Zarządzenie typami zasobów:</h1>
 
+    <button type="button" class="btn btn-sm btn-info" onClick="javascript:showMyModalForm('0','0','')">Dodaj nowy</button>
+            
 <?php 
     function recursive_list($data)
     {
@@ -24,14 +26,13 @@ if (!Auth::user()->hasRoleCode('itemoperators'))
         {
         ?>
             <div class="row" style="border-bottom: green 1px solid">
-            <div class="col-sm-5">
-                [{{$data['info']['level']}}:{{$data['info']['current']}}]
-                {{$data['info']['name']}}
-            </div>
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-sm btn-primary" onClick="javascript:showMyModalForm('{{$data['info']['current']}}','{{$data['info']['parent']}}','{{$data['info']['name']}}')">Edycja</span>
-                <button type="button" class="btn btn-sm btn-info" onClick="javascript:showMyModalForm('0',0,'')">Dodaj nowy</span>
-            </div>
+                <div class="col-sm-5">
+                    [{{$data['info']['level']}}:{{$data['info']['current']}}]
+                    {{$data['info']['name']}}
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-sm btn-primary" onClick="javascript:showMyModalForm('{{$data['info']['current']}}','{{$data['info']['parent']}}','{{$data['info']['name']}}')">Edycja</button>
+                </div>
             </div>
         <?php
         if (isset($data['data']))
@@ -56,7 +57,7 @@ if (!Auth::user()->hasRoleCode('itemoperators'))
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="myModalTitle">edycja typu zasobu</h5>
+        <h5 class="modal-title" id="myModalTitle">edycja typu zasobu!</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -112,7 +113,7 @@ function reload_modal(id_current) {
         $('#item_type_parent{{$i}}').empty();
         @endfor
 
-        alert(id_current+' : '+document.getElementById("id").value);
+        // alert(id_current+' : '+document.getElementById("id").value);
 
         $.ajax({
                     url:"{{ route('libraries.ajx_item_types') }}",
@@ -122,12 +123,12 @@ function reload_modal(id_current) {
                         },
                     success:function (data) {
                         // alert(JSON.stringify(data, null, 4));
-                        console.log(JSON.stringify(data, null, 4));
+                        // console.log(JSON.stringify(data, null, 4));
                         var liczba;
                         liczba = 1; 
                         $.each(data.select_tables,function(index,current_table){
                             $.each(current_table.table,function(index,current_row){
-                                if ((current_row.id != document.getElementById("id").value)                                 // dodaj do tablicy wszystkie elementy, oprócz tego jednego, który jest obecnie edytowany
+                                if ((current_row.true_id != document.getElementById("id").value)                                 // dodaj do tablicy wszystkie elementy, oprócz tego jednego, który jest obecnie edytowany
                                     || (document.getElementById("id").value=='0'))                                          // no chyba że jest to nowy element, to wtedy nie wycinaj wpisu "0"
                                 {
                                 if (current_row.id == current_table.value)
@@ -136,6 +137,9 @@ function reload_modal(id_current) {
                                     text_select = '<option value="'+current_row.id+'">'+current_row.name+'</option>';
                                 $('#item_type_parent'+liczba).append(text_select);
                                 }
+                                // else
+                                // alert(JSON.stringify(current_row, null, 4));
+                                // alert(current_row.id+' != '+document.getElementById("id").value+' => '+current_row.name);
                                 });
                         liczba++;
                         });
@@ -150,9 +154,32 @@ function select_changed($alfa){
 function showMyModalForm(id_current, id_parent, name) {
     $('#EditModal').modal('show');
     $('#id').val(id_current);
-    $('#item_type_name').val(name);
+    $('#item_type_name').val('');
+    if (id_current>0)
+        document.getElementById("myModalTitle").innerHTML = "edycja typu zasobu";
+    else
+        document.getElementById("myModalTitle").innerHTML = "Dodawanie nowego typu zasobu";
 
-    alert('trzeba jeszcze dodać uzupełnianie pozostałych parametrów typów i na koniec odblokowa zapisywanie (bo póki co jest wyłączone w kontrolerze). Nie działa uzupełnianie selectów przy wyborze najwyższego poziomu ');
+    $.ajax({
+                    url:"{{ route('libraries.ajx_item_type_one') }}",
+                    type:"POST",
+                    data: {
+                        id: id_current
+                        },
+                    success:function (data) {
+                        // alert(JSON.stringify(data, null, 4));
+                        // console.log(JSON.stringify(data, null, 4));
+                        $('#item_type_name').val(data.item_type_one.item_type_name);
+                        $('#item_type_description').val(data.item_type_one.item_type_description);
+                        $('#item_type_sort').val(data.item_type_one.item_type_sort);
+                        $('#item_type_photo').val(data.item_type_one.item_type_photo);
+                        $('#item_type_code').val(data.item_type_one.item_type_code);
+                        $('#item_type_status').val(data.item_type_one.item_type_status);
+
+                    }
+                })
+
+    alert('trzeba jeszcze dodać walidację formularza. Nie działa dobrze uzupełnianie selectów przy wyborze do edycji item_type najwyższego poziomu ');
 
     reload_modal(id_current);
 }

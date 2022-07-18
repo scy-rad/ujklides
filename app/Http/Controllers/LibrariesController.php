@@ -409,32 +409,30 @@ public function ajx_item_types(Request $request)
 
     $current_id=$request->item_type_id;                             // zapamiętaj wybrane ID typu
 
+    // if ($current_id>0)
+    //     $parent_current = \App\ItemType::where('id', $current_id)->get()->first()->item_type_parent_id;
+    // else
+    //     $parent_current = 100;
 
-
-        //next level
-        // $table[] = \App\ItemType::select('id as id',
-        // 'item_type_name as name')
-        // ->where('item_type_parent_id', $current_id)
-        // ->orderBy('item_type_name')
-        // ->get();
-        
-        //current and previous levels
         $next_id=$current_id;                                                   // zapisz wybrane ID typu do zmiennej przechowującej ID analizowanego typu CHECK IT
         $licz=100;                                                              // zmienna dla zapewnienia wyświetlenia typów w odpowiedniej kolejności  
         $table[$licz]['value'] = 0;                                             // przypisz do pierwszego wiersza tabeli wartość 0 (to będzie brak potomka-rodzica) CHECK IT
 
-        if ($current_id>0)                                                      // jeżeli analizowane ID nie jest równe 0
+        if ( ($current_id>0)                                                    // jeżeli analizowane ID nie jest równe 0 (w przypadku nowego wpisu ) 
+            // && ($parent_current>0)                                              // oraz nie jest głównym rodzicem (nie posiada rodzica) - rodzice główni są dodawani po pętli
+        )
         do                                                                      // rozpocznij pętlę:
         {
         $table[$licz]['table'] = \App\ItemType::select('id as id',              // przypisz do bieżącego wiersza tabeli tabelę typów
+        'id as true_id',
         'item_type_name as name')                                               // dla których rodzicem jest analizowany typ
         ->where('item_type_parent_id', $next_id)                                // CHECK IT
         // ->where('id','<>',$current_id)                                          // CHECK IT - tu chyba trzeba dać jeszcze wykluczenie $current_id, żeby wywołujący typ nie figurował na wykazie rodziców
         ->orderBy('item_type_name')
         ->get()->toArray();
         if (count($table[$licz]['table'])>0)                                        // jeśli bieżąca tabela typów nie jest pusta
-            array_unshift($table[$licz]['table'], ['id' => $next_id, 'name' => '---' ]);   // to dodaj na jej początku wpis o id=rodzica - jak ktoś wybierze tą opcję, to system wyliczy widok dla rodzica :)
-            // array_push($table[$licz]['table'], ['id' => $next_id, 'name' => '---' ]);   // lub można dodać to na końcu
+            array_unshift($table[$licz]['table'], ['id' => $next_id, 'true_id' => 0, 'name' => '---' ]);   // to dodaj na jej początku wpis o id=rodzica - jak ktoś wybierze tą opcję, to system wyliczy widok dla rodzica :)
+            // array_push($table[$licz]['table'], ['id' => $next_id, 'true_id' => 0, 'name' => '---' ]);   // lub można dodać to na końcu
 
         $licz--;                                                                // zień zmienną kolejności
         $table[$licz]['value'] = $next_id;                                      // przypisz do kolejnego wiersza tabeli wartość poprzednio analizowanego wpisu (to będzie brak potomka-rodzica) CHECK IT
@@ -446,18 +444,30 @@ public function ajx_item_types(Request $request)
         while ($next_id>0);                                                     // i rób tą pętle dopóki kolejny wybrany typ będzie większy od 0
         
         $table[$licz]['table'] = \App\ItemType::select('id as id',              // dopisz jeszcze do ostatniego wiersza tabeli tabelę typów, które są głównymi rodzicami
+        'id as true_id',
         'item_type_name as name')
         ->where('item_type_parent_id', 0)
         ->orderBy('item_type_name')
         ->get()->toArray();
         
-        array_unshift($table[$licz]['table'], ['id' => 0, 'name' => '---' ]);   // i dopisz do tabeli typów wpis o id=0 dla braku rodzica
+        array_unshift($table[$licz]['table'], ['id' => 0, 'true_id' => 0, 'name' => '---' ]);   // i dopisz do tabeli typów wpis o id=0 dla braku rodzica
         
     return response()->json([                                                   // zwróć JSONa zawierającego elementy:
         'current_id'    => $current_id,                                         // ID typu, który wywołał funkcję
         'next_id'       => $next_id,                                            // ID ostatnio sprawdzanego typu - CHECK IT - chyba zawsze będzie to 0 
         'select_tables' => $table,                                              // tworzona przez funkcję tabela z danymi
         'item_types_table' => $item_types_table                                 // tabela dzieci wywoływanego typu 
+    ]);
+}
+
+public function ajx_item_type_one(Request $request)
+{      // Funkcja do pobierania danych wybranego item_type - zwrot w JSON
+
+    $item_type_one = \App\ItemType::where('id', $request->id)
+    ->first()
+    ;   
+    return response()->json([                                                   // zwróć JSONa zawierającego elementy:
+        'item_type_one'    => $item_type_one                                    // dane wybranego item_type 
     ]);
 }
 
@@ -497,25 +507,24 @@ public function save_item_type(Request $request)
         $itemtype->item_type_photo          = $request->item_type_photo;
         $itemtype->item_type_code           = $request->item_type_code;
         $itemtype->item_type_status         = $request->item_type_status;
-        // $itemtype->save();
+        $itemtype->save();
         // dump('save',$itemtype);
         if ($itemtype->GetMaster($request->id) != $itemtype->GetMaster($item_type_parent))  // jeśli główny rodzic edytowanego elementu jest inny niż przed edycją 
             \App\ItemType::recalculate_masters();                                           // pzelicz ponownie wszystkie wpisy głównych rodziców
-        return back()->with('success',' Zapis zakończył się sukcesem.');
+        return back()->with('success',' Zapis zakończył się sukcesem: ');
     }
     else                                                                // a jeśłi nie ma id - to znaczy że jest to nowy wpis
     {
-        dd('create - dodaj dodawanie rodzica',$itemtype);
         $itemtype=new \App\ItemType;
-        $itemtype->item_type_parent_id      = $request->item_type_parent;
-        // $itemtype->item_type_master_id      = $itemtype->GetMaster($request->item_type_parent);
+        $itemtype->item_type_parent_id      = $item_type_parent;
+        $itemtype->item_type_master_id      = $itemtype->GetMaster($request->item_type_parent);
         $itemtype->item_type_name           = $request->item_type_name;
         $itemtype->item_type_description    = $request->item_type_description;
         $itemtype->item_type_sort           = $request->item_type_sort;
         $itemtype->item_type_photo          = $request->item_type_photo;
         $itemtype->item_type_code           = $request->item_type_code;
         $itemtype->item_type_status         = $request->item_type_status;
-        // $itemtype->save();
+        $itemtype->save();
         return back()->with('success','Dodano nową pozycję.');
     }
 

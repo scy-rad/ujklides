@@ -414,7 +414,7 @@ Route::put('libraries/save_item_type', [
 ]);
 
 Route::post('ilibraries/ajx_item_types', 'LibrariesController@ajx_item_types')->name('libraries.ajx_item_types');
-
+Route::post('ilibraries/ajx_item_type_one', 'LibrariesController@ajx_item_type_one')->name('libraries.ajx_item_type_one');
 
 
 /////////////////////////////////////////////////////////

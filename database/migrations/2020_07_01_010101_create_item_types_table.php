@@ -20,7 +20,7 @@ class CreateItemTypesTable extends Migration
             $table->smallInteger('item_type_sort');
             $table->string('item_type_photo')->default('');
             $table->string('item_type_name');
-            $table->string('item_type_code');
+            $table->string('item_type_code')->nullable();
             $table->text('item_type_description');
             $table->smallInteger('item_type_status')->default(1);
             $table->timestamps();

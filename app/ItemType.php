@@ -9,6 +9,7 @@ class ItemType extends Model
 
     public function GetMaster($id)
     {   //funkcja zwraca głównego rodzica typu o podanym ID
+        if ($id==0) return 0;                                                       // jeśli sprawdzane ID=0 oznacza to, że nie może być rodzica - zwróć także 0
         $curr=ItemType::where('id',$id)->first()->item_type_parent_id;              //sprawdź, czy podane id ma rodzica
         $return=$id;                                                                //domyślnie zwróć bieżące id (w przypadku jeśli bieżące id nie ma rodzica)
         $a=false;                                                                   //ustaw zmienną a na false (dla pętli sprawdzającej)
