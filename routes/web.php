@@ -56,6 +56,11 @@ Route::get('rooms', [
     'as' => 'rooms.index'
 ]);
 
+Route::get('roomsall', [
+    'uses' => 'RoomController@index_all',
+    'as' => 'rooms.index_all'
+]);
+
 Route::get('room/{room}', [
     'uses' => 'RoomController@show',
     'as' => 'rooms.show'

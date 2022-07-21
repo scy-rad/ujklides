@@ -79,9 +79,11 @@
                                 <a data-toggle="dropdown" href="#" class="dropdown-toggle">Zasoby <b class="caret"></b></a>   
                                 <ul class="dropdown-menu">
                                     <li><a href="{{ route('rooms.index') }}">Sale</a></li>
-                                    <br>
+                                    @if ( (Auth::user()->hasRoleCode('coordinators')) || (Auth::user()->hasRoleCode('itemoperators')) || (Auth::user()->hasRoleCode('technicians')) )
+                                    <li><a href="{{ route('rooms.index_all') }}">Sale (wszystkie)</a></li>
+                                    @endif
                                     <li><a href="{{ route('itemtypes.index',0) }}">Sprzęt</a></li>
-                                    <br>
+
 
 
                                     <?php /* @foreach (App\ItemType::MenuTypes() as $MenuType)
@@ -192,6 +194,12 @@
                                     
                                     @if (Auth::user()->hasRoleCode('itemoperators'))
                                     <li><a href="{{ route('libraries.item_types') }}"> Typy zasobów </a></li>
+                                    @endif
+
+                                    @if ( (Auth::user()->hasRoleCode('coordinators'))
+                                        || (Auth::user()->hasRoleCode('itemoperators'))
+                                        || (Auth::user()->hasRoleCode('technicians')) )
+                                    <li><a href="{{ route('libraries.galleries') }}">Galerie</a></li>
                                     @endif
 
                                     @if (Auth::user()->hasRoleCode('administrators')
