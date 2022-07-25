@@ -1,6 +1,8 @@
 <?php
-if (!Auth::user()->hasRoleCode('itemoperators'))
-        return view('error',['head'=>'błąd wywołania widoku Libraries Itemtypes','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Zasobów']);
+if (!( (Auth::user()->hasRoleCode('coordinators'))
+|| (Auth::user()->hasRoleCode('itemoperators'))
+|| (Auth::user()->hasRoleCode('technicians')) ))
+        return view('error',['head'=>'błąd wywołania widoku Libraries Galleries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Koordynatorem, Operatorem Zasobów lub Technikiem']);
 ?>
 
 @extends('layouts.app')
@@ -8,46 +10,30 @@ if (!Auth::user()->hasRoleCode('itemoperators'))
 <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
 <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
 
-@section('title', " Zarządzaj typami zasobów...")
+@section('title', " Zarządzaj galeriami...")
 
 @section('content')
 
 @include('layouts.success_error')
 
 
-<h1>Zarządzenie typami zasobów:</h1>
-
-<?php 
-    function recursive_list($data)
-    {
-    if (!(is_null($data)))
-        {
-        ?>
-            <div class="row" style="border-bottom: green 1px solid">
-            <div class="col-sm-5">
-                [{{$data['info']['level']}}:{{$data['info']['current']}}]
-                {{$data['info']['name']}}
-            </div>
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-sm btn-primary" onClick="javascript:showMyModalForm('{{$data['info']['current']}}','{{$data['info']['parent']}}','{{$data['info']['name']}}')">Edycja</span>
-                <button type="button" class="btn btn-sm btn-info" onClick="javascript:showMyModalForm('0',0,'')">Dodaj nowy</span>
-            </div>
-            </div>
-        <?php
-        if (isset($data['data']))
-            {
-            echo '<ul>';
-            foreach ($data['data'] as $data2)
-            recursive_list($data2);
-            echo '</ul>';
-            }
-        }
-    }
-?>
+<h1>Zarządzenie galeriami:</h1>
 
 <ol>
-    @foreach ($item_types_tab as $one_row)
-        <?php recursive_list($one_row); ?>
+    @foreach ($galleries_list as $one_row)
+        <li><a href="{{route('libraries.show_gallery', $one_row)}}">
+            {{$one_row['gallery_name']}} ({{$one_row['gallery_type']}})
+            </a>
+            @if(!is_null($one_row['galleries_for_group']))
+                galeria dla grupy 
+            @endif
+            @if(!is_null($one_row['galleries_for_item']))
+                galeria dla egzemplarza
+            @endif
+            @if(!is_null($one_row['galleries_for_room']))
+                galeria dla sali
+            @endif
+        </li>
     @endforeach
 </ol>   
 
@@ -67,10 +53,9 @@ if (!Auth::user()->hasRoleCode('itemoperators'))
 
         <div class="form-group">
             <label for"item_type_parent">typ nadrzędny:</label>
-            @for ($i=1; $i <= $max_level; $i++)
+            {{$i=1}}
             <select class="form-control form-select" name="item_type_parent{{$i}}" id="item_type_parent{{$i}}" onchange="select_changed(item_type_parent{{$i}})">
             </select>
-            @endfor
     
             <label for"item_type_name">nazwa:</label>
             <input type="text" class="form-control" id="item_type_name" name="item_type_name">
@@ -108,9 +93,8 @@ if (!Auth::user()->hasRoleCode('itemoperators'))
 
 function reload_modal(id_current) {
     
-    @for ($i=1; $i <= $max_level; $i++)
+    {{$i=1}}
         $('#item_type_parent{{$i}}').empty();
-        @endfor
 
         // alert(id_current+' : '+document.getElementById("id").value);
 
