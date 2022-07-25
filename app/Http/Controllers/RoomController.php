@@ -10,16 +10,33 @@ use App\Room;
 use App\RoomStorage;
 use App\Item;
 
+
+//UPDATE rooms SET room_photo=CONCAT("/storage/images/rooms/",room_photo) where id>0;
+
 class RoomController extends Controller
 {
     public function index()
     {
-        $rooms =  Room::where('room_status',1)->get();
+        $rooms =  Room::where('room_status',1)->orderBy('room_number')->get();
+	    return view('rooms.index', compact('rooms'));
+    }
+
+    public function index_all()
+    {
+        if ( ! ( 
+            (Auth::user()->hasRoleCode('coordinators')) || 
+            (Auth::user()->hasRoleCode('itemoperators')) || 
+            (Auth::user()->hasRoleCode('technicians'))
+        ) )
+        return back()->withErrors(['head'=>'błąd wywołania funkcji index_all kontrolera Room','title'=>'Brak uprawnień...','description'=>'Nie masz wystarczających uprawnień, aby wykonać tą operację...']);
+
+        $rooms =  Room::orderBy('room_number')->get();
 	    return view('rooms.index', compact('rooms'));
     }
 
     public function show(Room $room)
     {
+
         return view('rooms.show', compact('room'));
     }
     

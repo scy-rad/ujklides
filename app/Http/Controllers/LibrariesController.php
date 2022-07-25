@@ -254,7 +254,7 @@ public function save_room(Request $request)
     }
         $room->room_type_id     = $request->modal_type;
         $room->center_id        = $request->modal_center;
-        $room->room_photo       = $request->modal_photo;
+        $room->room_photo       = $request->modal_photo;    //$item->item_photo=substr($request->picture_name,strlen($request->server('HTTP_ORIGIN'))+1,strlen($request->picture_name));
         $room->room_number	    = $request->modal_number;
         $room->room_name	    = $request->modal_name;
         $room->room_description	= $request->modal_description;
@@ -524,7 +524,7 @@ public function save_item_type(Request $request)
         $itemtype->item_type_name           = $request->item_type_name;
         $itemtype->item_type_description    = $request->item_type_description;
         $itemtype->item_type_sort           = $request->item_type_sort;
-        $itemtype->item_type_photo          = $request->item_type_photo;
+        $itemtype->item_type_photo          = $request->item_type_photo;        //$item->item_photo=substr($request->picture_name,strlen($request->server('HTTP_ORIGIN'))+1,strlen($request->picture_name));
         $itemtype->item_type_code           = $request->item_type_code;
         $itemtype->item_type_status         = $request->item_type_status;
         $itemtype->save();
@@ -541,7 +541,7 @@ public function save_item_type(Request $request)
         $itemtype->item_type_name           = $request->item_type_name;
         $itemtype->item_type_description    = $request->item_type_description;
         $itemtype->item_type_sort           = $request->item_type_sort;
-        $itemtype->item_type_photo          = $request->item_type_photo;
+        $itemtype->item_type_photo          = $request->item_type_photo;        //$item->item_photo=substr($request->picture_name,strlen($request->server('HTTP_ORIGIN'))+1,strlen($request->picture_name));
         $itemtype->item_type_code           = $request->item_type_code;
         $itemtype->item_type_status         = $request->item_type_status;
         $itemtype->save();
@@ -549,5 +549,125 @@ public function save_item_type(Request $request)
     }
 
 }
+
+
+public function list_galleries()
+{   // zwraca widok wszystkich typów item_types 
+    if (!Auth::user()->hasRoleCode('itemoperators'))
+       return view('error',['head'=>'błąd wywołania funkcji list_galleries kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być kimś więcej :)']);
+    $galleries_list=\App\Gallery::orderBy('gallery_sort')->orderBy('gallery_name')->get()->toArray();
+    
+    foreach ($galleries_list as $table)
+    {
+        $return[$table['id']]=$table;
+        $return[$table['id']]['galleries_for_group']=null;
+        $return[$table['id']]['galleries_for_item']=null;
+        $return[$table['id']]['galleries_for_room']=null;
+    }
+    $galleries_for_group=\App\GalleryForGroup::with('gallery')->get()->toArray();
+    foreach ($galleries_for_group as $table)
+    {
+        $return[$table['gallery_id']]['galleries_for_group'][]=$table;
+    }
+    $galleries_for_item=\App\GalleryForItem::with('gallery')->get()->toArray();
+    foreach ($galleries_for_item as $table)
+    {
+        $return[$table['gallery_id']]['galleries_for_item'][]=$table;
+    }
+    $galleries_for_room=\App\GalleryForRoom::with('gallery')->get()->toArray();
+    foreach ($galleries_for_room as $table)
+    {
+        $return[$table['gallery_id']]['galleries_for_room'][]=$table;
+    }
+
+    return view('libraries.galleries')->with([ 'galleries_list' => $return]);
+}
+
+public function show_gallery(\App\Gallery $gallery_id)
+{   // zwraca widok wszystkich typów item_types 
+    if (!Auth::user()->hasRoleCode('itemoperators'))
+       return view('error',['head'=>'błąd wywołania funkcji list_galleries kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być kimś więcej :)']);
+    
+    return view('libraries.gallery')->with([ 'gallery' => $gallery_id]);
+}
+
+public function ajx_photo(Request $request)
+{      // Funkcja do pobierania danych o zdjęciu w galerii - zwrot w JSON
+
+    $photo = \App\GalleryPhoto::where('id', $request->photo_id)
+    ->get()->first()->toArray()
+    ;                                                               
+
+    return response()->json(                                                   // zwróć JSONa zawierającego elementy:
+        $photo
+    );
+}
+
+
+public function save_gallery(Request $request)
+{
+    if (!Auth::user()->hasRoleCode('itemoperators'))
+        return view('error',['head'=>'błąd wywołania funkcji save_gallery kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być kimś więcej :)']);
+
+    switch ($request->action)
+    {
+        case 'basic':
+            if ($request->id>0)                                                 // jeśli w wywoływanych zmiennych jest zminna id ozncza to, że będziemy modyfikowć istniejący wpis
+            {
+                $gallery=\App\Gallery::find($request->id);                    // pobierz wpis do modyfikacji
+                $gallery->gallery_name = $request->gallery_name;
+                $gallery->gallery_description = $request->gallery_description;
+                $gallery->gallery_sort = $request->gallery_sort;
+
+                $gallery->save();
+                return back()->with('success',' Zapis zakończył się sukcesem.');
+            }
+            else                                                                // a jeśłi nie ma id - to znaczy że jest to nowy wpis
+            {
+                dd('create');
+                $gallery=new \App\Gallery;
+                
+                // $gallery->save();
+                return back()->with('success','Dodano nową pozycję.');
+            }
+            break;
+        case 'photo':
+            $directory_file=substr($request->directory_file,strlen($request->server('HTTP_ORIGIN')),strlen($request->directory_file));
+            
+            if ($request->photo_id>0)                                                 // jeśli w wywoływanych zmiennych jest zminna id ozncza to, że będziemy modyfikowć istniejący wpis
+            {
+                $galleryPhoto=\App\GalleryPhoto::find($request->photo_id);                    // pobierz wpis do modyfikacji
+                $galleryPhoto->gallery_id	            = $request->gallery_id;
+                $galleryPhoto->gallery_photo_directory  = substr($directory_file, 0,strrpos($directory_file,'/'));
+                $galleryPhoto->gallery_photo_name       = substr($directory_file, strrpos($directory_file,'/')+1,strlen($directory_file));
+                $galleryPhoto->gallery_photo_title	    = $request->gallery_photo_title;
+                $galleryPhoto->gallery_photo_description= $request->gallery_photo_description;
+                $galleryPhoto->gallery_photo_sort	    = $request->gallery_photo_sort;
+                $galleryPhoto->save();
+                return back()->with('success',' Zapis zakończył się sukcesem.');
+            }
+            else                                                                // a jeśłi nie ma id - to znaczy że jest to nowy wpis
+            {
+                $galleryPhoto =new \App\GalleryPhoto;
+                $galleryPhoto->gallery_id	            = $request->gallery_id;
+                $galleryPhoto->gallery_photo_directory  = substr($directory_file, 0,strrpos($directory_file,'/'));
+                $galleryPhoto->gallery_photo_name       = substr($directory_file, strrpos($directory_file,'/')+1,strlen($directory_file));
+                $galleryPhoto->gallery_photo_title	    = $request->gallery_photo_title;
+                $galleryPhoto->gallery_photo_description= $request->gallery_photo_description;
+                $galleryPhoto->gallery_photo_sort	    = $request->gallery_photo_sort;
+                $galleryPhoto->save();
+                return back()->with('success','Dodano nową pozycję.');
+            }
+
+            
+            
+            
+        default:
+            dd('błąd wywołania funkcji save_gallery kontrolera Libraries. Zgłoś to administratorowi (lub komukolwiek innemu, jeśli jesteś administratorem)');
+    }
+
+}
+
+
 
 }

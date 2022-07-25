@@ -56,6 +56,11 @@ Route::get('rooms', [
     'as' => 'rooms.index'
 ]);
 
+Route::get('roomsall', [
+    'uses' => 'RoomController@index_all',
+    'as' => 'rooms.index_all'
+]);
+
 Route::get('room/{room}', [
     'uses' => 'RoomController@show',
     'as' => 'rooms.show'
@@ -415,6 +420,21 @@ Route::put('libraries/save_item_type', [
 
 Route::post('ilibraries/ajx_item_types', 'LibrariesController@ajx_item_types')->name('libraries.ajx_item_types');
 Route::post('ilibraries/ajx_item_type_one', 'LibrariesController@ajx_item_type_one')->name('libraries.ajx_item_type_one');
+
+Route::get('libraries/galleries', [
+    'uses' => 'LibrariesController@list_galleries',
+    'as' => 'libraries.galleries'
+]);
+Route::get('libraries/gallery/{gallery_id}', [
+    'uses' => 'LibrariesController@show_gallery',
+    'as' => 'libraries.show_gallery'
+]);
+Route::put('libraries/save_gallery', [
+    'uses' => 'LibrariesController@save_gallery',
+    'as' => 'libraries.save_gallery'
+]);
+
+Route::post('ilibraries/ajx_photo', 'LibrariesController@ajx_photo')->name('libraries.ajx_photo');
 
 
 /////////////////////////////////////////////////////////

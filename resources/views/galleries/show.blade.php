@@ -16,7 +16,7 @@
 
 @foreach ($galeria->photos as $photox)
         <div class="col-xs-6 col-md-3">
-        <a href="{{$galeria->gallery_folder}}/{{$photox->gallery_photo_name}}" class="thumbnail"><img src="{{$galeria->gallery_folder}}/{{$photox->gallery_photo_name}}" alt="{{$photox->gallery_photo_description}}">{{$photox->gallery_photo_title}}</a>
+        <a href="{{$photox->gallery_photo_directory}}/{{$photox->gallery_photo_name}}" class="thumbnail"><img src="{{$photox->gallery_photo_directory}}/{{$photox->gallery_photo_name}}" alt="{{$photox->gallery_photo_description}}">{{$photox->gallery_photo_title}}</a>
         </div>
     @endforeach
 

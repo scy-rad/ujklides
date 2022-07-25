@@ -1,7 +1,9 @@
 <?php
 // variables in modal:
-// $action        = route('item.update', $item->id)
-// $photo_old = asset($item->item_photo)
+// $action            = route('item.update', $item->id)
+// $photo_old         = asset($item->item_photo)
+// $picture_name      = name of database field
+// $picture_name_img  = name of img element (preview new image)
 ?>
 <!-- Body Modal change picture -->
 <div class="modal fade" id="pictureModal" tabindex="-1" role="dialog" aria-labelledby="pictureModalLabel" aria-hidden="true">
@@ -18,16 +20,16 @@
             <input type="hidden" name="_method" value="PUT">
             <input type="hidden" name="update" value="picture">
             {{ csrf_field() }}
-            <input type="hidden" name="picture_name" id="picture_name" value="" >
+            <input type="hidden" name="{{$picture_name}}" id="{{$picture_name}}" value="" >
 
             <div style="width:200px; float: left">
                 <label for="picture_old">aktualne zdjęcie:</label><br>
                 <img id="picture_old" width="200px" height="150px" src="{{$photo_old}}">
             </div>
             <div style="width:45%; float: right">
-                <label for="picture_name_img">nowe zdjęcie:</label><br>
-                <a href="javascript:open_popup('/js/filemanager/filemanager/dialog.php?type=1&popup=1&field_id=picture_name&fldr=images')" class="btn btn-secondary" type="button" margin="0px">
-                    <img id="picture_name_img" width="200px" height="150px" src="">
+                <label for="{{$picture_name_img}}">nowe zdjęcie:</label><br>
+                <a href="javascript:open_popup('/js/filemanager/filemanager/dialog.php?type=1&popup=1&field_id={{$picture_name}}&fldr=images')" class="btn btn-secondary" type="button" margin="0px">
+                    <img id="{{$picture_name_img}}" width="200px" height="150px" src="">
                 </a>
             </div>
             <div style="clear: both;">
