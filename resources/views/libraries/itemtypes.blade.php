@@ -74,22 +74,22 @@ if (!Auth::user()->hasRoleCode('itemoperators'))
             @endfor
     
             <label for"item_type_name">nazwa:</label>
-            <input type="text" class="form-control" id="item_type_name" name="item_type_name">
+            <input type="text" class="form-control" id="item_type_name" name="item_type_name" required>
 
             <label for"item_type_description">opis:</label>
-            <input type="text" class="form-control" id="item_type_description" name="item_type_description">
+            <input type="text" class="form-control" id="item_type_description" name="item_type_description" required>
 
             <label for"item_type_sort">sortowanie:</label>
-            <input type="text" class="form-control" id="item_type_sort" name="item_type_sort">
+            <input type="number" class="form-control" id="item_type_sort" name="item_type_sort" min="1" max="250" required>
 
             <label for"item_type_photo">zdjęcie:</label>
-            <input type="text" class="form-control" id="item_type_photo" name="item_type_photo">
+            <input type="text" class="form-control" id="item_type_photo" name="item_type_photo" required>
 
             <label for"item_type_code">kod (do menu):</label>
             <input type="text" class="form-control" id="item_type_code" name="item_type_code">
 
             <label for"item_type_status">status:</label>
-            <input type="text" class="form-control" id="item_type_status" name="item_type_status">
+            <input type="number" class="form-control" id="item_type_status" name="item_type_status" min="0" max="1" required>
 
         </div>
       </div>
@@ -103,6 +103,31 @@ if (!Auth::user()->hasRoleCode('itemoperators'))
     </div>
   </div>
 </div>
+
+
+<script> <!-- for validation forms -->
+
+function testText(field, lng) {
+    return field.value.length >= lng;
+}
+
+
+
+const form = document.querySelector("form");
+const item_type_name = form.querySelector("input[name=item_type_name]");
+
+form.addEventListener("submit", e => {
+    e.preventDefault();
+
+    //jeżeli wszystko ok to wysyłamy
+    if (item_type_name.value.length >= 3) {
+        e.target.submit();
+    } else {
+        //jeżeli nie to pokazujemy jakieś błędy
+        alert("Pole nazwy powinno zawierać conajmnie 3 znaki...");
+    }
+})
+</script>
 
 
 <script>

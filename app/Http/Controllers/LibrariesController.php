@@ -463,18 +463,38 @@ public function ajx_item_types(Request $request)
 public function ajx_item_type_one(Request $request)
 {      // Funkcja do pobierania danych wybranego item_type - zwrot w JSON
 
+    if ($request->id==0)
+    {
+        $item_type_one = new \App\ItemType; 
+        $item_type_one->item_type_sort=1;
+        $item_type_one->item_type_status=1;
+    }
+    else
+    {
     $item_type_one = \App\ItemType::where('id', $request->id)
     ->first()
     ;   
+    }
+    
     return response()->json([                                                   // zwróć JSONa zawierającego elementy:
         'item_type_one'    => $item_type_one                                    // dane wybranego item_type 
     ]);
 }
 
+
+
 public function save_item_type(Request $request)
 {
     if (!Auth::user()->hasRoleCode('itemoperators'))
         return view('error',['head'=>'błąd wywołania funkcji save_user_title kontrolera Libraries','title'=>'brak uprawnień','description'=>'aby wykonać to działanie musisz być Operatorem Symulacji']);
+
+        $validated = $request->validate([
+            'item_type_name' => 'required|min:3|max:255',
+            'item_type_description' => 'required|min:3|max:500',
+            'item_type_sort' => 'required|integer',
+            'item_type_photo' => 'required|min:3|max:',
+            'item_type_status' => 'required|integer'
+        ]);
 
     $loop=1;
     $item_type_parent=0;
